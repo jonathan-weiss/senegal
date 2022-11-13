@@ -1,0 +1,2 @@
+v16.14.0
+Keep this version in sync with version in master/buildSrc/src/main/kotlin/zebra-node-npm-support.gradle.kts

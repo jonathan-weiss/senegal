@@ -1,0 +1,15 @@
+
+###
+# fetch single book
+
+http://127.0.0.1:8080/api/books/6d9f2fd3-5a31-4477-8d04-bf87f00f5406
+
+
+###
+# fetch all books
+
+http://127.0.0.1:8080/api/books/all
+
+
+
+

@@ -1,0 +1,13 @@
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Book name</mat-label>
+    <input matInput type="text" [(ngModel)]="createBookInstruction.bookName">
+    <button *ngIf="createBookInstruction.bookName" matSuffix mat-icon-button aria-label="Clear" (click)="createBookInstruction.bookName=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div>
+  <button mat-raised-button color="primary" (click)="saveChanges()">Create</button>
+  <button mat-raised-button color="secondary" (click)="cancelEdit()">Cancel</button>
+</div>

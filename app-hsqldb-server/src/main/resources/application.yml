@@ -1,0 +1,13 @@
+server:
+  port: 9000
+
+
+project_root_dir: "./"
+
+hsql:
+  standalone:
+    port: 9005
+    user: sa
+    password: password
+    database_name: standaloneDb
+    database_path: ${project_root_dir}/db/

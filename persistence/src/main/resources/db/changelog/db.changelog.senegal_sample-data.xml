@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+
+    <changeSet id="20221108_book_sample_data" author="Senegal">
+        <preConditions onFail="CONTINUE">
+            <changeLogPropertyDefined property="senegal_sample_data" value="true"/>
+        </preConditions>
+
+        <insert tableName="BOOK">
+            <column name="ID" value="6d9f2fd3-5a31-4477-8d04-bf87f00f5406"/>
+            <column name="BOOK_NAME" value="Gullivers traveling guide"/>
+        </insert>
+
+        <insert tableName="BOOK">
+            <column name="ID" value="f16294de-ba92-4643-8e69-53adfe88d003"/>
+            <column name="BOOK_NAME" value="Lord of the flies"/>
+        </insert>
+
+        <insert tableName="BOOK">
+            <column name="ID" value="d1d9874b-07d9-4eb4-82d2-123ca6839a5d"/>
+            <column name="BOOK_NAME" value="Thomson study bible"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

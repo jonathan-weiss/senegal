@@ -1,0 +1,7 @@
+spring:
+  config:
+    import: application-devlocal-defaults.yml,application-with-hsql.yml
+  datasource:
+    url: jdbc:hsqldb:hsql://localhost:9005/standaloneDb;sql.syntax_ora=true
+    username: sa
+    password: password
