@@ -16,7 +16,7 @@ dependencies {
     //used for mocking inside of the spring container
     implementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     //needed rest api projects
-    implementation(project(":frontend-api"))
+    implementation(project(":senegal-example:frontend-api"))
 }
 
 val bootJar: BootJar by tasks

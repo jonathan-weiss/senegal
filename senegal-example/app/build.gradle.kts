@@ -9,9 +9,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-    implementation(project(":frontend-api"))
-    implementation(project(":domain"))
-    implementation(project(":persistence"))
+    implementation(project(":senegal-example:frontend-api"))
+    implementation(project(":senegal-example:domain"))
+    implementation(project(":senegal-example:persistence"))
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")

@@ -23,8 +23,8 @@ dependencies {
     liquibaseRuntime("org.hsqldb:hsqldb")
 
 
-    implementation(project(":shared-domain"))
-    implementation(project(":domain"))
+    implementation(project(":senegal-example:shared-domain"))
+    implementation(project(":senegal-example:domain"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.hsqldb:hsqldb")
 

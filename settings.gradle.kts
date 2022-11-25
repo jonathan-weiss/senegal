@@ -1,10 +1,14 @@
 rootProject.name = "senegal"
 
-include("app")
-include("app-hsqldb-server")
-include("shared-domain")
-include("domain")
-include("persistence")
-include("frontend-api")
-include("frontend")
-include("open-api")
+include("senegal-engine")
+
+// example project
+include("senegal-example")
+include("senegal-example:app")
+include("senegal-example:app-hsqldb-server")
+include("senegal-example:shared-domain")
+include("senegal-example:domain")
+include("senegal-example:persistence")
+include("senegal-example:frontend-api")
+include("senegal-example:frontend")
+include("senegal-example:open-api")

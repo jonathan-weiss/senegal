@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation("org.springframework:spring-context")
-    implementation(project(":shared-domain"))
+    implementation(project(":senegal-example:shared-domain"))
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")

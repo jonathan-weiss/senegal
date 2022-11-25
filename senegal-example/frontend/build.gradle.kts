@@ -112,7 +112,7 @@ tasks.register<Copy>("openApiCopyGeneratedFiles") {
 
 tasks.named<Task>("openApiGenerate") {
   mustRunAfter("openApiCleanGeneratedFiles")
-  dependsOn(":open-api:generateOpenApiDocs")
+  dependsOn(":senegal-example:open-api:generateOpenApiDocs")
 }
 
 tasks.register<com.github.gradle.node.npm.task.NpmTask>("lintAngular") {
