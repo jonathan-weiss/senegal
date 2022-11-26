@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<senegal xmlns="https://senegal.ch"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://senegal.ch entity-schema.xml">
+
+    <entity name="Person">
+        <entity-attribute name="firstname" type="TEXT"/>
+        <entity-attribute name="lastname" type="TEXT"/>
+        <entity-attribute name="nickname" type="TEXT"/>
+    </entity>
+
+    <entity name="Address">
+        <entity-attribute name="street" type="TEXT"/>
+        <entity-attribute name="zip" type="TEXT"/>
+    </entity>
+
+</senegal>
