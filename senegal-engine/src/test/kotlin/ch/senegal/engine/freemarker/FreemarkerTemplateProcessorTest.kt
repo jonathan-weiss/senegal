@@ -17,6 +17,10 @@ internal class FreemarkerTemplateProcessorTest {
             TestFieldDescription("firstname", "kotlin.String", true),
             TestFieldDescription("lastname", "kotlin.String", false),
         )
+        val mySubDelegate = MyDelegate("mySubDelegate", null)
+        val myDelegate = MyDelegate("myDelegate", mySubDelegate)
+
+        model["mySpecialDelegate"] = myDelegate
         val fileDescriptor = FreemarkerFileDescriptor(
             targetFile = targetFilePath,
             model = model,
@@ -37,4 +41,18 @@ internal class FreemarkerTemplateProcessorTest {
     ) {
 
     }
+
+    class MyDelegate(private val delegateCode: String,
+                     private val subDelegate: MyDelegate?) {
+
+        operator fun get(key: String): Any? {
+            println("$delegateCode: $key")
+            if(subDelegate != null) {
+                return subDelegate
+            }
+            return "$delegateCode, key:$key"
+        }
+
+    }
+
 }
