@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<senegal xmlns="https://senegal.ch"
+<senegal xmlns="https://senegal.ch/entity"
+         xmlns:kt="https://senegal.ch/kt"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://senegal.ch entity-schema.xml">
+         xsi:schemaLocation="
+         https://senegal.ch/entity entity-schema.xml
+         https://senegal.ch/kt kt-schema.xml
+         "
 
-    <entity name="Person">
+>
+
+    <entity name="Person" kt:class-name="Person" kt:package-name="ch.senegal.person">
         <entity-attribute name="firstname" type="TEXT"/>
         <entity-attribute name="lastname" type="TEXT"/>
         <entity-attribute name="nickname" type="TEXT"/>

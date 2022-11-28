@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="https://senegal.ch"
-           xmlns="https://senegal.ch"
+           targetNamespace="https://senegal.ch/entity"
+           xmlns="https://senegal.ch/entity"
            elementFormDefault="qualified">
 
     <xs:element name="senegal">
@@ -18,6 +18,7 @@
                 <xs:element ref="entity-attribute"/>
             </xs:sequence>
             <xs:attribute name="name" type="identifier" use="required" />
+            <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
 
@@ -25,6 +26,7 @@
         <xs:complexType>
             <xs:attribute name="name" type="identifier" use="required" />
             <xs:attribute name="type" type="attribute-type" use="required"/>
+            <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
 
