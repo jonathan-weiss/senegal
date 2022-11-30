@@ -8,21 +8,12 @@ import org.junit.jupiter.api.Assertions.*
 internal class PluginFinderTest {
 
     @Test
-    fun findAllConceptPlugins() {
+    fun findAllPlugins() {
         // act
-        val conceptPlugins = PluginFinder.findAllConceptPlugins()
+        val plugins = PluginFinder.findAllPlugins()
 
         // assert
-        assertEquals(1, conceptPlugins.size)
-    }
-
-    @Test
-    fun findAllRefinementPropertyPlugins() {
-        // act
-        val refinementPropertyPlugins = PluginFinder.findAllPurposePlugins()
-
-        // assert
-        assertEquals(1, refinementPropertyPlugins.size)
+        assertEquals(3, plugins.size)
     }
 
 }

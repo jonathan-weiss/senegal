@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <senegal xmlns="https://senegal.ch/senegal"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="
-         https://senegal.ch/senegal schema/senegal-schema.xsd
-         "
-
+         xsi:schemaLocation="https://senegal.ch/senegal schema/senegal-schema.xsd"
 >
 
-    <entity name="Person" kotlin-model-class="Person" kotlin-model-package-name="ch.senegal.person">
-        <entity-attribute name="firstname" kotlin-model-type="TEXT"/>
-        <entity-attribute name="lastname" kotlin-model-type="TEXT"/>
-        <entity-attribute name="nickname" kotlin-model-type="TEXT"/>
+    <entity name="Person" kotlin-model-class-name="Person" kotlin-model-package="ch.senegal.person">
+        <entity-attribute name="firstname" type="TEXT"/>
+        <entity-attribute name="lastname" type="TEXT"/>
+        <entity-attribute name="nickname" type="TEXT"/>
     </entity>
 
     <entity name="Address">
-        <entity-attribute name="street" kotlin-model-type="TEXT"/>
-        <entity-attribute name="zip" kotlin-model-type="TEXT"/>
+        <entity-attribute name="street" type="TEXT"/>
+        <entity-attribute name="zip" type="TEXT"/>
     </entity>
 
 </senegal>

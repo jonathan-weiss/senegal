@@ -1,6 +1,8 @@
 package ch.senegal.engine.xml.schemacreator
 
+import ch.senegal.engine.plugin.ConceptDecor
 import ch.senegal.engine.plugin.Purpose
+import ch.senegal.engine.plugin.PurposeDecor
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil
@@ -56,11 +58,11 @@ object XmlSchemaCreator {
 
     private fun createConceptElementSchema(conceptNode: ConceptNode): String {
         val conceptXmlSchemaName = schemaTagName(conceptNode)
-        val conceptXmlSchemaTags = conceptNode.enclosedConcepts
-            .map { createConceptReferenceEntry(it) }
-            .joinToString("\n")
+        val conceptXmlSchemaTags = conceptNode.enclosedConcepts.joinToString("\n") { createConceptReferenceEntry(it) }
+        val conceptXmlSchemaAttributes =
+            conceptNode.concept.conceptDecors.joinToString("\n") { createConceptAttribute(it) }
         val purposeXmlSchemaAttributes = conceptNode.enclosedPurposes
-            .map { createPurposeAttribute(it) }
+            .flatMap { purpose -> purpose.purposeDecors.map { decor -> createPurposeAttribute(purpose, decor) } }
             .joinToString("\n")
 
         return """
@@ -69,6 +71,7 @@ object XmlSchemaCreator {
                         <xs:sequence minOccurs="0" maxOccurs="unbounded">
                             ${addIdent(conceptXmlSchemaTags, 12)}
                         </xs:sequence>
+                        ${addIdent(conceptXmlSchemaAttributes, 8)}
                         ${addIdent(purposeXmlSchemaAttributes, 8)}
                     </xs:complexType>
                 </xs:element>
@@ -84,8 +87,18 @@ object XmlSchemaCreator {
         """.trimIndent()
     }
 
-    private fun createPurposeAttribute(purpose: Purpose): String {
-        val attributeName = schemaAttributeName(purpose)
+    private fun createConceptAttribute(conceptDecor: ConceptDecor): String {
+        val attributeName = schemaAttributeName(conceptDecor.conceptDecorName.name)
+        return """
+            <xs:attribute name="$attributeName" type="identifier"/>
+        """.trimIndent()
+    }
+
+
+    private fun createPurposeAttribute(purpose: Purpose, decor: PurposeDecor): String {
+        val purposeAttributeName = schemaAttributeName(purpose.purposeName.name)
+        val decorAttributeName = schemaAttributeName(decor.purposeDecorName.name)
+        val attributeName = "$purposeAttributeName-$decorAttributeName"
         return """
             <xs:attribute name="$attributeName" type="xs:string"/>
         """.trimIndent()
@@ -96,8 +109,8 @@ object XmlSchemaCreator {
         return CaseUtil.camelToDashCase(conceptNode.concept.conceptName.name)
     }
 
-    private fun schemaAttributeName(purpose: Purpose): String {
-        return CaseUtil.camelToDashCase(purpose.purposeName.name)
+    private fun schemaAttributeName(value: String): String {
+        return CaseUtil.camelToDashCase(value)
     }
 
 }
