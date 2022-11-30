@@ -9,7 +9,7 @@ class PluginTree(
     val rootConceptNodes: Set<ConceptNode>,
 
 ) {
-    private val allConceptNodes: Map<ConceptName, ConceptNode> =
+    val allConceptNodes: Map<ConceptName, ConceptNode> =
         deepConceptNodes(rootConceptNodes).associateBy { it.concept.conceptName }
 
     fun getConceptNodeByName(name: ConceptName): ConceptNode? {

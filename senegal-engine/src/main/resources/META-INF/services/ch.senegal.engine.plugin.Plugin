@@ -1,2 +1,3 @@
 ch.senegal.engine.pluginexample.EntityConceptPlugin
+ch.senegal.engine.pluginexample.EntityAttributeConceptPlugin
 ch.senegal.engine.pluginexample.KotlinModelPurposePlugin

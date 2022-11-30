@@ -7,7 +7,7 @@ import java.util.*
 
 object PluginFinder {
 
-    private fun findAllPlugins(): Set<Plugin> {
+    fun findAllPlugins(): Set<Plugin> {
         val pluginLoader: ServiceLoader<Plugin> = ServiceLoader.load(Plugin::class.java)
         return pluginLoader.toSet()
     }
