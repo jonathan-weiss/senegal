@@ -1,4 +1,4 @@
 package ch.senegal.engine.plugin
 
 @JvmInline
-value class PurposeDecorName(private val decorName: String)
+value class PurposeDecorName(val name: String)

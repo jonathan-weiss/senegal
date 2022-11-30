@@ -5,3 +5,6 @@ build
 **/build
 db/**
 tmp
+
+
+senegal-engine/definitions/schema/*
