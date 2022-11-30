@@ -11,4 +11,7 @@ class EntityConceptPlugin: Concept {
 
 
     override val conceptName: ConceptName = entityConceptName
+
+    override val enclosingConceptName: ConceptName?
+        get() = null
 }

@@ -1,5 +1,8 @@
-package ch.senegal.engine.plugin
+package ch.senegal.engine.plugin.finder
 
+import ch.senegal.engine.plugin.Concept
+import ch.senegal.engine.plugin.Plugin
+import ch.senegal.engine.plugin.Purpose
 import java.util.*
 
 object PluginFinder {
@@ -10,11 +13,11 @@ object PluginFinder {
     }
 
     fun findAllConceptPlugins(): Set<Concept> {
-        return this.findAllPlugins().filterIsInstance<Concept>().toSet()
+        return findAllPlugins().filterIsInstance<Concept>().toSet()
     }
 
     fun findAllPurposePlugins(): Set<Purpose> {
-        return this.findAllPlugins().filterIsInstance<Purpose>().toSet()
+        return findAllPlugins().filterIsInstance<Purpose>().toSet()
     }
 
 }

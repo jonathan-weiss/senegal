@@ -1,6 +1,6 @@
 package ch.senegal.engine.xml.schemacreator
 
-import ch.senegal.engine.plugin.PluginFinder
+import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.properties.ArgumentReader
 
 object XmlSchemaInitializer {
