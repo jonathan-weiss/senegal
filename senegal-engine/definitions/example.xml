@@ -5,9 +5,9 @@
 >
 
     <entity name="Person" kotlin-model-class-name="Person" kotlin-model-package="ch.senegal.person">
-        <entity-attribute name="firstname" type="TEXT"/>
-        <entity-attribute name="lastname" type="TEXT"/>
-        <entity-attribute name="nickname" type="TEXT"/>
+        <entity-attribute name="firstname" type="TEXT" kotlin-field-field-type="kotlin.String" />
+        <entity-attribute name="lastname" type="NUMBER" kotlin-field-field-type="kotlin.Int"/>
+        <entity-attribute name="nickname" type="BOOLEAN" kotlin-field-field-type="kotlin.Boolean"/>
     </entity>
 
     <entity name="Address">

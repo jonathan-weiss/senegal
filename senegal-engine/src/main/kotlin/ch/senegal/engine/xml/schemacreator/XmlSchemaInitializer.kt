@@ -13,7 +13,7 @@ object XmlSchemaInitializer {
 
         val pluginTree = PluginTreeCreator.createPluginTree(PluginFinder.findAllPlugins())
 
-        val xmlSchemaFileContent = XmlSchemaCreator.createPluginTreeSchema(pluginTree)
+        val xmlSchemaFileContent = XmlDomSchemaCreator.createPluginTreeSchema(pluginTree)
         val xmlSchemaFileName = "senegal-schema.xsd"
         FileWriter.writeFile(schemaDirectory.resolve(xmlSchemaFileName), xmlSchemaFileContent)
 

@@ -1,12 +1,11 @@
 package ch.senegal.engine.xml.schemacreator
 
-import ch.senegal.engine.plugin.ConceptDecor
-import ch.senegal.engine.plugin.Purpose
-import ch.senegal.engine.plugin.PurposeDecor
+import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil
 
+@Deprecated("Use DOM-based schema creator to have better ident support")
 object XmlSchemaCreator {
 
     fun createPluginTreeSchema(pluginTree: PluginTree): String {
@@ -89,9 +88,7 @@ object XmlSchemaCreator {
 
     private fun createConceptAttribute(conceptDecor: ConceptDecor): String {
         val attributeName = schemaAttributeName(conceptDecor.conceptDecorName.name)
-        return """
-            <xs:attribute name="$attributeName" type="identifier"/>
-        """.trimIndent()
+        return createAttribute(attributeName, conceptDecor.conceptDecorType)
     }
 
 
@@ -99,11 +96,36 @@ object XmlSchemaCreator {
         val purposeAttributeName = schemaAttributeName(purpose.purposeName.name)
         val decorAttributeName = schemaAttributeName(decor.purposeDecorName.name)
         val attributeName = "$purposeAttributeName-$decorAttributeName"
-        return """
-            <xs:attribute name="$attributeName" type="xs:string"/>
-        """.trimIndent()
+        return createAttribute(attributeName, decor.purposeDecorType)
     }
 
+    private fun createAttribute(attributeName: String, decorType: DecorType): String {
+        if(decorType is EnumerationDecorType) {
+            val enumerationTags = decorType.enumerationValues
+                .map { createEnumerationElementSchema(it) }
+                .joinToString("")
+
+            return """
+                <xs:attribute name="$attributeName">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            $enumerationTags
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            """.trimIndent()
+        } else {
+            val decorTypeXsd = schemaAttributeType(decorType)
+            return """
+            <xs:attribute name="$attributeName" type="$decorTypeXsd"/>
+            """.trimIndent()
+
+        }
+    }
+
+    private fun createEnumerationElementSchema(enumerationValue: DecorTypeEnumerationValue): String {
+        return """<xs:enumeration value="${enumerationValue.name}"/>"""
+    }
 
     private fun schemaTagName(conceptNode: ConceptNode): String {
         return CaseUtil.camelToDashCase(conceptNode.concept.conceptName.name)
@@ -111,6 +133,15 @@ object XmlSchemaCreator {
 
     private fun schemaAttributeName(value: String): String {
         return CaseUtil.camelToDashCase(value)
+    }
+
+    private fun schemaAttributeType(decorType: DecorType): String {
+        return when(decorType) {
+            TextDecorType -> "xs:string"
+            IntegerNumberDecorType -> "xs:integer"
+            BooleanDecorType -> "xs:boolean"
+            else -> throw IllegalArgumentException("DecorType is not supported: $decorType")
+        }
     }
 
 }

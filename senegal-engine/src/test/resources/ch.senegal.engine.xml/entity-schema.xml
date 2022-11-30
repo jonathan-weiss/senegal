@@ -25,7 +25,15 @@
     <xs:element name="entity-attribute">
         <xs:complexType>
             <xs:attribute name="name" type="identifier" use="required" />
-            <xs:attribute name="type" type="attribute-type" use="required"/>
+            <xs:attribute name="type" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="TEXT"/>
+                        <xs:enumeration value="NUMBER"/>
+                        <xs:enumeration value="BOOLEAN"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
             <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
