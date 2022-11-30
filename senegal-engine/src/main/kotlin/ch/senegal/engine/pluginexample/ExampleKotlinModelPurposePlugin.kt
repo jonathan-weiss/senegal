@@ -11,8 +11,10 @@ object KotlinModelPurposePlugin: Purpose {
 
 object KotlinModelClassnameDecor: PurposeDecor {
     override val purposeDecorName: PurposeDecorName = PurposeDecorName("className")
+    override val purposeDecorType: DecorType = TextDecorType
 }
 
 object KotlinModelPackageDecor: PurposeDecor {
     override val purposeDecorName: PurposeDecorName = PurposeDecorName("package")
+    override val purposeDecorType: DecorType = TextDecorType
 }

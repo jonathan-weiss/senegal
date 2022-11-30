@@ -1,9 +1,6 @@
 package ch.senegal.engine.pluginexample
 
-import ch.senegal.engine.plugin.Concept
-import ch.senegal.engine.plugin.ConceptDecor
-import ch.senegal.engine.plugin.ConceptDecorName
-import ch.senegal.engine.plugin.ConceptName
+import ch.senegal.engine.plugin.*
 
 object EntityAttributeConceptPlugin: Concept {
     override val conceptName: ConceptName = ConceptName("EntityAttribute")
@@ -13,8 +10,16 @@ object EntityAttributeConceptPlugin: Concept {
 
 object EntityAttributeTypeDecor: ConceptDecor {
     override val conceptDecorName: ConceptDecorName = ConceptDecorName("type")
+    override val conceptDecorType: DecorType = EnumerationDecorType(listOf(
+        DecorTypeEnumerationValue("TEXT"),
+        DecorTypeEnumerationValue("NUMBER"),
+        DecorTypeEnumerationValue("BOOLEAN")
+        )
+    )
+
 }
 
 object EntityAttributeNameDecor: ConceptDecor {
     override val conceptDecorName: ConceptDecorName = ConceptDecorName("name")
+    override val conceptDecorType: DecorType = TextDecorType
 }

@@ -8,6 +8,7 @@ object TestEntityConcept: Concept {
 
 object TestEntityConceptNameDecor: ConceptDecor {
     override val conceptDecorName: ConceptDecorName = ConceptDecorName("EntityName")
+    override val conceptDecorType: DecorType = TextDecorType
 }
 
 object TestMapperConcept: Concept {
@@ -25,6 +26,11 @@ object TestEntityAttributeConcept: Concept {
 
 object TestEntityConceptTypeDecor: ConceptDecor {
     override val conceptDecorName: ConceptDecorName = ConceptDecorName("EntityAttributeType")
+    override val conceptDecorType: DecorType = EnumerationDecorType(listOf(
+        DecorTypeEnumerationValue("TEXT"),
+        DecorTypeEnumerationValue("NUMBER"),
+        DecorTypeEnumerationValue("BOOLEAN")
+    ))
 }
 
 
@@ -36,10 +42,12 @@ object TestKotlinModelPurpose: Purpose {
 
 object TestClassnameDecor: PurposeDecor {
     override val purposeDecorName: PurposeDecorName = PurposeDecorName("Classname")
+    override val purposeDecorType: DecorType = TextDecorType
 }
 
 object TestPackageDecor: PurposeDecor {
     override val purposeDecorName: PurposeDecorName = PurposeDecorName("Package")
+    override val purposeDecorType: DecorType = TextDecorType
 }
 
 object TestKotlinFieldPurpose: Purpose {
@@ -50,5 +58,11 @@ object TestKotlinFieldPurpose: Purpose {
 
 object TestFieldTypeDecor: PurposeDecor {
     override val purposeDecorName: PurposeDecorName = PurposeDecorName("FieldType")
+    override val purposeDecorType: DecorType = EnumerationDecorType(listOf(
+        DecorTypeEnumerationValue("kotlin.String"),
+        DecorTypeEnumerationValue("kotlin.Int"),
+        DecorTypeEnumerationValue("kotlin.Boolean")
+    ))
+
 }
 

@@ -10,5 +10,6 @@ object EntityConceptPlugin: Concept {
 
 object EntityNameDecor: ConceptDecor {
     override val conceptDecorName: ConceptDecorName = ConceptDecorName("name")
+    override val conceptDecorType: DecorType = TextDecorType
 }
 

@@ -4,4 +4,6 @@ interface ConceptDecor {
 
     val conceptDecorName: ConceptDecorName
 
+    val conceptDecorType: DecorType
+
 }
