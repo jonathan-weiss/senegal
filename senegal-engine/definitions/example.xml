@@ -7,7 +7,7 @@
 
 >
 
-    <entity name="Person" kotlin-model-class-name="Person" kotlin-model-package-name="ch.senegal.person">
+    <entity name="Person" kotlin-model-class="Person" kotlin-model-package-name="ch.senegal.person">
         <entity-attribute name="firstname" kotlin-model-type="TEXT"/>
         <entity-attribute name="lastname" kotlin-model-type="TEXT"/>
         <entity-attribute name="nickname" kotlin-model-type="TEXT"/>

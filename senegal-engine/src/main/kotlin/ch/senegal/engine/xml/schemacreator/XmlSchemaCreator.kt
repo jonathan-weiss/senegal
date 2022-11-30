@@ -1,19 +1,20 @@
 package ch.senegal.engine.xml.schemacreator
 
+import ch.senegal.engine.plugin.Purpose
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil
 
 object XmlSchemaCreator {
 
-    fun createPluginTreeSchema(pluginTree: PluginTree): String { // TODO pass whole concept and purpose tree
+    fun createPluginTreeSchema(pluginTree: PluginTree): String {
         val overallXmlSchemaName = "senegal"
 
-        val refListOfRootConcepts = pluginTree.allConceptNodes.values
-            .map { createConceptReferenceSchemaBranch(it) }
+        val refListOfRootConcepts = pluginTree.rootConceptNodes
+            .map { createConceptReferenceEntry(it) }
             .joinToString("")
         val conceptXmlSchemaTags = pluginTree.allConceptNodes.values
-            .map { createConceptSchemaBranch(it) }
+            .map { createConceptElementSchema(it) }
             .joinToString("")
         return """
             <?xml version="1.0"?>
@@ -53,12 +54,22 @@ object XmlSchemaCreator {
         return " ".repeat(ident) + line
     }
 
-    private fun createConceptSchemaBranch(conceptNode: ConceptNode): String {
+    private fun createConceptElementSchema(conceptNode: ConceptNode): String {
         val conceptXmlSchemaName = schemaTagName(conceptNode)
+        val conceptXmlSchemaTags = conceptNode.enclosedConcepts
+            .map { createConceptReferenceEntry(it) }
+            .joinToString("\n")
+        val purposeXmlSchemaAttributes = conceptNode.enclosedPurposes
+            .map { createPurposeAttribute(it) }
+            .joinToString("\n")
+
         return """
                 <xs:element name="$conceptXmlSchemaName" >
                     <xs:complexType>
-                        <xs:anyAttribute/>
+                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                            ${addIdent(conceptXmlSchemaTags, 12)}
+                        </xs:sequence>
+                        ${addIdent(purposeXmlSchemaAttributes, 8)}
                     </xs:complexType>
                 </xs:element>
         
@@ -66,15 +77,27 @@ object XmlSchemaCreator {
         """.trimIndent()
     }
 
-    private fun createConceptReferenceSchemaBranch(conceptNode: ConceptNode): String {
+    private fun createConceptReferenceEntry(conceptNode: ConceptNode): String {
         val conceptXmlSchemaName = schemaTagName(conceptNode)
         return """
             <xs:element ref="$conceptXmlSchemaName"/>
-            
         """.trimIndent()
     }
+
+    private fun createPurposeAttribute(purpose: Purpose): String {
+        val attributeName = schemaAttributeName(purpose)
+        return """
+            <xs:attribute name="$attributeName" type="xs:string"/>
+        """.trimIndent()
+    }
+
 
     private fun schemaTagName(conceptNode: ConceptNode): String {
         return CaseUtil.camelToDashCase(conceptNode.concept.conceptName.name)
     }
+
+    private fun schemaAttributeName(purpose: Purpose): String {
+        return CaseUtil.camelToDashCase(purpose.purposeName.name)
+    }
+
 }
