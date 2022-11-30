@@ -2,6 +2,7 @@ package ch.senegal.engine.xml.schemacreator
 
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
+import ch.senegal.engine.util.CaseUtil
 
 object XmlSchemaCreator {
 
@@ -74,6 +75,6 @@ object XmlSchemaCreator {
     }
 
     private fun schemaTagName(conceptNode: ConceptNode): String {
-        return conceptNode.concept.conceptName.name.lowercase() // TODO to valid xml Name (from SnakeCase)
+        return CaseUtil.camelToDashCase(conceptNode.concept.conceptName.name)
     }
 }
