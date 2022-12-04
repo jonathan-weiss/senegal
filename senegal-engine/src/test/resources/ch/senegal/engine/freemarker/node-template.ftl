@@ -7,11 +7,11 @@
     direct access: ${topLevelNode.myStringTwo}
 
     SubNodes:
-    <#list topLevelNode.entityAttributes as entityAttribute>
+    <#list topLevelNode.childNodes as childNode>
 
         Properties:
-        <#list entityAttribute.properties as entityAttributePropertyKey, entityAttributePropertyValue>
-            ${entityAttributePropertyKey}: ${entityAttributePropertyValue}
+        <#list childNode.properties as childPropertyKey, childPropertyValue>
+            ${childPropertyKey}: ${childPropertyValue}
         </#list>
     </#list>
 
