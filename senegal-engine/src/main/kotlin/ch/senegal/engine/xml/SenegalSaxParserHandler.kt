@@ -1,103 +1,56 @@
 package ch.senegal.engine.xml
 
+import ch.senegal.engine.freemarker.nodetree.TemplateModelNode
+import ch.senegal.engine.freemarker.nodetree.TemplateModelNodeBuilder
+import ch.senegal.engine.plugin.ConceptName
+import ch.senegal.engine.plugin.tree.PluginTree
+import ch.senegal.engine.util.CaseUtil
 import org.xml.sax.Attributes
 import org.xml.sax.Locator
 import org.xml.sax.SAXException
 import org.xml.sax.helpers.DefaultHandler
+import java.util.*
+import kotlin.collections.ArrayDeque
 
 
-class SenegalSaxParserHandler : DefaultHandler() {
-    private val namespaces: MutableMap<String, String> = mutableMapOf();
+class SenegalSaxParserHandler(private val pluginTree: PluginTree) : DefaultHandler() {
+    private val rootNodes = mutableListOf<TemplateModelNode>()
+    private var templateModelNodeBuilders: ArrayDeque<TemplateModelNodeBuilder> = ArrayDeque()
+
 
     @Throws(SAXException::class)
-    override fun characters(ch: CharArray?, start: Int, length: Int) {
-        //println("characters: $ch, $start, $length -> ${ch?.slice(start .. start + length)?.joinToString("")}")
+    override fun startElement(uri: String, localName: String, qName: String, attr: Attributes) {
+        if(!isConcept(localName)) return
+        val modelNodeBuilder = if(templateModelNodeBuilders.isEmpty()) {
+            TemplateModelNodeBuilder.createNodeBuilder()
+        } else {
+            templateModelNodeBuilders.last().createAndAttachChildNodeBuilder()
+        }
+
+
+
+        val attributeList = Attribute.attributeList(attr)
+        attributeList.forEach { modelNodeBuilder.addProperty(it.localName, it.value) }
+        templateModelNodeBuilders.addLast(modelNodeBuilder)
     }
 
-
-    override fun notationDecl(name: String?, publicId: String?, systemId: String?) {
-        println("notationDecl name=$name, publicId=$publicId, systemId=$systemId")
-    }
-
-    override fun processingInstruction(target: String?, data: String?) {
-        println("processingInstruction target=$target, data=$data")
+    private fun isConcept(localName: String): Boolean {
+        return pluginTree.allConceptNodes
+            .keys
+            .map { CaseUtil.camelToDashCase(it.name) }
+            .contains(localName)
     }
 
     @Throws(SAXException::class)
-    override fun startDocument() {
-        println("startDocument")
-    }
-    @Throws(SAXException::class)
-    override fun endDocument() {
-        println("endDocument")
-    }
-
-    override fun startPrefixMapping(prefix: String?, uri: String?) {
-        println("startPrefixMapping: prefix=$prefix, uri=$uri")
-    }
-
-    override fun endPrefixMapping(prefix: String?) {
-        println("endPrefixMapping: prefix=$prefix")
-    }
-
-    override fun setDocumentLocator(locator: Locator) {
-        super.setDocumentLocator(locator)
-        println("setDocumentLocator: $locator, publicId=${locator.publicId}, systemId=${locator.systemId}, lineNumber=${locator.lineNumber}, columnNumber=${locator.columnNumber}")
-    }
-
-    override fun skippedEntity(name: String?) {
-        println("skippedEntity: $name")
-    }
-
-    var elementCount = 0;
-
-    @Throws(SAXException::class)
-    override fun startElement(uri: String?, localName: String?, qName: String?, attr: Attributes?) {
-        elementCount++
-        println("  ${elementIdent()}startElement:$localName uri=$uri, lName=$localName, qName=$qName")
-        attributeList(attr).forEach {
-            println("  ${elementIdent()}+ $it")
+    override fun endElement(uri: String, localName: String, qName: String) {
+        if(!isConcept(localName)) return
+        val node = templateModelNodeBuilders.removeLast()
+        if(templateModelNodeBuilders.isEmpty()) {
+            rootNodes.add(node.build())
         }
     }
 
-    private fun attributeList(attr: Attributes?): List<Attribute> {
-        if (attr == null) return emptyList()
-        return (0..(attr.length - 1).coerceAtLeast(0))
-            .map { index -> toAttribute(attr, index) }
+    fun getListOfRootTemplateModelNodes(): List<TemplateModelNode> {
+        return rootNodes.toList()
     }
-
-    private fun toAttribute(attr: Attributes, index: Int): Attribute {
-        return Attribute(
-            localName = attr.getLocalName(index),
-            qName = attr.getQName(index),
-            uri = attr.getURI(index),
-            value = attr.getValue(index),
-            type = attr.getType(index),
-        )
-    }
-
-    private fun attributesSummary(attr: Attributes?): String {
-        return attributeList(attr)
-            .joinToString("\n") { it.toString() }
-    }
-
-    data class Attribute(
-        val localName: String?,
-        val qName: String?,
-        val uri: String?,
-        val value: String?,
-        val type: String?,
-
-        )
-
-    @Throws(SAXException::class)
-    override fun endElement(uri: String?, localName: String?, qName: String?) {
-        elementCount--
-        println("  ${elementIdent()}endElement:$localName uri=$uri, lName=$localName, qName=$qName")
-    }
-
-    private fun elementIdent(): String {
-        return "    ".repeat(elementCount)
-    }
-
 }

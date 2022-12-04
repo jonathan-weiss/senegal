@@ -19,7 +19,7 @@ internal class TemplateModelNodeTest {
         val targetFilePath = TmpFileUtil.createTempFile("freemarker-template-model-test")
         val model = mutableMapOf<String, List<TemplateModelNode>>()
 
-        val entityBuilder = TemplateModelNode.createNodeBuilder()
+        val entityBuilder = TemplateModelNodeBuilder.createNodeBuilder()
         entityBuilder.createAndAttachChildNodeBuilder().addProperty("subnodeText1", "qwert1")
         entityBuilder.createAndAttachChildNodeBuilder().addProperty("subnodeText2", "qwert2")
 
