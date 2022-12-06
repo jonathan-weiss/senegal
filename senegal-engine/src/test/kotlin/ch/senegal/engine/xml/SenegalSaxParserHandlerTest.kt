@@ -18,13 +18,13 @@ internal class SenegalSaxParserHandlerTest {
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="https://senegal.ch/senegal senegal-schema.xsd">
             <testEntity testEntityName="Person" testKotlinModelClassname="Person" testKotlinModelPackage="ch.senegal.person">
-                <entityAttribute testEntityAttributeName="firstname" testEntityAttributeType="TEXT" testKotlinFieldType="kotlin.String" />
-                <entityAttribute testEntityAttributeName="lastname" testEntityAttributeType="NUMBER" testKotlinFieldType="kotlin.Int"/>
-                <entityAttribute testEntityAttributeName="nickname" testEntityAttributeType="BOOLEAN" testKotlinFieldType="kotlin.Boolean"/>
+                <testEntityAttribute testEntityAttributeName="firstname" testEntityAttributeType="TEXT" testKotlinFieldType="kotlin.String" />
+                <testEntityAttribute testEntityAttributeName="lastname" testEntityAttributeType="NUMBER" testKotlinFieldType="kotlin.Int"/>
+                <testEntityAttribute testEntityAttributeName="nickname" testEntityAttributeType="BOOLEAN" testKotlinFieldType="kotlin.Boolean"/>
             </testEntity>
             <testEntity testEntityName="Address">
-                <entityAttribute testEntityAttributeName="street" testEntityAttributeType="TEXT"/>
-                <entityAttribute testEntityAttributeName="zip" testEntityAttributeType="TEXT"/>
+                <testEntityAttribute testEntityAttributeName="street" testEntityAttributeType="TEXT"/>
+                <testEntityAttribute testEntityAttributeName="zip" testEntityAttributeType="TEXT"/>
             </testEntity>
         </senegal>
     """.trimIndent()

@@ -1,4 +1,4 @@
 package ch.senegal.engine.model
 
-class Decoration(value: Any) {
+class Decoration(val value: Any) {
 }

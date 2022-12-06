@@ -41,7 +41,12 @@ object TestEntityAttributeConcept: Concept {
 object TestEntityAttributePurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestEntityAttribute")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestEntityAttributeTypeDecor)
+    override val purposeDecors: Set<PurposeDecor> = setOf(TestEntityAttributeNameDecor, TestEntityAttributeTypeDecor)
+}
+
+object TestEntityAttributeNameDecor: PurposeDecor {
+    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val purposeDecorType: DecorType = TextDecorType
 }
 
 object TestEntityAttributeTypeDecor: PurposeDecor {
