@@ -71,11 +71,6 @@ object XmlDomSchemaCreator {
                 val elementRef = createAndAttachXsdElement(document, sequence, "element")
                 setElementXsdAttribute(elementRef, "ref", enclosedConceptXmlSchemaName)
             }
-
-            conceptNode.concept.conceptDecors.forEach { conceptDecor ->
-                val conceptDecorAttributeName = schemaAttributeName(conceptDecor.conceptDecorName.name)
-                complexType.appendChild(createDecorAttributeElement(document, conceptDecorAttributeName, conceptDecor.conceptDecorType))
-            }
             conceptNode.enclosedPurposes.forEach { purpose ->
                 purpose.purposeDecors.forEach { decor ->
                     val purposeAttributeName = schemaAttributeName(purpose.purposeName.name)

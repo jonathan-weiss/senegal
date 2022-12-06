@@ -1,9 +1,8 @@
 package ch.senegal.pluginexample
 
 import ch.senegal.engine.plugin.finder.PluginFinder
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 internal class PluginFinderTest {
 
