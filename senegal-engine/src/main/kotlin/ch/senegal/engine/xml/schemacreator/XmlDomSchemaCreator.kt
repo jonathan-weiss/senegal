@@ -1,6 +1,5 @@
 package ch.senegal.engine.xml.schemacreator
 
-import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil
@@ -73,9 +72,9 @@ object XmlDomSchemaCreator {
             }
             conceptNode.enclosedPurposes.forEach { purpose ->
                 purpose.purposeDecors.forEach { decor ->
-                    val purposeAttributeName = schemaAttributeName(purpose.purposeName.name)
-                    val purposeDecorAttributeName = schemaAttributeName(decor.purposeDecorName.name)
-                    complexType.appendChild(createDecorAttributeElement(document, "$purposeAttributeName-$purposeDecorAttributeName", decor.purposeDecorType))
+                    val purposeAttributeName = schemaAttributeName(purpose)
+                    val purposeDecorAttributeName = decor.purposeDecorName.name
+                    complexType.appendChild(createDecorAttributeElement(document, "$purposeAttributeName$purposeDecorAttributeName", decor.purposeDecorType))
                 }
             }
         }
@@ -124,11 +123,20 @@ object XmlDomSchemaCreator {
     }
 
     private fun schemaTagName(conceptNode: ConceptNode): String {
-        return CaseUtil.camelToDashCase(conceptNode.concept.conceptName.name)
+        return toXmlName(conceptNode.concept.conceptName.name)
     }
 
-    private fun schemaAttributeName(value: String): String {
-        return CaseUtil.camelToDashCase(value)
+    private fun schemaAttributeName(purpose: Purpose): String {
+        return toXmlName(purpose.purposeName.name)
+    }
+
+    private fun schemaAttributeName(decor: PurposeDecor): String {
+        return toXmlName(decor.purposeDecorName.name)
+    }
+
+
+    private fun toXmlName(value: String): String {
+        return CaseUtil.decapitalize(value)
     }
 
     private fun schemaAttributeType(decorType: DecorType): String {

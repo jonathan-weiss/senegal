@@ -3,7 +3,6 @@ package ch.senegal.engine.plugin.tree
 import ch.senegal.plugin.Concept
 import ch.senegal.plugin.Purpose
 import ch.senegal.plugin.PurposeDecor
-import ch.senegal.plugin.PurposeDecorName
 
 class ConceptNode(
     val concept: Concept,
@@ -11,7 +10,14 @@ class ConceptNode(
     val enclosedConcepts: Set<ConceptNode>
     ) {
 
-    fun getPurposeByName(purposeDecorName: PurposeDecorName): PurposeDecor? {
-        return enclosedPurposes.flatMap { it.purposeDecors }.firstOrNull { it.purposeDecorName == purposeDecorName }
+    fun getPurposeDecorByCombinedName(purposeDecorName: String): PurposeDecor? {
+        for (purpose in enclosedPurposes) {
+            val foundEntry = purpose.purposeDecors
+                .firstOrNull { "${purpose.purposeName.name}${it.purposeDecorName.name}" == purposeDecorName }
+            if(foundEntry != null) {
+                return foundEntry
+            }
+        }
+        return null
     }
 }

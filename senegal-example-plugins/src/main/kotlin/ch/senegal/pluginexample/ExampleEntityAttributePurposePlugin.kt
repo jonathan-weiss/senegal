@@ -9,7 +9,7 @@ object EntityAttributePurposePlugin : Purpose {
 }
 
 object EntityAttributeTypeDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("type")
+    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Type")
     override val purposeDecorType: DecorType = EnumerationDecorType(
         listOf(
             DecorTypeEnumerationValue("TEXT"),
@@ -21,6 +21,6 @@ object EntityAttributeTypeDecor : PurposeDecor {
 }
 
 object EntityAttributeNameDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("name")
+    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
     override val purposeDecorType: DecorType = TextDecorType
 }

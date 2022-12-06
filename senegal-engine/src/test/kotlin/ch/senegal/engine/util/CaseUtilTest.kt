@@ -28,4 +28,19 @@ internal class CaseUtilTest {
     fun snakeToUpperCamelCase() {
         assertEquals("MyCamelCaseA", CaseUtil.snakeToUpperCamelCase("my_camel_case_a"))
     }
+
+    @Test
+    fun capitalize() {
+        assertEquals("MyWordOfJoy", CaseUtil.capitalize("MyWordOfJoy"))
+        assertEquals("MyWordOfJoy", CaseUtil.capitalize("myWordOfJoy"))
+        assertEquals("MYWordOfJoy", CaseUtil.capitalize("MYWordOfJoy"))
+    }
+
+    @Test
+    fun decapitalize() {
+        assertEquals("myWordOfJoy", CaseUtil.decapitalize("MyWordOfJoy"))
+        assertEquals("myWordOfJoy", CaseUtil.decapitalize("myWordOfJoy"))
+        assertEquals("mYWordOfJoy", CaseUtil.decapitalize("MYWordOfJoy"))
+    }
+
 }

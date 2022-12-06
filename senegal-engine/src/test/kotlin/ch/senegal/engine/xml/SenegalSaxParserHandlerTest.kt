@@ -17,15 +17,15 @@ internal class SenegalSaxParserHandlerTest {
         <senegal xmlns="https://senegal.ch/senegal"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="https://senegal.ch/senegal senegal-schema.xsd">
-            <entity name="Person" kotlin-model-class-name="Person" kotlin-model-package="ch.senegal.person">
-                <entity-attribute name="firstname" type="TEXT" kotlin-field-field-type="kotlin.String" />
-                <entity-attribute name="lastname" type="NUMBER" kotlin-field-field-type="kotlin.Int"/>
-                <entity-attribute name="nickname" type="BOOLEAN" kotlin-field-field-type="kotlin.Boolean"/>
-            </entity>
-            <entity name="Address">
-                <entity-attribute name="street" type="TEXT"/>
-                <entity-attribute name="zip" type="TEXT"/>
-            </entity>
+            <testEntity testEntityName="Person" testKotlinModelClassname="Person" testKotlinModelPackage="ch.senegal.person">
+                <entityAttribute testEntityAttributeName="firstname" testEntityAttributeType="TEXT" testKotlinFieldType="kotlin.String" />
+                <entityAttribute testEntityAttributeName="lastname" testEntityAttributeType="NUMBER" testKotlinFieldType="kotlin.Int"/>
+                <entityAttribute testEntityAttributeName="nickname" testEntityAttributeType="BOOLEAN" testKotlinFieldType="kotlin.Boolean"/>
+            </testEntity>
+            <testEntity testEntityName="Address">
+                <entityAttribute testEntityAttributeName="street" testEntityAttributeType="TEXT"/>
+                <entityAttribute testEntityAttributeName="zip" testEntityAttributeType="TEXT"/>
+            </testEntity>
         </senegal>
     """.trimIndent()
 
@@ -46,10 +46,10 @@ internal class SenegalSaxParserHandlerTest {
             saxParser.parse(it, saxParserHandler)
         }
 
-        //assertEquals(2, modelTree.getRootModelNodes().size)
-        //val personRootNode = modelTree.getRootModelNodes().first()
-        //val addressRootNode = modelTree.getRootModelNodes().last()
-
+        assertEquals(2, modelTree.getRootModelNodes().size)
+//        val personRootNode = modelTree.getRootModelNodes().first()
+//        val addressRootNode = modelTree.getRootModelNodes().last()
+//
 //        assertEquals("Person", personRootNode.properties["name"])
 //        assertEquals("Person", personRootNode.properties["kotlin-model-class-name"])
 //        assertEquals("ch.senegal.person", personRootNode.properties["kotlin-model-package"])
@@ -57,12 +57,12 @@ internal class SenegalSaxParserHandlerTest {
 //        val firstnameNode = personRootNode.childNodes[0]
 //        assertEquals("firstname", firstnameNode.properties["name"])
 //        assertEquals("TEXT", firstnameNode.properties["type"])
-//        assertEquals("kotlin.String", firstnameNode.properties["kotlin-field-field-type"])
+//        assertEquals("kotlin.String", firstnameNode.properties["testKotlinFieldType"])
 //
 //        assertEquals("Address", addressRootNode.properties["name"])
 //        assertEquals(2, addressRootNode.childNodes.size)
 //        val zipNode = addressRootNode.childNodes[0]
 //        assertEquals("TEXT", zipNode.properties["type"])
-        //assertEquals("kotlin.String", zipNode.properties["kotlin-field-field-type"])
+        //assertEquals("kotlin.String", zipNode.properties["testKotlinFieldType"])
     }
 }

@@ -4,15 +4,15 @@
          xsi:schemaLocation="https://senegal.ch/senegal schema/senegal-schema.xsd"
 >
 
-    <entity entity-name="Person" kotlin-model-class-name="Person" kotlin-model-package="ch.senegal.person">
-        <entity-attribute entity-attribute-name="firstname" entity-attribute-type="TEXT" kotlin-field-field-type="kotlin.String" />
-        <entity-attribute entity-attribute-name="lastname" entity-attribute-type="NUMBER" kotlin-field-field-type="kotlin.Int"/>
-        <entity-attribute entity-attribute-name="nickname" entity-attribute-type="BOOLEAN" kotlin-field-field-type="kotlin.Boolean"/>
+    <entity entityName="Person" kotlinModelClassName="Person" kotlinModelPackage="ch.senegal.person">
+        <entityAttribute entityAttributeName="firstname" entityAttributeType="TEXT" kotlinFieldType="kotlin.String"/>
+        <entityAttribute entityAttributeName="lastname" entityAttributeType="NUMBER" kotlinFieldType="kotlin.Int"/>
+        <entityAttribute entityAttributeName="nickname" entityAttributeType="BOOLEAN" kotlinFieldType="kotlin.Boolean"/>
     </entity>
 
-    <entity entity-name="Address">
-        <entity-attribute entity-attribute-name="street" entity-attribute-type="TEXT"/>
-        <entity-attribute entity-attribute-name="zip" entity-attribute-type="TEXT"/>
+    <entity entityName="Address">
+        <entityAttribute entityAttributeName="street" entityAttributeType="TEXT"/>
+        <entityAttribute entityAttributeName="zip" entityAttributeType="TEXT"/>
     </entity>
 
 </senegal>
