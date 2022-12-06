@@ -1,9 +1,9 @@
 package ch.senegal.engine.plugin.tree
 
-import ch.senegal.engine.plugin.Concept
-import ch.senegal.engine.plugin.ConceptName
-import ch.senegal.engine.plugin.Plugin
-import ch.senegal.engine.plugin.Purpose
+import ch.senegal.plugin.Concept
+import ch.senegal.plugin.ConceptName
+import ch.senegal.plugin.Plugin
+import ch.senegal.plugin.Purpose
 
 object PluginTreeCreator {
 

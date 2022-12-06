@@ -1,6 +1,6 @@
 package ch.senegal.engine.plugin.tree
 
-import ch.senegal.engine.plugin.ConceptName
+import ch.senegal.plugin.ConceptName
 
 /**
  * A hierarchical view to all plugins (= concept and purpose).

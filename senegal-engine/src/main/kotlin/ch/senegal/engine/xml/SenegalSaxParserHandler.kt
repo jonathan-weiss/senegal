@@ -4,7 +4,7 @@ import ch.senegal.engine.model.Decoration
 import ch.senegal.engine.model.ModelInstance
 import ch.senegal.engine.model.ModelNode
 import ch.senegal.engine.model.ModelTree
-import ch.senegal.engine.plugin.PurposeDecorName
+import ch.senegal.plugin.PurposeDecorName
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil

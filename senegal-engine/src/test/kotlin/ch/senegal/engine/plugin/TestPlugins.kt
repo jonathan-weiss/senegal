@@ -1,5 +1,13 @@
 package ch.senegal.engine.plugin
 
+import ch.senegal.plugin.*
+
+object TestPluginFinder {
+    fun findAllTestPlugins(): Set<Plugin> {
+        return setOf(TestEntityConcept, TestEntityAttributeConcept)
+    }
+}
+
 object TestEntityConcept: Concept {
     override val conceptName: ConceptName = ConceptName("TestEntity")
     override val enclosingConceptName: ConceptName? = null

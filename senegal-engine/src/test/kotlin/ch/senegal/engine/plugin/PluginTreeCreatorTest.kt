@@ -1,6 +1,8 @@
 package ch.senegal.engine.plugin
 
 import ch.senegal.engine.plugin.tree.PluginTreeCreator
+import ch.senegal.plugin.ConceptName
+import ch.senegal.plugin.Plugin
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

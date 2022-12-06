@@ -1,6 +1,7 @@
 package ch.senegal.engine.plugin.finder
 
-import ch.senegal.engine.plugin.Plugin
+import ch.senegal.plugin.Plugin
+import ch.senegal.plugin.finder.PluginProvider
 import java.util.*
 
 object PluginFinder {

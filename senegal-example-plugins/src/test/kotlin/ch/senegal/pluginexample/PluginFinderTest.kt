@@ -1,7 +1,6 @@
-package ch.senegal.engine.plugin
+package ch.senegal.pluginexample
 
 import ch.senegal.engine.plugin.finder.PluginFinder
-import ch.senegal.engine.pluginexample.ExamplePluginProvider
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

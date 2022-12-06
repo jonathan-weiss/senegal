@@ -1,6 +1,6 @@
-package ch.senegal.engine.pluginexample
+package ch.senegal.pluginexample
 
-import ch.senegal.engine.plugin.finder.AbstractPluginProvider
+import ch.senegal.plugin.finder.AbstractPluginProvider
 
 class ExamplePluginProvider: AbstractPluginProvider(
     plugins = setOf(

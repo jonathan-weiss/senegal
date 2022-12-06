@@ -1,9 +1,9 @@
 package ch.senegal.engine.plugin.tree
 
-import ch.senegal.engine.plugin.Concept
-import ch.senegal.engine.plugin.Purpose
-import ch.senegal.engine.plugin.PurposeDecor
-import ch.senegal.engine.plugin.PurposeDecorName
+import ch.senegal.plugin.Concept
+import ch.senegal.plugin.Purpose
+import ch.senegal.plugin.PurposeDecor
+import ch.senegal.plugin.PurposeDecorName
 
 class ConceptNode(
     val concept: Concept,

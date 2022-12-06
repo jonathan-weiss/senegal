@@ -4,6 +4,7 @@ import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.tree.ConceptNode
 import ch.senegal.engine.plugin.tree.PluginTree
 import ch.senegal.engine.util.CaseUtil
+import ch.senegal.plugin.*
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.StringWriter

@@ -1,6 +1,6 @@
-package ch.senegal.engine.plugin.finder
+package ch.senegal.plugin.finder
 
-import ch.senegal.engine.plugin.Plugin
+import ch.senegal.plugin.Plugin
 
 abstract class AbstractPluginProvider(val plugins: Set<Plugin>): PluginProvider {
     override fun fetchPlugins(): Set<Plugin> {

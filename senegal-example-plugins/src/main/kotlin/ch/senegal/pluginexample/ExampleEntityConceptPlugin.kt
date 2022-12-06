@@ -1,6 +1,7 @@
-package ch.senegal.engine.pluginexample
+package ch.senegal.pluginexample
 
 import ch.senegal.engine.plugin.*
+import ch.senegal.plugin.*
 
 object EntityConceptPlugin: Concept {
     override val conceptName: ConceptName = ConceptName("Entity")

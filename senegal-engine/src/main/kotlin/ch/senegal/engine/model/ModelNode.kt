@@ -1,7 +1,7 @@
 package ch.senegal.engine.model
 
-import ch.senegal.engine.plugin.PurposeDecor
-import ch.senegal.engine.plugin.PurposeDecorName
+import ch.senegal.plugin.PurposeDecor
+import ch.senegal.plugin.PurposeDecorName
 import ch.senegal.engine.plugin.tree.ConceptNode
 
 class ModelNode(val conceptNode: ConceptNode,

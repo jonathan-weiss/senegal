@@ -1,4 +1,4 @@
-package ch.senegal.engine.plugin
+package ch.senegal.plugin
 
 interface Concept: Plugin {
 

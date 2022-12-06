@@ -1,6 +1,6 @@
-package ch.senegal.engine.plugin.finder
+package ch.senegal.plugin.finder
 
-import ch.senegal.engine.plugin.Plugin
+import ch.senegal.plugin.Plugin
 
 /**
  * Use PluginProvider (instead of directly using Plugin) to support the kotlin object instances as Plugin.
