@@ -23,6 +23,7 @@ internal class PluginTreeCreatorTest {
 
         // assert
         assertNotNull(pluginTree)
+        assertEquals(3, pluginTree.allConceptNodes.size)
         assertEquals(2, pluginTree.rootConceptNodes.size)
         assertEquals(entity, pluginTree.getConceptNodeByName(ConceptName("TestEntity"))?.concept)
         assertEquals(1, pluginTree.getConceptNodeByName(ConceptName("TestEntity"))?.enclosedConcepts?.size)

@@ -6,14 +6,17 @@ import ch.senegal.plugin.ConceptName
  * A hierarchical view to all plugins (= concept and purpose).
  */
 class PluginTree(
-    val rootConceptNodes: Set<ConceptNode>,
+    val allConceptNodes: Set<ConceptNode>,
 
-) {
-    val allConceptNodes: Map<ConceptName, ConceptNode> =
-        deepConceptNodes(rootConceptNodes).associateBy { it.concept.conceptName }
+    ) {
+    val rootNotallConceptNodes: Map<ConceptName, ConceptNode> =
+        deepConceptNodes(allConceptNodes).associateBy { it.concept.conceptName }
+
+    val rootConceptNodes: List<ConceptNode>
+        get() = allConceptNodes.filter { it.concept.enclosingConceptName == null }
 
     fun getConceptNodeByName(name: ConceptName): ConceptNode? {
-        return allConceptNodes[name]
+        return allConceptNodes.associateBy { it.concept.conceptName }[name]
     }
 
     companion object {

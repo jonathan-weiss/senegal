@@ -49,7 +49,7 @@ object XmlDomSchemaCreator {
         setElementXsdAttribute(sequence, "minOccurs", "0")
         setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
 
-        pluginTree.rootConceptNodes.forEach {
+        pluginTree.allConceptNodes.forEach {
             val conceptXmlSchemaName = schemaTagName(it)
             val element = createAndAttachXsdElement(document, sequence, "element")
             setElementXsdAttribute(element, "ref", conceptXmlSchemaName)
@@ -57,7 +57,7 @@ object XmlDomSchemaCreator {
     }
 
     private fun attachAllConceptElements(document: Document, schemaElement: Element, pluginTree: PluginTree) {
-        pluginTree.allConceptNodes.values.forEach { conceptNode ->
+        pluginTree.allConceptNodes.forEach { conceptNode ->
             val conceptXmlSchemaName = schemaTagName(conceptNode)
             val element = createAndAttachXsdElement(document, schemaElement, "element")
             setElementXsdAttribute(element, "name", conceptXmlSchemaName)

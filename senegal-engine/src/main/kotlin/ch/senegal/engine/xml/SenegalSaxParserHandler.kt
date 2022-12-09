@@ -51,6 +51,6 @@ class SenegalSaxParserHandler(private val pluginTree: PluginTree, private val mo
 
     private fun getConceptByXmlLocalName(localName: String): ConceptNode? {
         val potentialConceptName = ConceptName(CaseUtil.capitalize(localName))
-        return pluginTree.allConceptNodes[potentialConceptName]
+        return pluginTree.getConceptNodeByName(potentialConceptName)
     }
 }
