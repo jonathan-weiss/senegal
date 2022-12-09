@@ -1,13 +1,16 @@
 package ch.senegal.engine.properties
 
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.util.Properties
+import java.util.*
 
-object ArgumentReader {
-    private enum class ArgumentName(val propertyName: String) {
-        DefinitionDirectory("definitionDirectory");
+object PropertyParameterSource: ParameterSource {
 
+    private val properties: Map<String, String>
+    init {
+        properties = getPropertiesFromFile()
+    }
+
+    override fun getParameterValue(parameterName: SenegalParameterName<*>): String? {
+        return properties[parameterName.propertyName]
     }
 
     private fun getPropertiesFromFile(): Map<String, String> {
@@ -32,12 +35,4 @@ object ArgumentReader {
         return value
     }
 
-    private fun getArgument(key: ArgumentName): String {
-        return getPropertiesFromFile()[key.propertyName]
-            ?: throw IllegalArgumentException("Could not find argument for key $key.")
-    }
-
-    fun getDefinitionDirectory(): Path {
-        return Paths.get(getArgument(ArgumentName.DefinitionDirectory))
-    }
 }
