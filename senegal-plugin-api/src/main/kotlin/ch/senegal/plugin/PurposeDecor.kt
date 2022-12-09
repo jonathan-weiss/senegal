@@ -2,10 +2,10 @@ package ch.senegal.plugin
 
 interface PurposeDecor {
 
-    val purposeDecorName: PurposeDecorName
+    val decorName: DecorName
 
     val enclosingConceptName: ConceptName
 
-    val purposeDecorType: DecorType
+    val decorType: DecorType
 
 }

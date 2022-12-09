@@ -23,9 +23,9 @@ object TestEntityPurpose: Purpose {
 }
 
 object TestEntityNamePurposeDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val decorName: DecorName = DecorName("Name")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object TestMapperConcept: Concept {
@@ -44,15 +44,15 @@ object TestEntityAttributePurpose: Purpose {
 }
 
 object TestEntityAttributeNameDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val decorName: DecorName = DecorName("Name")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object TestEntityAttributeTypeDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Type")
+    override val decorName: DecorName = DecorName("Type")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val purposeDecorType: DecorType = EnumerationDecorType(listOf(
+    override val decorType: DecorType = EnumerationDecorType(listOf(
         DecorTypeEnumerationValue("TEXT"),
         DecorTypeEnumerationValue("NUMBER"),
         DecorTypeEnumerationValue("BOOLEAN")
@@ -66,15 +66,15 @@ object TestKotlinModelPurpose: Purpose {
 }
 
 object TestClassnameDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Classname")
+    override val decorName: DecorName = DecorName("Classname")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object TestPackageDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Package")
+    override val decorName: DecorName = DecorName("Package")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object TestKotlinFieldPurpose: Purpose {
@@ -83,9 +83,9 @@ object TestKotlinFieldPurpose: Purpose {
 }
 
 object TestFieldTypeDecor: PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Type")
+    override val decorName: DecorName = DecorName("Type")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val purposeDecorType: DecorType = EnumerationDecorType(listOf(
+    override val decorType: DecorType = EnumerationDecorType(listOf(
         DecorTypeEnumerationValue("kotlin.String"),
         DecorTypeEnumerationValue("kotlin.Int"),
         DecorTypeEnumerationValue("kotlin.Boolean")

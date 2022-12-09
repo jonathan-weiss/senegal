@@ -14,7 +14,7 @@ class ResolvedConcept(
     fun getPurposeDecorByCombinedName(purposeDecorName: String): PurposeDecor? {
         for (purpose in enclosedPurposes) {
             val foundEntry = purpose.purposeDecors
-                .firstOrNull { "${purpose.purposeName.name}${it.purposeDecorName.name}" == purposeDecorName }
+                .firstOrNull { "${purpose.purposeName.name}${it.decorName.name}" == purposeDecorName }
             if (foundEntry != null) {
                 return foundEntry
             }

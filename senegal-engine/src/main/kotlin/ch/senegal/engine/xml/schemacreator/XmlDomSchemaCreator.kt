@@ -73,8 +73,8 @@ object XmlDomSchemaCreator {
             conceptNode.enclosedPurposes.forEach { purpose ->
                 purpose.purposeDecors.forEach { decor ->
                     val purposeAttributeName = schemaAttributeName(purpose)
-                    val purposeDecorAttributeName = decor.purposeDecorName.name
-                    complexType.appendChild(createDecorAttributeElement(document, "$purposeAttributeName$purposeDecorAttributeName", decor.purposeDecorType))
+                    val purposeDecorAttributeName = decor.decorName.name
+                    complexType.appendChild(createDecorAttributeElement(document, "$purposeAttributeName$purposeDecorAttributeName", decor.decorType))
                 }
             }
         }
@@ -131,7 +131,7 @@ object XmlDomSchemaCreator {
     }
 
     private fun schemaAttributeName(decor: PurposeDecor): String {
-        return toXmlName(decor.purposeDecorName.name)
+        return toXmlName(decor.decorName.name)
     }
 
 

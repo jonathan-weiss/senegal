@@ -9,15 +9,15 @@ object KotlinModelPurposePlugin : Purpose {
 }
 
 object KotlinModelClassnameDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("ClassName")
+    override val decorName: DecorName = DecorName("ClassName")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object KotlinModelPackageDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Package")
+    override val decorName: DecorName = DecorName("Package")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object KotlinFieldPurposePlugin : Purpose {
@@ -26,15 +26,15 @@ object KotlinFieldPurposePlugin : Purpose {
 }
 
 object KotlinFieldNameDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val decorName: DecorName = DecorName("Name")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
 object KotlinFieldTypeDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Type")
+    override val decorName: DecorName = DecorName("Type")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = EnumerationDecorType(
+    override val decorType: DecorType = EnumerationDecorType(
         listOf(
             DecorTypeEnumerationValue("kotlin.String"),
             DecorTypeEnumerationValue("kotlin.Int"),

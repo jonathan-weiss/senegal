@@ -8,9 +8,9 @@ object EntityAttributePurposePlugin : Purpose {
 }
 
 object EntityAttributeTypeDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Type")
+    override val decorName: DecorName = DecorName("Type")
     override val enclosingConceptName: ConceptName = EntityAttributeConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = EnumerationDecorType(
+    override val decorType: DecorType = EnumerationDecorType(
         listOf(
             DecorTypeEnumerationValue("TEXT"),
             DecorTypeEnumerationValue("NUMBER"),
@@ -21,7 +21,7 @@ object EntityAttributeTypeDecor : PurposeDecor {
 }
 
 object EntityAttributeNameDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val decorName: DecorName = DecorName("Name")
     override val enclosingConceptName: ConceptName = EntityAttributeConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }

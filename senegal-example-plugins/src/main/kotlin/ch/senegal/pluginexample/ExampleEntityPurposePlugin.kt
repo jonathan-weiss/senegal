@@ -8,8 +8,8 @@ object EntityPurposePlugin : Purpose {
 }
 
 object EntityNameDecor : PurposeDecor {
-    override val purposeDecorName: PurposeDecorName = PurposeDecorName("Name")
+    override val decorName: DecorName = DecorName("Name")
     override val enclosingConceptName: ConceptName = EntityConceptPlugin.conceptName
-    override val purposeDecorType: DecorType = TextDecorType
+    override val decorType: DecorType = TextDecorType
 }
 
