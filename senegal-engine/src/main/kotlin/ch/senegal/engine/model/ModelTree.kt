@@ -1,8 +1,8 @@
 package ch.senegal.engine.model
 
-import ch.senegal.engine.plugin.tree.PluginTree
+import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 
-class ModelTree(val pluginTree: PluginTree): ModelInstance() {
+class ModelTree(val resolvedPlugins: ResolvedPlugins): ModelInstance() {
 
     override fun parentModelInstance(): ModelInstance? {
         return null

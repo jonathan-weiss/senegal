@@ -1,10 +1,10 @@
-package ch.senegal.engine.plugin.tree
+package ch.senegal.engine.plugin.resolver
 
 import ch.senegal.plugin.*
 
-object PluginTreeCreator {
+object PluginResolver {
 
-    fun createPluginTree(plugins: Set<Plugin>): PluginTree {
+    fun resolvePlugins(plugins: Set<Plugin>): ResolvedPlugins {
         val allConcepts: Map<ConceptName, Concept> = plugins
             .filterIsInstance<Concept>()
             .associateBy { it.conceptName }
@@ -18,9 +18,9 @@ object PluginTreeCreator {
             .filterIsInstance<Purpose>()
             .associateBy { it.purposeName }
 
-        val allPurposeDecorEntries: List<PurposeDecorEntry> = purposes.values
+        val allPurposeDecorEntries: List<ResolvedPurposeDecor> = purposes.values
             .flatMap { purpose -> purpose.purposeDecors
-                .map { decor -> PurposeDecorEntry(
+                .map { decor -> ResolvedPurposeDecor(
                     concept = allConcepts[decor.enclosingConceptName]
                         ?: throw IllegalArgumentException("Concept not " +
                                 "found '${decor.enclosingConceptName.name}' for $decor."),
@@ -28,7 +28,7 @@ object PluginTreeCreator {
                     purposeDecor = decor
                 ) }  }
 
-        val purposeDecorEntriesByConceptName: Map<ConceptName, List<PurposeDecorEntry>> = allPurposeDecorEntries
+        val purposeDecorEntriesByConceptName: Map<ConceptName, List<ResolvedPurposeDecor>> = allPurposeDecorEntries
             .groupBy { it.concept.conceptName }
 
         val purposesByConceptName: Map<ConceptName, List<Purpose>> = allConcepts.values
@@ -38,19 +38,19 @@ object PluginTreeCreator {
                 }.map { Pair(concept.conceptName, it) }
             }.groupBy( keySelector = { it.first }, valueTransform = { it.second } )
 
-        val allConceptNodes: Set<ConceptNode> = allConcepts.values
+        val allResolvedConcepts: Set<ResolvedConcept> = allConcepts.values
             .map { createConceptNode(it, childConceptsByParentConcept, purposesByConceptName, purposeDecorEntriesByConceptName) }
             .toSet()
-        return PluginTree(allConceptNodes)
+        return ResolvedPlugins(allResolvedConcepts)
     }
 
     private fun createConceptNode(
         concept: Concept,
         childConceptsByParentConcept: Map<ConceptName, List<Concept>>,
         purposesByConceptName: Map<ConceptName, List<Purpose>>,
-        purposeDecorsByConceptName: Map<ConceptName, List<PurposeDecorEntry>>
-    ): ConceptNode {
-        return ConceptNode(
+        purposeDecorsByConceptName: Map<ConceptName, List<ResolvedPurposeDecor>>
+    ): ResolvedConcept {
+        return ResolvedConcept(
             concept = concept,
             enclosedPurposes = purposesByConceptName[concept.conceptName]?.toSet() ?: emptySet(),
             enclosedConcepts = childConceptsByParentConcept[concept.conceptName]

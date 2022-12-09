@@ -1,10 +1,9 @@
 package ch.senegal.engine.model
 
 import ch.senegal.plugin.PurposeDecor
-import ch.senegal.plugin.PurposeDecorName
-import ch.senegal.engine.plugin.tree.ConceptNode
+import ch.senegal.engine.plugin.resolver.ResolvedConcept
 
-class ModelNode(val conceptNode: ConceptNode,
+class ModelNode(val resolvedConcept: ResolvedConcept,
                 val parentModelInstance: ModelInstance,
 ): ModelInstance() {
 

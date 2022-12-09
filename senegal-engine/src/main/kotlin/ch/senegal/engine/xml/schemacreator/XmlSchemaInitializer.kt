@@ -1,7 +1,7 @@
 package ch.senegal.engine.xml.schemacreator
 
 import ch.senegal.engine.plugin.finder.PluginFinder
-import ch.senegal.engine.plugin.tree.PluginTreeCreator
+import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.properties.ArgumentReader
 
 object XmlSchemaInitializer {
@@ -11,9 +11,9 @@ object XmlSchemaInitializer {
         val schemaDirectory = definitionDirectory.resolve("schema")
         schemaDirectory.toFile().mkdirs()
 
-        val pluginTree = PluginTreeCreator.createPluginTree(PluginFinder.findAllPlugins())
+        val resolvedPlugins = PluginResolver.resolvePlugins(PluginFinder.findAllPlugins())
 
-        val xmlSchemaFileContent = XmlDomSchemaCreator.createPluginTreeSchema(pluginTree)
+        val xmlSchemaFileContent = XmlDomSchemaCreator.createPluginTreeSchema(resolvedPlugins)
         val xmlSchemaFileName = "senegal-schema.xsd"
         FileWriter.writeFile(schemaDirectory.resolve(xmlSchemaFileName), xmlSchemaFileContent)
 

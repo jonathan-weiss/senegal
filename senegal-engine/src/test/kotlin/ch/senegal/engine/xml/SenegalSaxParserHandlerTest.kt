@@ -2,8 +2,7 @@ package ch.senegal.engine.xml
 
 import ch.senegal.engine.model.ModelTree
 import ch.senegal.engine.plugin.TestPluginFinder
-import ch.senegal.engine.plugin.finder.PluginFinder
-import ch.senegal.engine.plugin.tree.PluginTreeCreator
+import ch.senegal.engine.plugin.resolver.PluginResolver
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.xml.parsers.SAXParser
@@ -37,9 +36,9 @@ internal class SenegalSaxParserHandlerTest {
         factory.isValidating = true
         val saxParser: SAXParser = factory.newSAXParser()
         val plugins = TestPluginFinder.findAllTestPlugins()
-        val pluginTree = PluginTreeCreator.createPluginTree(plugins)
-        val modelTree = ModelTree(pluginTree)
-        val senegalSaxParser = SenegalSaxParserHandler(pluginTree, modelTree)
+        val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
+        val modelTree = ModelTree(resolvedPlugins)
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree)
         val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
 
         testXml.byteInputStream().use {

@@ -1,7 +1,7 @@
 package ch.senegal.engine.xml.schemacreator
 
-import ch.senegal.engine.plugin.tree.ConceptNode
-import ch.senegal.engine.plugin.tree.PluginTree
+import ch.senegal.engine.plugin.resolver.ResolvedConcept
+import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.util.CaseUtil
 import ch.senegal.plugin.*
 import org.w3c.dom.Document
@@ -20,11 +20,11 @@ object XmlDomSchemaCreator {
     const val xsdNamespace = "http://www.w3.org/2001/XMLSchema"
     const val xsdNamespacePrefix = "xs"
 
-    fun createPluginTreeSchema(pluginTree: PluginTree): String {
+    fun createPluginTreeSchema(resolvedPlugins: ResolvedPlugins): String {
         val document = initializeDocument()
         val schemaElement = createMainStructure(document)
-        attachRootConceptReferences(document, schemaElement, pluginTree)
-        attachAllConceptElements(document, schemaElement, pluginTree)
+        attachRootConceptReferences(document, schemaElement, resolvedPlugins)
+        attachAllConceptElements(document, schemaElement, resolvedPlugins)
         return transformDocumentToString(document)
     }
 
@@ -41,7 +41,7 @@ object XmlDomSchemaCreator {
         return schemaElement
     }
 
-    private fun attachRootConceptReferences(document: Document, schemaElement: Element, pluginTree: PluginTree) {
+    private fun attachRootConceptReferences(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
         val elementSenegal = createAndAttachXsdElement(document, schemaElement, "element")
         setElementXsdAttribute(elementSenegal, "name", "senegal")
         val complexType = createAndAttachXsdElement(document, elementSenegal, "complexType")
@@ -49,15 +49,15 @@ object XmlDomSchemaCreator {
         setElementXsdAttribute(sequence, "minOccurs", "0")
         setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
 
-        pluginTree.allConceptNodes.forEach {
+        resolvedPlugins.allResolvedConcepts.forEach {
             val conceptXmlSchemaName = schemaTagName(it)
             val element = createAndAttachXsdElement(document, sequence, "element")
             setElementXsdAttribute(element, "ref", conceptXmlSchemaName)
         }
     }
 
-    private fun attachAllConceptElements(document: Document, schemaElement: Element, pluginTree: PluginTree) {
-        pluginTree.allConceptNodes.forEach { conceptNode ->
+    private fun attachAllConceptElements(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
+        resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
             val conceptXmlSchemaName = schemaTagName(conceptNode)
             val element = createAndAttachXsdElement(document, schemaElement, "element")
             setElementXsdAttribute(element, "name", conceptXmlSchemaName)
@@ -122,8 +122,8 @@ object XmlDomSchemaCreator {
         }
     }
 
-    private fun schemaTagName(conceptNode: ConceptNode): String {
-        return toXmlName(conceptNode.concept.conceptName.name)
+    private fun schemaTagName(resolvedConcept: ResolvedConcept): String {
+        return toXmlName(resolvedConcept.concept.conceptName.name)
     }
 
     private fun schemaAttributeName(purpose: Purpose): String {

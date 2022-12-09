@@ -1,7 +1,7 @@
 package ch.senegal.engine.model
 
-import ch.senegal.engine.plugin.tree.PluginTree
-import ch.senegal.engine.plugin.tree.PluginTreeCreator
+import ch.senegal.engine.plugin.resolver.ResolvedPlugins
+import ch.senegal.engine.plugin.resolver.PluginResolver
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -11,17 +11,17 @@ internal class ModelTreeTest {
     @Test
     fun createModelTree() {
         // arrange
-        val pluginTree = createTestPluginTree()
+        val resolvedPlugins = createTestPluginTree()
 
         // act
-        val modelTree = ModelTree(pluginTree)
+        val modelTree = ModelTree(resolvedPlugins)
 
         // assert
         assertNotNull(modelTree)
 
     }
 
-    private fun createTestPluginTree(): PluginTree {
-        return PluginTreeCreator.createPluginTree(emptySet())
+    private fun createTestPluginTree(): ResolvedPlugins {
+        return PluginResolver.resolvePlugins(emptySet())
     }
 }

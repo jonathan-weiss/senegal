@@ -1,6 +1,6 @@
 package ch.senegal.engine.model
 
-import ch.senegal.engine.plugin.tree.ConceptNode
+import ch.senegal.engine.plugin.resolver.ResolvedConcept
 
 sealed class ModelInstance {
 
@@ -8,9 +8,9 @@ sealed class ModelInstance {
 
     abstract fun parentModelInstance(): ModelInstance?
 
-    fun createAndAddModelNode(conceptNode: ConceptNode): ModelNode {
+    fun createAndAddModelNode(resolvedConcept: ResolvedConcept): ModelNode {
         val modelNode = ModelNode(
-            conceptNode = conceptNode,
+            resolvedConcept = resolvedConcept,
             parentModelInstance = this,
         )
         childModelNodes.add(modelNode)

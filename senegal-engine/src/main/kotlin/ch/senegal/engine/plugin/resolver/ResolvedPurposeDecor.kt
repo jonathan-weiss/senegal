@@ -1,10 +1,10 @@
-package ch.senegal.engine.plugin.tree
+package ch.senegal.engine.plugin.resolver
 
 import ch.senegal.plugin.Concept
 import ch.senegal.plugin.Purpose
 import ch.senegal.plugin.PurposeDecor
 
-class PurposeDecorEntry(
+class ResolvedPurposeDecor(
     val concept: Concept,
     val purpose: Purpose,
     val purposeDecor: PurposeDecor,
