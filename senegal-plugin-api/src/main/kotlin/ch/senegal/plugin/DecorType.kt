@@ -1,14 +1,18 @@
 package ch.senegal.plugin
 
-sealed class DecorType
+sealed interface DecorType
 
-object TextDecorType : DecorType()
+object TextDecorType : DecorType
 
-object IntegerNumberDecorType : DecorType()
+object IntegerNumberDecorType : DecorType
 
-object BooleanDecorType : DecorType()
+object BooleanDecorType : DecorType
 
-class EnumerationDecorType(val enumerationValues: List<DecorTypeEnumerationValue>) : DecorType()
+object FileDecorType : DecorType
+
+object DirectoryDecorType : DecorType
+
+class EnumerationDecorType(val enumerationValues: List<DecorTypeEnumerationValue>) : DecorType
 
 
 @JvmInline

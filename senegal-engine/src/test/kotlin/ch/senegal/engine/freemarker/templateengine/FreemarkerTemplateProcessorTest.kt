@@ -1,4 +1,4 @@
-package ch.senegal.engine.freemarker
+package ch.senegal.engine.freemarker.templateengine
 
 import ch.senegal.engine.TmpFileUtil
 import org.junit.jupiter.api.Test

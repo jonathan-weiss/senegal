@@ -1,11 +1,34 @@
 package ch.senegal.engine.freemarker.templatemodel
 
+import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.model.ModelNode
 import ch.senegal.engine.model.ModelTree
+import ch.senegal.engine.plugin.resolver.ResolvedPlugins
+import ch.senegal.plugin.TemplateTarget
+
 
 object TemplateModelCreator {
 
-    fun createTemplateModel(modelTree: ModelTree): List<TemplateModelNode> {
+    fun createTemplateTargets(modelTree: ModelTree, resolvedPlugins: ResolvedPlugins): List<FreemarkerFileDescriptor> {
+        val templateModel = createTemplateModel(modelTree)
+        val templateTargets = collectTemplateTargets(modelTree)
+        val templateRootModel: Map<String, Any> = mapOf(
+            "senegalTemplateModel" to templateModel
+        )
+
+
+        return templateTargets.map {
+            FreemarkerFileDescriptor(it.targetFile, templateRootModel, it.templateClasspath)
+        }
+    }
+
+    private fun collectTemplateTargets(modelTree: ModelTree): List<TemplateTarget> {
+        return modelTree.getAllModelNodes()
+            .flatMap { node -> node.resolvedConcept.enclosedPurposes
+                .flatMap { purpose -> purpose.createTemplateTargets() } }
+    }
+
+    private fun createTemplateModel(modelTree: ModelTree): List<TemplateModelNode> {
         return modelTree.getRootModelNodes().map { createTemplateModelNode(it) }
     }
 
@@ -18,4 +41,6 @@ object TemplateModelCreator {
             childNodes = modelNode.childModelNodes.map { createTemplateModelNode(it) }
         )
     }
+
+
 }

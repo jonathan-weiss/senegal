@@ -1,4 +1,4 @@
-package ch.senegal.engine.freemarker
+package ch.senegal.engine.freemarker.templateengine
 
 object FreemarkerUtil {
 

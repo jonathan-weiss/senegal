@@ -1,4 +1,4 @@
-package ch.senegal.engine.freemarker
+package ch.senegal.engine.freemarker.templateengine
 
 import freemarker.template.Configuration
 import freemarker.template.Template
@@ -7,8 +7,8 @@ import java.io.File
 import java.util.*
 
 class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath: String) {
-    private val FILE_ENCODING = "UTF-8"
-    private val LOCALE: Locale = Locale.GERMANY
+    private val fileEncoding = "UTF-8"
+    private val locale: Locale = Locale.GERMANY
 
     private val cfg: Configuration = createClasspathBasedFreemarkerConfiguration(templatesClasspathResourceBasePath)
 
@@ -25,7 +25,7 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
 
             if(!targetFile.exists()) {
                 // create parent directories if not existing
-                targetFile.getParentFile().mkdirs()
+                targetFile.parentFile.mkdirs()
             }
 
 
@@ -59,8 +59,8 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
         val cfg = Configuration(Configuration.VERSION_2_3_29)
         // Don't log exceptions inside FreeMarker that it will thrown at you anyway:
         cfg.logTemplateExceptions = false
-        cfg.defaultEncoding = FILE_ENCODING
-        cfg.locale = LOCALE
+        cfg.defaultEncoding = fileEncoding
+        cfg.locale = locale
         cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
         cfg.booleanFormat = "true,false"
         return cfg

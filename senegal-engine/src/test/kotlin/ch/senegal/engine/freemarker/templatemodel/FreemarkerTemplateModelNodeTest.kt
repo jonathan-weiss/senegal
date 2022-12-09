@@ -1,8 +1,8 @@
-package ch.senegal.engine.freemarker
+package ch.senegal.engine.freemarker.templatemodel
 
 import ch.senegal.engine.TmpFileUtil
-import ch.senegal.engine.freemarker.templatemodel.TemplateModelCreator
-import ch.senegal.engine.freemarker.templatemodel.TemplateModelNode
+import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
+import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
 import ch.senegal.engine.model.Decoration
 import ch.senegal.engine.model.ModelTree
 import ch.senegal.engine.plugin.*

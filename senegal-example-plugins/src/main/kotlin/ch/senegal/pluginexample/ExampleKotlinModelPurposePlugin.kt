@@ -1,11 +1,15 @@
 package ch.senegal.pluginexample
 
 import ch.senegal.plugin.*
+import java.nio.file.Paths
 
 
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName("KotlinModel")
     override val purposeDecors: Set<PurposeDecor> = setOf(KotlinModelClassnameDecor, KotlinModelPackageDecor)
+    override fun createTemplateTargets(): Set<TemplateTarget> {
+        return setOf(TemplateTarget(Paths.get("build/general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
+    }
 }
 
 object KotlinModelClassnameDecor : PurposeDecor {
