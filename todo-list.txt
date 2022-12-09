@@ -1,0 +1,6 @@
+TO-DO List
+-----------
+* Concept on level of Decor, not Purpose
+* New type "Directory" for decors
+* Method on level Purpose to retrun a list of template targets (new interface with temlate classpath and target path)
+* flat plugin tree
