@@ -8,4 +8,7 @@ class ResolvedPurposeDecor(
     val concept: Concept,
     val purpose: Purpose,
     val purposeDecor: PurposeDecor,
-)
+) {
+    val purposeDecorName: String
+    get() = "${purpose.purposeName.name}${purposeDecor.decorName.name}"
+}

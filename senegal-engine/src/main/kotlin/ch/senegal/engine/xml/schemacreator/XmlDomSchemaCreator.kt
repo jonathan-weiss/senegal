@@ -20,7 +20,7 @@ object XmlDomSchemaCreator {
     const val xsdNamespace = "http://www.w3.org/2001/XMLSchema"
     const val xsdNamespacePrefix = "xs"
 
-    fun createPluginTreeSchema(resolvedPlugins: ResolvedPlugins): String {
+    fun createPluginSchema(resolvedPlugins: ResolvedPlugins): String {
         val document = initializeDocument()
         val schemaElement = createMainStructure(document)
         attachRootConceptReferences(document, schemaElement, resolvedPlugins)

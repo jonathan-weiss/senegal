@@ -11,14 +11,7 @@ class ResolvedConcept(
     val enclosedConcepts: Set<ResolvedConcept>
 ) {
 
-    fun getPurposeDecorByCombinedName(purposeDecorName: String): PurposeDecor? {
-        for (purpose in enclosedPurposes) {
-            val foundEntry = purpose.purposeDecors
-                .firstOrNull { "${purpose.purposeName.name}${it.decorName.name}" == purposeDecorName }
-            if (foundEntry != null) {
-                return foundEntry
-            }
-        }
-        return null
+    fun getPurposeDecorByCombinedName(purposeDecorName: String): ResolvedPurposeDecor? {
+        return enclosedPurposeDecors.firstOrNull { it.purposeDecorName == purposeDecorName }
     }
 }

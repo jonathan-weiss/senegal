@@ -19,8 +19,8 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
 
     @Throws(SAXException::class)
     override fun startElement(uri: String, localName: String, qName: String, attr: Attributes) {
-        val conceptNode = getConceptByXmlLocalName(localName) ?: return
-        val newModelNode = currentModelInstance.createAndAddModelNode(conceptNode)
+        val resolvedConcept = getConceptByXmlLocalName(localName) ?: return
+        val newModelNode = currentModelInstance.createAndAddModelNode(resolvedConcept)
         Attribute.attributeList(attr).forEach { addAttribute(newModelNode, it) }
         this.currentModelInstance = newModelNode
     }

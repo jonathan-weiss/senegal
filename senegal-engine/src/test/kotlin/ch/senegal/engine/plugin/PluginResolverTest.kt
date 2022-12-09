@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions.*
 internal class PluginResolverTest {
 
     @Test
-    fun createPluginTree() {
+    fun testResolvePlugins() {
         val entity = TestEntityConcept
         val entityAttribute = TestEntityAttributeConcept
         val mapper = TestMapperConcept

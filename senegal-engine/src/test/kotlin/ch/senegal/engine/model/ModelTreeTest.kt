@@ -11,7 +11,7 @@ internal class ModelTreeTest {
     @Test
     fun createModelTree() {
         // arrange
-        val resolvedPlugins = createTestPluginTree()
+        val resolvedPlugins = resolvedPlugins()
 
         // act
         val modelTree = ModelTree(resolvedPlugins)
@@ -21,7 +21,7 @@ internal class ModelTreeTest {
 
     }
 
-    private fun createTestPluginTree(): ResolvedPlugins {
+    private fun resolvedPlugins(): ResolvedPlugins {
         return PluginResolver.resolvePlugins(emptySet())
     }
 }
