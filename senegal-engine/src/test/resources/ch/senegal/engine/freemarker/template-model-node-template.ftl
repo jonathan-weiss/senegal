@@ -4,7 +4,7 @@
     <#list topLevelNode.properties as propertyKey, propertyValue>
         ${propertyKey}: ${propertyValue}
     </#list>
-    direct access: ${topLevelNode.myStringTwo}
+    direct access: ${topLevelNode.TestKotlinModelClassname}
 
     SubNodes:
     <#list topLevelNode.childNodes as childNode>

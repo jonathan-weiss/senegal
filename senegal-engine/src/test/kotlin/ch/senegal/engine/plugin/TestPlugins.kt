@@ -79,7 +79,13 @@ object TestPackageDecor: PurposeDecor {
 
 object TestKotlinFieldPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestKotlinField")
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestFieldTypeDecor)
+    override val purposeDecors: Set<PurposeDecor> = setOf(TestFieldNameDecor, TestFieldTypeDecor)
+}
+
+object TestFieldNameDecor: PurposeDecor {
+    override val decorName: DecorName = DecorName("Name")
+    override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
+    override val decorType: DecorType = TextDecorType
 }
 
 object TestFieldTypeDecor: PurposeDecor {

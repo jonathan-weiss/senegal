@@ -8,7 +8,7 @@ class ModelNode(val resolvedConcept: ResolvedConcept,
                 val parentModelInstance: ModelInstance,
 ): ModelInstance() {
 
-    private val modelDecorations: MutableMap<ResolvedPurposeDecor, Decoration> = mutableMapOf()
+    val modelDecorations: MutableMap<ResolvedPurposeDecor, Decoration> = mutableMapOf()
 
     override fun parentModelInstance(): ModelInstance {
         return parentModelInstance

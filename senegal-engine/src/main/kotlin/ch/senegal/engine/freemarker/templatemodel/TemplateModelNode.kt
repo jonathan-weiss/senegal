@@ -1,4 +1,4 @@
-package ch.senegal.engine.freemarker.nodetree
+package ch.senegal.engine.freemarker.templatemodel
 
 open class TemplateModelNode (
     val properties: Map<String, Any>,
