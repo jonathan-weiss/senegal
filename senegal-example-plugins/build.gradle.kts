@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    application
 }
 
 allprojects {
@@ -23,4 +24,8 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("ch.senegal.engine.process.SenegalApplicationKt")
 }

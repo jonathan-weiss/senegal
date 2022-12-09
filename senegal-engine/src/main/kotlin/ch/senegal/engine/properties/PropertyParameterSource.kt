@@ -4,6 +4,7 @@ import java.util.*
 
 object PropertyParameterSource: ParameterSource {
 
+    private const val resourceName = "/senegal.properties"
     private val properties: Map<String, String>
     init {
         properties = getPropertiesFromFile()
@@ -14,7 +15,6 @@ object PropertyParameterSource: ParameterSource {
     }
 
     private fun getPropertiesFromFile(): Map<String, String> {
-        val resourceName = "/senegal.properties"
         val props = Properties()
         val propertiesStream = this.javaClass.getResourceAsStream(resourceName)
             ?: throw IllegalArgumentException("Resource with name '$resourceName' not found.")
@@ -33,6 +33,10 @@ object PropertyParameterSource: ParameterSource {
             throw IllegalArgumentException("$value was not of type String.")
         }
         return value
+    }
+
+    override fun toString(): String {
+        return "${super.toString()}:$resourceName=$properties"
     }
 
 }

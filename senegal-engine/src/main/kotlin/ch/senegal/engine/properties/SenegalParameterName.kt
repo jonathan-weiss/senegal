@@ -22,6 +22,7 @@ enum class StringParameterName(override val propertyName: String): SenegalParame
 enum class PathParameterName(override val propertyName: String): SenegalParameterName<Path> {
     DefinitionDirectory("definitionDirectory"),
     DefaultOutputDirectory("defaultOutputDirectory"),
+    XmlDefinitionFile("xmlDefinitionFile"),
     ;
 
     override fun fromString(stringValue: String): Path {

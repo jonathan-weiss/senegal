@@ -49,7 +49,7 @@ object XmlDomSchemaCreator {
         setElementXsdAttribute(sequence, "minOccurs", "0")
         setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
 
-        resolvedPlugins.allResolvedConcepts.forEach {
+        resolvedPlugins.resolvedRootConcepts.forEach {
             val conceptXmlSchemaName = schemaTagName(it)
             val element = createAndAttachXsdElement(document, sequence, "element")
             setElementXsdAttribute(element, "ref", conceptXmlSchemaName)
