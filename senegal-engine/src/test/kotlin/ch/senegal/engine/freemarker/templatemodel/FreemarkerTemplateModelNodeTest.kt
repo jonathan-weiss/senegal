@@ -4,7 +4,7 @@ import ch.senegal.engine.TmpFileUtil
 import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
 import ch.senegal.engine.model.Decoration
-import ch.senegal.engine.model.ModelTree
+import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
@@ -48,15 +48,15 @@ internal class FreemarkerTemplateModelNodeTest {
 
     private fun createTemplateModelNodes(): List<TemplateModelNode> {
         val resolvedPlugins = createResolvedPlugin()
-        val modelTree = ModelTree(resolvedPlugins = resolvedPlugins)
+        val modelTree = MutableModelTree(resolvedPlugins = resolvedPlugins)
 
         val resolvedTestEntity = findResolvedConcept(resolvedPlugins, TestEntityConcept.conceptName)
-        val testEntityNode1 = modelTree.createAndAddModelNode(resolvedTestEntity)
+        val testEntityNode1 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
         testEntityNode1.addDecoration(
             purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameDecor.decorName),
             decoration = Decoration("TestEntityClassNumberOne")
         )
-        val testEntityNode2 = modelTree.createAndAddModelNode(resolvedTestEntity)
+        val testEntityNode2 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
         testEntityNode2.addDecoration(
             purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameDecor.decorName),
             decoration = Decoration("TestEntityClassNumberTwo")
@@ -67,7 +67,7 @@ internal class FreemarkerTemplateModelNodeTest {
         )
 
         val resolvedTestEntityAttribute = findResolvedConcept(resolvedPlugins, TestEntityAttributeConcept.conceptName)
-        val testEntityAttributeNode1 = testEntityNode1.createAndAddModelNode(resolvedTestEntityAttribute)
+        val testEntityAttributeNode1 = testEntityNode1.createAndAddMutableModelNode(resolvedTestEntityAttribute)
         testEntityAttributeNode1.addDecoration(
             purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinFieldPurpose.purposeName, TestFieldNameDecor.decorName),
             decoration = Decoration("myField")

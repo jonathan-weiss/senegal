@@ -14,7 +14,7 @@ internal class ModelTreeTest {
         val resolvedPlugins = resolvedPlugins()
 
         // act
-        val modelTree = ModelTree(resolvedPlugins)
+        val modelTree = MutableModelTree(resolvedPlugins)
 
         // assert
         assertNotNull(modelTree)

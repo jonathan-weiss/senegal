@@ -1,9 +1,8 @@
 package ch.senegal.engine.process
 
-import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
 import ch.senegal.engine.freemarker.templatemodel.TemplateModelCreator
-import ch.senegal.engine.model.ModelTree
+import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.properties.ParameterReader
@@ -26,7 +25,7 @@ object SenegalProcess {
         val xmlDefinitionFile = ParameterReader.getParameter(PathParameterName.XmlDefinitionFile)
         FileUtil.checkFileReadable(xmlDefinitionFile)
 
-        val modelTree: ModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile)
+        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile)
 
         val freemarkerFileDescriptors = TemplateModelCreator.createTemplateTargets(modelTree, resolvedPlugins)
 

@@ -1,17 +1,16 @@
 package ch.senegal.engine.model
 
-import ch.senegal.plugin.PurposeDecor
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPurposeDecor
 
-class ModelNode(val resolvedConcept: ResolvedConcept,
-                val parentModelInstance: ModelInstance,
-): ModelInstance() {
+class MutableModelNode(val resolvedConcept: ResolvedConcept,
+                       private val parentMutableModelInstance: MutableModelInstance,
+): MutableModelInstance() {
 
     val modelDecorations: MutableMap<ResolvedPurposeDecor, Decoration> = mutableMapOf()
 
-    override fun parentModelInstance(): ModelInstance {
-        return parentModelInstance
+    override fun parentModelInstance(): MutableModelInstance {
+        return parentMutableModelInstance
     }
 
     fun addDecoration(purposeDecor: ResolvedPurposeDecor, decoration: Decoration) {

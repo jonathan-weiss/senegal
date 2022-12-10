@@ -1,15 +1,15 @@
 package ch.senegal.engine.freemarker.templatemodel
 
 import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
-import ch.senegal.engine.model.ModelNode
-import ch.senegal.engine.model.ModelTree
+import ch.senegal.engine.model.MutableModelNode
+import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.plugin.TemplateTarget
 
 
 object TemplateModelCreator {
 
-    fun createTemplateTargets(modelTree: ModelTree, resolvedPlugins: ResolvedPlugins): List<FreemarkerFileDescriptor> {
+    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins): List<FreemarkerFileDescriptor> {
         val templateModel = createTemplateModel(modelTree)
         val templateTargets = collectTemplateTargets(modelTree)
         val templateRootModel: Map<String, Any> = mapOf(
@@ -22,23 +22,23 @@ object TemplateModelCreator {
         }
     }
 
-    private fun collectTemplateTargets(modelTree: ModelTree): List<TemplateTarget> {
+    private fun collectTemplateTargets(modelTree: MutableModelTree): List<TemplateTarget> {
         return modelTree.getAllModelNodes()
             .flatMap { node -> node.resolvedConcept.enclosedPurposes
-                .flatMap { purpose -> purpose.createTemplateTargets() } }
+                .flatMap { purpose -> purpose.createTemplateTargets(node) } }
     }
 
-    private fun createTemplateModel(modelTree: ModelTree): List<TemplateModelNode> {
+    private fun createTemplateModel(modelTree: MutableModelTree): List<TemplateModelNode> {
         return modelTree.getRootModelNodes().map { createTemplateModelNode(it) }
     }
 
-    private fun createTemplateModelNode(modelNode: ModelNode): TemplateModelNode {
-        val properties: Map<String, Any> = modelNode.modelDecorations
+    private fun createTemplateModelNode(mutableModelNode: MutableModelNode): TemplateModelNode {
+        val properties: Map<String, Any> = mutableModelNode.modelDecorations
             .map { (key, value) -> Pair(key.purposeDecorName, value.value) }
             .toMap()
         return TemplateModelNode(
             properties = properties,
-            childNodes = modelNode.childModelNodes.map { createTemplateModelNode(it) }
+            childNodes = mutableModelNode.mutableChildModelNodes.map { createTemplateModelNode(it) }
         )
     }
 
