@@ -19,13 +19,13 @@ object TestEntityConcept: Concept {
 
 object TestEntityPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestEntity")
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestEntityNamePurposeDecor)
+    override val facets: Set<Facet> = setOf(TestEntityNameFacet)
 }
 
-object TestEntityNamePurposeDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Name")
+object TestEntityNameFacet: Facet {
+    override val facetName: FacetName = FacetName("Name")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
 object TestMapperConcept: Concept {
@@ -40,61 +40,61 @@ object TestEntityAttributeConcept: Concept {
 
 object TestEntityAttributePurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestEntityAttribute")
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestEntityAttributeNameDecor, TestEntityAttributeTypeDecor)
+    override val facets: Set<Facet> = setOf(TestEntityAttributeNameFacet, TestEntityAttributeTypeFacet)
 }
 
-object TestEntityAttributeNameDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Name")
+object TestEntityAttributeNameFacet: Facet {
+    override val facetName: FacetName = FacetName("Name")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
-object TestEntityAttributeTypeDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Type")
+object TestEntityAttributeTypeFacet: Facet {
+    override val facetName: FacetName = FacetName("Type")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val decorType: DecorType = EnumerationDecorType(listOf(
-        DecorTypeEnumerationValue("TEXT"),
-        DecorTypeEnumerationValue("NUMBER"),
-        DecorTypeEnumerationValue("BOOLEAN")
+    override val facetType: FacetType = EnumerationFacetType(listOf(
+        FacetTypeEnumerationValue("TEXT"),
+        FacetTypeEnumerationValue("NUMBER"),
+        FacetTypeEnumerationValue("BOOLEAN")
     ))
 }
 
 
 object TestKotlinModelPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestKotlinModel")
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestClassnameDecor, TestPackageDecor)
+    override val facets: Set<Facet> = setOf(TestClassnameFacet, TestPackageFacet)
 }
 
-object TestClassnameDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Classname")
+object TestClassnameFacet: Facet {
+    override val facetName: FacetName = FacetName("Classname")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
-object TestPackageDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Package")
+object TestPackageFacet: Facet {
+    override val facetName: FacetName = FacetName("Package")
     override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
 object TestKotlinFieldPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName("TestKotlinField")
-    override val purposeDecors: Set<PurposeDecor> = setOf(TestFieldNameDecor, TestFieldTypeDecor)
+    override val facets: Set<Facet> = setOf(TestFieldNameFacet, TestFieldTypeFacet)
 }
 
-object TestFieldNameDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Name")
+object TestFieldNameFacet: Facet {
+    override val facetName: FacetName = FacetName("Name")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
-object TestFieldTypeDecor: PurposeDecor {
-    override val decorName: DecorName = DecorName("Type")
+object TestFieldTypeFacet: Facet {
+    override val facetName: FacetName = FacetName("Type")
     override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val decorType: DecorType = EnumerationDecorType(listOf(
-        DecorTypeEnumerationValue("kotlin.String"),
-        DecorTypeEnumerationValue("kotlin.Int"),
-        DecorTypeEnumerationValue("kotlin.Boolean")
+    override val facetType: FacetType = EnumerationFacetType(listOf(
+        FacetTypeEnumerationValue("kotlin.String"),
+        FacetTypeEnumerationValue("kotlin.Int"),
+        FacetTypeEnumerationValue("kotlin.Boolean")
     ))
 
 }

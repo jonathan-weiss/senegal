@@ -1,23 +1,23 @@
 package ch.senegal.engine.model
 
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
-import ch.senegal.engine.plugin.resolver.ResolvedPurposeDecor
+import ch.senegal.engine.plugin.resolver.ResolvedFacet
 
 class MutableModelNode(val resolvedConcept: ResolvedConcept,
                        private val parentMutableModelInstance: MutableModelInstance,
 ): MutableModelInstance() {
 
-    val modelDecorations: MutableMap<ResolvedPurposeDecor, Decoration> = mutableMapOf()
+    val nodeFacetValues: MutableMap<ResolvedFacet, FacetValue> = mutableMapOf()
 
     override fun parentModelInstance(): MutableModelInstance {
         return parentMutableModelInstance
     }
 
-    fun addDecoration(purposeDecor: ResolvedPurposeDecor, decoration: Decoration) {
-        modelDecorations[purposeDecor] = decoration
+    fun addFacetValue(facet: ResolvedFacet, facetValue: FacetValue) {
+        nodeFacetValues[facet] = facetValue
     }
 
-//    fun getDecoration(purposeDecorName: PurposeDecorName): Decoration? {
-//        return modelDecorations[purposeDecorName]
+//    fun getFacetValue(facetName: FacetName): FacetValue? {
+//        return nodeFacetValues[facetName]
 //    }
 }

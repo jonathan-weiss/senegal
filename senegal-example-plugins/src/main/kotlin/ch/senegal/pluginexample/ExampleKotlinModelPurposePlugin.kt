@@ -7,43 +7,43 @@ import java.nio.file.Paths
 
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName("KotlinModel")
-    override val purposeDecors: Set<PurposeDecor> = setOf(KotlinModelClassnameDecor, KotlinModelPackageDecor)
+    override val facets: Set<Facet> = setOf(KotlinModelClassnameFacet, KotlinModelPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode): Set<TemplateTarget> {
         return setOf(TemplateTarget(Paths.get("build/general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
     }
 }
 
-object KotlinModelClassnameDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("ClassName")
+object KotlinModelClassnameFacet : Facet {
+    override val facetName: FacetName = FacetName("ClassName")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
-object KotlinModelPackageDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("Package")
+object KotlinModelPackageFacet : Facet {
+    override val facetName: FacetName = FacetName("Package")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
 object KotlinFieldPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName("KotlinField")
-    override val purposeDecors: Set<PurposeDecor> = setOf(KotlinFieldNameDecor, KotlinFieldTypeDecor)
+    override val facets: Set<Facet> = setOf(KotlinFieldNameFacet, KotlinFieldTypeFacet)
 }
 
-object KotlinFieldNameDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("Name")
+object KotlinFieldNameFacet : Facet {
+    override val facetName: FacetName = FacetName("Name")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }
 
-object KotlinFieldTypeDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("Type")
+object KotlinFieldTypeFacet : Facet {
+    override val facetName: FacetName = FacetName("Type")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val decorType: DecorType = EnumerationDecorType(
+    override val facetType: FacetType = EnumerationFacetType(
         listOf(
-            DecorTypeEnumerationValue("kotlin.String"),
-            DecorTypeEnumerationValue("kotlin.Int"),
-            DecorTypeEnumerationValue("kotlin.Boolean"),
+            FacetTypeEnumerationValue("kotlin.String"),
+            FacetTypeEnumerationValue("kotlin.Int"),
+            FacetTypeEnumerationValue("kotlin.Boolean"),
         )
     )
 }

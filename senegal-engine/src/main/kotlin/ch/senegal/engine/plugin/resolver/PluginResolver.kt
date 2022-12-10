@@ -18,28 +18,28 @@ object PluginResolver {
             .filterIsInstance<Purpose>()
             .associateBy { it.purposeName }
 
-        val allPurposeDecorEntries: List<ResolvedPurposeDecor> = purposes.values
-            .flatMap { purpose -> purpose.purposeDecors
-                .map { decor -> ResolvedPurposeDecor(
-                    concept = allConcepts[decor.enclosingConceptName]
+        val allFacetEntries: List<ResolvedFacet> = purposes.values
+            .flatMap { purpose -> purpose.facets
+                .map { facet -> ResolvedFacet(
+                    concept = allConcepts[facet.enclosingConceptName]
                         ?: throw IllegalArgumentException("Concept not " +
-                                "found '${decor.enclosingConceptName.name}' for $decor."),
+                                "found '${facet.enclosingConceptName.name}' for facet $facet."),
                     purpose = purpose,
-                    purposeDecor = decor
+                    facet = facet
                 ) }  }
 
-        val purposeDecorEntriesByConceptName: Map<ConceptName, List<ResolvedPurposeDecor>> = allPurposeDecorEntries
+        val facetsByConceptName: Map<ConceptName, List<ResolvedFacet>> = allFacetEntries
             .groupBy { it.concept.conceptName }
 
         val purposesByConceptName: Map<ConceptName, List<Purpose>> = allConcepts.values
             .flatMap { concept -> purposes.values
-                .filter { purpose -> purpose.purposeDecors
-                    .any { decor -> decor.enclosingConceptName == concept.conceptName  }
+                .filter { purpose -> purpose.facets
+                    .any { facet -> facet.enclosingConceptName == concept.conceptName  }
                 }.map { Pair(concept.conceptName, it) }
             }.groupBy( keySelector = { it.first }, valueTransform = { it.second } )
 
         val allResolvedConcepts: Set<ResolvedConcept> = allConcepts.values
-            .map { createConceptNode(it, childConceptsByParentConcept, purposesByConceptName, purposeDecorEntriesByConceptName) }
+            .map { createConceptNode(it, childConceptsByParentConcept, purposesByConceptName, facetsByConceptName) }
             .toSet()
         return ResolvedPlugins(allResolvedConcepts)
     }
@@ -48,15 +48,15 @@ object PluginResolver {
         concept: Concept,
         childConceptsByParentConcept: Map<ConceptName, List<Concept>>,
         purposesByConceptName: Map<ConceptName, List<Purpose>>,
-        purposeDecorsByConceptName: Map<ConceptName, List<ResolvedPurposeDecor>>
+        facetsByConceptName: Map<ConceptName, List<ResolvedFacet>>
     ): ResolvedConcept {
         return ResolvedConcept(
             concept = concept,
             enclosedPurposes = purposesByConceptName[concept.conceptName]?.toSet() ?: emptySet(),
             enclosedConcepts = childConceptsByParentConcept[concept.conceptName]
-                ?.map { createConceptNode(it, childConceptsByParentConcept, purposesByConceptName, purposeDecorsByConceptName) }
+                ?.map { createConceptNode(it, childConceptsByParentConcept, purposesByConceptName, facetsByConceptName) }
                 ?.toSet() ?: emptySet(),
-            enclosedPurposeDecors = purposeDecorsByConceptName[concept.conceptName] ?: emptyList()
+            enclosedFacets = facetsByConceptName[concept.conceptName] ?: emptyList()
         )
     }
 }

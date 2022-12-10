@@ -4,24 +4,24 @@ import ch.senegal.plugin.*
 
 object EntityAttributePurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName("EntityAttribute")
-    override val purposeDecors: Set<PurposeDecor> = setOf(EntityAttributeNameDecor, EntityAttributeTypeDecor)
+    override val facets: Set<Facet> = setOf(EntityAttributeNameFacet, EntityAttributeTypeFacet)
 }
 
-object EntityAttributeTypeDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("Type")
+object EntityAttributeTypeFacet : Facet {
+    override val facetName: FacetName = FacetName("Type")
     override val enclosingConceptName: ConceptName = EntityAttributeConceptPlugin.conceptName
-    override val decorType: DecorType = EnumerationDecorType(
+    override val facetType: FacetType = EnumerationFacetType(
         listOf(
-            DecorTypeEnumerationValue("TEXT"),
-            DecorTypeEnumerationValue("NUMBER"),
-            DecorTypeEnumerationValue("BOOLEAN")
+            FacetTypeEnumerationValue("TEXT"),
+            FacetTypeEnumerationValue("NUMBER"),
+            FacetTypeEnumerationValue("BOOLEAN")
         )
     )
 
 }
 
-object EntityAttributeNameDecor : PurposeDecor {
-    override val decorName: DecorName = DecorName("Name")
+object EntityAttributeNameFacet : Facet {
+    override val facetName: FacetName = FacetName("Name")
     override val enclosingConceptName: ConceptName = EntityAttributeConceptPlugin.conceptName
-    override val decorType: DecorType = TextDecorType
+    override val facetType: FacetType = TextFacetType
 }

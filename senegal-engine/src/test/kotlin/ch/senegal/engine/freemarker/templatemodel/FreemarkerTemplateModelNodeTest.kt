@@ -3,13 +3,13 @@ package ch.senegal.engine.freemarker.templatemodel
 import ch.senegal.engine.TmpFileUtil
 import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
-import ch.senegal.engine.model.Decoration
+import ch.senegal.engine.model.FacetValue
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
-import ch.senegal.engine.plugin.resolver.ResolvedPurposeDecor
+import ch.senegal.engine.plugin.resolver.ResolvedFacet
 import ch.senegal.plugin.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
@@ -52,29 +52,29 @@ internal class FreemarkerTemplateModelNodeTest {
 
         val resolvedTestEntity = findResolvedConcept(resolvedPlugins, TestEntityConcept.conceptName)
         val testEntityNode1 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
-        testEntityNode1.addDecoration(
-            purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameDecor.decorName),
-            decoration = Decoration("TestEntityClassNumberOne")
+        testEntityNode1.addFacetValue(
+            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameFacet.facetName),
+            facetValue = FacetValue("TestEntityClassNumberOne")
         )
         val testEntityNode2 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
-        testEntityNode2.addDecoration(
-            purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameDecor.decorName),
-            decoration = Decoration("TestEntityClassNumberTwo")
+        testEntityNode2.addFacetValue(
+            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestClassnameFacet.facetName),
+            facetValue = FacetValue("TestEntityClassNumberTwo")
         )
-        testEntityNode2.addDecoration(
-            purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestPackageDecor.decorName),
-            decoration = Decoration("ch.senegal.test")
+        testEntityNode2.addFacetValue(
+            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, TestPackageFacet.facetName),
+            facetValue = FacetValue("ch.senegal.test")
         )
 
         val resolvedTestEntityAttribute = findResolvedConcept(resolvedPlugins, TestEntityAttributeConcept.conceptName)
         val testEntityAttributeNode1 = testEntityNode1.createAndAddMutableModelNode(resolvedTestEntityAttribute)
-        testEntityAttributeNode1.addDecoration(
-            purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinFieldPurpose.purposeName, TestFieldNameDecor.decorName),
-            decoration = Decoration("myField")
+        testEntityAttributeNode1.addFacetValue(
+            facet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, TestFieldNameFacet.facetName),
+            facetValue = FacetValue("myField")
         )
-        testEntityAttributeNode1.addDecoration(
-            purposeDecor = findResolvedDecor(resolvedPlugins, TestKotlinFieldPurpose.purposeName, TestFieldTypeDecor.decorName),
-            decoration = Decoration("kotlin.String")
+        testEntityAttributeNode1.addFacetValue(
+            facet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, TestFieldTypeFacet.facetName),
+            facetValue = FacetValue("kotlin.String")
         )
 
         return TemplateModelCreator.createTemplateModel(modelTree)
@@ -97,9 +97,9 @@ internal class FreemarkerTemplateModelNodeTest {
             ?: throw IllegalArgumentException("Concept not found ${conceptName.name}")
     }
 
-    private fun findResolvedDecor(resolvedPlugins: ResolvedPlugins, purposeName: PurposeName, decorName: DecorName): ResolvedPurposeDecor {
-        return resolvedPlugins.getResolvedDecor(purposeName, decorName)
-            ?: throw IllegalArgumentException("Decor not found for purpose '${purposeName.name}' and decor '${decorName.name}'")
+    private fun findResolvedFacet(resolvedPlugins: ResolvedPlugins, purposeName: PurposeName, facetName: FacetName): ResolvedFacet {
+        return resolvedPlugins.getResolvedFacet(purposeName, facetName)
+            ?: throw IllegalArgumentException("Facet not found for purpose '${purposeName.name}' and facet '${facetName.name}'")
     }
 
 }

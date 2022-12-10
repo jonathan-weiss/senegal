@@ -71,30 +71,30 @@ object XmlDomSchemaCreator {
                 setElementXsdAttribute(elementRef, "ref", enclosedConceptXmlSchemaName)
             }
             conceptNode.enclosedPurposes.forEach { purpose ->
-                purpose.purposeDecors.forEach { decor ->
-                    val purposeAttributeName = schemaAttributeName(purpose)
-                    val purposeDecorAttributeName = decor.decorName.name
-                    complexType.appendChild(createDecorAttributeElement(document, "$purposeAttributeName$purposeDecorAttributeName", decor.decorType))
+                purpose.facets.forEach { facet ->
+                    val purposeXmlAttributeNamePart = schemaAttributeName(purpose)
+                    val facetXmlAttributeNamePart = facet.facetName.name
+                    complexType.appendChild(createFacetAttributeElement(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart", facet.facetType))
                 }
             }
         }
     }
 
-    private fun createDecorAttributeElement(document: Document, decorAttributeName: String, decorType: DecorType): Element {
+    private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: String, facetType: FacetType): Element {
         val attributeElement = createXsdElement(document, "attribute")
-        setElementXsdAttribute(attributeElement, "name", decorAttributeName)
+        setElementXsdAttribute(attributeElement, "name", purposeFacetAttributeName)
 
-        if(decorType is EnumerationDecorType) {
+        if(facetType is EnumerationFacetType) {
             val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
             val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
             setElementXsdAttribute(restriction, "base", "xs:string")
-            decorType.enumerationValues.forEach { enumerationValue ->
+            facetType.enumerationValues.forEach { enumerationValue ->
                 val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
                 setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
             }
         } else {
-            val decorTypeXsd = schemaAttributeType(decorType)
-            setElementXsdAttribute(attributeElement, "type", decorTypeXsd)
+            val facetTypeXsd = schemaAttributeType(facetType)
+            setElementXsdAttribute(attributeElement, "type", facetTypeXsd)
         }
         return attributeElement
     }
@@ -130,8 +130,8 @@ object XmlDomSchemaCreator {
         return toXmlName(purpose.purposeName.name)
     }
 
-    private fun schemaAttributeName(decor: PurposeDecor): String {
-        return toXmlName(decor.decorName.name)
+    private fun schemaAttributeName(facet: Facet): String {
+        return toXmlName(facet.facetName.name)
     }
 
 
@@ -139,12 +139,12 @@ object XmlDomSchemaCreator {
         return CaseUtil.decapitalize(value)
     }
 
-    private fun schemaAttributeType(decorType: DecorType): String {
-        return when(decorType) {
-            TextDecorType -> "xs:string"
-            IntegerNumberDecorType -> "xs:integer"
-            BooleanDecorType -> "xs:boolean"
-            else -> throw IllegalArgumentException("DecorType is not supported: $decorType")
+    private fun schemaAttributeType(facetType: FacetType): String {
+        return when(facetType) {
+            TextFacetType -> "xs:string"
+            IntegerNumberFacetType -> "xs:integer"
+            BooleanFacetType -> "xs:boolean"
+            else -> throw IllegalArgumentException("FacetType is not supported: $facetType")
         }
     }
 

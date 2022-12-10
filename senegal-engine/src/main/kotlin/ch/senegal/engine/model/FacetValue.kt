@@ -1,4 +1,4 @@
 package ch.senegal.engine.model
 
-class Decoration(val value: Any) {
+class FacetValue(val value: Any) {
 }

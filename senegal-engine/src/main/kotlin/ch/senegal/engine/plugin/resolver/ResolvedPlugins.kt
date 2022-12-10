@@ -1,7 +1,7 @@
 package ch.senegal.engine.plugin.resolver
 
 import ch.senegal.plugin.ConceptName
-import ch.senegal.plugin.DecorName
+import ch.senegal.plugin.FacetName
 import ch.senegal.plugin.PurposeName
 
 /**
@@ -18,9 +18,9 @@ class ResolvedPlugins(
         return allResolvedConcepts.associateBy { it.concept.conceptName }[name]
     }
 
-    fun getResolvedDecor(purposeName: PurposeName, decorName: DecorName): ResolvedPurposeDecor? {
-        val combinedName = "${purposeName.name}${decorName.name}"
-        return allResolvedConcepts.firstNotNullOfOrNull { it.getPurposeDecorByCombinedName(combinedName) }
+    fun getResolvedFacet(purposeName: PurposeName, facetName: FacetName): ResolvedFacet? {
+        val combinedName = "${purposeName.name}${facetName.name}"
+        return allResolvedConcepts.firstNotNullOfOrNull { it.getFacetByCombinedName(combinedName) }
     }
 
 }

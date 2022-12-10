@@ -6,7 +6,7 @@ interface Purpose: Plugin {
 
     val purposeName: PurposeName
 
-    val purposeDecors: Set<PurposeDecor>
+    val facets: Set<Facet>
 
     fun createTemplateTargets(modelNode: ModelNode): Set<TemplateTarget> = emptySet()
 }

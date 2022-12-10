@@ -28,13 +28,13 @@ object TemplateModelCreator {
                 .flatMap { purpose -> purpose.createTemplateTargets(node) } }
     }
 
-    private fun createTemplateModel(modelTree: MutableModelTree): List<TemplateModelNode> {
+    internal fun createTemplateModel(modelTree: MutableModelTree): List<TemplateModelNode> {
         return modelTree.getRootModelNodes().map { createTemplateModelNode(it) }
     }
 
     private fun createTemplateModelNode(mutableModelNode: MutableModelNode): TemplateModelNode {
-        val properties: Map<String, Any> = mutableModelNode.modelDecorations
-            .map { (key, value) -> Pair(key.purposeDecorName, value.value) }
+        val properties: Map<String, Any> = mutableModelNode.nodeFacetValues
+            .map { (key, value) -> Pair(key.purposeFacetName, value.value) }
             .toMap()
         return TemplateModelNode(
             properties = properties,

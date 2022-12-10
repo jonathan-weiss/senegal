@@ -1,6 +1,6 @@
 package ch.senegal.engine.xml
 
-import ch.senegal.engine.model.Decoration
+import ch.senegal.engine.model.FacetValue
 import ch.senegal.engine.model.MutableModelInstance
 import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
@@ -26,12 +26,12 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
     }
 
     private fun addAttribute(mutableModelNode: MutableModelNode, attribute: Attribute) {
-        val purposeDecorName = CaseUtil.capitalize(attribute.localName)
-        val purposeDecor = mutableModelNode.resolvedConcept.getPurposeDecorByCombinedName(purposeDecorName)
-            ?: this.fail("No purpose decor found for name '${purposeDecorName}'.")
+        val facetName = CaseUtil.capitalize(attribute.localName)
+        val facet = mutableModelNode.resolvedConcept.getFacetByCombinedName(facetName)
+            ?: this.fail("No facet found for name '${facetName}'.")
 
-        val decoration = Decoration(attribute.value)
-        mutableModelNode.addDecoration(purposeDecor = purposeDecor, decoration = decoration)
+        val facetValue = FacetValue(attribute.value)
+        mutableModelNode.addFacetValue(facet = facet, facetValue = facetValue)
     }
 
     @Throws(SAXException::class)
