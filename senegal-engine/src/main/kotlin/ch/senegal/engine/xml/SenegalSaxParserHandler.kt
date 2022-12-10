@@ -50,7 +50,7 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
     }
 
     private fun getConceptByXmlLocalName(localName: String): ResolvedConcept? {
-        val potentialConceptName = ConceptName(CaseUtil.capitalize(localName))
+        val potentialConceptName = ConceptName.of(CaseUtil.capitalize(localName))
         return resolvedPlugins.getConceptByConceptName(potentialConceptName)
     }
 }

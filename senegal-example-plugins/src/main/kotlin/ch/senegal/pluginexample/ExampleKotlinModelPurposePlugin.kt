@@ -6,7 +6,7 @@ import java.nio.file.Paths
 
 
 object KotlinModelPurposePlugin : Purpose {
-    override val purposeName: PurposeName = PurposeName("KotlinModel")
+    override val purposeName: PurposeName = PurposeName.of("KotlinModel")
     override val facets: Set<Facet> = setOf(KotlinModelClassnameFacet, KotlinModelPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode): Set<TemplateTarget> {
         return setOf(TemplateTarget(Paths.get("build/general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
@@ -14,30 +14,30 @@ object KotlinModelPurposePlugin : Purpose {
 }
 
 object KotlinModelClassnameFacet : Facet {
-    override val facetName: FacetName = FacetName("ClassName")
+    override val facetName: FacetName = FacetName.of("ClassName")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
 }
 
 object KotlinModelPackageFacet : Facet {
-    override val facetName: FacetName = FacetName("Package")
+    override val facetName: FacetName = FacetName.of("Package")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
 }
 
 object KotlinFieldPurposePlugin : Purpose {
-    override val purposeName: PurposeName = PurposeName("KotlinField")
+    override val purposeName: PurposeName = PurposeName.of("KotlinField")
     override val facets: Set<Facet> = setOf(KotlinFieldNameFacet, KotlinFieldTypeFacet)
 }
 
 object KotlinFieldNameFacet : Facet {
-    override val facetName: FacetName = FacetName("Name")
+    override val facetName: FacetName = FacetName.of("Name")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
 }
 
 object KotlinFieldTypeFacet : Facet {
-    override val facetName: FacetName = FacetName("Type")
+    override val facetName: FacetName = FacetName.of("Type")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     override val facetType: FacetType = EnumerationFacetType(
         listOf(

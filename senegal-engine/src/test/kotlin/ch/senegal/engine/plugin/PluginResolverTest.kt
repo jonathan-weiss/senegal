@@ -25,9 +25,9 @@ internal class PluginResolverTest {
         assertNotNull(resolvedPlugins)
         assertEquals(3, resolvedPlugins.allResolvedConcepts.size)
         assertEquals(2, resolvedPlugins.resolvedRootConcepts.size)
-        assertEquals(entity, resolvedPlugins.getConceptByConceptName(ConceptName("TestEntity"))?.concept)
-        assertEquals(1, resolvedPlugins.getConceptByConceptName(ConceptName("TestEntity"))?.enclosedConcepts?.size)
-        assertEquals(1, resolvedPlugins.getConceptByConceptName(ConceptName("TestEntity"))?.enclosedPurposes?.size)
-        assertEquals(entityAttribute, resolvedPlugins.getConceptByConceptName(ConceptName("TestEntityAttribute"))?.concept)
+        assertEquals(entity, resolvedPlugins.getConceptByConceptName(ConceptName.of("TestEntity"))?.concept)
+        assertEquals(1, resolvedPlugins.getConceptByConceptName(ConceptName.of("TestEntity"))?.enclosedConcepts?.size)
+        assertEquals(1, resolvedPlugins.getConceptByConceptName(ConceptName.of("TestEntity"))?.enclosedPurposes?.size)
+        assertEquals(entityAttribute, resolvedPlugins.getConceptByConceptName(ConceptName.of("TestEntityAttribute"))?.concept)
     }
 }
