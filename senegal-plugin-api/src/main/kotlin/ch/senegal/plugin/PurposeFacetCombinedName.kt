@@ -7,7 +7,7 @@ value class PurposeFacetCombinedName private constructor (val name: String) {
 
     companion object {
         fun of(purposeName: PurposeName, facetName: FacetName): PurposeFacetCombinedName {
-            return PurposeFacetCombinedName("${purposeName.name}${facetName.name}")
+            return of("${purposeName.name}${facetName.name}")
         }
 
         fun of(purposeAndFacetCombinedName: String): PurposeFacetCombinedName {

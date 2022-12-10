@@ -8,6 +8,7 @@ import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.util.CaseUtil
 import ch.senegal.plugin.ConceptName
+import ch.senegal.plugin.PurposeFacetCombinedName
 import org.xml.sax.Attributes
 import org.xml.sax.SAXException
 import org.xml.sax.helpers.DefaultHandler
@@ -26,9 +27,9 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
     }
 
     private fun addAttribute(mutableModelNode: MutableModelNode, attribute: Attribute) {
-        val facetName = CaseUtil.capitalize(attribute.localName)
-        val facet = mutableModelNode.resolvedConcept.getFacetByCombinedName(facetName)
-            ?: this.fail("No facet found for name '${facetName}'.")
+        val purposeFacetCombinedName = PurposeFacetCombinedName.of(CaseUtil.capitalize(attribute.localName))
+        val facet = mutableModelNode.resolvedConcept.getFacetByCombinedName(purposeFacetCombinedName)
+            ?: this.fail("No facet found for name '${purposeFacetCombinedName.name}'.")
 
         val facetValue = FacetValue(attribute.value)
         mutableModelNode.addFacetValue(facet = facet, facetValue = facetValue)

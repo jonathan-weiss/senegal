@@ -19,8 +19,7 @@ class ResolvedPlugins(
     }
 
     fun getResolvedFacet(purposeName: PurposeName, facetName: FacetName): ResolvedFacet? {
-        val combinedName = "${purposeName.name}${facetName.name}"
-        return allResolvedConcepts.firstNotNullOfOrNull { it.getFacetByCombinedName(combinedName) }
+        return allResolvedConcepts.firstNotNullOfOrNull { it.getFacet(purposeName, facetName) }
     }
 
 }

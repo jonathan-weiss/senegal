@@ -1,7 +1,6 @@
 package ch.senegal.engine.plugin.resolver
 
-import ch.senegal.plugin.Concept
-import ch.senegal.plugin.Purpose
+import ch.senegal.plugin.*
 
 class ResolvedConcept(
     val concept: Concept,
@@ -10,7 +9,13 @@ class ResolvedConcept(
     val enclosedConcepts: Set<ResolvedConcept>
 ) {
 
-    fun getFacetByCombinedName(purposeFacetName: String): ResolvedFacet? {
+    fun getFacet(purposeName: PurposeName, facetName: FacetName): ResolvedFacet? {
+        return enclosedFacets
+            .filter { it.purpose.purposeName == purposeName }
+            .firstOrNull { it.facet.facetName == facetName }
+    }
+
+    fun getFacetByCombinedName(purposeFacetName: PurposeFacetCombinedName): ResolvedFacet? {
         return enclosedFacets.firstOrNull { it.purposeFacetName == purposeFacetName }
     }
 }
