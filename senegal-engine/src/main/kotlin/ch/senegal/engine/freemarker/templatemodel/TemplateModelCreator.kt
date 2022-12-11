@@ -5,13 +5,15 @@ import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.plugin.TemplateTarget
+import java.nio.file.Path
 
 
 object TemplateModelCreator {
 
-    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins): List<FreemarkerFileDescriptor> {
+    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins, defaultOutputPath: Path): List<FreemarkerFileDescriptor> {
         val templateModel = createTemplateModel(modelTree)
-        val templateTargets = collectTemplateTargets(modelTree)
+        val templateTargets = collectTemplateTargets(modelTree, defaultOutputPath)
+        // TODO add here for each template target the matching templateModelNode
         val templateRootModel: Map<String, Any> = mapOf(
             "senegalTemplateModel" to templateModel
         )
@@ -22,10 +24,10 @@ object TemplateModelCreator {
         }
     }
 
-    private fun collectTemplateTargets(modelTree: MutableModelTree): List<TemplateTarget> {
+    private fun collectTemplateTargets(modelTree: MutableModelTree, defaultOutputPath: Path): List<TemplateTarget> {
         return modelTree.getAllModelNodes()
             .flatMap { node -> node.resolvedConcept.enclosedPurposes
-                .flatMap { purpose -> purpose.createTemplateTargets(node) } }
+                .flatMap { purpose -> purpose.createTemplateTargets(node, defaultOutputPath) } }
     }
 
     internal fun createTemplateModel(modelTree: MutableModelTree): List<TemplateModelNode> {

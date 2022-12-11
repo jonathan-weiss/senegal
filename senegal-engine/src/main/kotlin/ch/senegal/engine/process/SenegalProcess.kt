@@ -18,6 +18,7 @@ object SenegalProcess {
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
         val definitionDirectory = ParameterReader.getParameter(PathParameterName.DefinitionDirectory)
+        val defaultOutputDirectory = ParameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
         val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory)
 
         XmlSchemaInitializer.initializeXmlSchemaFile(schemaDirectory, resolvedPlugins)
@@ -27,7 +28,7 @@ object SenegalProcess {
 
         val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile)
 
-        val freemarkerFileDescriptors = TemplateModelCreator.createTemplateTargets(modelTree, resolvedPlugins)
+        val freemarkerFileDescriptors = TemplateModelCreator.createTemplateTargets(modelTree, resolvedPlugins, defaultOutputDirectory)
 
         val templateProcessor = FreemarkerTemplateProcessor("")
 

@@ -1,6 +1,7 @@
 package ch.senegal.plugin
 
 import ch.senegal.plugin.model.ModelNode
+import java.nio.file.Path
 
 interface Purpose: Plugin {
 
@@ -8,5 +9,5 @@ interface Purpose: Plugin {
 
     val facets: Set<Facet>
 
-    fun createTemplateTargets(modelNode: ModelNode): Set<TemplateTarget> = emptySet()
+    fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> = emptySet()
 }
