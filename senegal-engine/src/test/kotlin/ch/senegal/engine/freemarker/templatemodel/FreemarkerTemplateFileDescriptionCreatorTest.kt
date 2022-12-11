@@ -1,7 +1,6 @@
 package ch.senegal.engine.freemarker.templatemodel
 
 import ch.senegal.engine.TmpFileUtil
-import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
 import ch.senegal.plugin.model.FacetValue
 import ch.senegal.engine.model.MutableModelTree
@@ -16,38 +15,43 @@ import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readText
 
-internal class FreemarkerTemplateModelNodeTest {
+internal class FreemarkerTemplateFileDescriptionCreatorTest {
 
-    private val testClasspathBase = "/ch/senegal/engine/freemarker"
-    private val expectedContentClasspath = "$testClasspathBase/template-model-node-template.result.txt"
+    private val testClasspathBase = ""
+    private val expectedContentClasspath = "/ch/senegal/engine/freemarker/template-model-node-template.result.txt"
 
     @Test
     fun processFileContentWithFreemarker() {
-        val templateProcessor = FreemarkerTemplateProcessor(testClasspathBase)
-        val targetFilePath = TmpFileUtil.createTempFile("freemarker-template-model-test")
-        val model = mutableMapOf<String, List<TemplateModelNode>>()
-        model["topLevelNodes"] = createTemplateModelNodes()
+        // arrange
+        val defaultOutputPath = TmpFileUtil.createTempDirectory()
+        val resolvedPlugins = createResolvedPlugin()
+        val modelTree = createModelTree(resolvedPlugins)
 
-        val fileDescriptor = FreemarkerFileDescriptor(
-            targetFile = targetFilePath,
-            model = model,
-            templateClassPath = "template-model-node-template.ftl"
-        )
-        templateProcessor.processFileContentWithFreemarker(fileDescriptor)
+        // act
+        val listOfTemplateTargets = TemplateFileDescriptionCreator
+            .createTemplateTargets(modelTree, resolvedPlugins, defaultOutputPath)
+
+        val templateProcessor = FreemarkerTemplateProcessor(testClasspathBase)
+        templateProcessor.processFileContentWithFreemarker(listOfTemplateTargets)
+
+        // assert
+        assertEquals(2, listOfTemplateTargets.size)
+        val fileDescriptor = listOfTemplateTargets.first()
+
         println("The template has been created at ${fileDescriptor.targetFile}")
         println("Content:")
         println("------------------------------------------------")
         println(fileDescriptor.targetFile.readText())
         println("------------------------------------------------")
 
-        val expectedContent = FreemarkerTemplateModelNodeTest::class.java
+        val expectedContent = FreemarkerTemplateFileDescriptionCreatorTest::class.java
             .getResource(expectedContentClasspath)
             ?.readText() ?: fail("Could not read '$expectedContentClasspath'")
         assertEquals(expectedContent, fileDescriptor.targetFile.readText())
     }
 
-    private fun createTemplateModelNodes(): List<TemplateModelNode> {
-        val resolvedPlugins = createResolvedPlugin()
+    private fun createModelTree(resolvedPlugins: ResolvedPlugins): MutableModelTree {
+
         val modelTree = MutableModelTree(resolvedPlugins = resolvedPlugins)
 
         val resolvedTestEntity = findResolvedConcept(resolvedPlugins, TestEntityConcept.conceptName)
@@ -77,8 +81,7 @@ internal class FreemarkerTemplateModelNodeTest {
             facetValue = FacetValue.of("kotlin.String")
         )
 
-        return TemplateModelCreator.createTemplateModel(modelTree)
-
+        return modelTree
     }
 
     private fun createResolvedPlugin(): ResolvedPlugins {

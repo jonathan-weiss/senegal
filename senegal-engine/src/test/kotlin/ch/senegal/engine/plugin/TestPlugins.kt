@@ -1,6 +1,8 @@
 package ch.senegal.engine.plugin
 
 import ch.senegal.plugin.*
+import ch.senegal.plugin.model.ModelNode
+import java.nio.file.Path
 
 object TestPluginFinder {
     fun findAllTestPlugins(): Set<Plugin> {
@@ -63,6 +65,16 @@ object TestEntityAttributeTypeFacet: Facet {
 object TestKotlinModelPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestKotlinModel")
     override val facets: Set<Facet> = setOf(TestClassnameFacet, TestPackageFacet)
+    override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
+        val facetValue = modelNode.getFacetValue(purposeName, TestClassnameFacet.facetName)
+        val classname = requireNotNull(facetValue).value as String
+        return setOf(
+            TemplateTarget(
+                targetFile = defaultOutputPath.resolve("$classname.kt"),
+                templateClasspath = "/ch/senegal/engine/freemarker/template-model-node-template.ftl"
+            )
+        )
+    }
 }
 
 object TestClassnameFacet: Facet {

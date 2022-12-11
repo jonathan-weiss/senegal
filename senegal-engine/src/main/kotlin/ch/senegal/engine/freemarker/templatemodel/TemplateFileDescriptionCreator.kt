@@ -8,9 +8,9 @@ import ch.senegal.plugin.Purpose
 import java.nio.file.Path
 
 
-object TemplateModelCreator {
-    val rootModelListName = "rootTemplateModels"
-    val currentModelName = "templateModel"
+object TemplateFileDescriptionCreator {
+    private const val rootModelListName = "rootTemplateModels"
+    private const val currentModelName = "templateModel"
 
 
     fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins, defaultOutputPath: Path): List<FreemarkerFileDescriptor> {
@@ -29,7 +29,7 @@ object TemplateModelCreator {
                                        rootTemplateModelList: List<TemplateModelNode>): List<FreemarkerFileDescriptor> {
         return modelTree.getAllModelNodes()
             .flatMap { node -> node.resolvedConcept.enclosedPurposes
-                .flatMap { purpose -> createFreemarkerFileDescriptors(
+                .flatMap { purpose -> createTemplateTargetsForNode(
                     mutableModelNode = node,
                     purpose = purpose,
                     defaultOutputPath = defaultOutputPath,
@@ -37,11 +37,11 @@ object TemplateModelCreator {
                     rootTemplateModelList = rootTemplateModelList) } }
     }
 
-    private fun createFreemarkerFileDescriptors(mutableModelNode: MutableModelNode,
-                                                purpose: Purpose,
-                                                defaultOutputPath: Path,
-                                                modelNodeToTemplateModelMap: Map<MutableModelNode, TemplateModelNode>,
-                                                rootTemplateModelList: List<TemplateModelNode>
+    private fun createTemplateTargetsForNode(mutableModelNode: MutableModelNode,
+                                             purpose: Purpose,
+                                             defaultOutputPath: Path,
+                                             modelNodeToTemplateModelMap: Map<MutableModelNode, TemplateModelNode>,
+                                             rootTemplateModelList: List<TemplateModelNode>
     ): List<FreemarkerFileDescriptor> {
         val templateTargets = purpose.createTemplateTargets(mutableModelNode, defaultOutputPath).toList()
 
@@ -60,14 +60,9 @@ object TemplateModelCreator {
         return modelTree.getAllModelNodes().associateWith { createTemplateModelNode(it) }
     }
 
-    internal fun createTemplateModel(modelTree: MutableModelTree,
+    private fun createTemplateModel(modelTree: MutableModelTree,
                                      modelNodeToTemplateModelMap: Map<MutableModelNode, TemplateModelNode>): List<TemplateModelNode> {
         return modelTree.getRootModelNodes().map { requireNotNull(modelNodeToTemplateModelMap[it]) }
-    }
-
-
-    internal fun createTemplateModel(modelTree: MutableModelTree): List<TemplateModelNode> {
-        return modelTree.getRootModelNodes().map { createTemplateModelNode(it) }
     }
 
     private fun createTemplateModelNode(mutableModelNode: MutableModelNode): TemplateModelNode {
