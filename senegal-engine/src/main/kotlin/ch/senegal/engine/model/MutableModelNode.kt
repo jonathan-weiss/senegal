@@ -2,6 +2,7 @@ package ch.senegal.engine.model
 
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedFacet
+import ch.senegal.plugin.model.FacetValue
 
 class MutableModelNode(val resolvedConcept: ResolvedConcept,
                        private val parentMutableModelInstance: MutableModelInstance,

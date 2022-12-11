@@ -1,6 +1,5 @@
 package ch.senegal.engine.xml
 
-import ch.senegal.engine.model.FacetValue
 import ch.senegal.engine.model.MutableModelInstance
 import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
@@ -28,11 +27,11 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
 
     private fun addAttribute(mutableModelNode: MutableModelNode, attribute: Attribute) {
         val purposeFacetCombinedName = PurposeFacetCombinedName.of(CaseUtil.capitalize(attribute.localName))
-        val facet = mutableModelNode.resolvedConcept.getFacetByCombinedName(purposeFacetCombinedName)
+        val resolvedFacet = mutableModelNode.resolvedConcept.getFacetByCombinedName(purposeFacetCombinedName)
             ?: this.fail("No facet found for name '${purposeFacetCombinedName.name}'.")
 
-        val facetValue = FacetValue(attribute.value)
-        mutableModelNode.addFacetValue(facet = facet, facetValue = facetValue)
+        val facetValue = resolvedFacet.facet.facetType.facetValueFromString(attribute.value)
+        mutableModelNode.addFacetValue(facet = resolvedFacet, facetValue = facetValue)
     }
 
     @Throws(SAXException::class)

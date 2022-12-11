@@ -1,18 +1,50 @@
 package ch.senegal.plugin
 
-sealed interface FacetType
+import ch.senegal.plugin.model.FacetValue
+import java.nio.file.Paths
 
-object TextFacetType : FacetType
+sealed interface FacetType {
+    fun facetValueFromString(stringValue: String): FacetValue
+}
 
-object IntegerNumberFacetType : FacetType
+object TextFacetType : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        return FacetValue.of(stringValue)
+    }
+}
 
-object BooleanFacetType : FacetType
+object IntegerNumberFacetType : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        return FacetValue.of(stringValue.toInt())
+    }
+}
 
-object FileFacetType : FacetType
+object BooleanFacetType : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        return FacetValue.of(stringValue.toBoolean())
+    }
+}
 
-object DirectoryFacetType : FacetType
+object FileFacetType : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        return FacetValue.of(Paths.get(stringValue))
+    }
+}
 
-class EnumerationFacetType(val enumerationValues: List<FacetTypeEnumerationValue>) : FacetType
+object DirectoryFacetType : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        return FacetValue.of(Paths.get(stringValue))
+    }
+}
+
+class EnumerationFacetType(val enumerationValues: List<FacetTypeEnumerationValue>) : FacetType {
+    override fun facetValueFromString(stringValue: String): FacetValue {
+        if(!enumerationValues.map { it.name }.contains(stringValue)) {
+            throw IllegalArgumentException("The value '$stringValue' is not contained in ${enumerationValues.map { it.name }}")
+        }
+        return FacetValue.of(stringValue)
+    }
+}
 
 
 @JvmInline
