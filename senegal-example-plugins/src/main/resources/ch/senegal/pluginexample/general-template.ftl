@@ -1,4 +1,4 @@
-<#list senegalTemplateModel as topLevelNode>
+<#list rootTemplateModels as topLevelNode>
 
     Properties:
     <#list topLevelNode.properties as propertyKey, propertyValue>
