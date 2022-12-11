@@ -71,7 +71,9 @@ object XmlDomSchemaCreator {
                 setElementXsdAttribute(elementRef, "ref", enclosedConceptXmlSchemaName)
             }
             conceptNode.enclosedPurposes.forEach { purpose ->
-                purpose.facets.forEach { facet ->
+                purpose.facets
+                    .filter { !it.isOnlyCalculated }
+                    .forEach { facet ->
                     val purposeXmlAttributeNamePart = schemaAttributeName(purpose)
                     val facetXmlAttributeNamePart = facet.facetName.name
                     complexType.appendChild(createFacetAttributeElement(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart", facet.facetType))
