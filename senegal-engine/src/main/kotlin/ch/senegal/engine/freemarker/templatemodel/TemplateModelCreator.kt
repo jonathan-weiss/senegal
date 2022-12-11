@@ -34,7 +34,7 @@ object TemplateModelCreator {
 
     private fun createTemplateModelNode(mutableModelNode: MutableModelNode): TemplateModelNode {
         val properties: Map<String, Any> = mutableModelNode.nodeFacetValues
-            .map { (facet, facetValue) -> Pair(facet.purposeFacetName.name, facetValue.value) }
+            .map { (purposeFacetCombinedName, facetValue) -> Pair(purposeFacetCombinedName.name, facetValue.value) }
             .toMap()
         return TemplateModelNode(
             properties = properties,

@@ -37,7 +37,7 @@ class SenegalSaxParserHandler(private val resolvedPlugins: ResolvedPlugins, priv
     @Throws(SAXException::class)
     override fun endElement(uri: String, localName: String, qName: String) {
         if (!isConcept(localName)) return
-        this.currentMutableModelInstance = currentMutableModelInstance.parentModelInstance() ?: modelTree
+        this.currentMutableModelInstance = currentMutableModelInstance.parentMutableModelInstance() ?: modelTree
     }
 
 

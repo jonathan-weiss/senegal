@@ -9,7 +9,19 @@ object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinModel")
     override val facets: Set<Facet> = setOf(KotlinModelClassnameFacet, KotlinModelPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode): Set<TemplateTarget> {
-        return setOf(TemplateTarget(Paths.get("build/general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
+
+        val targets: MutableSet<TemplateTarget> = mutableSetOf()
+        targets.add(TemplateTarget(Paths.get("build/general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
+
+        val className = modelNode.getFacetValue(purposeName, KotlinModelClassnameFacet.facetName)?.value as String?
+        val packageName = modelNode.getFacetValue(purposeName, KotlinModelPackageFacet.facetName)?.value as String?
+
+        if(className != null && packageName != null) {
+            val directory = packageName.replace(".", "/")
+            targets.add(TemplateTarget(Paths.get("build/$directory/$className.kt"), "/ch/senegal/pluginexample/general-template.ftl"))
+        }
+
+        return targets
     }
 }
 

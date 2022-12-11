@@ -4,7 +4,7 @@ import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 
 class MutableModelTree(val resolvedPlugins: ResolvedPlugins): MutableModelInstance() {
 
-    override fun parentModelInstance(): MutableModelInstance? {
+    override fun parentMutableModelInstance(): MutableModelInstance? {
         return null
     }
 
