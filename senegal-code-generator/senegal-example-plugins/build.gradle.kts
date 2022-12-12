@@ -26,6 +26,9 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.named("run") {
+    enabled = false
+}
 application {
     mainClass.set("ch.senegal.engine.process.SenegalApplicationKt")
 }
