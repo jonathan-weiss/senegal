@@ -3,10 +3,14 @@ package ch.senegal.engine.properties
 object ParameterReader {
 
     private val parameterSources = listOf<ParameterSource>(
-        // TODO Add here system property source
         // TODO Add here environment variable source
+        SystemPropertyParameterSource,
         PropertyParameterSource,
     )
+
+    fun getParameterList(): List<String> {
+        return ParameterNames.allParameters().map { "${it.propertyName}=${getParameter(it)}" }
+    }
 
     fun <T : Any> getParameter(key: SenegalParameterName<T>): T {
         return parameterSources

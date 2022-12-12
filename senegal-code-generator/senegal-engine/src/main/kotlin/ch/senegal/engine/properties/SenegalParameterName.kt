@@ -11,7 +11,6 @@ sealed interface SenegalParameterName<T : Any> {
 }
 
 enum class StringParameterName(override val propertyName: String): SenegalParameterName<String> {
-    SourceMode("sourceMode")
     ;
 
     override fun fromString(stringValue: String): String {
@@ -31,11 +30,20 @@ enum class PathParameterName(override val propertyName: String): SenegalParamete
 }
 
 enum class BooleanParameterName(override val propertyName: String): SenegalParameterName<Boolean> {
-    EngineEnabled("engineEnabled"),
     ;
 
     override fun fromString(stringValue: String): Boolean {
         return stringValue.lowercase() == "true"
     }
+}
+
+object ParameterNames {
+    fun allParameters(): List<SenegalParameterName<*>> {
+        return StringParameterName.values().toList() +
+                PathParameterName.values().toList() +
+                BooleanParameterName.values().toList()
+    }
+
+
 }
 

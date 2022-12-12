@@ -18,6 +18,12 @@ object SenegalProcess {
         val foundPlugins = PluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
+        println("------------")
+        println("Parameters:")
+        println("------------")
+        println(ParameterReader.getParameterList().joinToString("\n"))
+        println("------------")
+
         val definitionDirectory = ParameterReader.getParameter(PathParameterName.DefinitionDirectory)
         val defaultOutputDirectory = ParameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
         val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory)
