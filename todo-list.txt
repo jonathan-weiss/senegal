@@ -3,3 +3,4 @@ TO-DO List
 * Calculated facets (not in XML but by calling a method on the facet)
 * Remove abstraction of entity/entity attribute purposes, work directly with kotlin-model
 * Facet to facet dependencies?
+* Better/Streamlined exception handling

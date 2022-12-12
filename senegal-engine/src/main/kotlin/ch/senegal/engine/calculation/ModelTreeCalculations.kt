@@ -20,10 +20,17 @@ object ModelTreeCalculations {
     private fun calculateFacet(resolvedFacet: ResolvedFacet, mutableModelNode: MutableModelNode) {
         val currentFacetValue = mutableModelNode.nodeFacetValues[resolvedFacet.purposeFacetName]
         val newFacetValue = resolvedFacet.facet.calculateFacetValue(modelNode = mutableModelNode, currentFacetValue)
+
         if(newFacetValue == null) {
             mutableModelNode.nodeFacetValues.remove(resolvedFacet.purposeFacetName)
         } else {
-            mutableModelNode.nodeFacetValues[resolvedFacet.purposeFacetName] = newFacetValue
+            if(resolvedFacet.facet.facetType.isValidateFacetValue(newFacetValue)) {
+                mutableModelNode.nodeFacetValues[resolvedFacet.purposeFacetName] = newFacetValue
+            } else {
+                throw IllegalArgumentException("Not a valid FacetValue '${newFacetValue.value}' " +
+                        "for facet ${resolvedFacet.purposeFacetName.name}")
+            }
+
         }
 
     }
