@@ -15,4 +15,5 @@ include("senegal-example-app:persistence")
 include("senegal-example-app:frontend-api")
 include("senegal-example-app:frontend")
 include("senegal-example-app:open-api")
+include("senegal-example-app:customized-code-generator")
 

@@ -7,4 +7,5 @@ db/**
 tmp
 
 
-senegal-example-plugins/definitions/schema/*
+senegal-code-generator/senegal-example-plugins/definitions/schema/*
+senegal-example-app/customized-code-generator/definitions/schema/*
