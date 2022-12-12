@@ -2,7 +2,6 @@ package ch.senegal.engine.properties
 
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.reflect.KClass
 
 sealed interface SenegalParameterName<T : Any> {
     val propertyName: String
@@ -11,6 +10,7 @@ sealed interface SenegalParameterName<T : Any> {
 }
 
 enum class StringParameterName(override val propertyName: String): SenegalParameterName<String> {
+    Placeholder("placeholder")
     ;
 
     override fun fromString(stringValue: String): String {

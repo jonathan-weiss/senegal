@@ -2,9 +2,9 @@ package ch.senegal.engine.properties
 
 import java.util.*
 
-object SystemPropertyParameterSource: ParameterSource {
+object EnvironmentVariablesParameterSource: ParameterSource {
 
-    private val propertyBag: PropertyBag = PropertyBag(getPropertiesFromSystemProperties())
+    private val propertyBag: PropertyBag = PropertyBag(getPropertiesFromEnvironmentVariables())
 
     override fun getParameterValue(parameterName: SenegalParameterName<*>): String? {
         return propertyBag.getParameterValue(parameterName)
@@ -14,8 +14,10 @@ object SystemPropertyParameterSource: ParameterSource {
         return propertyBag.getParameterValueMap(parameterName)
     }
 
-    private fun getPropertiesFromSystemProperties(): Properties {
-        return System.getProperties()
+    private fun getPropertiesFromEnvironmentVariables(): Properties {
+        val props = Properties()
+        System.getenv().forEach { props[it.key] = it.value }
+        return props
     }
 
     override fun toString(): String {
