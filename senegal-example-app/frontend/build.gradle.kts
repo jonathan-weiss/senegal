@@ -82,7 +82,7 @@ tasks.register<com.github.gradle.node.npm.task.NpmTask>("testAngular") {
 }
 
 
-val openApiSpec = rootDir.resolve("open-api/build/senegal-frontend-api.yaml")
+val openApiSpec = projectDir.resolve("../open-api/build/senegal-frontend-api.yaml")
 val openApiOutputDir = buildDir.resolve("generated-openapi-files")
 val openApiDestinationDir = projectDir.resolve("src/generated-openapi")
 
@@ -112,7 +112,7 @@ tasks.register<Copy>("openApiCopyGeneratedFiles") {
 
 tasks.named<Task>("openApiGenerate") {
   mustRunAfter("openApiCleanGeneratedFiles")
-  dependsOn(":senegal-example:open-api:generateOpenApiDocs")
+  dependsOn(":senegal-example-app:open-api:generateOpenApiDocs")
 }
 
 tasks.register<com.github.gradle.node.npm.task.NpmTask>("lintAngular") {

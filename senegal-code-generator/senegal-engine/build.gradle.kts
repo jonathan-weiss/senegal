@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    application
 }
 
 allprojects {
@@ -10,9 +9,11 @@ allprojects {
 }
 
 dependencies {
-    implementation(project(":senegal-plugin-api"))
-    implementation(project(":senegal-engine"))
+    implementation(project(":senegal-code-generator:senegal-plugin-api"))
+    implementation("org.freemarker:freemarker:2.3.31")
 
+
+    testImplementation(project(":senegal-code-generator:senegal-plugin-api"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
     testImplementation("org.mockito:mockito-core:4.8.0")
     testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
@@ -24,8 +25,4 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-}
-
-application {
-    mainClass.set("ch.senegal.engine.process.SenegalApplicationKt")
 }
