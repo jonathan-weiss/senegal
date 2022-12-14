@@ -17,8 +17,8 @@ import javax.xml.transform.stream.StreamResult
 
 
 object XmlDomSchemaCreator {
-    const val xsdNamespace = "http://www.w3.org/2001/XMLSchema"
-    const val xsdNamespacePrefix = "xs"
+    private const val xsdNamespace = "http://www.w3.org/2001/XMLSchema"
+    private const val xsdNamespacePrefix = "xsd"
 
     fun createPluginSchema(resolvedPlugins: ResolvedPlugins): String {
         val document = initializeDocument()
@@ -89,7 +89,7 @@ object XmlDomSchemaCreator {
         if(facetType is EnumerationFacetType) {
             val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
             val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
-            setElementXsdAttribute(restriction, "base", "xs:string")
+            setElementXsdAttribute(restriction, "base", "$xsdNamespacePrefix:string")
             facetType.enumerationValues.forEach { enumerationValue ->
                 val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
                 setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
@@ -143,11 +143,11 @@ object XmlDomSchemaCreator {
 
     private fun schemaAttributeType(facetType: FacetType): String {
         return when(facetType) {
-            TextFacetType -> "xs:string"
-            IntegerNumberFacetType -> "xs:integer"
-            BooleanFacetType -> "xs:boolean"
-            DirectoryFacetType -> "xs:string"
-            FileFacetType -> "xs:string"
+            TextFacetType -> "$xsdNamespacePrefix:string"
+            IntegerNumberFacetType -> "$xsdNamespacePrefix:integer"
+            BooleanFacetType -> "$xsdNamespacePrefix:boolean"
+            DirectoryFacetType -> "$xsdNamespacePrefix:string"
+            FileFacetType -> "$xsdNamespacePrefix:string"
             else -> throw IllegalArgumentException("FacetType is not supported: $facetType")
         }
     }

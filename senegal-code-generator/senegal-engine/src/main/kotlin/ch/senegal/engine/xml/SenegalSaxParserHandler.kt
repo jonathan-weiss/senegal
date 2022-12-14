@@ -10,16 +10,22 @@ import ch.senegal.engine.util.PlaceholderUtil
 import ch.senegal.plugin.ConceptName
 import ch.senegal.plugin.PurposeFacetCombinedName
 import org.xml.sax.Attributes
+import org.xml.sax.InputSource
 import org.xml.sax.SAXException
+import org.xml.sax.SAXParseException
+import org.xml.sax.ext.DefaultHandler2
 import org.xml.sax.helpers.DefaultHandler
+import java.nio.file.Path
 import java.util.*
+import kotlin.io.path.absolutePathString
 
 
 class SenegalSaxParserHandler(
     private val resolvedPlugins: ResolvedPlugins,
     private val modelTree: MutableModelTree,
-    private val placeholders: Map<String, String>
-) : DefaultHandler() {
+    private val placeholders: Map<String, String>,
+    private val schemaFileDirectory: Path,
+) : DefaultHandler2() {
     private var currentMutableModelInstance: MutableModelInstance = modelTree
 
     @Throws(SAXException::class)
@@ -58,5 +64,25 @@ class SenegalSaxParserHandler(
     private fun getConceptByXmlLocalName(localName: String): ResolvedConcept? {
         val potentialConceptName = ConceptName.of(CaseUtil.capitalize(localName))
         return resolvedPlugins.getConceptByConceptName(potentialConceptName)
+    }
+
+    override fun fatalError(e: SAXParseException) {
+        throw e
+    }
+
+    override fun error(e: SAXParseException) {
+        throw e
+    }
+
+    override fun warning(e: SAXParseException) {
+         println("Warning: ${e.message}")
+    }
+
+    override fun resolveEntity(name: String?, publicId: String?, baseURI: String?, systemId: String?): InputSource? {
+        return if(systemId != null && systemId.startsWith("./")) {
+            InputSource(schemaFileDirectory.resolve(systemId).absolutePathString())
+        } else {
+            super.resolveEntity(name, publicId, baseURI, systemId)
+        }
     }
 }

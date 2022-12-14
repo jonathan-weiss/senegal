@@ -1,9 +1,11 @@
 package ch.senegal.engine.xml
 
 import org.xml.sax.*
+import org.xml.sax.ext.DefaultHandler2
 import org.xml.sax.helpers.DefaultHandler
 
-class DelegatingToManySaxHandler(private val delegates: List<DefaultHandler>) : DefaultHandler() {
+class DelegatingToManySaxHandler(private val delegates: List<DefaultHandler2>,
+                                 private val entityResolverDelegate: DefaultHandler2) : DefaultHandler2() {
     init {
         require(delegates.isNotEmpty()) {
             "There must be at least one delegate in the list of delegates."
@@ -62,13 +64,21 @@ class DelegatingToManySaxHandler(private val delegates: List<DefaultHandler>) : 
         delegates.forEach { it.endElement(uri, localName, qName) }
     }
 
-    override fun resolveEntity(publicId: String?, systemId: String?): InputSource {
-        val inputSource = delegates.first().resolveEntity(publicId, systemId)
-        delegates.filterIndexed { index, _ ->
-            index > 0
-        }.forEach {
-            it.resolveEntity(publicId, systemId)
-        }
+    override fun resolveEntity(publicId: String?, systemId: String?): InputSource? {
+        val inputSource = entityResolverDelegate.resolveEntity(publicId, systemId)
+        delegates
+            .filter { it != entityResolverDelegate }.forEach {
+                it.resolveEntity(publicId, systemId)
+            }
+        return inputSource
+    }
+
+    override fun resolveEntity(name: String?, publicId: String?, baseURI: String?, systemId: String?): InputSource {
+        val inputSource = entityResolverDelegate.resolveEntity(name, publicId, baseURI, systemId)
+        delegates
+            .filter { it != entityResolverDelegate }.forEach {
+                it.resolveEntity(name, publicId, baseURI, systemId)
+            }
         return inputSource
     }
 

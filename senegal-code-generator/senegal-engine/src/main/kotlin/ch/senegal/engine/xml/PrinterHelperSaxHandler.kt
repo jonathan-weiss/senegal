@@ -3,9 +3,10 @@ package ch.senegal.engine.xml
 import org.xml.sax.Attributes
 import org.xml.sax.Locator
 import org.xml.sax.SAXException
+import org.xml.sax.ext.DefaultHandler2
 import org.xml.sax.helpers.DefaultHandler
 
-class PrinterHelperSaxHandler : DefaultHandler() {
+class PrinterHelperSaxHandler : DefaultHandler2() {
 
     var elementLevel = 0;
 

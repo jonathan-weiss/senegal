@@ -5,6 +5,7 @@ import ch.senegal.engine.plugin.TestPluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.nio.file.Paths
 import javax.xml.parsers.SAXParser
 import javax.xml.parsers.SAXParserFactory
 
@@ -38,7 +39,7 @@ internal class SenegalSaxParserHandlerTest {
         val plugins = TestPluginFinder.findAllTestPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
-        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap())
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."))
         val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
 
         testXml.byteInputStream().use {
