@@ -41,7 +41,8 @@ object ParameterNames {
     fun allParameters(): List<SenegalParameterName<*>> {
         return StringParameterName.values().toList() +
                 PathParameterName.values().toList() +
-                BooleanParameterName.values().toList()
+                BooleanParameterName.values().toList() -
+                StringParameterName.Placeholder // remove, as it is only a prefix property
     }
 
 
