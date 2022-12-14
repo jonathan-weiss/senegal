@@ -33,6 +33,11 @@ dependencies {
     testImplementation("org.liquibase:liquibase-core")
 }
 
+java.sourceSets["main"].java {
+    srcDir("src/main/kotlin-generated")
+}
+
+
 val liquibaseChangelogFiles = buildDir.resolve("liquibase-changelog-files")
 
 liquibase {

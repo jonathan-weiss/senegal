@@ -15,3 +15,8 @@ dependencies {
 //    testImplementation(project(":shared-test"))
 
 }
+
+java.sourceSets["main"].java {
+	srcDir("src/main/kotlin-generated")
+}
+

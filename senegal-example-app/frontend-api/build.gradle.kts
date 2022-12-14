@@ -18,3 +18,8 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest")
 
 }
+
+java.sourceSets["main"].java {
+    srcDir("src/main/kotlin-generated")
+}
+
