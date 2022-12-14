@@ -9,3 +9,4 @@ tmp
 
 senegal-code-generator/senegal-example-plugins/definitions/schema/*
 senegal-example-app/customized-code-generator/definitions/schema/*
+senegal-example-app/domain/src/main/kotlin-generated/*

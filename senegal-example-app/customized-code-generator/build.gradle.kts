@@ -9,31 +9,32 @@ allprojects {
     }
 }
 
-java.sourceSets["main"].java {
-    srcDir("src/generated/kotlin")
-}
-
 dependencies {
     implementation(project(":senegal-code-generator:senegal-plugin-api"))
     implementation(project(":senegal-code-generator:senegal-engine"))
 }
 
+val pathToDomainSource = projectDir.resolve("../domain/src/main/kotlin-generated")
+
 tasks.register<Delete>("clearGeneratedSource") {
-    delete(projectDir.resolve("src/generated/kotlin"))
+    delete(fileTree(pathToDomainSource).include("**/*"))
+}
+
+
+
+
+application {
+    val defaultGeneratedSourcePath = buildDir
+    val definitionsDirectory = projectDir.resolve("definitions")
+    mainClass.set("ch.senegal.engine.process.SenegalApplicationKt")
+    applicationDefaultJvmArgs = listOf(
+        "-DdefinitionDirectory=${definitionsDirectory.absolutePath}",
+        "-DdefaultOutputDirectory=${defaultGeneratedSourcePath.absolutePath}",
+        "-DxmlDefinitionFile=${definitionsDirectory.resolve("customized.xml").absolutePath}",
+        "-Dplaceholder.domainPath=${pathToDomainSource.absolutePath}",
+    )
 }
 
 tasks.named("run") {
     dependsOn("clearGeneratedSource")
-}
-
-
-application {
-    val projectDirectory = projectDir.toPath()
-    val definitionsDirectory = projectDirectory.resolve("definitions")
-    mainClass.set("ch.senegal.engine.process.SenegalApplicationKt")
-    applicationDefaultJvmArgs = listOf(
-        "-DdefinitionDirectory=${definitionsDirectory.toAbsolutePath()}",
-        "-DdefaultOutputDirectory=${projectDirectory.resolve("../build").toAbsolutePath()}",
-        "-DxmlDefinitionFile=${definitionsDirectory.resolve("customized.xml").toAbsolutePath()}",
-    )
 }

@@ -146,6 +146,8 @@ object XmlDomSchemaCreator {
             TextFacetType -> "xs:string"
             IntegerNumberFacetType -> "xs:integer"
             BooleanFacetType -> "xs:boolean"
+            DirectoryFacetType -> "xs:string"
+            FileFacetType -> "xs:string"
             else -> throw IllegalArgumentException("FacetType is not supported: $facetType")
         }
     }

@@ -18,17 +18,15 @@ object SenegalProcess {
         val foundPlugins = PluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
-        println("------------")
         println("Parameters:")
         println("------------")
-        println(ParameterReader.getParameterList().joinToString("\n"))
+        ParameterReader.getParameterList().forEach { println(it) }
         println("------------")
 
         val placeholders = ParameterReader.getPlaceholders()
-        println("------------")
         println("Placeholders:")
         println("------------")
-        println(placeholders.map { (key, value) -> "$key=$value" }.joinToString("\n"))
+        placeholders.forEach { (key, value) -> println("$key=$value") }
         println("------------")
 
         val definitionDirectory = ParameterReader.getParameter(PathParameterName.DefinitionDirectory)
@@ -47,6 +45,13 @@ object SenegalProcess {
         val freemarkerFileDescriptors = TemplateFileDescriptionCreator.createTemplateTargets(modelTree, resolvedPlugins, defaultOutputDirectory)
 
         val templateProcessor = FreemarkerTemplateProcessor("")
+
+        println("Generated files:")
+        println("------------")
+        freemarkerFileDescriptors.forEach {
+            println("${it.targetFile} (with template ${it.templateClassPath})")
+        }
+        println("------------")
 
         templateProcessor.processFileContentWithFreemarker(freemarkerFileDescriptors)
     }
