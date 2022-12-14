@@ -20,7 +20,11 @@ object XmlFileParser {
         val saxParser: SAXParser = factory.newSAXParser()
         val modelTree = MutableModelTree(resolvedPlugins)
         val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders)
-        val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
+        val saxHandlers = listOf(
+            //PrinterHelperSaxHandler(),
+            senegalSaxParser
+        )
+        val saxParserHandler = DelegatingToManySaxHandler(saxHandlers)
 
 
         xmlDefinitionFile.inputStream().use {
