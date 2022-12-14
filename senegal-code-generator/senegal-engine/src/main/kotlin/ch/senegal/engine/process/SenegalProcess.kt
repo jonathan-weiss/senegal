@@ -24,6 +24,13 @@ object SenegalProcess {
         println(ParameterReader.getParameterList().joinToString("\n"))
         println("------------")
 
+        val placeholders = ParameterReader.getPlaceholders()
+        println("------------")
+        println("Placeholders:")
+        println("------------")
+        println(placeholders.map { (key, value) -> "$key=$value" }.joinToString("\n"))
+        println("------------")
+
         val definitionDirectory = ParameterReader.getParameter(PathParameterName.DefinitionDirectory)
         val defaultOutputDirectory = ParameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
         val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory)
@@ -33,7 +40,7 @@ object SenegalProcess {
         val xmlDefinitionFile = ParameterReader.getParameter(PathParameterName.XmlDefinitionFile)
         FileUtil.checkFileReadable(xmlDefinitionFile)
 
-        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile)
+        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders)
 
         ModelTreeCalculations.executeCalculations(modelTree, resolvedPlugins)
 

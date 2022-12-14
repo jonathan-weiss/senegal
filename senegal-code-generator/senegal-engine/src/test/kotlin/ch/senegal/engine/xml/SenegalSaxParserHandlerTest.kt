@@ -38,7 +38,7 @@ internal class SenegalSaxParserHandlerTest {
         val plugins = TestPluginFinder.findAllTestPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
-        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree)
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap())
         val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
 
         testXml.byteInputStream().use {

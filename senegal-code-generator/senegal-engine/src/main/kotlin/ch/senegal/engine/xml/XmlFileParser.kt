@@ -9,13 +9,17 @@ import kotlin.io.path.inputStream
 
 object XmlFileParser {
 
-    fun validateAndReadXmlFile(resolvedPlugins: ResolvedPlugins, xmlDefinitionFile: Path): MutableModelTree {
+    fun validateAndReadXmlFile(
+        resolvedPlugins: ResolvedPlugins,
+        xmlDefinitionFile: Path,
+        placeholders: Map<String, String>
+    ): MutableModelTree {
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
         factory.isValidating = true
         val saxParser: SAXParser = factory.newSAXParser()
         val modelTree = MutableModelTree(resolvedPlugins)
-        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree)
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders)
         val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
 
 
