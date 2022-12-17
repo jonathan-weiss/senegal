@@ -25,6 +25,8 @@ object XmlDomSchemaCreator {
         val schemaElement = createMainStructure(document)
         attachRootConceptReferences(document, schemaElement, resolvedPlugins)
         attachAllConceptElements(document, schemaElement, resolvedPlugins)
+        attachAllConceptAttributes(document, schemaElement, resolvedPlugins)
+
         return transformDocumentToString(document)
     }
 
@@ -40,8 +42,15 @@ object XmlDomSchemaCreator {
 
         return schemaElement
     }
+    private fun attachComment(document: Document, schemaElement: Element, comment: String) {
+        //schemaElement.appendChild(document.createTextNode("\n\n"))
+        schemaElement.appendChild(document.createComment(" - - - - - - - -      $comment     - - - - - - - "))
+        //schemaElement.appendChild(document.createTextNode("\n\n"))
+    }
+
 
     private fun attachRootConceptReferences(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
+        attachComment(document, schemaElement, " ROOT CONCEPTS")
         val elementSenegal = createAndAttachXsdElement(document, schemaElement, "element")
         setElementXsdAttribute(elementSenegal, "name", "senegal")
         val complexType = createAndAttachXsdElement(document, elementSenegal, "complexType")
@@ -57,6 +66,7 @@ object XmlDomSchemaCreator {
     }
 
     private fun attachAllConceptElements(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
+        attachComment(document, schemaElement, " ALL CONCEPTS AS ELEMENTS")
         resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
             val conceptXmlSchemaName = schemaTagName(conceptNode)
             val element = createAndAttachXsdElement(document, schemaElement, "element")
@@ -76,13 +86,29 @@ object XmlDomSchemaCreator {
                     .forEach { facet ->
                     val purposeXmlAttributeNamePart = schemaAttributeName(purpose)
                     val facetXmlAttributeNamePart = facet.facetName.name
-                    complexType.appendChild(createFacetAttributeElement(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart", facet.facetType))
+                    complexType.appendChild(createFacetAttributeReference(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart"))
                 }
             }
         }
     }
 
+    private fun attachAllConceptAttributes(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
+        attachComment(document, schemaElement, " ALL ATTRIBUTES ")
+        resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
+            conceptNode.enclosedFacets
+                .filter { !it.facet.isOnlyCalculated }
+                .forEach { resolvedFacet ->
+                        val purposeXmlAttributeNamePart = schemaAttributeName(resolvedFacet.purpose)
+                        val facetXmlAttributeNamePart = resolvedFacet.facet.facetName.name
+                        schemaElement.appendChild(createFacetAttributeElement(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart", resolvedFacet.facet.facetType))
+                }
+        }
+    }
+
     private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: String, facetType: FacetType): Element {
+        val attributeGroupElement = createXsdElement(document, "attributeGroup")
+        setElementXsdAttribute(attributeGroupElement, "name", purposeFacetAttributeName)
+
         val attributeElement = createXsdElement(document, "attribute")
         setElementXsdAttribute(attributeElement, "name", purposeFacetAttributeName)
 
@@ -98,6 +124,14 @@ object XmlDomSchemaCreator {
             val facetTypeXsd = schemaAttributeType(facetType)
             setElementXsdAttribute(attributeElement, "type", facetTypeXsd)
         }
+
+        attributeGroupElement.appendChild(attributeElement)
+        return attributeGroupElement
+    }
+
+    private fun createFacetAttributeReference(document: Document, purposeFacetAttributeName: String): Element {
+        val attributeElement = createXsdElement(document, "attributeGroup")
+        setElementXsdAttribute(attributeElement, "ref", purposeFacetAttributeName)
         return attributeElement
     }
 
