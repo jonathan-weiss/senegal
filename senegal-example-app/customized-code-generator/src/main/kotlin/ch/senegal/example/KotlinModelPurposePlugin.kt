@@ -1,13 +1,20 @@
 package ch.senegal.example
 
 import ch.senegal.plugin.*
+import ch.senegal.plugin.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 
 
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinModel")
-    override val facets: Set<Facet> = setOf(KotlinModelClassnameFacet, KotlinModelPackageFacet, KotlinModelTargetBasePathFacet)
+    override val facets: Set<Facet> = setOf(
+        KotlinModelClassnameFacet,
+        KotlinModelPackageFacet,
+        KotlinModelTargetBasePathFacet,
+        KotlinModelFieldNameFacet,
+        KotlinModelFieldTypeFacet,
+    )
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
@@ -36,6 +43,11 @@ object KotlinModelClassnameFacet : Facet {
     override val facetName: FacetName = FacetName.of("ClassName")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
+    override val isOnlyCalculated: Boolean = true
+
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        return modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityNameFacet.facetName)
+    }
 }
 
 object KotlinModelPackageFacet : Facet {
@@ -44,25 +56,37 @@ object KotlinModelPackageFacet : Facet {
     override val facetType: FacetType = TextFacetType
 }
 
-object KotlinFieldPurposePlugin : Purpose {
-    override val purposeName: PurposeName = PurposeName.of("KotlinField")
-    override val facets: Set<Facet> = setOf(KotlinFieldNameFacet, KotlinFieldTypeFacet)
-}
-
-object KotlinFieldNameFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Name")
+object KotlinModelFieldNameFacet : Facet {
+    override val facetName: FacetName = FacetName.of("FieldName")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
+    override val isOnlyCalculated: Boolean = true
+
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        return modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityAttributeNameFacet.facetName)
+    }
+
 }
 
-object KotlinFieldTypeFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Type")
+object KotlinModelFieldTypeFacet : Facet {
+    private val stringType = FacetTypeEnumerationValue("kotlin.String")
+    private val intType = FacetTypeEnumerationValue("kotlin.Int")
+    private val booleanType = FacetTypeEnumerationValue("kotlin.Boolean")
+
+    override val facetName: FacetName = FacetName.of("FieldType")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     override val facetType: FacetType = EnumerationFacetType(
-        listOf(
-            FacetTypeEnumerationValue("kotlin.String"),
-            FacetTypeEnumerationValue("kotlin.Int"),
-            FacetTypeEnumerationValue("kotlin.Boolean"),
-        )
+        listOf(stringType, intType, booleanType)
     )
+    override val isOnlyCalculated: Boolean = true
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        val entityFacetValue =  modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityAttributeTypeFacet.facetName)
+        return when(entityFacetValue?.value) {
+            EntityAttributeTypeFacet.textType.name -> FacetValue.of(stringType.name)
+            EntityAttributeTypeFacet.integerNumberType.name -> FacetValue.of(intType.name)
+            EntityAttributeTypeFacet.booleanType.name -> FacetValue.of(booleanType.name)
+            else -> null
+        }
+    }
+
 }

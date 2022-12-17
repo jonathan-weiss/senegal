@@ -22,13 +22,13 @@ object EntityAttributeNameFacet : Facet {
 }
 
 object EntityAttributeTypeFacet : Facet {
+    val textType = FacetTypeEnumerationValue("Text")
+    val integerNumberType = FacetTypeEnumerationValue("IntegerNumber")
+    val booleanType = FacetTypeEnumerationValue("Boolean")
+
     override val facetName: FacetName = FacetName.of("AttributeType")
     override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     override val facetType: FacetType = EnumerationFacetType(
-        listOf(
-            FacetTypeEnumerationValue("Text"),
-            FacetTypeEnumerationValue("IntegerNumber"),
-            FacetTypeEnumerationValue("Boolean"),
-        )
+        listOf(textType, integerNumberType, booleanType)
     )
 }

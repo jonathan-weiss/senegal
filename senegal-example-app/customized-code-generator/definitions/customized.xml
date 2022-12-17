@@ -8,18 +8,14 @@
             kotlinModelPackage="ch.senegal.domain.entity"
     />
     <definitions>
-        <entity
-                kotlinModelClassName="Person"
-        >
-            <entityAttribute kotlinFieldName="firstname" kotlinFieldType="kotlin.String"/>
-            <entityAttribute kotlinFieldName="lastname" kotlinFieldType="kotlin.String"/>
-            <entityAttribute kotlinFieldName="nickname" kotlinFieldType="kotlin.String"/>
+        <entity entityName="Person">
+            <entityAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
+            <entityAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
+            <entityAttribute entityAttributeName="nickname" entityAttributeType="Text"/>
         </entity>
-        <entity
-                kotlinModelClassName="Address"
-        >
-            <entityAttribute kotlinFieldName="street" kotlinFieldType="kotlin.String"/>
-            <entityAttribute kotlinFieldName="zip" kotlinFieldType="kotlin.Int"/>
+        <entity entityName="Address">
+            <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
+            <entityAttribute entityAttributeName="zip" entityAttributeType="IntegerNumber"/>
         </entity>
     </definitions>
 
