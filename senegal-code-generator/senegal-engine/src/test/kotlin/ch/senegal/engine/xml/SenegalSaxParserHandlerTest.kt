@@ -34,16 +34,15 @@ internal class SenegalSaxParserHandlerTest {
     fun testSaxParser() {
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
-        factory.isValidating = true
+        factory.isValidating = false // turn of validation as schema is not found
         val saxParser: SAXParser = factory.newSAXParser()
         val plugins = TestPluginFinder.findAllTestPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
         val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."))
-        val saxParserHandler = DelegatingToManySaxHandler(listOf(PrinterHelperSaxHandler(), senegalSaxParser))
 
         testXml.byteInputStream().use {
-            saxParser.parse(it, saxParserHandler)
+            saxParser.parse(it, senegalSaxParser)
         }
 
         assertEquals(2, modelTree.getRootModelNodes().size)
