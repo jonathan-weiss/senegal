@@ -1,5 +1,6 @@
 package ch.senegal.example
 
+import ch.senegal.engine.util.CaseUtil
 import ch.senegal.plugin.*
 import ch.senegal.plugin.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
@@ -14,6 +15,8 @@ object KotlinModelPurposePlugin : Purpose {
         KotlinModelTargetBasePathFacet,
         KotlinModelFieldNameFacet,
         KotlinModelFieldTypeFacet,
+        KotlinModelIdFieldTypeFacet,
+        KotlinModelIdFieldFacet,
     )
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
@@ -26,7 +29,13 @@ object KotlinModelPurposePlugin : Purpose {
 
         if(className != null && packageName != null && targetBasePath != null) {
             val directory = packageName.replace(".", "/")
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/$className.kt"), "/ch/senegal/pluginexample/kotlin-model-class.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}.kt"), "/ch/senegal/pluginexample/kotlin-model-class.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Id.kt"), "/ch/senegal/pluginexample/kotlin-model-id-class.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Repository.kt"), "/ch/senegal/pluginexample/kotlin-model-repository.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Create${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-create-instruction.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Update${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-update-instruction.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Delete${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-delete-instruction.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Service.kt"), "/ch/senegal/pluginexample/kotlin-model-service.ftl"))
         }
 
         return targets
@@ -54,6 +63,45 @@ object KotlinModelPackageFacet : Facet {
     override val facetName: FacetName = FacetName.of("Package")
     override val enclosingConceptName = EntityConceptPlugin.conceptName
     override val facetType: FacetType = TextFacetType
+
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        val entityName = modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityNameFacet.facetName)?.value as String?
+        val className = entityName?.lowercase()
+        val basePackage = facetValue?.value as String?
+
+        if(basePackage == null || className == null) {
+            return null
+        }
+        return FacetValue.of("$basePackage.$className")
+    }
+}
+
+object KotlinModelIdFieldTypeFacet : Facet {
+    override val facetName: FacetName = FacetName.of("IdFieldType")
+    override val enclosingConceptName = EntityConceptPlugin.conceptName
+    override val facetType: FacetType = TextFacetType
+    override val isOnlyCalculated: Boolean = true
+
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        val classname = modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityNameFacet.facetName)?.value as String?
+            ?: return null
+
+        return FacetValue.of("${classname}Id")
+    }
+}
+
+object KotlinModelIdFieldFacet : Facet {
+    override val facetName: FacetName = FacetName.of("IdField")
+    override val enclosingConceptName = EntityConceptPlugin.conceptName
+    override val facetType: FacetType = TextFacetType
+    override val isOnlyCalculated: Boolean = true
+
+    override fun calculateFacetValue(modelNode: ModelNode, facetValue: FacetValue?): FacetValue? {
+        val classname = modelNode.getFacetValue(EntityPurposePlugin.purposeName, EntityNameFacet.facetName)?.value as String?
+            ?: return null
+
+        return FacetValue.of(CaseUtil.decapitalize(classname) + "Id")
+    }
 }
 
 object KotlinModelFieldNameFacet : Facet {
