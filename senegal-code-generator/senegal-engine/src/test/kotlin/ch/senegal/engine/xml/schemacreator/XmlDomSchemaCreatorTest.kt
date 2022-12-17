@@ -16,6 +16,7 @@ internal class XmlDomSchemaCreatorTest {
                 <xsd:complexType>
                     <xsd:sequence maxOccurs="unbounded" minOccurs="0">
                         <xsd:element ref="testEntity"/>
+                        <xsd:element ref="testMapperConcept"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -37,6 +38,11 @@ internal class XmlDomSchemaCreatorTest {
                     <xsd:attributeGroup ref="testEntityAttributeType"/>
                     <xsd:attributeGroup ref="testKotlinFieldName"/>
                     <xsd:attributeGroup ref="testKotlinFieldType"/>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="testMapperConcept">
+                <xsd:complexType>
+                    <xsd:sequence maxOccurs="unbounded" minOccurs="0"/>
                 </xsd:complexType>
             </xsd:element>
             <!-- - - - - - - - -       ALL ATTRIBUTES      - - - - - - - -->

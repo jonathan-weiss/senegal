@@ -59,7 +59,7 @@ object XmlDomSchemaCreator {
         setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
 
         resolvedPlugins.resolvedRootConcepts.forEach {
-            val conceptXmlSchemaName = schemaTagName(it)
+            val conceptXmlSchemaName = it.toXmlElementTagName()
             val element = createAndAttachXsdElement(document, sequence, "element")
             setElementXsdAttribute(element, "ref", conceptXmlSchemaName)
         }
@@ -68,7 +68,7 @@ object XmlDomSchemaCreator {
     private fun attachAllConceptElements(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
         attachComment(document, schemaElement, " ALL CONCEPTS AS ELEMENTS")
         resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
-            val conceptXmlSchemaName = schemaTagName(conceptNode)
+            val conceptXmlSchemaName = conceptNode.toXmlElementTagName()
             val element = createAndAttachXsdElement(document, schemaElement, "element")
             setElementXsdAttribute(element, "name", conceptXmlSchemaName)
             val complexType = createAndAttachXsdElement(document, element, "complexType")
@@ -76,19 +76,15 @@ object XmlDomSchemaCreator {
             setElementXsdAttribute(sequence, "minOccurs", "0")
             setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
             conceptNode.enclosedConcepts.forEach { enclosedConceptNode ->
-                val enclosedConceptXmlSchemaName = schemaTagName(enclosedConceptNode)
+                val enclosedConceptXmlSchemaName = enclosedConceptNode.toXmlElementTagName()
                 val elementRef = createAndAttachXsdElement(document, sequence, "element")
                 setElementXsdAttribute(elementRef, "ref", enclosedConceptXmlSchemaName)
             }
-            conceptNode.enclosedPurposes.forEach { purpose ->
-                purpose.facets
-                    .filter { !it.isOnlyCalculated }
-                    .forEach { facet ->
-                    val purposeXmlAttributeNamePart = schemaAttributeName(purpose)
-                    val facetXmlAttributeNamePart = facet.facetName.name
-                    complexType.appendChild(createFacetAttributeReference(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart"))
+            conceptNode.enclosedFacets
+                .filter { !it.facet.isOnlyCalculated }
+                .forEach { resolvedFacet ->
+                    complexType.appendChild(createFacetAttributeReference(document, resolvedFacet.purposeFacetName))
                 }
-            }
         }
     }
 
@@ -98,19 +94,17 @@ object XmlDomSchemaCreator {
             conceptNode.enclosedFacets
                 .filter { !it.facet.isOnlyCalculated }
                 .forEach { resolvedFacet ->
-                        val purposeXmlAttributeNamePart = schemaAttributeName(resolvedFacet.purpose)
-                        val facetXmlAttributeNamePart = resolvedFacet.facet.facetName.name
-                        schemaElement.appendChild(createFacetAttributeElement(document, "$purposeXmlAttributeNamePart$facetXmlAttributeNamePart", resolvedFacet.facet.facetType))
+                    schemaElement.appendChild(createFacetAttributeElement(document, resolvedFacet.purposeFacetName, resolvedFacet.facet.facetType))
                 }
         }
     }
 
-    private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: String, facetType: FacetType): Element {
+    private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: PurposeFacetCombinedName, facetType: FacetType): Element {
         val attributeGroupElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeGroupElement, "name", purposeFacetAttributeName)
+        setElementXsdAttribute(attributeGroupElement, "name", purposeFacetAttributeName.toXmlAttributeName())
 
         val attributeElement = createXsdElement(document, "attribute")
-        setElementXsdAttribute(attributeElement, "name", purposeFacetAttributeName)
+        setElementXsdAttribute(attributeElement, "name", purposeFacetAttributeName.toXmlAttributeName())
 
         if(facetType is EnumerationFacetType) {
             val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
@@ -129,9 +123,9 @@ object XmlDomSchemaCreator {
         return attributeGroupElement
     }
 
-    private fun createFacetAttributeReference(document: Document, purposeFacetAttributeName: String): Element {
+    private fun createFacetAttributeReference(document: Document, purposeFacetAttributeName: PurposeFacetCombinedName): Element {
         val attributeElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeElement, "ref", purposeFacetAttributeName)
+        setElementXsdAttribute(attributeElement, "ref", purposeFacetAttributeName.toXmlAttributeName())
         return attributeElement
     }
 
@@ -158,21 +152,8 @@ object XmlDomSchemaCreator {
         }
     }
 
-    private fun schemaTagName(resolvedConcept: ResolvedConcept): String {
-        return toXmlName(resolvedConcept.concept.conceptName.name)
-    }
-
-    private fun schemaAttributeName(purpose: Purpose): String {
-        return toXmlName(purpose.purposeName.name)
-    }
-
-    private fun schemaAttributeName(facet: Facet): String {
-        return toXmlName(facet.facetName.name)
-    }
-
-
-    private fun toXmlName(value: String): String {
-        return CaseUtil.decapitalize(value)
+    private fun ResolvedConcept.toXmlElementTagName(): String {
+        return CaseUtil.decapitalize(this.concept.conceptName.name)
     }
 
     private fun schemaAttributeType(facetType: FacetType): String {
@@ -203,5 +184,10 @@ object XmlDomSchemaCreator {
     private fun setElementXsdAttribute(element: Element, attributeName: String, attributeValue: String) {
         element.setAttribute(attributeName, attributeValue)
     }
+
+    private fun PurposeFacetCombinedName.toXmlAttributeName(): String {
+        return CaseUtil.decapitalize(this.name)
+    }
+
 
 }
