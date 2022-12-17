@@ -17,7 +17,7 @@ data class Attribute(
                 .map { index -> toAttribute(attr, index) }
         }
 
-        fun toAttribute(attr: Attributes, index: Int): Attribute {
+        private fun toAttribute(attr: Attributes, index: Int): Attribute {
             return Attribute(
                 localName = attr.getLocalName(index),
                 qName = attr.getQName(index),

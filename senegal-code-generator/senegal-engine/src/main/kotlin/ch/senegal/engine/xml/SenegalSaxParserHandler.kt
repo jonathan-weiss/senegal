@@ -14,7 +14,6 @@ import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import org.xml.sax.SAXParseException
 import org.xml.sax.ext.DefaultHandler2
-import org.xml.sax.helpers.DefaultHandler
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.absolutePathString
@@ -27,29 +26,57 @@ class SenegalSaxParserHandler(
     private val schemaFileDirectory: Path,
 ) : DefaultHandler2() {
     private var currentMutableModelInstance: MutableModelInstance = modelTree
+    private var isInDefinitionTag = false
+    private val configurations: MutableMap<PurposeFacetCombinedName, String> = mutableMapOf()
 
     @Throws(SAXException::class)
     override fun startElement(uri: String, localName: String, qName: String, attr: Attributes) {
-        val resolvedConcept = getConceptByXmlLocalName(localName) ?: return
-        val newModelNode = currentMutableModelInstance.createAndAddMutableModelNode(resolvedConcept)
-        Attribute.attributeList(attr).forEach { addAttribute(newModelNode, it) }
-        this.currentMutableModelInstance = newModelNode
+        if(isInDefinitionTag) {
+            val resolvedConcept = getConceptByXmlLocalName(localName) ?: return
+            val newModelNode = currentMutableModelInstance.createAndAddMutableModelNode(resolvedConcept)
+            addAttributes(
+                mutableModelNode = newModelNode,
+                attributes = Attribute.attributeList(attr),
+            )
+            this.currentMutableModelInstance = newModelNode
+            return
+        }
+
+        when(localName) {
+            "configuration" -> Attribute.attributeList(attr).forEach { addConfigurationAttribute(it) }
+            "definitions" -> isInDefinitionTag = true
+        }
     }
 
-    private fun addAttribute(mutableModelNode: MutableModelNode, attribute: Attribute) {
+    private fun addAttributes(mutableModelNode: MutableModelNode, attributes: List<Attribute>) {
+        val attributeMap: Map<PurposeFacetCombinedName, Attribute> = attributes
+            .associateBy { PurposeFacetCombinedName.of(CaseUtil.capitalize(it.localName)) }
+
+        mutableModelNode.resolvedConcept.enclosedFacets.forEach { resolvedFacet ->
+            val rawAttributeValue: String = attributeMap[resolvedFacet.purposeFacetName]?.value
+                ?: configurations[resolvedFacet.purposeFacetName]
+                ?: return@forEach
+
+            val attributeValue = PlaceholderUtil.replacePlaceholders(rawAttributeValue, placeholders)
+            val facetValue = resolvedFacet.facet.facetType.facetValueFromString(attributeValue)
+            mutableModelNode.addFacetValue(facet = resolvedFacet, facetValue = facetValue)
+        }
+    }
+
+    private fun addConfigurationAttribute(attribute: Attribute) {
         val purposeFacetCombinedName = PurposeFacetCombinedName.of(CaseUtil.capitalize(attribute.localName))
-        val resolvedFacet = mutableModelNode.resolvedConcept.getFacetByCombinedName(purposeFacetCombinedName)
-            ?: this.fail("No facet found for name '${purposeFacetCombinedName.name}'.")
-
-        val attributeValue = PlaceholderUtil.replacePlaceholders(attribute.value, placeholders)
-        val facetValue = resolvedFacet.facet.facetType.facetValueFromString(attributeValue)
-        mutableModelNode.addFacetValue(facet = resolvedFacet, facetValue = facetValue)
+        configurations[purposeFacetCombinedName] = attribute.value
     }
+
 
     @Throws(SAXException::class)
     override fun endElement(uri: String, localName: String, qName: String) {
-        if (!isConcept(localName)) return
-        this.currentMutableModelInstance = currentMutableModelInstance.parentMutableModelInstance() ?: modelTree
+        if(localName == "definitions") {
+            isInDefinitionTag = false
+        }
+        if(isConcept(localName)) {
+            this.currentMutableModelInstance = currentMutableModelInstance.parentMutableModelInstance() ?: modelTree
+        }
     }
 
 
