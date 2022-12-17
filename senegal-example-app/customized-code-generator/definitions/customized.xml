@@ -3,23 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://senegal.ch/senegal ./schema/senegal-schema.xsd"
 >
-    <entity
-            kotlinModelClassName="Person"
-            kotlinModelPackage="ch.senegal.person"
-            kotlinModelTargetBasePath="@{domainPath}"
-    >
-        <entityAttribute kotlinFieldName="firstname" kotlinFieldType="kotlin.String"/>
-        <entityAttribute kotlinFieldName="lastname" kotlinFieldType="kotlin.String"/>
-        <entityAttribute kotlinFieldName="nickname" kotlinFieldType="kotlin.String"/>
-    </entity>
-
-    <entity
-            kotlinModelClassName="Address"
-            kotlinModelPackage="ch.senegal.address"
-            kotlinModelTargetBasePath="@{domainPath}"
-    >
-        <entityAttribute kotlinFieldName="street" kotlinFieldType="kotlin.String"/>
-        <entityAttribute kotlinFieldName="zip" kotlinFieldType="kotlin.Int"/>
-    </entity>
+    <configuration kotlinModelTargetBasePath="@{domainPath}" />
+    <definitions>
+        <entity
+                kotlinModelClassName="Person"
+                kotlinModelPackage="ch.senegal.person"
+                kotlinModelTargetBasePath="@{domainPath}"
+        >
+            <entityAttribute kotlinFieldName="firstname" kotlinFieldType="kotlin.String"/>
+            <entityAttribute kotlinFieldName="lastname" kotlinFieldType="kotlin.String"/>
+            <entityAttribute kotlinFieldName="nickname" kotlinFieldType="kotlin.String"/>
+        </entity>
+        <entity
+                kotlinModelClassName="Address"
+                kotlinModelPackage="ch.senegal.address"
+                kotlinModelTargetBasePath="@{domainPath}"
+        >
+            <entityAttribute kotlinFieldName="street" kotlinFieldType="kotlin.String"/>
+            <entityAttribute kotlinFieldName="zip" kotlinFieldType="kotlin.Int"/>
+        </entity>
+    </definitions>
 
 </senegal>

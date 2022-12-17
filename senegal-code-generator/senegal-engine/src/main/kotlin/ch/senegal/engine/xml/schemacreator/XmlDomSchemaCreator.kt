@@ -26,6 +26,7 @@ object XmlDomSchemaCreator {
         attachRootConceptReferences(document, schemaElement, resolvedPlugins)
         attachAllConceptElements(document, schemaElement, resolvedPlugins)
         attachAllConceptAttributes(document, schemaElement, resolvedPlugins)
+        attachConfigurationElement(document, schemaElement, resolvedPlugins)
 
         return transformDocumentToString(document)
     }
@@ -43,42 +44,63 @@ object XmlDomSchemaCreator {
         return schemaElement
     }
     private fun attachComment(document: Document, schemaElement: Element, comment: String) {
-        //schemaElement.appendChild(document.createTextNode("\n\n"))
         schemaElement.appendChild(document.createComment(" - - - - - - - -      $comment     - - - - - - - "))
-        //schemaElement.appendChild(document.createTextNode("\n\n"))
     }
 
+    private fun attachConfigurationElement(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
+        attachComment(document, schemaElement, " CONFIGURATION ELEMENT")
+        val complexType = createAndAttachXsdElement(document, schemaElement, "complexType")
+        setElementXsdAttribute(complexType, "name", "configurationType")
+        resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
+            conceptNode.enclosedFacets
+                .filter { !it.facet.isOnlyCalculated }
+                .forEach { resolvedFacet ->
+                    complexType.appendChild(createFacetAttributeReference(document, resolvedFacet.purposeFacetName))
+                }
+        }
+    }
 
     private fun attachRootConceptReferences(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
-        attachComment(document, schemaElement, " ROOT CONCEPTS")
-        val elementSenegal = createAndAttachXsdElement(document, schemaElement, "element")
-        setElementXsdAttribute(elementSenegal, "name", "senegal")
-        val complexType = createAndAttachXsdElement(document, elementSenegal, "complexType")
-        val sequence = createAndAttachXsdElement(document, complexType, "sequence")
-        setElementXsdAttribute(sequence, "minOccurs", "0")
-        setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
+        attachComment(document, schemaElement, " CONFIGURATION AND DEFINITIONS")
+        val senegalElement = createAndAttachXsdElement(document, schemaElement, "element")
+        setElementXsdAttribute(senegalElement, "name", "senegal")
+        val senegalComplexType = createAndAttachXsdElement(document, senegalElement, "complexType")
 
+        val senegalSequence = createAndAttachXsdElement(document, senegalComplexType, "sequence")
+        setElementXsdAttribute(senegalSequence, "minOccurs", "1")
+        setElementXsdAttribute(senegalSequence, "maxOccurs", "1")
+        val configurationElement = createAndAttachXsdElement(document, senegalSequence, "element")
+        setElementXsdAttribute(configurationElement, "name", "configuration")
+        setElementXsdAttribute(configurationElement, "type", "configurationType")
+        val definitionsElement = createAndAttachXsdElement(document, senegalSequence, "element")
+        setElementXsdAttribute(definitionsElement, "name", "definitions")
+        val definitionsComplexType = createAndAttachXsdElement(document, definitionsElement, "complexType")
+        attachComment(document, definitionsComplexType, " ROOT CONCEPTS")
+        val definitionsChoice = createAndAttachXsdElement(document, definitionsComplexType, "choice")
+        setElementXsdAttribute(definitionsChoice, "minOccurs", "0")
+        setElementXsdAttribute(definitionsChoice, "maxOccurs", "unbounded")
         resolvedPlugins.resolvedRootConcepts.forEach {
             val conceptXmlSchemaName = it.toXmlElementTagName()
-            val element = createAndAttachXsdElement(document, sequence, "element")
-            setElementXsdAttribute(element, "ref", conceptXmlSchemaName)
+            val element = createAndAttachXsdElement(document, definitionsChoice, "element")
+            setElementXsdAttribute(element, "name", conceptXmlSchemaName)
+            setElementXsdAttribute(element, "type", "${conceptXmlSchemaName}Type")
         }
     }
 
     private fun attachAllConceptElements(document: Document, schemaElement: Element, resolvedPlugins: ResolvedPlugins) {
-        attachComment(document, schemaElement, " ALL CONCEPTS AS ELEMENTS")
+        attachComment(document, schemaElement, " ALL CONCEPTS AS TYPES")
         resolvedPlugins.allResolvedConcepts.forEach { conceptNode ->
             val conceptXmlSchemaName = conceptNode.toXmlElementTagName()
-            val element = createAndAttachXsdElement(document, schemaElement, "element")
-            setElementXsdAttribute(element, "name", conceptXmlSchemaName)
-            val complexType = createAndAttachXsdElement(document, element, "complexType")
-            val sequence = createAndAttachXsdElement(document, complexType, "sequence")
-            setElementXsdAttribute(sequence, "minOccurs", "0")
-            setElementXsdAttribute(sequence, "maxOccurs", "unbounded")
+            val complexType = createAndAttachXsdElement(document, schemaElement, "complexType")
+            setElementXsdAttribute(complexType, "name", "${conceptXmlSchemaName}Type")
+            val choice = createAndAttachXsdElement(document, complexType, "choice")
+            setElementXsdAttribute(choice, "minOccurs", "0")
+            setElementXsdAttribute(choice, "maxOccurs", "unbounded")
             conceptNode.enclosedConcepts.forEach { enclosedConceptNode ->
                 val enclosedConceptXmlSchemaName = enclosedConceptNode.toXmlElementTagName()
-                val elementRef = createAndAttachXsdElement(document, sequence, "element")
-                setElementXsdAttribute(elementRef, "ref", enclosedConceptXmlSchemaName)
+                val elementRef = createAndAttachXsdElement(document, choice, "element")
+                setElementXsdAttribute(elementRef, "name", enclosedConceptXmlSchemaName)
+                setElementXsdAttribute(elementRef, "type", "${enclosedConceptXmlSchemaName}Type")
             }
             conceptNode.enclosedFacets
                 .filter { !it.facet.isOnlyCalculated }

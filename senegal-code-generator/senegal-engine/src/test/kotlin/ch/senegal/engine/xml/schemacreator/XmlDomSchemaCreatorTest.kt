@@ -11,40 +11,42 @@ internal class XmlDomSchemaCreatorTest {
     private val expectedXml = """
         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <xsd:schema xmlns="https://senegal.ch/senegal" elementFormDefault="qualified" targetNamespace="https://senegal.ch/senegal" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-            <!-- - - - - - - - -       ROOT CONCEPTS     - - - - - - - -->
+            <!-- - - - - - - - -       CONFIGURATION AND DEFINITIONS     - - - - - - - -->
             <xsd:element name="senegal">
                 <xsd:complexType>
-                    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
-                        <xsd:element ref="testEntity"/>
-                        <xsd:element ref="testMapperConcept"/>
+                    <xsd:sequence maxOccurs="1" minOccurs="1">
+                        <xsd:element name="configuration" type="configurationType"/>
+                        <xsd:element name="definitions">
+                            <xsd:complexType>
+                                <!-- - - - - - - - -       ROOT CONCEPTS     - - - - - - - -->
+                                <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                                    <xsd:element name="testEntity" type="testEntityType"/>
+                                    <xsd:element name="testMapperConcept" type="testMapperConceptType"/>
+                                </xsd:choice>
+                            </xsd:complexType>
+                        </xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
-            <!-- - - - - - - - -       ALL CONCEPTS AS ELEMENTS     - - - - - - - -->
-            <xsd:element name="testEntity">
-                <xsd:complexType>
-                    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
-                        <xsd:element ref="testEntityAttribute"/>
-                    </xsd:sequence>
-                    <xsd:attributeGroup ref="testEntityName"/>
-                    <xsd:attributeGroup ref="testKotlinModelClassname"/>
-                    <xsd:attributeGroup ref="testKotlinModelPackage"/>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="testEntityAttribute">
-                <xsd:complexType>
-                    <xsd:sequence maxOccurs="unbounded" minOccurs="0"/>
-                    <xsd:attributeGroup ref="testEntityAttributeName"/>
-                    <xsd:attributeGroup ref="testEntityAttributeType"/>
-                    <xsd:attributeGroup ref="testKotlinFieldName"/>
-                    <xsd:attributeGroup ref="testKotlinFieldType"/>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="testMapperConcept">
-                <xsd:complexType>
-                    <xsd:sequence maxOccurs="unbounded" minOccurs="0"/>
-                </xsd:complexType>
-            </xsd:element>
+            <!-- - - - - - - - -       ALL CONCEPTS AS TYPES     - - - - - - - -->
+            <xsd:complexType name="testEntityType">
+                <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                    <xsd:element name="testEntityAttribute" type="testEntityAttributeType"/>
+                </xsd:choice>
+                <xsd:attributeGroup ref="testEntityName"/>
+                <xsd:attributeGroup ref="testKotlinModelClassname"/>
+                <xsd:attributeGroup ref="testKotlinModelPackage"/>
+            </xsd:complexType>
+            <xsd:complexType name="testEntityAttributeType">
+                <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:attributeGroup ref="testEntityAttributeName"/>
+                <xsd:attributeGroup ref="testEntityAttributeType"/>
+                <xsd:attributeGroup ref="testKotlinFieldName"/>
+                <xsd:attributeGroup ref="testKotlinFieldType"/>
+            </xsd:complexType>
+            <xsd:complexType name="testMapperConceptType">
+                <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:complexType>
             <!-- - - - - - - - -       ALL ATTRIBUTES      - - - - - - - -->
             <xsd:attributeGroup name="testEntityName">
                 <xsd:attribute name="testEntityName" type="xsd:string"/>
@@ -83,6 +85,16 @@ internal class XmlDomSchemaCreatorTest {
                     </xsd:simpleType>
                 </xsd:attribute>
             </xsd:attributeGroup>
+            <!-- - - - - - - - -       CONFIGURATION ELEMENT     - - - - - - - -->
+            <xsd:complexType name="configurationType">
+                <xsd:attributeGroup ref="testEntityName"/>
+                <xsd:attributeGroup ref="testKotlinModelClassname"/>
+                <xsd:attributeGroup ref="testKotlinModelPackage"/>
+                <xsd:attributeGroup ref="testEntityAttributeName"/>
+                <xsd:attributeGroup ref="testEntityAttributeType"/>
+                <xsd:attributeGroup ref="testKotlinFieldName"/>
+                <xsd:attributeGroup ref="testKotlinFieldType"/>
+            </xsd:complexType>
         </xsd:schema>
 
     """.trimIndent()
