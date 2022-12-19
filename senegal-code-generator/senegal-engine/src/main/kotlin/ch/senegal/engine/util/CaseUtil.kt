@@ -28,6 +28,14 @@ object CaseUtil {
         return snakeToLowerCamelCase(stringValue).replaceFirstChar { it.titlecase() }
     }
 
+    fun camelToSnakeCaseAllCaps(stringValue: String): String {
+        return snakeCaseToSnakeCaseAllCaps(camelToSnakeCase(stringValue))
+    }
+
+    fun snakeCaseToSnakeCaseAllCaps(stringValue: String): String {
+        return stringValue.uppercase()
+    }
+
     fun capitalize(stringValue: String): String {
         return stringValue.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }

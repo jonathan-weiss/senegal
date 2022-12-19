@@ -20,6 +20,13 @@ internal class CaseUtilTest {
     }
 
     @Test
+    fun camelToSnakeCaseAllCaps() {
+        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCase("myVarIsFooBar"))
+        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCase("MyVarIsFooBar"))
+        assertEquals("A_MULTI_WORD_STRING", CaseUtil.camelToSnakeCase("AMultiWordString"))
+    }
+
+    @Test
     fun snakeToLowerCamelCase() {
         assertEquals("myCamelCaseA", CaseUtil.snakeToLowerCamelCase("my_camel_case_a"))
     }
