@@ -116,29 +116,35 @@ object XmlDomSchemaCreator {
             conceptNode.enclosedFacets
                 .filter { !it.facet.isOnlyCalculated }
                 .forEach { resolvedFacet ->
-                    schemaElement.appendChild(createFacetAttributeElement(document, resolvedFacet.purposeFacetName, resolvedFacet.facet.facetType))
+                    schemaElement.appendChild(createFacetAttributeElement(document, resolvedFacet.purposeFacetName, resolvedFacet.facet))
                 }
         }
     }
 
-    private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: PurposeFacetCombinedName, facetType: FacetType): Element {
+    private fun createFacetAttributeElement(document: Document, purposeFacetAttributeName: PurposeFacetCombinedName, facet: Facet): Element {
         val attributeGroupElement = createXsdElement(document, "attributeGroup")
         setElementXsdAttribute(attributeGroupElement, "name", purposeFacetAttributeName.toXmlAttributeName())
 
         val attributeElement = createXsdElement(document, "attribute")
         setElementXsdAttribute(attributeElement, "name", purposeFacetAttributeName.toXmlAttributeName())
 
-        if(facetType is EnumerationFacetType) {
-            val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
-            val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
-            setElementXsdAttribute(restriction, "base", "$xsdNamespacePrefix:string")
-            facetType.enumerationValues.forEach { enumerationValue ->
-                val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
-                setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
+        when(facet) {
+            is StringEnumerationFacet -> {
+                val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
+                val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
+                setElementXsdAttribute(restriction, "base", "$xsdNamespacePrefix:string")
+                facet.enumerationOptions.forEach { enumerationValue ->
+                    val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
+                    setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
+                }
             }
-        } else {
-            val facetTypeXsd = schemaAttributeType(facetType)
-            setElementXsdAttribute(attributeElement, "type", facetTypeXsd)
+            is StringFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is BooleanFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:boolean")
+//            is IntegerNumberFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+//            is DirectoryFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+//            is FileFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            else -> throw IllegalArgumentException("FacetType is not supported: $facet")
+
         }
 
         attributeGroupElement.appendChild(attributeElement)
@@ -178,14 +184,14 @@ object XmlDomSchemaCreator {
         return CaseUtil.decapitalize(this.concept.conceptName.name)
     }
 
-    private fun schemaAttributeType(facetType: FacetType): String {
-        return when(facetType) {
-            TextFacetType -> "$xsdNamespacePrefix:string"
-            IntegerNumberFacetType -> "$xsdNamespacePrefix:integer"
-            BooleanFacetType -> "$xsdNamespacePrefix:boolean"
-            DirectoryFacetType -> "$xsdNamespacePrefix:string"
-            FileFacetType -> "$xsdNamespacePrefix:string"
-            else -> throw IllegalArgumentException("FacetType is not supported: $facetType")
+    private fun schemaAttributeType(facet: Facet): String {
+        return when(facet) {
+            is StringFacet -> "$xsdNamespacePrefix:string"
+            // IntegerNumberFacetType -> "$xsdNamespacePrefix:integer"
+            is BooleanFacet -> "$xsdNamespacePrefix:boolean"
+            // DirectoryFacetType -> "$xsdNamespacePrefix:string"
+            // FileFacetType -> "$xsdNamespacePrefix:string"
+            else -> throw IllegalArgumentException("FacetType is not supported: $facet")
         }
     }
 

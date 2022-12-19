@@ -3,6 +3,7 @@ package ch.senegal.engine.xml
 import ch.senegal.engine.model.MutableModelInstance
 import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
+import ch.senegal.engine.model.converter.FacetValueConverter
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.util.CaseUtil
@@ -58,7 +59,7 @@ class SenegalSaxParserHandler(
                 ?: return@forEach
 
             val attributeValue = PlaceholderUtil.replacePlaceholders(rawAttributeValue, placeholders)
-            val facetValue = resolvedFacet.facet.facetType.facetValueFromString(attributeValue)
+            val facetValue = FacetValueConverter.convertString(resolvedFacet.facet, attributeValue)
             mutableModelNode.addFacetValue(facet = resolvedFacet, facetValue = facetValue)
         }
     }

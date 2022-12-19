@@ -21,9 +21,9 @@ internal class CaseUtilTest {
 
     @Test
     fun camelToSnakeCaseAllCaps() {
-        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCase("myVarIsFooBar"))
-        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCase("MyVarIsFooBar"))
-        assertEquals("A_MULTI_WORD_STRING", CaseUtil.camelToSnakeCase("AMultiWordString"))
+        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCaseAllCaps("myVarIsFooBar"))
+        assertEquals("MY_VAR_IS_FOO_BAR", CaseUtil.camelToSnakeCaseAllCaps("MyVarIsFooBar"))
+        assertEquals("A_MULTI_WORD_STRING", CaseUtil.camelToSnakeCaseAllCaps("AMultiWordString"))
     }
 
     @Test

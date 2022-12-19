@@ -1,20 +1,21 @@
 package ch.senegal.pluginexample
 
 import ch.senegal.plugin.*
+import ch.senegal.plugin.factory.FacetFactory
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 
 
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinModel")
-    override val facets: Set<Facet> = setOf(KotlinModelClassnameFacet, KotlinModelPackageFacet)
+    override val facets: Set<Facet> = setOf(kotlinModelClassnameFacet, kotlinModelPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
         targets.add(TemplateTarget(defaultOutputPath.resolve("general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
 
-        val className = modelNode.getFacetValue(purposeName, KotlinModelClassnameFacet.facetName)?.value as String?
-        val packageName = modelNode.getFacetValue(purposeName, KotlinModelPackageFacet.facetName)?.value as String?
+        val className = modelNode.getFacetValue(purposeName, kotlinModelClassnameFacet.facetName)?.value as String?
+        val packageName = modelNode.getFacetValue(purposeName, kotlinModelPackageFacet.facetName)?.value as String?
 
         if(className != null && packageName != null) {
             val directory = packageName.replace(".", "/")
@@ -25,37 +26,34 @@ object KotlinModelPurposePlugin : Purpose {
     }
 }
 
-object KotlinModelClassnameFacet : Facet {
-    override val facetName: FacetName = FacetName.of("ClassName")
-    override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val kotlinModelClassnameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("ClassName"),
+    enclosingConceptName = EntityConceptPlugin.conceptName,
+)
+val kotlinModelPackageFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Package"),
+    enclosingConceptName = EntityConceptPlugin.conceptName,
+)
 
-object KotlinModelPackageFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Package")
-    override val enclosingConceptName = EntityConceptPlugin.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+
 
 object KotlinFieldPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinField")
-    override val facets: Set<Facet> = setOf(KotlinFieldNameFacet, KotlinFieldTypeFacet)
+    override val facets: Set<Facet> = setOf(kotlinFieldNameFacet,kotlinFieldTypeFacet)
 }
 
-object KotlinFieldNameFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Name")
-    override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val kotlinFieldNameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Name"),
+    enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
+)
 
-object KotlinFieldTypeFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Type")
-    override val enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-    override val facetType: FacetType = EnumerationFacetType(
-        listOf(
-            FacetTypeEnumerationValue("kotlin.String"),
-            FacetTypeEnumerationValue("kotlin.Int"),
-            FacetTypeEnumerationValue("kotlin.Boolean"),
-        )
-    )
-}
+val stringKotlinTypeOption = StringEnumerationFacetOption("kotlin.String")
+val intKotlinTypeOption = StringEnumerationFacetOption("kotlin.Int")
+val booleanKotlinTypeOption = StringEnumerationFacetOption("kotlin.Boolean")
+
+
+val kotlinFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createFacet(
+    facetName = FacetName.of("Type"),
+    enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
+    enumerationOptions = listOf(stringKotlinTypeOption, intKotlinTypeOption, booleanKotlinTypeOption),
+)

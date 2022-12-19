@@ -1,6 +1,7 @@
 package ch.senegal.engine.plugin
 
 import ch.senegal.plugin.*
+import ch.senegal.plugin.factory.FacetFactory
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 
@@ -33,37 +34,36 @@ object TestMapperConcept: Concept {
 
 object TestEntityPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestEntity")
-    override val facets: Set<Facet> = setOf(TestEntityNameFacet, TestEntityAttributeNameFacet, TestEntityAttributeTypeFacet)
+    override val facets: Set<Facet> = setOf(testEntityNameFacet, testEntityAttributeNameFacet, testEntityAttributeTypeFacet)
 }
 
-object TestEntityNameFacet: Facet {
-    override val facetName: FacetName = FacetName.of("Name")
-    override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val testEntityNameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Name"),
+    enclosingConceptName = TestEntityConcept.conceptName,
+)
 
-object TestEntityAttributeNameFacet: Facet {
-    override val facetName: FacetName = FacetName.of("AttributeName")
-    override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val testEntityAttributeNameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("AttributeName"),
+    enclosingConceptName = TestEntityAttributeConcept.conceptName,
+)
 
-object TestEntityAttributeTypeFacet: Facet {
-    override val facetName: FacetName = FacetName.of("AttributeType")
-    override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val facetType: FacetType = EnumerationFacetType(listOf(
-        FacetTypeEnumerationValue("TEXT"),
-        FacetTypeEnumerationValue("NUMBER"),
-        FacetTypeEnumerationValue("BOOLEAN")
-    ))
-}
+val testEntityAttributeTypeFacet = FacetFactory.StringEnumerationFacetFactory.createFacet(
+    facetName = FacetName.of("AttributeType"),
+    enclosingConceptName = TestEntityAttributeConcept.conceptName,
+    enumerationOptions = listOf(
+        StringEnumerationFacetOption("TEXT"),
+        StringEnumerationFacetOption("NUMBER"),
+        StringEnumerationFacetOption("BOOLEAN")
+    ),
+)
+
 
 
 object TestKotlinModelPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestKotlinModel")
-    override val facets: Set<Facet> = setOf(TestClassnameFacet, TestPackageFacet)
+    override val facets: Set<Facet> = setOf(testClassnameFacet, testPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
-        val facetValue = modelNode.getFacetValue(purposeName, TestClassnameFacet.facetName)
+        val facetValue = modelNode.getFacetValue(purposeName, testClassnameFacet.facetName)
         val classname = requireNotNull(facetValue).value as String
         return setOf(
             TemplateTarget(
@@ -74,37 +74,33 @@ object TestKotlinModelPurpose: Purpose {
     }
 }
 
-object TestClassnameFacet: Facet {
-    override val facetName: FacetName = FacetName.of("Classname")
-    override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val testClassnameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Classname"),
+    enclosingConceptName = TestEntityConcept.conceptName,
+)
 
-object TestPackageFacet: Facet {
-    override val facetName: FacetName = FacetName.of("Package")
-    override val enclosingConceptName: ConceptName = TestEntityConcept.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val testPackageFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Package"),
+    enclosingConceptName = TestEntityConcept.conceptName,
+)
 
 object TestKotlinFieldPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestKotlinField")
-    override val facets: Set<Facet> = setOf(TestFieldNameFacet, TestFieldTypeFacet)
+    override val facets: Set<Facet> = setOf(testFieldNameFacet, testFieldTypeFacet)
 }
 
-object TestFieldNameFacet: Facet {
-    override val facetName: FacetName = FacetName.of("Name")
-    override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val facetType: FacetType = TextFacetType
-}
+val testFieldNameFacet = FacetFactory.StringFacetFactory.createFacet(
+    facetName = FacetName.of("Name"),
+    enclosingConceptName = TestEntityAttributeConcept.conceptName,
+)
 
-object TestFieldTypeFacet: Facet {
-    override val facetName: FacetName = FacetName.of("Type")
-    override val enclosingConceptName: ConceptName = TestEntityAttributeConcept.conceptName
-    override val facetType: FacetType = EnumerationFacetType(listOf(
-        FacetTypeEnumerationValue("kotlin.String"),
-        FacetTypeEnumerationValue("kotlin.Int"),
-        FacetTypeEnumerationValue("kotlin.Boolean")
-    ))
-
-}
+val testFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createFacet(
+    facetName = FacetName.of("Type"),
+    enclosingConceptName = TestEntityAttributeConcept.conceptName,
+    enumerationOptions = listOf(
+        StringEnumerationFacetOption("kotlin.String"),
+        StringEnumerationFacetOption("kotlin.Int"),
+        StringEnumerationFacetOption("kotlin.Boolean"),
+    ),
+)
 

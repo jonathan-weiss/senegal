@@ -1,15 +1,16 @@
 package ch.senegal.pluginexample
 
 import ch.senegal.plugin.*
+import ch.senegal.plugin.factory.FacetFactory
 
 object EntityPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("Entity")
-    override val facets: Set<Facet> = setOf(EntityNameFacet)
-}
+    override val facets: Set<Facet> = setOf(
+        FacetFactory.StringFacetFactory.createFacet(
+            facetName = FacetName.of("Name"),
+            enclosingConceptName = EntityConceptPlugin.conceptName,
+        )
 
-object EntityNameFacet : Facet {
-    override val facetName: FacetName = FacetName.of("Name")
-    override val enclosingConceptName: ConceptName = EntityConceptPlugin.conceptName
-    override val facetType: FacetType = TextFacetType
+    )
 }
 
