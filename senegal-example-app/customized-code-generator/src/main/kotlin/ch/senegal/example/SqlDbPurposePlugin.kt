@@ -144,6 +144,7 @@ object SqlDbPurposePlugin : Purpose {
         }
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
+        val kotlinModelClassName = modelNode.getStringFacetValue(KotlinModelPurposePlugin.purposeName, KotlinModelPurposePlugin.kotlinModelClassnameFacet.facetName)
         val jpaEntityName = modelNode.getStringFacetValue(purposeName, sqlDbJpaEntityNameFacet.facetName)
         val targetBasePath = modelNode.getDirectoryFacetValue(purposeName, sqlDbTargetBasePathFacet.facetName)
         val jpaEntityPackage = modelNode.getStringFacetValue(purposeName, sqlDbJpaEntityPackageFacet.facetName)
@@ -152,6 +153,8 @@ object SqlDbPurposePlugin : Purpose {
         if(jpaEntityName != null && jpaEntityPackage != null && targetBasePath != null) {
             val directory = jpaEntityPackage.replace(".", "/")
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}.kt"), "/ch/senegal/pluginexample/sql-db-jpa-entity.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}Repository.kt"), "/ch/senegal/pluginexample/sql-db-jpa-repository.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), "/ch/senegal/pluginexample/sql-db-repository-impl.ftl"))
         }
 
         return targets
