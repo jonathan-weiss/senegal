@@ -71,7 +71,7 @@ object AngularFrontendPurposePlugin : Purpose {
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
     }
 
-    val angularFrontendDecapitalizedEntityName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+    val angularFrontendDecapitalizedEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("DecapitalizedEntityName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
@@ -79,14 +79,14 @@ object AngularFrontendPurposePlugin : Purpose {
         ?.let { CaseUtil.decapitalize(it) }
     }
 
-    val angularFrontendEntityName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+    val angularFrontendEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("EntityName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
     }
 
-    val angularFrontendEntityFileName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+    val angularFrontendEntityFileNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("EntityFileName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
@@ -133,17 +133,17 @@ object AngularFrontendPurposePlugin : Purpose {
 
         val angularFrontendBasePath = modelNode.parentModelNode()?.getDirectoryFacetValue(purposeName, angularFrontendBasePathFacet.facetName)
         val transferObjectFilename = modelNode.getStringFacetValue(purposeName, angularFrontendTransferObjectFilenameFacet.facetName)
-        val transferObjectClassName = modelNode.getStringFacetValue(purposeName, angularFrontendTransferObjectNameFacet.facetName)
+        val entityFileName = modelNode.getStringFacetValue(purposeName, angularFrontendEntityFileNameFacet.facetName)
         val serviceName = modelNode.getStringFacetValue(purposeName, angularFrontendServiceNameFacet.facetName)
         val serviceFilename = modelNode.getStringFacetValue(purposeName, angularFrontendServiceFilenameFacet.facetName)
 
 
         if(angularFrontendBasePath != null && transferObjectFilename != null) {
-            targets.add(TemplateTarget(angularFrontendBasePath.resolve("model/${transferObjectFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${transferObjectFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object.ftl"))
         }
 
         if(angularFrontendBasePath != null && serviceName != null && serviceFilename != null) {
-            targets.add(TemplateTarget(angularFrontendBasePath.resolve("api/${serviceFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${serviceFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
         }
 
         return targets
@@ -151,9 +151,9 @@ object AngularFrontendPurposePlugin : Purpose {
 
     override val facets: Set<Facet> = setOf(
         angularFrontendBasePathFacet,
-        angularFrontendDecapitalizedEntityName,
-        angularFrontendEntityName,
-        angularFrontendEntityFileName,
+        angularFrontendDecapitalizedEntityNameFacet,
+        angularFrontendEntityNameFacet,
+        angularFrontendEntityFileNameFacet,
         angularFrontendTransferObjectNameFacet,
         angularFrontendTransferObjectFilenameFacet,
         angularFrontendServiceNameFacet,

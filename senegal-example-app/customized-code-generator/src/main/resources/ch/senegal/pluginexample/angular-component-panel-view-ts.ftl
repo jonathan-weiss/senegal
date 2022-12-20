@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { ${templateModel.AngularFrontendServiceName} } from "../../../api/${templateModel.AngularFrontendServiceFilename}";
-import { ${templateModel.AngularFrontendTransferObjectName} } from "../../../model/${templateModel.AngularFrontendTransferObjectFilename}";
+import { ${templateModel.AngularFrontendServiceName} } from "../../api/${templateModel.AngularFrontendServiceFilename}";
+import { ${templateModel.AngularFrontendTransferObjectName} } from "../../api/${templateModel.AngularFrontendTransferObjectFilename}";
 
 
 @Component({
-    selector: '${templateModel.AngularComponentSuffixFileName}-panel-view',
-    templateUrl: './${templateModel.AngularComponentSuffixFileName}-panel-view.component.html',
-    styleUrls: ['./${templateModel.AngularComponentSuffixFileName}-panel-view.component.scss'],
+    selector: '${templateModel.AngularFrontendEntityFileName}-panel-view',
+    templateUrl: './${templateModel.AngularFrontendEntityFileName}-panel-view.component.html',
+    styleUrls: ['./${templateModel.AngularFrontendEntityFileName}-panel-view.component.scss'],
 })
-export class ${templateModel.AngularComponentCapitalizeSuffixName}PanelViewComponent implements OnInit {
+export class ${templateModel.AngularFrontendEntityName}PanelViewComponent implements OnInit {
 
-    all${templateModel.AngularComponentCapitalizeSuffixName}: ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}> = []
+    all${templateModel.AngularFrontendEntityName}: ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}> = []
 
-    constructor(private ${templateModel.AngularComponentSuffixName}Service: ${templateModel.AngularFrontendServiceName}) {
+    constructor(private ${templateModel.AngularFrontendDecapitalizedEntityName}Service: ${templateModel.AngularFrontendServiceName}) {
     }
 
     ngOnInit(): void {
-        this.loadAll${templateModel.AngularComponentCapitalizeSuffixName}();
+        this.loadAll${templateModel.AngularFrontendEntityName}();
     }
 
-    private loadAll${templateModel.AngularComponentCapitalizeSuffixName}(): void {
-        this.${templateModel.AngularComponentSuffixName}Service
+    private loadAll${templateModel.AngularFrontendEntityName}(): void {
+        this.${templateModel.AngularFrontendDecapitalizedEntityName}Service
             .getAll${templateModel.AngularFrontendEntityName}()
             .subscribe((entities: ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}>) => {
-                this.all${templateModel.AngularComponentCapitalizeSuffixName} = entities;
+                this.all${templateModel.AngularFrontendEntityName} = entities;
             });
     }
 }

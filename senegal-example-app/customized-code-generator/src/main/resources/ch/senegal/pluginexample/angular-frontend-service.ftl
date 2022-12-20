@@ -2,9 +2,9 @@
 import { Injectable }       from '@angular/core';
 import { HttpClient }       from '@angular/common/http';
 import { Observable }       from 'rxjs';
-import { UuidTO }           from '../../generated-openapi';
+import { UuidTO }           from '../../../generated-openapi';
 
-import {${templateModel.AngularFrontendTransferObjectName}} from "../model/${templateModel.AngularFrontendTransferObjectFilename}";
+import {${templateModel.AngularFrontendTransferObjectName}} from "./${templateModel.AngularFrontendTransferObjectFilename}";
 
 @Injectable({
 providedIn: 'root'
