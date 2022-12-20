@@ -1,8 +1,8 @@
 package ch.senegal.example.app
 
 import ch.senegal.example.frontendapi.FrontendApi
-import ch.senegal.example.lifecycle.persistence.SenegalPersistence
-import ch.senegal.example.service.SenegalService
+import ch.senegal.example.persistence.SenegalPersistence
+import ch.senegal.example.domain.SenegalService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 

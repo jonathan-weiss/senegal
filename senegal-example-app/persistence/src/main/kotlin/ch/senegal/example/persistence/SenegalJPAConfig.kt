@@ -1,4 +1,4 @@
-package ch.senegal.example.lifecycle.persistence
+package ch.senegal.example.persistence
 
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration

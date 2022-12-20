@@ -11,10 +11,10 @@
             restApiControllerPackage="ch.senegal.example.frontendapi.controller"
             restApiFacadePackage="ch.senegal.example.frontendapi.facade"
             kotlinModelTargetBasePath="@{domainPath}"
-            kotlinModelPackage="ch.senegal.domain.entity"
+            kotlinModelPackage="ch.senegal.example.domain.entity"
             sqlDbTargetBasePath="@{persistencePath}"
             sqlDbResourceBasePath="@{persistenceResourcePath}"
-            sqlDbJpaEntityPackage="ch.senegal.persistence.entity"
+            sqlDbJpaEntityPackage="ch.senegal.example.persistence.entity"
     />
     <definitions>
         <entities infoDescription="Entities used on the whole stack.">

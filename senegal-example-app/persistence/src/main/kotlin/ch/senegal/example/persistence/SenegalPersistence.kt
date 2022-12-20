@@ -1,4 +1,4 @@
-package ch.senegal.example.lifecycle.persistence
+package ch.senegal.example.persistence
 
 /**
  * Marker interface to register module package in spring context

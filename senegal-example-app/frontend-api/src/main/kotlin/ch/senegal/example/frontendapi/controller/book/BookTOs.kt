@@ -2,9 +2,9 @@ package ch.senegal.example.frontendapi.controller.book
 
 import ch.senegal.example.domain.book.Book
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
-import ch.senegal.example.service.book.CreateBookInstruction
-import ch.senegal.example.service.book.DeleteBookInstruction
-import ch.senegal.example.service.book.UpdateBookInstruction
+import ch.senegal.example.domain.book.CreateBookInstruction
+import ch.senegal.example.domain.book.DeleteBookInstruction
+import ch.senegal.example.domain.book.UpdateBookInstruction
 import ch.senegal.example.shareddomain.BookId
 
 data class BookTO(

@@ -1,7 +1,5 @@
 package ch.senegal.example.domain.book
 
-import ch.senegal.example.service.book.CreateBookInstruction
-import ch.senegal.example.service.book.UpdateBookInstruction
 import ch.senegal.example.shareddomain.BookId
 
 class Book(

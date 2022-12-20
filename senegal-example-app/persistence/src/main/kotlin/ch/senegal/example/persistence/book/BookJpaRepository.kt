@@ -1,4 +1,4 @@
-package ch.senegal.example.lifecycle.persistence.book
+package ch.senegal.example.persistence.book
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

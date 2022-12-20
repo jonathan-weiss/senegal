@@ -5,7 +5,7 @@ import ch.senegal.example.frontendapi.controller.book.CreateBookInstructionTO
 import ch.senegal.example.frontendapi.controller.book.DeleteBookInstructionTO
 import ch.senegal.example.frontendapi.controller.book.UpdateBookInstructionTO
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
-import ch.senegal.example.service.book.BookService
+import ch.senegal.example.domain.book.BookService
 import ch.senegal.example.shareddomain.BookId
 import org.springframework.stereotype.Service
 

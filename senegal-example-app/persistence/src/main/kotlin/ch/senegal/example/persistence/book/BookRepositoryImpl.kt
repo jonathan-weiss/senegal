@@ -1,7 +1,7 @@
-package ch.senegal.example.lifecycle.persistence.book
+package ch.senegal.example.persistence.book
 
 import ch.senegal.example.domain.book.Book
-import ch.senegal.example.service.book.BookRepository
+import ch.senegal.example.domain.book.BookRepository
 import ch.senegal.example.shareddomain.BookId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository

@@ -1,4 +1,4 @@
-package ch.senegal.example.lifecycle.persistence.book
+package ch.senegal.example.persistence.book
 
 import ch.senegal.example.domain.book.Book
 import ch.senegal.example.shareddomain.BookId
