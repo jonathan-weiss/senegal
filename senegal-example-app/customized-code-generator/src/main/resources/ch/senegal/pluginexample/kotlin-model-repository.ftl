@@ -1,7 +1,7 @@
 package ${templateModel.KotlinModelPackage}
 
 interface ${templateModel.KotlinModelClassName}Repository {
-    fun fetch${templateModel.KotlinModelClassName}ById(${templateModel.KotlinModelIdField}: ${templateModel.KotlinModelIdFieldType}): ${templateModel.KotlinModelClassName}
+    fun fetch${templateModel.KotlinModelClassName}ById(${templateModel.KotlinModelIdFieldName}: ${templateModel.KotlinModelIdFieldType}): ${templateModel.KotlinModelClassName}
     fun fetchAll${templateModel.KotlinModelClassName}(): List<${templateModel.KotlinModelClassName}>
 
     fun insert${templateModel.KotlinModelClassName}(domainInstance: ${templateModel.KotlinModelClassName})

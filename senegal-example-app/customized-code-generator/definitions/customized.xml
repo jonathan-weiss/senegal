@@ -4,6 +4,10 @@
          xsi:schemaLocation="https://senegal.ch/senegal ./schema/senegal-schema.xsd"
 >
     <configuration
+            restApiControllerBasePath="@{frontendApiPath}"
+            restApiFacadeBasePath="@{frontendApiPath}"
+            restApiControllerPackage="ch.senegal.example.frontendapi.controller"
+            restApiFacadePackage="ch.senegal.example.frontendapi.facade"
             kotlinModelTargetBasePath="@{domainPath}"
             kotlinModelPackage="ch.senegal.domain.entity"
             sqlDbTargetBasePath="@{persistencePath}"

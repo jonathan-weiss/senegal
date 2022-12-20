@@ -46,8 +46,8 @@ object KotlinModelPurposePlugin : Purpose {
         return@createCalculatedFacet "${classname}Id"
     }
 
-    val kotlinModelIdFieldFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("IdField"),
+    val kotlinModelIdFieldNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("IdFieldName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode ->
         val classname = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
@@ -124,7 +124,7 @@ object KotlinModelPurposePlugin : Purpose {
         kotlinModelFieldNameFacet,
         kotlinModelFieldTypeFacet,
         kotlinModelIdFieldTypeFacet,
-        kotlinModelIdFieldFacet,
+        kotlinModelIdFieldNameFacet,
     )
 
 }

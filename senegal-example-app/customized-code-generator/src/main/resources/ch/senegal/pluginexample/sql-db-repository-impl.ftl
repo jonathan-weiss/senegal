@@ -12,8 +12,8 @@ class ${templateModel.KotlinModelClassName}RepositoryImpl(
 private val jpaRepository: ${templateModel.SqlDbJpaEntityName}Repository
 ) : ${templateModel.KotlinModelClassName}Repository {
 
-    override fun fetch${templateModel.KotlinModelClassName}ById(${templateModel.KotlinModelIdField}: ${templateModel.KotlinModelIdFieldType}): ${templateModel.KotlinModelClassName} {
-        val entry = jpaRepository.findByIdOrNull(${templateModel.KotlinModelIdField}.value) ?: throw RuntimeException("${templateModel.KotlinModelClassName} with id \$${templateModel.KotlinModelIdField} not found")
+    override fun fetch${templateModel.KotlinModelClassName}ById(${templateModel.KotlinModelIdFieldName}: ${templateModel.KotlinModelIdFieldType}): ${templateModel.KotlinModelClassName} {
+        val entry = jpaRepository.findByIdOrNull(${templateModel.KotlinModelIdFieldName}.value) ?: throw RuntimeException("${templateModel.KotlinModelClassName} with id \$${templateModel.KotlinModelIdFieldName} not found")
         return entry.toDomain()
     }
 

@@ -21,13 +21,13 @@ class ${templateModel.SqlDbJpaEntityName}(
 ) {
     companion object {
         fun fromDomain(domainInstance: ${templateModel.KotlinModelClassName}) = ${templateModel.SqlDbJpaEntityName}(
-            ${templateModel.SqlDbPrimaryKeyJpaFieldName} = domainInstance.${templateModel.KotlinModelIdField}.value,<#list templateModel.childNodes as fieldNode>
+            ${templateModel.SqlDbPrimaryKeyJpaFieldName} = domainInstance.${templateModel.KotlinModelIdFieldName}.value,<#list templateModel.childNodes as fieldNode>
             ${fieldNode.SqlDbJpaFieldName} = domainInstance.${fieldNode.KotlinModelFieldName},</#list>
         )
     }
 
     fun toDomain() = ${templateModel.KotlinModelClassName}(
-        ${templateModel.KotlinModelIdField} = ${templateModel.KotlinModelIdFieldType}(this.${templateModel.SqlDbPrimaryKeyJpaFieldName}),<#list templateModel.childNodes as fieldNode>
+        ${templateModel.KotlinModelIdFieldName} = ${templateModel.KotlinModelIdFieldType}(this.${templateModel.SqlDbPrimaryKeyJpaFieldName}),<#list templateModel.childNodes as fieldNode>
         ${fieldNode.KotlinModelFieldName} = this.${fieldNode.SqlDbJpaFieldName},</#list>
     )
 
