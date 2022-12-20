@@ -52,7 +52,7 @@ object ModelTreeCalculations {
         facetValue: FacetValue?
     ): FacetValue? {
         return facet
-            .enhanceFacetValue(modelNode, facetValue?.value as String)
+            .enhanceFacetValue(modelNode, facetValue?.value as String?)
             ?.also { StringEnumFacetConverter.throwIfNotValidEnumerationValue(facet, it) }
             ?.let { FacetValue.of(it) }
 
