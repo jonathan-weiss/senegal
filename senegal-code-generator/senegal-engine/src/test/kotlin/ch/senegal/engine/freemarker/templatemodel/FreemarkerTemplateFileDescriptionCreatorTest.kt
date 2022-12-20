@@ -57,27 +57,27 @@ internal class FreemarkerTemplateFileDescriptionCreatorTest {
         val resolvedTestEntity = findResolvedConcept(resolvedPlugins, TestEntityConcept.conceptName)
         val testEntityNode1 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
         testEntityNode1.addFacetValue(
-            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testClassnameFacet.facetName),
+            resolvedFacet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testClassnameFacet.facetName),
             facetValue = FacetValue.of("TestEntityClassNumberOne")
         )
         val testEntityNode2 = modelTree.createAndAddMutableModelNode(resolvedTestEntity)
         testEntityNode2.addFacetValue(
-            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testClassnameFacet.facetName),
+            resolvedFacet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testClassnameFacet.facetName),
             facetValue = FacetValue.of("TestEntityClassNumberTwo")
         )
         testEntityNode2.addFacetValue(
-            facet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testPackageFacet.facetName),
+            resolvedFacet = findResolvedFacet(resolvedPlugins, TestKotlinModelPurpose.purposeName, testPackageFacet.facetName),
             facetValue = FacetValue.of("ch.senegal.test")
         )
 
         val resolvedTestEntityAttribute = findResolvedConcept(resolvedPlugins, TestEntityAttributeConcept.conceptName)
         val testEntityAttributeNode1 = testEntityNode1.createAndAddMutableModelNode(resolvedTestEntityAttribute)
         testEntityAttributeNode1.addFacetValue(
-            facet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, testFieldNameFacet.facetName),
+            resolvedFacet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, testFieldNameFacet.facetName),
             facetValue = FacetValue.of("myField")
         )
         testEntityAttributeNode1.addFacetValue(
-            facet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, testFieldTypeFacet.facetName),
+            resolvedFacet = findResolvedFacet(resolvedPlugins, TestKotlinFieldPurpose.purposeName, testFieldTypeFacet.facetName),
             facetValue = FacetValue.of("kotlin.String")
         )
 

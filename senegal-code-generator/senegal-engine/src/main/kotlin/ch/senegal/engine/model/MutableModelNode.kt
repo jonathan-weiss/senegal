@@ -19,8 +19,8 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
         return parentMutableModelInstance
     }
 
-    fun addFacetValue(facet: ResolvedFacet, facetValue: FacetValue) {
-        nodeFacetValues[facet.purposeFacetName] = facetValue
+    fun addFacetValue(resolvedFacet: ResolvedFacet, facetValue: FacetValue) {
+        nodeFacetValues[resolvedFacet.purposeFacetName] = facetValue
     }
 
     override fun concept(): Concept {

@@ -60,7 +60,7 @@ class SenegalSaxParserHandler(
 
             val attributeValue = PlaceholderUtil.replacePlaceholders(rawAttributeValue, placeholders)
             val facetValue = FacetValueConverter.convertString(resolvedFacet.facet, attributeValue)
-            mutableModelNode.addFacetValue(facet = resolvedFacet, facetValue = facetValue)
+            mutableModelNode.addFacetValue(resolvedFacet = resolvedFacet, facetValue = facetValue)
         }
     }
 
