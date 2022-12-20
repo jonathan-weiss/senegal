@@ -6,6 +6,8 @@
     <configuration
             kotlinModelTargetBasePath="@{domainPath}"
             kotlinModelPackage="ch.senegal.domain.entity"
+            sqlDbTargetBasePath="@{persistencePath}"
+            sqlDbJpaEntityPackage="ch.senegal.persistence.entity"
     />
     <definitions>
         <entity entityName="Person">

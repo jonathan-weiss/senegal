@@ -10,3 +10,6 @@ tmp
 senegal-code-generator/senegal-example-plugins/definitions/schema/*
 senegal-example-app/customized-code-generator/definitions/schema/*
 senegal-example-app/domain/src/main/kotlin-generated/*
+senegal-example-app/persistence/src/main/kotlin-generated/*
+senegal-example-app/frontend-api/src/main/kotlin-generated/*
+senegal-example-app/shared-domain/src/main/kotlin-generated/*

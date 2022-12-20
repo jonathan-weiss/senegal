@@ -64,9 +64,9 @@ object KotlinModelPurposePlugin : Purpose {
         modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
     }
 
-    private val kotlinStringType = StringEnumerationFacetOption("kotlin.String")
-    private val kotlinIntType = StringEnumerationFacetOption("kotlin.Int")
-    private val kotlinBooleanType = StringEnumerationFacetOption("kotlin.Boolean")
+    val kotlinStringType = StringEnumerationFacetOption("kotlin.String")
+    val kotlinIntType = StringEnumerationFacetOption("kotlin.Int")
+    val kotlinBooleanType = StringEnumerationFacetOption("kotlin.Boolean")
 
     val kotlinModelFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("FieldType"),
