@@ -1,3 +1,3 @@
 <h1>${templateModel.AngularFrontendEntityName}</h1>
 
-<pre>{{ all${templateModel.AngularFrontendEntityName} | json }}</pre>
+<pre>{{ all${templateModel.AngularFrontendEntityName} }}</pre>

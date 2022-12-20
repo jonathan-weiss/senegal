@@ -1,0 +1,6 @@
+Side navigation
+
+<ul>
+  <li routerLink="/books">Books</li>
+  <li *ngFor="let entry of sideNavigationEntries" routerLink="/{{entry.path}}">{{ entry.name }}</li>
+</ul>

@@ -1,0 +1,13 @@
+.flex-box {
+  display:flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items:center;
+
+}
+.column-sidebar {
+  flex-basis: 200px;
+}
+.column-content {
+  flex-basis: 1200px;
+}

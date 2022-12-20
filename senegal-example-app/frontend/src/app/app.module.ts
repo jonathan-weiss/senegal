@@ -23,6 +23,9 @@ import {BookPanelViewComponent} from "./book/book-panel-view/book-panel-view.com
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {BookAddViewComponent} from "./book/book-add-view/book-add-view.component";
+import {SideNavigationComponent} from "./navigation/side-navigation.component";
+import {GeneratedEntitiesModule} from "../generated/generated-entities.module";
+import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-routing.module";
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ import {BookAddViewComponent} from "./book/book-add-view/book-add-view.component
     BookAddViewComponent,
     BookEditViewComponent,
     BookPanelViewComponent,
+    SideNavigationComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +55,8 @@ import {BookAddViewComponent} from "./book/book-add-view/book-add-view.component
     ReactiveFormsModule,
     MatChipsModule,
     MatButtonModule,
+    GeneratedEntitiesModule,
+    GeneratedEntitiesRoutingModule,
   ],
   providers: [
     {provide: MAT_TABS_CONFIG, useValue: {animationDuration: '0ms'}},
