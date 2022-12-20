@@ -1,7 +1,7 @@
 package ch.senegal.engine.model.converter
 
 import ch.senegal.plugin.*
-import ch.senegal.plugin.model.FacetValue
+import ch.senegal.engine.model.FacetValue
 import kotlin.reflect.KClass
 
 enum class FacetValueConverter(val facet: KClass<out Facet>,

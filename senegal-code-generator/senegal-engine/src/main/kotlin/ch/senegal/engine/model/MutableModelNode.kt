@@ -3,7 +3,6 @@ package ch.senegal.engine.model
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedFacet
 import ch.senegal.plugin.*
-import ch.senegal.plugin.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 

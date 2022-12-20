@@ -42,6 +42,7 @@ internal class XmlDomSchemaCreatorTest {
                 <xsd:attributeGroup ref="testEntityAttributeName"/>
                 <xsd:attributeGroup ref="testEntityAttributeType"/>
                 <xsd:attributeGroup ref="testKotlinFieldName"/>
+                <xsd:attributeGroup ref="testKotlinFieldLength"/>
                 <xsd:attributeGroup ref="testKotlinFieldType"/>
             </xsd:complexType>
             <xsd:complexType name="testMapperConceptType">
@@ -74,6 +75,9 @@ internal class XmlDomSchemaCreatorTest {
             <xsd:attributeGroup name="testKotlinFieldName">
                 <xsd:attribute name="testKotlinFieldName" type="xsd:string"/>
             </xsd:attributeGroup>
+            <xsd:attributeGroup name="testKotlinFieldLength">
+                <xsd:attribute name="testKotlinFieldLength" type="xsd:integer"/>
+            </xsd:attributeGroup>
             <xsd:attributeGroup name="testKotlinFieldType">
                 <xsd:attribute name="testKotlinFieldType">
                     <xsd:simpleType>
@@ -93,6 +97,7 @@ internal class XmlDomSchemaCreatorTest {
                 <xsd:attributeGroup ref="testEntityAttributeName"/>
                 <xsd:attributeGroup ref="testEntityAttributeType"/>
                 <xsd:attributeGroup ref="testKotlinFieldName"/>
+                <xsd:attributeGroup ref="testKotlinFieldLength"/>
                 <xsd:attributeGroup ref="testKotlinFieldType"/>
             </xsd:complexType>
         </xsd:schema>

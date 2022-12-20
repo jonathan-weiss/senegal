@@ -1,4 +1,4 @@
-package ch.senegal.plugin.model
+package ch.senegal.engine.model
 
 @JvmInline
 value class FacetValue private constructor(val value: Any) {

@@ -2,7 +2,7 @@ package ch.senegal.engine.freemarker.templatemodel
 
 import ch.senegal.engine.TmpFileUtil
 import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
-import ch.senegal.plugin.model.FacetValue
+import ch.senegal.engine.model.FacetValue
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.resolver.PluginResolver

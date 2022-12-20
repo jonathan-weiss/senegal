@@ -6,7 +6,7 @@ import ch.senegal.engine.model.converter.StringEnumFacetConverter
 import ch.senegal.engine.plugin.resolver.ResolvedFacet
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.plugin.*
-import ch.senegal.plugin.model.FacetValue
+import ch.senegal.engine.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 

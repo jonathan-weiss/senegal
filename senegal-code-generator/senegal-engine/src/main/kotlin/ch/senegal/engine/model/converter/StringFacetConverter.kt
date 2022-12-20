@@ -1,7 +1,7 @@
 package ch.senegal.engine.model.converter
 
 import ch.senegal.plugin.Facet
-import ch.senegal.plugin.model.FacetValue
+import ch.senegal.engine.model.FacetValue
 
 object StringFacetConverter: StringValueToFacetValueConverter {
 

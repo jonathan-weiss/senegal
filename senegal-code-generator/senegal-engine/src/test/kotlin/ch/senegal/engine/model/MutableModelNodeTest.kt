@@ -2,7 +2,6 @@ package ch.senegal.engine.model
 
 import ch.senegal.engine.plugin.*
 import ch.senegal.engine.plugin.resolver.PluginResolver
-import ch.senegal.plugin.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
 import org.junit.jupiter.api.Test
 

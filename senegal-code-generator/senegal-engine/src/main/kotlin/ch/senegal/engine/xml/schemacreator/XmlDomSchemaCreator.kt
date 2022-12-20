@@ -140,9 +140,9 @@ object XmlDomSchemaCreator {
             }
             is StringFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
             is BooleanFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:boolean")
-//            is IntegerNumberFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
-//            is DirectoryFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-//            is FileFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is IntegerFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            is DirectoryFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is FileFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
             else -> throw IllegalArgumentException("FacetType is not supported: $facet")
 
         }
