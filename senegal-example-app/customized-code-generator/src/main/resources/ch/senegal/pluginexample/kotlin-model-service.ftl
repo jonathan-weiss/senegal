@@ -34,7 +34,7 @@ class ${templateModel.KotlinModelClassName}Service(
         repository.delete${templateModel.KotlinModelClassName}(existingEntry)
     }
 
-    fun getListOfAll${templateModel.KotlinModelIdField}(): List<${templateModel.KotlinModelClassName}> {
+    fun getListOfAll${templateModel.KotlinModelClassName}(): List<${templateModel.KotlinModelClassName}> {
         return repository.fetchAll${templateModel.KotlinModelClassName}()
     }
 }

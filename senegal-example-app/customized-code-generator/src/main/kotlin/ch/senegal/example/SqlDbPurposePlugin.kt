@@ -46,7 +46,7 @@ object SqlDbPurposePlugin : Purpose {
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { CaseUtil.snakeCaseToSnakeCaseAllCaps(it) }
+        ?.let { CaseUtil.camelToSnakeCaseAllCaps(it) }
     }
 
     val sqlDbPrimaryKeyColumnTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
