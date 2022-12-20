@@ -13,11 +13,11 @@ export class ${templateModel.AngularFrontendServiceName} {
 
     constructor(private readonly httpClient: HttpClient) {}
 
-    getBookById(${templateModel.AngularFrontendTransferObjectIdFieldName}: ${templateModel.AngularFrontendTransferObjectIdFieldType}): Observable<${templateModel.AngularFrontendTransferObjectName}> {
+    get${templateModel.AngularFrontendEntityName}ById(${templateModel.AngularFrontendTransferObjectIdFieldName}: ${templateModel.AngularFrontendTransferObjectIdFieldType}): Observable<${templateModel.AngularFrontendTransferObjectName}> {
         return this.httpClient.get<${templateModel.AngularFrontendTransferObjectName}>(`/api/${templateModel.RestApiUrlPrefixName}/entry/` + ${templateModel.AngularFrontendTransferObjectIdFieldName}.uuid);
     }
 
-    getAllBook(): Observable<ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}>> {
+    getAll${templateModel.AngularFrontendEntityName}(): Observable<ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}>> {
         return this.httpClient.get<Array<${templateModel.AngularFrontendTransferObjectName}>>(`/api/${templateModel.RestApiUrlPrefixName}/all`);
     }
 }

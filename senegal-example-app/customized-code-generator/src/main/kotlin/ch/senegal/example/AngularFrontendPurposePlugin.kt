@@ -11,7 +11,7 @@ object AngularFrontendPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("AngularFrontend")
 
     val angularFrontendBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
-        facetName = FacetName.of("FrontendBasePath"),
+        facetName = FacetName.of("BasePath"),
         enclosingConceptName = EntitiesConceptPlugin.conceptName
     )
 
@@ -71,6 +71,28 @@ object AngularFrontendPurposePlugin : Purpose {
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
     }
 
+    val angularFrontendDecapitalizedEntityName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("DecapitalizedEntityName"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode -> modelNode
+        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+        ?.let { CaseUtil.decapitalize(it) }
+    }
+
+    val angularFrontendEntityName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("EntityName"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode -> modelNode
+        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+    }
+
+    val angularFrontendEntityFileName = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("EntityFileName"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode -> modelNode
+        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+        ?.let { CaseUtil.camelToDashCase(it) }
+    }
 
     private val transferObjectStringType = StringEnumerationFacetOption("string")
     private val transferObjectIntType = StringEnumerationFacetOption("number")
@@ -129,6 +151,9 @@ object AngularFrontendPurposePlugin : Purpose {
 
     override val facets: Set<Facet> = setOf(
         angularFrontendBasePathFacet,
+        angularFrontendDecapitalizedEntityName,
+        angularFrontendEntityName,
+        angularFrontendEntityFileName,
         angularFrontendTransferObjectNameFacet,
         angularFrontendTransferObjectFilenameFacet,
         angularFrontendServiceNameFacet,

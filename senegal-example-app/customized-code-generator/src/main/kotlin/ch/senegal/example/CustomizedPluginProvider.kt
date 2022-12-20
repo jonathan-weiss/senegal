@@ -6,6 +6,7 @@ class CustomizedPluginProvider : AbstractPluginProvider(
     plugins = setOf(
         EntitiesConceptPlugin, EntityConceptPlugin, EntityAttributeConceptPlugin, EntityPurposePlugin,
         InfoPurposePlugin,
+        AngularComponentPurposePlugin,
         AngularFrontendPurposePlugin,
         RestApiPurposePlugin,
         KotlinModelPurposePlugin,
