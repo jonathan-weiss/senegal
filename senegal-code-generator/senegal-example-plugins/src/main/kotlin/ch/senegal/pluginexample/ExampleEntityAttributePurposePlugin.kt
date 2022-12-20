@@ -8,15 +8,17 @@ object EntityAttributePurposePlugin : Purpose {
     val numberFieldOption = StringEnumerationFacetOption("NUMBER")
     val booleanFieldOption = StringEnumerationFacetOption("BOOLEAN")
 
+    val nameFacetName = FacetName.of("Name")
+    val typeFacetName = FacetName.of("Type")
 
     override val purposeName: PurposeName = PurposeName.of("EntityAttribute")
     override val facets: Set<Facet> = setOf(
         FacetFactory.StringFacetFactory.createFacet(
-            facetName = FacetName.of("Name"),
+            facetName = nameFacetName,
             enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
         ),
         FacetFactory.StringEnumerationFacetFactory.createFacet(
-            facetName = FacetName.of("Type"),
+            facetName = typeFacetName,
             enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
             enumerationOptions = listOf(textFieldOption, numberFieldOption, booleanFieldOption),
         ),
