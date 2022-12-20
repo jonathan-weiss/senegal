@@ -5,7 +5,7 @@ import ch.senegal.plugin.ConceptName
 
 object EntityConceptPlugin : Concept {
     override val conceptName: ConceptName = ConceptName.of("Entity")
-    override val enclosingConceptName: ConceptName? = null
+    override val enclosingConceptName: ConceptName = EntitiesConceptPlugin.conceptName
 }
 
 

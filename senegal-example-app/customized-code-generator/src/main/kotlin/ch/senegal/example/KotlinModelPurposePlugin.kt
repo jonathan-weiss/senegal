@@ -12,7 +12,7 @@ object KotlinModelPurposePlugin : Purpose {
 
     val kotlinModelTargetBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
         facetName = FacetName.of("TargetBasePath"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
+        enclosingConceptName = EntitiesConceptPlugin.conceptName
     )
 
 
@@ -91,12 +91,15 @@ object KotlinModelPurposePlugin : Purpose {
             return emptySet()
         }
 
+        return createEntityTemplates(modelNode)
+    }
+
+    private fun createEntityTemplates(modelNode: ModelNode): Set<TemplateTarget> {
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
-        targets.add(TemplateTarget(defaultOutputPath.resolve("template-tree.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
 
         val className = modelNode.getStringFacetValue(purposeName, kotlinModelClassnameFacet.facetName)
         val packageName = modelNode.getStringFacetValue(purposeName, kotlinModelPackageFacet.facetName)
-        val targetBasePath = modelNode.getDirectoryFacetValue(purposeName, kotlinModelTargetBasePathFacet.facetName)
+        val targetBasePath = modelNode.parentModelNode()?.getDirectoryFacetValue(purposeName, kotlinModelTargetBasePathFacet.facetName)
 
         if(className != null && packageName != null && targetBasePath != null) {
             val directory = packageName.replace(".", "/")
@@ -110,7 +113,9 @@ object KotlinModelPurposePlugin : Purpose {
         }
 
         return targets
+
     }
+
 
     override val facets: Set<Facet> = setOf(
         kotlinModelTargetBasePathFacet,

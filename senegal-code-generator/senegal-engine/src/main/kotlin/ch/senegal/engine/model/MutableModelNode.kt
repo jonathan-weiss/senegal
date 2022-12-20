@@ -26,7 +26,7 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
 
     override fun parentModelNode(): ModelNode? {
         return when(parentMutableModelInstance) {
-            is MutableModelNode -> this
+            is MutableModelNode -> parentMutableModelInstance
             is MutableModelTree -> null
         }
     }

@@ -12,12 +12,12 @@ object SqlDbPurposePlugin : Purpose {
 
     val sqlDbTargetBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
         facetName = FacetName.of("TargetBasePath"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
+        enclosingConceptName = EntitiesConceptPlugin.conceptName
     )
 
     val sqlDbResourceBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
         facetName = FacetName.of("ResourceBasePath"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
+        enclosingConceptName = EntitiesConceptPlugin.conceptName
     )
 
     val sqlDbJpaEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
@@ -144,14 +144,29 @@ object SqlDbPurposePlugin : Purpose {
     }
 
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
-        if(modelNode.concept().conceptName != EntityConceptPlugin.conceptName) {
-            return emptySet()
-        }
 
+        return when(modelNode.concept().conceptName) {
+            EntitiesConceptPlugin.conceptName -> createEntitiesTemplates(modelNode)
+            EntityConceptPlugin.conceptName -> createEntityTemplates(modelNode)
+            else -> emptySet()
+        }
+    }
+    private fun createEntitiesTemplates(modelNode: ModelNode): Set<TemplateTarget> {
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
 
-        val targetBasePath = modelNode.getDirectoryFacetValue(purposeName, sqlDbTargetBasePathFacet.facetName)
         val targetBaseResourcesPath = modelNode.getDirectoryFacetValue(purposeName, sqlDbResourceBasePathFacet.facetName)
+
+        if(targetBaseResourcesPath != null) {
+            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/structure.xml"), "/ch/senegal/pluginexample/sql-db-liquibase-includes-xml.ftl"))
+        }
+        return targets
+    }
+
+    private fun createEntityTemplates(modelNode: ModelNode): Set<TemplateTarget> {
+        val targets: MutableSet<TemplateTarget> = mutableSetOf()
+
+        val targetBasePath = modelNode.parentModelNode()?.getDirectoryFacetValue(purposeName, sqlDbTargetBasePathFacet.facetName)
+        val targetBaseResourcesPath = modelNode.parentModelNode()?.getDirectoryFacetValue(purposeName, sqlDbResourceBasePathFacet.facetName)
         val kotlinModelClassName = modelNode.getStringFacetValue(KotlinModelPurposePlugin.purposeName, KotlinModelPurposePlugin.kotlinModelClassnameFacet.facetName)
         val jpaEntityName = modelNode.getStringFacetValue(purposeName, sqlDbJpaEntityNameFacet.facetName)
         val tableName = modelNode.getStringFacetValue(purposeName, sqlDbTableNameFacet.facetName)

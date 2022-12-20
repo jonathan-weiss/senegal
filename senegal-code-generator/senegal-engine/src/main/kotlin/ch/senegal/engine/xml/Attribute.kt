@@ -11,7 +11,7 @@ data class Attribute(
 ) {
     companion object {
         fun attributeList(attr: Attributes?): List<Attribute> {
-            if (attr == null) return emptyList()
+            if (attr == null || attr.length <= 0) return emptyList()
             return (0..(attr.length - 1)
                 .coerceAtLeast(0))
                 .map { index -> toAttribute(attr, index) }

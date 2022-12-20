@@ -11,15 +11,24 @@
             sqlDbJpaEntityPackage="ch.senegal.persistence.entity"
     />
     <definitions>
-        <entity entityName="Person">
-            <entityAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
-            <entityAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
-            <entityAttribute entityAttributeName="nickname" entityAttributeType="Text"/>
-        </entity>
-        <entity entityName="Address">
-            <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
-            <entityAttribute entityAttributeName="zip" entityAttributeType="IntegerNumber"/>
-        </entity>
+        <entities infoDescription="Entities used on the whole stack.">
+            <entity entityName="Person">
+                <entityAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="nickname" entityAttributeType="Text"/>
+            </entity>
+            <entity entityName="Address">
+                <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="zip" entityAttributeType="IntegerNumber"/>
+            </entity>
+            <entity entityName="Department">
+                <entityAttribute entityAttributeName="title" entityAttributeType="Text"/>
+            </entity>
+            <entity entityName="DepartmentAddress">
+                <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="phone" entityAttributeType="IntegerNumber"/>
+            </entity>
+        </entities>
     </definitions>
 
 </senegal>

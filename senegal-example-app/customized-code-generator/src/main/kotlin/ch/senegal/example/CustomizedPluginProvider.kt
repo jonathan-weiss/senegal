@@ -4,7 +4,8 @@ import ch.senegal.plugin.finder.AbstractPluginProvider
 
 class CustomizedPluginProvider : AbstractPluginProvider(
     plugins = setOf(
-        EntityConceptPlugin, EntityAttributeConceptPlugin, EntityPurposePlugin,
+        EntitiesConceptPlugin, EntityConceptPlugin, EntityAttributeConceptPlugin, EntityPurposePlugin,
+        InfoPurposePlugin,
         KotlinModelPurposePlugin, SqlDbPurposePlugin
     )
 )
