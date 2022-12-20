@@ -3,6 +3,7 @@ package ch.senegal.pluginexample
 import ch.senegal.plugin.*
 import ch.senegal.plugin.factory.FacetFactory
 import ch.senegal.plugin.model.ModelNode
+import ch.senegal.pluginexample.EntityAttributePurposePlugin.typeFacetName
 import java.nio.file.Path
 
 
@@ -14,8 +15,8 @@ object KotlinModelPurposePlugin : Purpose {
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
         targets.add(TemplateTarget(defaultOutputPath.resolve("general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
 
-        val className = modelNode.getFacetValue(purposeName, kotlinModelClassnameFacet.facetName)?.value as String?
-        val packageName = modelNode.getFacetValue(purposeName, kotlinModelPackageFacet.facetName)?.value as String?
+        val className = modelNode.getStringFacetValue(purposeName, kotlinModelClassnameFacet.facetName)
+        val packageName = modelNode.getStringFacetValue(purposeName, kotlinModelPackageFacet.facetName)
 
         if(className != null && packageName != null) {
             val directory = packageName.replace(".", "/")
@@ -52,8 +53,15 @@ val intKotlinTypeOption = StringEnumerationFacetOption("kotlin.Int")
 val booleanKotlinTypeOption = StringEnumerationFacetOption("kotlin.Boolean")
 
 
-val kotlinFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createFacet(
+val kotlinFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
     facetName = FacetName.of("Type"),
     enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
     enumerationOptions = listOf(stringKotlinTypeOption, intKotlinTypeOption, booleanKotlinTypeOption),
-)
+) { modelNode ->
+    when(modelNode.getEnumFacetOption(EntityAttributePurposePlugin.purposeName, typeFacetName)) {
+        EntityAttributePurposePlugin.textFieldOption -> stringKotlinTypeOption.name
+        EntityAttributePurposePlugin.booleanFieldOption -> booleanKotlinTypeOption.name
+        EntityAttributePurposePlugin.numberFieldOption -> intKotlinTypeOption.name
+        else -> null
+    }
+}

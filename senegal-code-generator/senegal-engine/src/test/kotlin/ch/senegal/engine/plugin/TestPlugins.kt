@@ -63,8 +63,7 @@ object TestKotlinModelPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestKotlinModel")
     override val facets: Set<Facet> = setOf(testClassnameFacet, testPackageFacet)
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
-        val facetValue = modelNode.getFacetValue(purposeName, testClassnameFacet.facetName)
-        val classname = requireNotNull(facetValue).value as String
+        val classname = requireNotNull(modelNode.getStringFacetValue(purposeName, testClassnameFacet.facetName))
         return setOf(
             TemplateTarget(
                 targetFile = defaultOutputPath.resolve("$classname.kt"),
