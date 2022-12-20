@@ -4,8 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <include file="db.changelog.senegal_structure.xml" relativeToChangelogFile="true"/>
-    <include file="db.changelog.generated-senegal.xml" relativeToChangelogFile="true"/>
-    <include file="db.changelog.senegal_sample-data.xml" relativeToChangelogFile="true"/>
+    <include file="../../generated/db/changelog/ADDRESS.structure.xml" relativeToChangelogFile="true"/>
+    <include file="../../generated/db/changelog/PERSON.structure.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

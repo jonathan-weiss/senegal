@@ -15,6 +15,11 @@ object SqlDbPurposePlugin : Purpose {
         enclosingConceptName = EntityConceptPlugin.conceptName
     )
 
+    val sqlDbResourceBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
+        facetName = FacetName.of("ResourceBasePath"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    )
+
     val sqlDbJpaEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("JpaEntityName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
@@ -144,17 +149,23 @@ object SqlDbPurposePlugin : Purpose {
         }
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
+
+        val targetBasePath = modelNode.getDirectoryFacetValue(purposeName, sqlDbTargetBasePathFacet.facetName)
+        val targetBaseResourcesPath = modelNode.getDirectoryFacetValue(purposeName, sqlDbResourceBasePathFacet.facetName)
         val kotlinModelClassName = modelNode.getStringFacetValue(KotlinModelPurposePlugin.purposeName, KotlinModelPurposePlugin.kotlinModelClassnameFacet.facetName)
         val jpaEntityName = modelNode.getStringFacetValue(purposeName, sqlDbJpaEntityNameFacet.facetName)
-        val targetBasePath = modelNode.getDirectoryFacetValue(purposeName, sqlDbTargetBasePathFacet.facetName)
+        val tableName = modelNode.getStringFacetValue(purposeName, sqlDbTableNameFacet.facetName)
         val jpaEntityPackage = modelNode.getStringFacetValue(purposeName, sqlDbJpaEntityPackageFacet.facetName)
 
 
-        if(jpaEntityName != null && jpaEntityPackage != null && targetBasePath != null) {
+        if(jpaEntityName != null && jpaEntityPackage != null && targetBasePath != null && targetBaseResourcesPath != null && tableName != null) {
             val directory = jpaEntityPackage.replace(".", "/")
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}.kt"), "/ch/senegal/pluginexample/sql-db-jpa-entity.ftl"))
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}Repository.kt"), "/ch/senegal/pluginexample/sql-db-jpa-repository.ftl"))
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), "/ch/senegal/pluginexample/sql-db-repository-impl.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), "/ch/senegal/pluginexample/sql-db-repository-impl.ftl"))
+
+            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/${tableName}.structure.xml"), "/ch/senegal/pluginexample/sql-db-liquibase-xml.ftl"))
         }
 
         return targets
@@ -162,6 +173,7 @@ object SqlDbPurposePlugin : Purpose {
 
     override val facets: Set<Facet> = setOf(
         sqlDbTargetBasePathFacet,
+        sqlDbResourceBasePathFacet,
         sqlDbTableNameFacet,
         sqlDbJpaEntityNameFacet,
         sqlDbJpaEntityPackageFacet,
