@@ -9,6 +9,83 @@ import java.nio.file.Path
 
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinModel")
+
+    val kotlinModelTargetBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
+        facetName = FacetName.of("TargetBasePath"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    )
+
+
+    val kotlinModelClassnameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("ClassName"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode -> modelNode
+        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+    }
+
+    val kotlinModelPackageFacet = FacetFactory.StringFacetFactory.createFacet(
+        facetName = FacetName.of("Package"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode, basePackage: String? ->
+        val entityName = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+        val className = entityName?.lowercase()
+
+        if(basePackage == null || className == null) {
+            return@createFacet null
+        }
+        return@createFacet "$basePackage.$className"
+    }
+
+    val kotlinModelIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("IdFieldType"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode ->
+        val classname = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+            ?: return@createCalculatedFacet null
+
+        return@createCalculatedFacet "${classname}Id"
+    }
+
+    val kotlinModelIdFieldFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("IdField"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode ->
+        val classname = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+            ?: return@createCalculatedFacet null
+
+        return@createCalculatedFacet "${CaseUtil.decapitalize(classname)}Id"
+    }
+
+
+    val kotlinModelFieldNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("FieldName"),
+        enclosingConceptName = EntityAttributeConceptPlugin.conceptName
+    ) { modelNode: ModelNode ->
+        modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
+    }
+
+    private val kotlinStringType = StringEnumerationFacetOption("kotlin.String")
+    private val kotlinIntType = StringEnumerationFacetOption("kotlin.Int")
+    private val kotlinBooleanType = StringEnumerationFacetOption("kotlin.Boolean")
+
+    val kotlinModelFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("FieldType"),
+        enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
+        enumerationOptions = listOf(kotlinStringType, kotlinIntType, kotlinBooleanType)
+    ) { modelNode: ModelNode ->
+
+
+        val entityAttributeTypeOption =  modelNode.getEnumFacetOption(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeTypeFacet.facetName)
+            ?: return@createCalculatedFacet null
+        return@createCalculatedFacet when(entityAttributeTypeOption) {
+            EntityPurposePlugin.entityAttributeTextType -> kotlinStringType.name
+            EntityPurposePlugin.entityAttributeIntegerNumberType -> kotlinIntType.name
+            EntityPurposePlugin.entityAttributeBooleanType -> kotlinBooleanType.name
+            else -> null
+        }
+
+    }
+
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
         if(modelNode.concept().conceptName != EntityConceptPlugin.conceptName) {
             return emptySet()
@@ -44,80 +121,5 @@ object KotlinModelPurposePlugin : Purpose {
         kotlinModelIdFieldTypeFacet,
         kotlinModelIdFieldFacet,
     )
-
-}
-val kotlinModelTargetBasePathFacet = FacetFactory.DirectoryFacetFactory.createFacet(
-    facetName = FacetName.of("TargetBasePath"),
-    enclosingConceptName = EntityConceptPlugin.conceptName
-)
-
-
-val kotlinModelClassnameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-    facetName = FacetName.of("ClassName"),
-    enclosingConceptName = EntityConceptPlugin.conceptName
-) { modelNode: ModelNode -> modelNode
-    .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-}
-
-val kotlinModelPackageFacet = FacetFactory.StringFacetFactory.createFacet(
-    facetName = FacetName.of("Package"),
-    enclosingConceptName = EntityConceptPlugin.conceptName
-) { modelNode: ModelNode, basePackage: String? ->
-    val entityName = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-    val className = entityName?.lowercase()
-
-    if(basePackage == null || className == null) {
-        return@createFacet null
-    }
-    return@createFacet "$basePackage.$className"
-}
-
-val kotlinModelIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-    facetName = FacetName.of("IdFieldType"),
-    enclosingConceptName = EntityConceptPlugin.conceptName
-) { modelNode: ModelNode ->
-    val classname = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?: return@createCalculatedFacet null
-
-    return@createCalculatedFacet "${classname}Id"
-}
-
-val kotlinModelIdFieldFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-    facetName = FacetName.of("IdField"),
-    enclosingConceptName = EntityConceptPlugin.conceptName
-) { modelNode: ModelNode ->
-    val classname = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?: return@createCalculatedFacet null
-
-    return@createCalculatedFacet "${CaseUtil.decapitalize(classname)}Id"
-}
-
-
-val kotlinModelFieldNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-    facetName = FacetName.of("FieldName"),
-    enclosingConceptName = EntityAttributeConceptPlugin.conceptName
-) { modelNode: ModelNode ->
-    modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
-}
-
-private val kotlinStringType = StringEnumerationFacetOption("kotlin.String")
-private val kotlinIntType = StringEnumerationFacetOption("kotlin.Int")
-private val kotlinBooleanType = StringEnumerationFacetOption("kotlin.Boolean")
-
-val kotlinModelFieldTypeFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
-    facetName = FacetName.of("FieldType"),
-    enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
-    enumerationOptions = listOf(kotlinStringType, kotlinIntType, kotlinBooleanType)
-) { modelNode: ModelNode ->
-
-
-    val entityAttributeTypeOption =  modelNode.getEnumFacetOption(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeTypeFacet.facetName)
-        ?: return@createCalculatedFacet null
-    return@createCalculatedFacet when(entityAttributeTypeOption) {
-        EntityPurposePlugin.entityAttributeTextType -> kotlinStringType.name
-        EntityPurposePlugin.entityAttributeIntegerNumberType -> kotlinIntType.name
-        EntityPurposePlugin.entityAttributeBooleanType -> kotlinBooleanType.name
-        else -> null
-    }
 
 }
