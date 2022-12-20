@@ -26,6 +26,7 @@ import {BookAddViewComponent} from "./book/book-add-view/book-add-view.component
 import {SideNavigationComponent} from "./navigation/side-navigation.component";
 import {GeneratedEntitiesModule} from "../generated/generated-entities.module";
 import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-routing.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-ro
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    RouterModule,
     AppRoutingModule,
     MatMenuModule,
     MatFormFieldModule,
