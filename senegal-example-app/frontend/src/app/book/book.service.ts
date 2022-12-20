@@ -7,6 +7,7 @@ import {
   DeleteBookInstructionTO,
   UpdateBookInstructionTO
 } from "../../generated-openapi";
+import {BookApiAlternativeService} from "./book-api-alternative.service";
 
 
 @Injectable({
@@ -14,11 +15,12 @@ import {
 })
 export class BookService {
 
-  constructor(private readonly bookApiService: BookApiService) {
+  constructor(private readonly bookApiService: BookApiService,
+              private readonly bookApiAlternativeService: BookApiAlternativeService) {
   }
 
   getAllBooks(): Observable<ReadonlyArray<BookTO>> {
-    return this.bookApiService.getBooks();
+    return this.bookApiAlternativeService.getBooks();
   }
 
   updateBook(updateInstruction: UpdateBookInstructionTO): Observable<BookTO> {

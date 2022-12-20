@@ -70,23 +70,6 @@ object RestApiPurposePlugin : Purpose {
         ?.let { "${it}TO" }
     }
 
-    val restApiIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("IdFieldType"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode ->
-        return@createCalculatedFacet ""
-    }
-
-    val restApiIdFieldNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("IdFieldName"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode ->
-        val entityName = modelNode.getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-            ?: return@createCalculatedFacet null
-
-        return@createCalculatedFacet "${entityName}Id"
-    }
-
     val restApiTransferObjectIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("TransferObjectIdFieldType"),
         enclosingConceptName = EntityConceptPlugin.conceptName
@@ -177,8 +160,6 @@ object RestApiPurposePlugin : Purpose {
         restApiFacadePackageFacet,
         restApiTransferObjectNameFacet,
         restApiUrlPrefixNameFacet,
-        restApiIdFieldNameFacet,
-        restApiIdFieldTypeFacet,
         restApiTransferObjectFieldNameFacet,
         restApiTransferObjectFieldTypeFacet,
         restApiTransferObjectIdFieldNameFacet,

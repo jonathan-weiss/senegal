@@ -4,6 +4,7 @@
          xsi:schemaLocation="https://senegal.ch/senegal ./schema/senegal-schema.xsd"
 >
     <configuration
+            angularFrontendFrontendBasePath="@{frontendPath}"
             restApiControllerBasePath="@{frontendApiPath}"
             restApiFacadeBasePath="@{frontendApiPath}"
             restApiControllerPackage="ch.senegal.example.frontendapi.controller"
