@@ -100,7 +100,7 @@ object SqlDbPurposePlugin : Purpose {
 
 
     private val sqlStringType = StringEnumerationFacetOption("VARCHAR(255)")
-    private val sqlIntType = StringEnumerationFacetOption("NUMBER")
+    private val sqlIntType = StringEnumerationFacetOption("INTEGER")
     private val sqlBooleanType = StringEnumerationFacetOption("BOOLEAN")
 
     val sqlDbColumnTypeFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
