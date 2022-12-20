@@ -10,6 +10,9 @@ import java.nio.file.Path
 object KotlinModelPurposePlugin : Purpose {
     override val purposeName: PurposeName = PurposeName.of("KotlinModel")
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
+        if(modelNode.concept().conceptName != EntityConceptPlugin.conceptName) {
+            return emptySet()
+        }
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
         targets.add(TemplateTarget(defaultOutputPath.resolve("template-tree.txt"), "/ch/senegal/pluginexample/general-template.ftl"))

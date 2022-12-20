@@ -11,7 +11,6 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
 ): MutableModelInstance(), ModelNode {
 
     val nodeFacetValues: MutableMap<PurposeFacetCombinedName, FacetValue> = mutableMapOf()
-    private val nodeResolvedFacet: MutableMap<PurposeFacetCombinedName, ResolvedFacet> = mutableMapOf()
 
     override fun parentMutableModelInstance(): MutableModelInstance {
         return parentMutableModelInstance
@@ -19,7 +18,6 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
 
     fun addFacetValue(resolvedFacet: ResolvedFacet, facetValue: FacetValue) {
         nodeFacetValues[resolvedFacet.purposeFacetName] = facetValue
-        nodeResolvedFacet[resolvedFacet.purposeFacetName] = resolvedFacet
     }
 
     override fun concept(): Concept {
@@ -63,7 +61,8 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
 
     private fun getResolvedFacetOrThrow(purposeName: PurposeName, facetName: FacetName): ResolvedFacet {
         val purposeFacetCombinedName = PurposeFacetCombinedName.of(purposeName, facetName)
-        return nodeResolvedFacet[purposeFacetCombinedName] ?: throw IllegalArgumentException("No facet found for ${purposeFacetCombinedName.name}.")
+        return resolvedConcept.getFacetByCombinedName(purposeFacetCombinedName)
+            ?: throw IllegalArgumentException("No facet found for ${purposeFacetCombinedName.name}.")
     }
 
 
