@@ -6,14 +6,13 @@ import ch.senegal.plugin.*
 import ch.senegal.plugin.model.FacetValue
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
-import kotlin.reflect.KClass
 
 class MutableModelNode(val resolvedConcept: ResolvedConcept,
                        private val parentMutableModelInstance: MutableModelInstance,
 ): MutableModelInstance(), ModelNode {
 
     val nodeFacetValues: MutableMap<PurposeFacetCombinedName, FacetValue> = mutableMapOf()
-    val nodeFacet: MutableMap<PurposeFacetCombinedName, Facet> = mutableMapOf()
+    private val nodeResolvedFacet: MutableMap<PurposeFacetCombinedName, ResolvedFacet> = mutableMapOf()
 
     override fun parentMutableModelInstance(): MutableModelInstance {
         return parentMutableModelInstance
@@ -21,7 +20,7 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
 
     fun addFacetValue(resolvedFacet: ResolvedFacet, facetValue: FacetValue) {
         nodeFacetValues[resolvedFacet.purposeFacetName] = facetValue
-        nodeFacet[resolvedFacet.purposeFacetName] = resolvedFacet.facet
+        nodeResolvedFacet[resolvedFacet.purposeFacetName] = resolvedFacet
     }
 
     override fun concept(): Concept {
@@ -36,34 +35,42 @@ class MutableModelNode(val resolvedConcept: ResolvedConcept,
     }
 
     override fun getEnumFacetOption(purposeName: PurposeName, facetName: FacetName): StringEnumerationFacetOption? {
+        val resolvedFacet = getResolvedFacetOrThrow(purposeName, facetName)
+        if(resolvedFacet.facet !is StringEnumerationFacet) {
+            throw IllegalArgumentException("Wrong facet type for ${resolvedFacet.purposeFacetName.name}. Facet is not an enum facet.")
+        }
         return getStringFacetValue(purposeName, facetName)?.let { StringEnumerationFacetOption(it) }
     }
 
     override fun getStringFacetValue(purposeName: PurposeName, facetName: FacetName): String? {
-        return getFacetValueOrThrow(purposeName, facetName, String::class.java)?.value as String?
+        return getFacetValueOrThrow(getResolvedFacetOrThrow(purposeName, facetName), String::class.java)?.value as String?
     }
 
     override fun getBooleanFacetValue(purposeName: PurposeName, facetName: FacetName): Boolean? {
-        return getFacetValueOrThrow(purposeName, facetName, Boolean::class.java)?.value as Boolean?
+        return getFacetValueOrThrow(getResolvedFacetOrThrow(purposeName, facetName), Boolean::class.java)?.value as Boolean?
     }
 
     override fun getIntFacetValue(purposeName: PurposeName, facetName: FacetName): Int? {
-        return getFacetValueOrThrow(purposeName, facetName, Int::class.java)?.value as Int?
+        return getFacetValueOrThrow(getResolvedFacetOrThrow(purposeName, facetName), Int::class.java)?.value as Int?
     }
 
     override fun getFileFacetValue(purposeName: PurposeName, facetName: FacetName): Path? {
-        return getFacetValueOrThrow(purposeName, facetName, Path::class.java)?.value as Path?
+        return getFacetValueOrThrow(getResolvedFacetOrThrow(purposeName, facetName), Path::class.java)?.value as Path?
     }
 
     override fun getDirectoryFacetValue(purposeName: PurposeName, facetName: FacetName): Path? {
-        return getFacetValueOrThrow(purposeName, facetName, Path::class.java)?.value as Path?
+        return getFacetValueOrThrow(getResolvedFacetOrThrow(purposeName, facetName), Path::class.java)?.value as Path?
     }
 
-    private fun getFacetValueOrThrow(purposeName: PurposeName, facetName: FacetName, asClass: Class<out Any>): FacetValue? {
+    private fun getResolvedFacetOrThrow(purposeName: PurposeName, facetName: FacetName): ResolvedFacet {
         val purposeFacetCombinedName = PurposeFacetCombinedName.of(purposeName, facetName)
-        val facet = nodeFacet[purposeFacetCombinedName] ?: throw IllegalArgumentException("No facet found for ${purposeFacetCombinedName.name}.")
-        val facetValue = nodeFacetValues[purposeFacetCombinedName] ?: return null
-        validTypeOrThrow(facet, asClass, purposeFacetCombinedName)
+        return nodeResolvedFacet[purposeFacetCombinedName] ?: throw IllegalArgumentException("No facet found for ${purposeFacetCombinedName.name}.")
+    }
+
+
+    private fun getFacetValueOrThrow(resolvedFacet: ResolvedFacet, asClass: Class<out Any>): FacetValue? {
+        val facetValue = nodeFacetValues[resolvedFacet.purposeFacetName] ?: return null
+        validTypeOrThrow(resolvedFacet.facet, asClass, resolvedFacet.purposeFacetName)
         return facetValue
     }
 

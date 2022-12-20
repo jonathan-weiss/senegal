@@ -85,11 +85,16 @@ val testPackageFacet = FacetFactory.StringFacetFactory.createFacet(
 
 object TestKotlinFieldPurpose: Purpose {
     override val purposeName: PurposeName = PurposeName.of("TestKotlinField")
-    override val facets: Set<Facet> = setOf(testFieldNameFacet, testFieldTypeFacet)
+    override val facets: Set<Facet> = setOf(testFieldNameFacet, testFieldLengthFacet, testFieldTypeFacet)
 }
 
 val testFieldNameFacet = FacetFactory.StringFacetFactory.createFacet(
     facetName = FacetName.of("Name"),
+    enclosingConceptName = TestEntityAttributeConcept.conceptName,
+)
+
+val testFieldLengthFacet = FacetFactory.IntegerFacetFactory.createFacet(
+    facetName = FacetName.of("Length"),
     enclosingConceptName = TestEntityAttributeConcept.conceptName,
 )
 
