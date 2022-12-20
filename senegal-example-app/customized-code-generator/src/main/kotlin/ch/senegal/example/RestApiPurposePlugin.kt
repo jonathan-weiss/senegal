@@ -53,6 +53,14 @@ object RestApiPurposePlugin : Purpose {
         }
         return@createFacet "$basePackage.$lowercaseEntityName"
     }
+    val restApiUrlPrefixNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("UrlPrefixName"),
+        enclosingConceptName = EntityConceptPlugin.conceptName
+    ) { modelNode: ModelNode -> modelNode
+        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
+        ?.let { CaseUtil.camelToDashCase(it) }
+    }
+
 
     val restApiTransferObjectNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("TransferObjectName"),
@@ -155,6 +163,7 @@ object RestApiPurposePlugin : Purpose {
 
             targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${kotlinModelClassName}Facade.kt"), "/ch/senegal/pluginexample/rest-api-facade.ftl"))
             targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${transferObjectClassName}.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object.ftl"))
+            targets.add(TemplateTarget(controllerBasePath.resolve("$controllerDirectory/${kotlinModelClassName}Controller.kt"), "/ch/senegal/pluginexample/rest-api-controller.ftl"))
         }
 
         return targets
@@ -167,6 +176,7 @@ object RestApiPurposePlugin : Purpose {
         restApiFacadeNameFacet,
         restApiFacadePackageFacet,
         restApiTransferObjectNameFacet,
+        restApiUrlPrefixNameFacet,
         restApiIdFieldNameFacet,
         restApiIdFieldTypeFacet,
         restApiTransferObjectFieldNameFacet,
