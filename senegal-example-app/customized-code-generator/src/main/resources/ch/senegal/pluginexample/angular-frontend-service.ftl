@@ -4,20 +4,20 @@ import { HttpClient }       from '@angular/common/http';
 import { Observable }       from 'rxjs';
 import { UuidTO }           from '../../../generated-openapi';
 
-import {${templateModel.AngularFrontendTransferObjectName}} from "./${templateModel.AngularFrontendTransferObjectFilename}";
+import {${templateModel.AngularFrontendEntityName}TO } from "./${templateModel.AngularFrontendEntityFilename}-to.model";
 
 @Injectable({
 providedIn: 'root'
 })
-export class ${templateModel.AngularFrontendServiceName} {
+export class ${templateModel.AngularFrontendEntityName}ApiService {
 
     constructor(private readonly httpClient: HttpClient) {}
 
-    get${templateModel.AngularFrontendEntityName}ById(${templateModel.AngularFrontendTransferObjectIdFieldName}: ${templateModel.AngularFrontendTransferObjectIdFieldType}): Observable<${templateModel.AngularFrontendTransferObjectName}> {
-        return this.httpClient.get<${templateModel.AngularFrontendTransferObjectName}>(`/api/${templateModel.RestApiUrlPrefixName}/entry/` + ${templateModel.AngularFrontendTransferObjectIdFieldName}.uuid);
+    get${templateModel.AngularFrontendEntityName}ById(${templateModel.AngularFrontendTransferObjectIdFieldName}: ${templateModel.AngularFrontendTransferObjectIdFieldType}): Observable<${templateModel.AngularFrontendEntityName}TO> {
+        return this.httpClient.get<${templateModel.AngularFrontendEntityName}TO>(`/api/${templateModel.RestApiUrlPrefixName}/entry/` + ${templateModel.AngularFrontendTransferObjectIdFieldName}.uuid);
     }
 
-    getAll${templateModel.AngularFrontendEntityName}(): Observable<ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}>> {
-        return this.httpClient.get<Array<${templateModel.AngularFrontendTransferObjectName}>>(`/api/${templateModel.RestApiUrlPrefixName}/all`);
+    getAll${templateModel.AngularFrontendEntityName}(): Observable<ReadonlyArray<${templateModel.AngularFrontendEntityName}TO>> {
+        return this.httpClient.get<Array<${templateModel.AngularFrontendEntityName}TO>>(`/api/${templateModel.RestApiUrlPrefixName}/all`);
     }
 }

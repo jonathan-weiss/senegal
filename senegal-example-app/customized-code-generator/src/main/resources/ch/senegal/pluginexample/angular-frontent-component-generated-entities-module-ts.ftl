@@ -17,8 +17,8 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/mater
 import {MatInputModule} from "@angular/material/input";
 
 <#list templateModel.childNodes as entityNode>
-import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFileName}/component/${entityNode.AngularFrontendEntityFileName}-panel-view/${entityNode.AngularFrontendEntityFileName}-panel-view.component"
-import { ${entityNode.AngularFrontendEntityName}TableViewComponent } from "./${entityNode.AngularFrontendEntityFileName}/component/${entityNode.AngularFrontendEntityFileName}-table-view/${entityNode.AngularFrontendEntityFileName}-table-view.component"
+import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-panel-view/${entityNode.AngularFrontendEntityFilename}-panel-view.component"
+import { ${entityNode.AngularFrontendEntityName}TableViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-table-view/${entityNode.AngularFrontendEntityFilename}-table-view.component"
 </#list>
 
 

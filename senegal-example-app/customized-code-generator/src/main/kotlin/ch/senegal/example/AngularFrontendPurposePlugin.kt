@@ -15,43 +15,35 @@ object AngularFrontendPurposePlugin : Purpose {
         enclosingConceptName = EntitiesConceptPlugin.conceptName
     )
 
-    val angularFrontendServiceNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("ServiceName"),
+    val angularFrontendDecapitalizedEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("DecapitalizedEntityName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { "${it}ApiService" }
+        ?.let { CaseUtil.decapitalize(it) }
     }
 
-    val angularFrontendServiceFilenameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("ServiceFilename"),
+    val angularFrontendEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("EntityName"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { CaseUtil.camelToDashCase(it) + "-api.service" }
     }
 
-    val angularFrontendTransferObjectNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("TransferObjectName"),
+    val angularFrontendEntityFileNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("EntityFilename"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { "${it}TO" }
+        ?.let { CaseUtil.camelToDashCase(it) }
     }
+
 
     val angularFrontendTransferObjectIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("TransferObjectIdFieldType"),
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode ->
         return@createCalculatedFacet "UuidTO"
-    }
-
-    val angularFrontendTransferObjectFilenameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("TransferObjectFilename"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode -> modelNode
-        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { CaseUtil.camelToDashCase(it) + "-to.model" }
     }
 
     val angularFrontendTransferObjectIdFieldNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
@@ -69,29 +61,6 @@ object AngularFrontendPurposePlugin : Purpose {
         enclosingConceptName = EntityAttributeConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeNameFacet.facetName)
-    }
-
-    val angularFrontendDecapitalizedEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("DecapitalizedEntityName"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode -> modelNode
-        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { CaseUtil.decapitalize(it) }
-    }
-
-    val angularFrontendEntityNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("EntityName"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode -> modelNode
-        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-    }
-
-    val angularFrontendEntityFileNameFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
-        facetName = FacetName.of("EntityFileName"),
-        enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode -> modelNode
-        .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { CaseUtil.camelToDashCase(it) }
     }
 
     private val transferObjectStringType = StringEnumerationFacetOption("string")
@@ -141,22 +110,12 @@ object AngularFrontendPurposePlugin : Purpose {
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
 
         val angularFrontendBasePath = modelNode.parentModelNode()?.getDirectoryFacetValue(purposeName, angularFrontendBasePathFacet.facetName)
-        val transferObjectFilename = modelNode.getStringFacetValue(purposeName, angularFrontendTransferObjectFilenameFacet.facetName)
         val entityFileName = modelNode.getStringFacetValue(purposeName, angularFrontendEntityFileNameFacet.facetName)
-        val serviceName = modelNode.getStringFacetValue(purposeName, angularFrontendServiceNameFacet.facetName)
-        val serviceFilename = modelNode.getStringFacetValue(purposeName, angularFrontendServiceFilenameFacet.facetName)
-
-
-        if(angularFrontendBasePath != null && transferObjectFilename != null) {
-            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${transferObjectFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object.ftl"))
-        }
-
-        if(angularFrontendBasePath != null && serviceName != null && serviceFilename != null) {
-            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${serviceFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
-        }
-
 
         if(angularFrontendBasePath != null && entityFileName != null) {
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${entityFileName}-to.model.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${entityFileName}-api.service.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
+
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-ts.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-scss.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-html.ftl"))
@@ -164,9 +123,7 @@ object AngularFrontendPurposePlugin : Purpose {
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-ts.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-scss.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-html.ftl"))
-
         }
-
 
         return targets
     }
@@ -176,10 +133,6 @@ object AngularFrontendPurposePlugin : Purpose {
         angularFrontendDecapitalizedEntityNameFacet,
         angularFrontendEntityNameFacet,
         angularFrontendEntityFileNameFacet,
-        angularFrontendTransferObjectNameFacet,
-        angularFrontendTransferObjectFilenameFacet,
-        angularFrontendServiceNameFacet,
-        angularFrontendServiceFilenameFacet,
         angularFrontendTransferObjectFieldNameFacet,
         angularFrontendTransferObjectFieldTypeFacet,
         angularFrontendTransferObjectIdFieldNameFacet,

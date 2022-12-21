@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ${templateModel.AngularFrontendServiceName} } from "../../api/${templateModel.AngularFrontendServiceFilename}";
-import { ${templateModel.AngularFrontendTransferObjectName} } from "../../api/${templateModel.AngularFrontendTransferObjectFilename}";
+import { ${templateModel.AngularFrontendEntityName}ApiService } from "../../api/${templateModel.AngularFrontendEntityFilename}-api.service";
+import { ${templateModel.AngularFrontendEntityName}TO } from "../../api/${templateModel.AngularFrontendEntityFilename}-to.model";
 
 
 @Component({
-    selector: '${templateModel.AngularFrontendEntityFileName}-panel-view',
-    templateUrl: './${templateModel.AngularFrontendEntityFileName}-panel-view.component.html',
-    styleUrls: ['./${templateModel.AngularFrontendEntityFileName}-panel-view.component.scss'],
+    selector: '${templateModel.AngularFrontendEntityFilename}-panel-view',
+    templateUrl: './${templateModel.AngularFrontendEntityFilename}-panel-view.component.html',
+    styleUrls: ['./${templateModel.AngularFrontendEntityFilename}-panel-view.component.scss'],
 })
 export class ${templateModel.AngularFrontendEntityName}PanelViewComponent implements OnInit {
 
-    all${templateModel.AngularFrontendEntityName}: ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}> = []
+    all${templateModel.AngularFrontendEntityName}: ReadonlyArray<${templateModel.AngularFrontendEntityName}TO> = []
 
-    constructor(private ${templateModel.AngularFrontendDecapitalizedEntityName}Service: ${templateModel.AngularFrontendServiceName}) {
+    constructor(private ${templateModel.AngularFrontendDecapitalizedEntityName}Service: ${templateModel.AngularFrontendEntityName}ApiService) {
     }
 
     ngOnInit(): void {
@@ -22,7 +22,7 @@ export class ${templateModel.AngularFrontendEntityName}PanelViewComponent implem
     private loadAll${templateModel.AngularFrontendEntityName}(): void {
         this.${templateModel.AngularFrontendDecapitalizedEntityName}Service
             .getAll${templateModel.AngularFrontendEntityName}()
-            .subscribe((entities: ReadonlyArray<${templateModel.AngularFrontendTransferObjectName}>) => {
+            .subscribe((entities: ReadonlyArray<${templateModel.AngularFrontendEntityName}TO>) => {
                 this.all${templateModel.AngularFrontendEntityName} = entities;
             });
     }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 <#list templateModel.childNodes as entityNode>
-import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFileName}/component/${entityNode.AngularFrontendEntityFileName}-panel-view/${entityNode.AngularFrontendEntityFileName}-panel-view.component"
+import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-panel-view/${entityNode.AngularFrontendEntityFilename}-panel-view.component"
 </#list>
 
 export interface NavigationEntry {
@@ -11,11 +11,11 @@ export interface NavigationEntry {
 }
 
 export const generatedEntitiesNavigationEntries: ReadonlyArray<NavigationEntry> = [<#list templateModel.childNodes as entityNode>
-    { path: '${entityNode.AngularFrontendEntityFileName}', name: '${entityNode.AngularFrontendEntityName}' },</#list>
+    { path: '${entityNode.AngularFrontendEntityFilename}', name: '${entityNode.AngularFrontendEntityName}' },</#list>
 ]
 
 const generatedEntitiesRoutes: Routes = [<#list templateModel.childNodes as entityNode>
-    { path: '${entityNode.AngularFrontendEntityFileName}', component: ${entityNode.AngularFrontendEntityName}PanelViewComponent },</#list>
+    { path: '${entityNode.AngularFrontendEntityFilename}', component: ${entityNode.AngularFrontendEntityName}PanelViewComponent },</#list>
 ];
 
 @NgModule({
