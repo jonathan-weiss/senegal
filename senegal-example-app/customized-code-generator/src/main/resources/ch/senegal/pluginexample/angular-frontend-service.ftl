@@ -25,15 +25,15 @@ export class ${templateModel.AngularFrontendEntityName}ApiService {
     }
 
     create${templateModel.AngularFrontendEntityName}(createInstruction: Create${templateModel.AngularFrontendEntityName}InstructionTO): Observable<${templateModel.AngularFrontendEntityName}TO> {
-        return this.httpClient.post<${templateModel.AngularFrontendEntityName}TO>(`/api/${templateModel.RestApiUrlPrefixName}`, createInstruction);
+        return this.httpClient.post<${templateModel.AngularFrontendEntityName}TO>(`/api/${templateModel.RestApiUrlPrefixName}/entry`, createInstruction);
     }
 
     update${templateModel.AngularFrontendEntityName}(updateInstruction: Update${templateModel.AngularFrontendEntityName}InstructionTO): Observable<${templateModel.AngularFrontendEntityName}TO> {
-        return this.httpClient.put<${templateModel.AngularFrontendEntityName}TO>(`/api/${templateModel.RestApiUrlPrefixName}`, updateInstruction);
+        return this.httpClient.put<${templateModel.AngularFrontendEntityName}TO>(`/api/${templateModel.RestApiUrlPrefixName}/entry`, updateInstruction);
     }
 
     delete${templateModel.AngularFrontendEntityName}(deleteInstruction: Delete${templateModel.AngularFrontendEntityName}InstructionTO): Observable<void> {
-        return this.httpClient.post<void>(`/api/${templateModel.RestApiUrlPrefixName}/delete`, deleteInstruction);
+        return this.httpClient.post<void>(`/api/${templateModel.RestApiUrlPrefixName}/entry/delete`, deleteInstruction);
     }
 
 }
