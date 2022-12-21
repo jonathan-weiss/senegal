@@ -67,7 +67,7 @@ object RestApiPurposePlugin : Purpose {
         enclosingConceptName = EntityConceptPlugin.conceptName
     ) { modelNode: ModelNode -> modelNode
         .getStringFacetValue(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityNameFacet.facetName)
-        ?.let { "${it}TO" }
+        ?.let { "${it}" }
     }
 
     val restApiTransferObjectIdFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
@@ -145,7 +145,10 @@ object RestApiPurposePlugin : Purpose {
             val controllerDirectory = controllerPackageName.replace(".", "/")
 
             targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${kotlinModelClassName}Facade.kt"), "/ch/senegal/pluginexample/rest-api-facade.ftl"))
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${transferObjectClassName}.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object.ftl"))
+            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${transferObjectClassName}TO.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object.ftl"))
+            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Create${transferObjectClassName}InstructionTO.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object-create-instruction.ftl"))
+            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Update${transferObjectClassName}InstructionTO.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object-update-instruction.ftl"))
+            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Delete${transferObjectClassName}InstructionTO.kt"), "/ch/senegal/pluginexample/rest-api-transfer-object-delete-instruction.ftl"))
             targets.add(TemplateTarget(controllerBasePath.resolve("$controllerDirectory/${kotlinModelClassName}Controller.kt"), "/ch/senegal/pluginexample/rest-api-controller.ftl"))
         }
 
