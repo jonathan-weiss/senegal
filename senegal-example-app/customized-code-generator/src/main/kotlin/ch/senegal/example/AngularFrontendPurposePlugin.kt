@@ -125,7 +125,16 @@ object AngularFrontendPurposePlugin : Purpose {
         }
     }
     private fun createEntitiesTemplates(modelNode: ModelNode): Set<TemplateTarget> {
-        return emptySet()
+        val targets: MutableSet<TemplateTarget> = mutableSetOf()
+        val angularFrontendBasePath = modelNode.getDirectoryFacetValue(purposeName, angularFrontendBasePathFacet.facetName)
+
+        if(angularFrontendBasePath != null) {
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("generated-entities.module.ts"), "/ch/senegal/pluginexample/angular-frontent-component-generated-entities-module-ts.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("generated-entities-routing.module.ts"), "/ch/senegal/pluginexample/angular-frontent-component-generated-entities-routing-module-ts.ftl"))
+        }
+
+        return targets
+
     }
 
     private fun createEntityTemplates(modelNode: ModelNode): Set<TemplateTarget> {
@@ -145,6 +154,19 @@ object AngularFrontendPurposePlugin : Purpose {
         if(angularFrontendBasePath != null && serviceName != null && serviceFilename != null) {
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${serviceFilename}.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
         }
+
+
+        if(angularFrontendBasePath != null && entityFileName != null) {
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-ts.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-scss.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-html.ftl"))
+
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-ts.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-scss.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-html.ftl"))
+
+        }
+
 
         return targets
     }
