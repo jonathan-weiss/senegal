@@ -85,6 +85,26 @@ object AngularFrontendPurposePlugin : Purpose {
 
     }
 
+    private val transferObjectStringDefaultValue = StringEnumerationFacetOption("''")
+    private val transferObjectIntDefaultValue = StringEnumerationFacetOption("0")
+    private val transferObjectBooleanDefaultValue = StringEnumerationFacetOption("false")
+
+    val angularFrontendTransferObjectFieldDefaultValueFacet = FacetFactory.StringEnumerationFacetFactory.createCalculatedFacet(
+        facetName = FacetName.of("TransferObjectFieldDefaultValue"),
+        enclosingConceptName = EntityAttributeConceptPlugin.conceptName,
+        enumerationOptions = listOf(transferObjectStringDefaultValue, transferObjectIntDefaultValue, transferObjectBooleanDefaultValue)
+    ) { modelNode: ModelNode ->
+        val entityAttributeTypeOption =  modelNode.getEnumFacetOption(EntityPurposePlugin.purposeName, EntityPurposePlugin.entityAttributeTypeFacet.facetName)
+            ?: return@createCalculatedFacet null
+        return@createCalculatedFacet when(entityAttributeTypeOption) {
+            EntityPurposePlugin.entityAttributeTextType -> transferObjectStringDefaultValue.name
+            EntityPurposePlugin.entityAttributeIntegerNumberType -> transferObjectIntDefaultValue.name
+            EntityPurposePlugin.entityAttributeBooleanType -> transferObjectBooleanDefaultValue.name
+            else -> null
+        }
+
+    }
+
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
         return when(modelNode.concept().conceptName) {
@@ -126,6 +146,15 @@ object AngularFrontendPurposePlugin : Purpose {
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-ts.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-scss.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-table-view/${entityFileName}-table-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-table-view-html.ftl"))
+
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-edit-view/${entityFileName}-edit-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-edit-view-ts.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-edit-view/${entityFileName}-edit-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-edit-view-scss.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-edit-view/${entityFileName}-edit-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-edit-view-html.ftl"))
+
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-add-view/${entityFileName}-add-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-add-view-ts.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-add-view/${entityFileName}-add-view.component.scss"), "/ch/senegal/pluginexample/angular-frontent-component-add-view-scss.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-add-view/${entityFileName}-add-view.component.html"), "/ch/senegal/pluginexample/angular-frontent-component-add-view-html.ftl"))
+
         }
 
         return targets
@@ -140,6 +169,7 @@ object AngularFrontendPurposePlugin : Purpose {
         angularFrontendTransferObjectFieldTypeFacet,
         angularFrontendTransferObjectIdFieldNameFacet,
         angularFrontendTransferObjectIdFieldTypeFacet,
+        angularFrontendTransferObjectFieldDefaultValueFacet,
     )
 
 }

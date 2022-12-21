@@ -17,14 +17,18 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/mater
 import {MatInputModule} from "@angular/material/input";
 
 <#list templateModel.childNodes as entityNode>
-import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-panel-view/${entityNode.AngularFrontendEntityFilename}-panel-view.component"
 import { ${entityNode.AngularFrontendEntityName}TableViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-table-view/${entityNode.AngularFrontendEntityFilename}-table-view.component"
+import { ${entityNode.AngularFrontendEntityName}AddViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-add-view/${entityNode.AngularFrontendEntityFilename}-add-view.component"
+import { ${entityNode.AngularFrontendEntityName}EditViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-edit-view/${entityNode.AngularFrontendEntityFilename}-edit-view.component"
+import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-panel-view/${entityNode.AngularFrontendEntityFilename}-panel-view.component"
 </#list>
 
 
 @NgModule({
     declarations: [<#list templateModel.childNodes as entityNode>
     ${entityNode.AngularFrontendEntityName}TableViewComponent,
+    ${entityNode.AngularFrontendEntityName}EditViewComponent,
+    ${entityNode.AngularFrontendEntityName}AddViewComponent,
     ${entityNode.AngularFrontendEntityName}PanelViewComponent,</#list>
     ],
     imports: [
