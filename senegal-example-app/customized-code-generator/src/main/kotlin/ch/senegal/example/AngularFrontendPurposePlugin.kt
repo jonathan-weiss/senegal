@@ -114,6 +114,9 @@ object AngularFrontendPurposePlugin : Purpose {
 
         if(angularFrontendBasePath != null && entityFileName != null) {
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${entityFileName}-to.model.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/create-${entityFileName}-instruction-to.model.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object-create-instruction.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/update-${entityFileName}-instruction-to.model.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object-update-instruction.ftl"))
+            targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/delete-${entityFileName}-instruction-to.model.ts"), "/ch/senegal/pluginexample/angular-frontend-transfer-object-delete-instruction.ftl"))
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/api/${entityFileName}-api.service.ts"), "/ch/senegal/pluginexample/angular-frontend-service.ftl"))
 
             targets.add(TemplateTarget(angularFrontendBasePath.resolve("${entityFileName}/component/${entityFileName}-panel-view/${entityFileName}-panel-view.component.ts"), "/ch/senegal/pluginexample/angular-frontent-component-panel-view-ts.ftl"))
