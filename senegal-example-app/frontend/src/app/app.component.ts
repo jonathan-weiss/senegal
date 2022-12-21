@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'senegal-example-frontend';
+
+  sideNavigationOpened: boolean = true;
 }

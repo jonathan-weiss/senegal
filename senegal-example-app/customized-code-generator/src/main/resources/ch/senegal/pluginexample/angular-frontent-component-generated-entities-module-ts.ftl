@@ -15,6 +15,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatCardModule} from "@angular/material/card";
 
 <#list templateModel.childNodes as entityNode>
 import { ${entityNode.AngularFrontendEntityName}TableViewComponent } from "./${entityNode.AngularFrontendEntityFilename}/component/${entityNode.AngularFrontendEntityFilename}-table-view/${entityNode.AngularFrontendEntityFilename}-table-view.component"
@@ -47,6 +48,7 @@ import { ${entityNode.AngularFrontendEntityName}PanelViewComponent } from "./${e
         FormsModule,
         ReactiveFormsModule,
         MatChipsModule,
+        MatCardModule,
         MatButtonModule,
     ],
     providers: [

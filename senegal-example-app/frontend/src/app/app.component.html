@@ -1,7 +1,10 @@
-<div class="flex-box">
-  <div class="column-sidebar"><side-navigation-component></side-navigation-component></div>
-  <div class="column-content"><router-outlet></router-outlet></div>
-</div>
-
-
-
+<mat-sidenav-container class="side-navigation-container" >
+  <mat-sidenav mode="side" #sidenav [(opened)]="sideNavigationOpened" ><side-navigation-component></side-navigation-component></mat-sidenav>
+  <mat-sidenav-content>
+    <button mat-button (click)="sidenav.toggle()" class="toggle-button">
+      <mat-icon *ngIf="sideNavigationOpened">chevron_left</mat-icon>
+      <mat-icon *ngIf="!sideNavigationOpened">chevron_right</mat-icon>
+    </button>
+    <div class="content-frame"><router-outlet></router-outlet></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

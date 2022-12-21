@@ -1,13 +1,18 @@
-.flex-box {
-  display:flex;
-  justify-content: space-around;
-  flex-direction: row;
-  align-items:center;
+.side-navigation-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #eee;
+}
 
+.toggle-button {
+  display: block;
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
 }
-.column-sidebar {
-  flex-basis: 200px;
-}
-.column-content {
-  flex-basis: 1200px;
+
+.content-frame {
+  padding: 30px;
 }

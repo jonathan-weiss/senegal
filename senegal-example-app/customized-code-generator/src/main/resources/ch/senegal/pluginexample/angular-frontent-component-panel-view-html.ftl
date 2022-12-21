@@ -8,8 +8,9 @@
 ></${templateModel.AngularFrontendEntityFilename}-table-view>
 
 
-<button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new ${templateModel.AngularFrontendEntityName}...</button>
-
+<div class="action-box">
+    <button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new ${templateModel.AngularFrontendEntityName}...</button>
+</div>
 
 <ng-container *ngIf="update${templateModel.AngularFrontendEntityName}Instruction != undefined">
     <${templateModel.AngularFrontendEntityFilename}-edit-view

@@ -1,7 +1,8 @@
 <book-table-view [books]="books" [tableControlsDisabled]="isEditingMode()" (editEntryClicked)="onEdit($event)" (deleteEntryClicked)="onPerformDelete($event)"></book-table-view>
 
-<button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new book...</button>
-
+<div class="action-box">
+  <button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new book...</button>
+</div>
 
 <ng-container *ngIf="updateBookInstruction != undefined">
   <book-edit-view [updateBookInstruction]="updateBookInstruction!" (saveClicked)="onPerformUpdate($event)" (cancelClicked)="resetEdit()"></book-edit-view>

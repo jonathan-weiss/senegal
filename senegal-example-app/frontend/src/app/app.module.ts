@@ -27,6 +27,9 @@ import {SideNavigationComponent} from "./navigation/side-navigation.component";
 import {GeneratedEntitiesModule} from "../generated/generated-entities.module";
 import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-routing.module";
 import {RouterModule} from "@angular/router";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatCardModule} from "@angular/material/card";
+
 
 @NgModule({
   declarations: [
@@ -47,7 +50,6 @@ import {RouterModule} from "@angular/router";
     MatInputModule,
     MatTableModule,
     MatIconModule,
-    MatIconModule,
     MatSnackBarModule,
     MatDialogModule,
     MatStepperModule,
@@ -57,6 +59,8 @@ import {RouterModule} from "@angular/router";
     ReactiveFormsModule,
     MatChipsModule,
     MatButtonModule,
+    MatSidenavModule,
+    MatCardModule,
     GeneratedEntitiesModule,
     GeneratedEntitiesRoutingModule,
   ],

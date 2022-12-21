@@ -6,3 +6,4 @@ table {
     width: 32px;
     text-align: center;
 }
+
