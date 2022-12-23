@@ -24,7 +24,6 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
             val template: Template = cfg.getTemplate(templateClasspathLocation)
             virtualFileSystem.getFileWriter(fileDescriptor.targetFile).use { fileWriter -> template.process(model, fileWriter) }
         } catch (e: Exception) {
-            println("Template Error: ${e.message}")
             throw RuntimeException("Exception in freemarker template '$templateClasspathLocation' " +
                     "( in base dir $templatesClasspathResourceBasePath): ${e.message?.replace('\n', 'X')}", e)
         }

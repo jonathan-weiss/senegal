@@ -1,5 +1,6 @@
 package ch.senegal.engine.xml
 
+import ch.senegal.engine.logger.SenegalLogger
 import ch.senegal.engine.model.MutableModelInstance
 import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
@@ -27,6 +28,7 @@ class SenegalSaxParserHandler(
     private val placeholders: Map<String, String>,
     private val schemaFileDirectory: Path,
     private val virtualFileSystem: VirtualFileSystem,
+    private val senegalLogger: SenegalLogger,
 ) : DefaultHandler2() {
     private var currentMutableModelInstance: MutableModelInstance = modelTree
     private var isInDefinitionTag = false
@@ -34,19 +36,21 @@ class SenegalSaxParserHandler(
 
     @Throws(SAXException::class)
     override fun startElement(uri: String, localName: String, qName: String, attr: Attributes) {
+        val attributes = Attribute.attributeList(attr)
+        senegalLogger.logDebug { "XML: startElement: localName:$localName, attributes: $attributes" }
         if(isInDefinitionTag) {
             val resolvedConcept = getConceptByXmlLocalName(localName) ?: return
             val newModelNode = currentMutableModelInstance.createAndAddMutableModelNode(resolvedConcept)
             addAttributes(
                 mutableModelNode = newModelNode,
-                attributes = Attribute.attributeList(attr),
+                attributes = attributes,
             )
             this.currentMutableModelInstance = newModelNode
             return
         }
 
         when(localName) {
-            "configuration" -> Attribute.attributeList(attr).forEach { addConfigurationAttribute(it) }
+            "configuration" -> attributes.forEach { addConfigurationAttribute(it) }
             "definitions" -> isInDefinitionTag = true
         }
     }
@@ -74,6 +78,7 @@ class SenegalSaxParserHandler(
 
     @Throws(SAXException::class)
     override fun endElement(uri: String, localName: String, qName: String) {
+        senegalLogger.logDebug { "XML: endElement: localName:$localName" }
         if(localName == "definitions") {
             isInDefinitionTag = false
         }
@@ -85,10 +90,6 @@ class SenegalSaxParserHandler(
 
     private fun isConcept(localName: String): Boolean {
         return getConceptByXmlLocalName(localName) != null
-    }
-
-    private fun fail(message: String): Nothing {
-        throw SAXException(message)
     }
 
     private fun getConceptByXmlLocalName(localName: String): ResolvedConcept? {
@@ -105,10 +106,11 @@ class SenegalSaxParserHandler(
     }
 
     override fun warning(e: SAXParseException) {
-         println("Warning: ${e.message}")
+         senegalLogger.logWarnings(e.message ?: e.toString())
     }
 
     override fun resolveEntity(name: String?, publicId: String?, baseURI: String?, systemId: String?): InputSource? {
+        senegalLogger.logDebug { "XML: resolveEntity: systemId:$systemId, publicId:$publicId, baseURI:$baseURI" }
         return if(systemId != null && systemId.startsWith("./")) {
             InputSource(virtualFileSystem.fileAsInputStream(schemaFileDirectory.resolve(systemId).normalize()))
         } else {

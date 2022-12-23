@@ -1,5 +1,6 @@
 package ch.senegal.engine.xml
 
+import ch.senegal.engine.logger.SenegalLogger
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
@@ -20,7 +21,8 @@ object XmlFileParser {
         resolvedPlugins: ResolvedPlugins,
         xmlDefinitionFile: Path,
         placeholders: Map<String, String>,
-        virtualFileSystem: VirtualFileSystem
+        virtualFileSystem: VirtualFileSystem,
+        senegalLogger: SenegalLogger,
     ): MutableModelTree {
 
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
@@ -42,7 +44,7 @@ object XmlFileParser {
 
         val modelTree = MutableModelTree(resolvedPlugins)
         val senegalSaxParser =
-            SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders, xmlDefinitionFile.parent, virtualFileSystem)
+            SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders, xmlDefinitionFile.parent, virtualFileSystem, senegalLogger)
 
         virtualFileSystem.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, senegalSaxParser)

@@ -12,7 +12,7 @@ import java.nio.file.Path
 
 object ModelTreeCalculations {
 
-    fun executeCalculations(mutableModelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins) {
+    fun executeCalculations(mutableModelTree: MutableModelTree) {
         mutableModelTree.getAllModelNodes().forEach { calculateModelNode(it) }
     }
 

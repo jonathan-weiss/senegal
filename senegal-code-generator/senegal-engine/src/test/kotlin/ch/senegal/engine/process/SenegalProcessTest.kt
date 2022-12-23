@@ -76,11 +76,16 @@ class SenegalProcessTest {
 
     """.trimIndent()
 
+    private val loggingConfigurationClasspath = "/senegal-logging.properties"
+    private val loggingConfiguration = this.javaClass.getResourceAsStream(loggingConfigurationClasspath).reader().readText()
+
     private val definitionDirectory = Paths.get("definition/directory")
     private val defaultOutputDirectory = Paths.get("default/output/directory")
     private val definitionXmlFile = definitionDirectory.resolve("definition-file.xml")
 
-    private val classpathResourcesWithContent: Map<String, String> = mapOf()
+    private val classpathResourcesWithContent: Map<String, String> = mapOf(
+        loggingConfigurationClasspath to loggingConfiguration
+    )
     private val filePathsWithContent: Map<Path, String> = mapOf(
         definitionXmlFile to testXmlDefinitionFileContent
     )

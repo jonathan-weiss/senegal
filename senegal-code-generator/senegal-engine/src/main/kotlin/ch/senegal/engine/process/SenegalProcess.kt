@@ -2,6 +2,7 @@ package ch.senegal.engine.process
 
 import ch.senegal.engine.calculation.ModelTreeCalculations
 import ch.senegal.engine.freemarker.FreemarkerTemplateProcessor
+import ch.senegal.engine.logger.SenegalLogger
 import ch.senegal.engine.template.TemplateTargetWithModelCreator
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.finder.PluginFinder
@@ -20,22 +21,24 @@ class SenegalProcess(
     private val parameterSources: List<ParameterSource>
 ) {
 
+    private val logger = SenegalLogger(virtualFileSystem)
+
     fun runSenegalEngine() {
         val parameterReader = ParameterReader(parameterSources)
 
         val foundPlugins = pluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
-        println("Parameters:")
-        println("------------")
-        parameterReader.getParameterList().forEach { println(it) }
-        println("------------")
+        logger.logUserInfo("Parameters:")
+        logger.logUserInfo("------------")
+        parameterReader.getParameterList().forEach { logger.logUserInfo(it) }
+        logger.logUserInfo("------------")
 
         val placeholders = parameterReader.getPlaceholders()
-        println("Placeholders:")
-        println("------------")
-        placeholders.forEach { (key, value) -> println("$key=$value") }
-        println("------------")
+        logger.logUserInfo("Placeholders:")
+        logger.logUserInfo("------------")
+        placeholders.forEach { (key, value) -> logger.logUserInfo("$key=$value") }
+        logger.logUserInfo("------------")
 
         val definitionDirectory = parameterReader.getParameter(PathConfigParameterName.DefinitionDirectory)
         val defaultOutputDirectory = parameterReader.getParameter(PathConfigParameterName.DefaultOutputDirectory)
@@ -45,18 +48,18 @@ class SenegalProcess(
 
         val xmlDefinitionFile = parameterReader.getParameter(PathConfigParameterName.XmlDefinitionFile)
 
-        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders, virtualFileSystem)
+        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders, virtualFileSystem, logger)
 
-        ModelTreeCalculations.executeCalculations(modelTree, resolvedPlugins)
+        ModelTreeCalculations.executeCalculations(modelTree)
 
         val templateTargetsWithModel = TemplateTargetWithModelCreator.createTemplateTargets(modelTree, defaultOutputDirectory)
 
-        println("Generated files:")
-        println("------------")
+        logger.logDebug("Generated files:")
+        logger.logDebug("------------")
         templateTargetsWithModel.forEach {
-            println("${it.targetFile} (with template ${it.template})")
+            logger.logDebug("${it.targetFile} (with template ${it.template})")
         }
-        println("------------")
+        logger.logDebug("------------")
 
         val freemarkerTemplateProcessor = FreemarkerTemplateProcessor("")
         templateTargetsWithModel.forEach { templateTargetWithModel ->

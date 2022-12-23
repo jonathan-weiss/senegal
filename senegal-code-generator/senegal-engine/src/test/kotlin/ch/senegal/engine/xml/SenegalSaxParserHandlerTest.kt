@@ -1,5 +1,6 @@
 package ch.senegal.engine.xml
 
+import ch.senegal.engine.logger.SenegalLogger
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.TestPluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
@@ -38,6 +39,7 @@ internal class SenegalSaxParserHandlerTest {
     @Test
     fun testSaxParser() {
         val virtualFileSystem = PhysicalFilesVirtualFileSystem()
+        val senegalLogger = SenegalLogger(virtualFileSystem)
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
         factory.isValidating = false // turn of validation as schema is not found
@@ -45,7 +47,7 @@ internal class SenegalSaxParserHandlerTest {
         val plugins = TestPluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
-        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."), virtualFileSystem)
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."), virtualFileSystem, senegalLogger)
 
         testXml.byteInputStream().use {
             saxParser.parse(it, senegalSaxParser)
