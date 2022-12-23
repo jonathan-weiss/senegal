@@ -7,19 +7,22 @@ import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.properties.ParameterReader
+import ch.senegal.engine.properties.ParameterSource
 import ch.senegal.engine.properties.PathParameterName
-import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.engine.xml.XmlFileParser
 import ch.senegal.engine.xml.schemacreator.XmlSchemaInitializer
 
-object SenegalProcess {
+class SenegalProcess(
+    private val pluginFinder: PluginFinder,
+    private val virtualFileSystem: VirtualFileSystem,
+    private val parameterSources: List<ParameterSource>
+) {
 
     fun runSenegalEngine() {
-        val virtualFileSystem: VirtualFileSystem = PhysicalFilesVirtualFileSystem()
-        val parameterReader = ParameterReader(virtualFileSystem)
+        val parameterReader = ParameterReader(parameterSources)
 
-        val foundPlugins = PluginFinder.findAllPlugins()
+        val foundPlugins = pluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
         println("Parameters:")

@@ -1,14 +1,6 @@
 package ch.senegal.engine.properties
 
-import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
-
-class ParameterReader(private val virtualFileSystem: VirtualFileSystem) {
-
-    private val parameterSources = listOf<ParameterSource>(
-        EnvironmentVariablesParameterSource,
-        SystemPropertyParameterSource,
-        PropertyParameterSource,
-    )
+class ParameterReader(private val parameterSources: List<ParameterSource>) {
 
     fun getParameterList(): List<String> {
         return ParameterNames.allParameters().map { "${it.propertyName}=${getParameter(it)}" }
