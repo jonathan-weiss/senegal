@@ -1,5 +1,7 @@
 package ch.senegal.engine.freemarker.templateengine
 
+import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
+import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import freemarker.template.Configuration
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler
@@ -12,25 +14,18 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
 
     private val cfg: Configuration = createClasspathBasedFreemarkerConfiguration(templatesClasspathResourceBasePath)
 
-    fun processFileContentWithFreemarker(fileDescriptors: List<FreemarkerFileDescriptor>) {
-        fileDescriptors.forEach {fileDescriptor -> processFileContentWithFreemarker(fileDescriptor)}
+    fun processFileContentWithFreemarker(fileDescriptors: List<FreemarkerFileDescriptor>, virtualFileSystem: VirtualFileSystem) {
+        fileDescriptors.forEach {fileDescriptor -> processFileContentWithFreemarker(fileDescriptor, virtualFileSystem)}
     }
 
-    fun processFileContentWithFreemarker(fileDescriptor: FreemarkerFileDescriptor) {
+    fun processFileContentWithFreemarker(fileDescriptor: FreemarkerFileDescriptor, virtualFileSystem: VirtualFileSystem) {
         val templateClasspathLocation: String = fileDescriptor.templateClassPath
-        val targetFile: File = fileDescriptor.targetFile.toFile()
         val model: Map<String, Any?> = fileDescriptor.model
         try {
-
-
-            if(!targetFile.exists()) {
-                // create parent directories if not existing
-                targetFile.parentFile.mkdirs()
-            }
-
+            virtualFileSystem.createDirectory(fileDescriptor.targetFile.parent)
 
             val template: Template = cfg.getTemplate(templateClasspathLocation)
-            targetFile.writer().use { fileWriter -> template.process(model, fileWriter) }
+            virtualFileSystem.getFileWriter(fileDescriptor.targetFile).use { fileWriter -> template.process(model, fileWriter) }
         } catch (e: Exception) {
             println("Template Error: ${e.message}")
             throw RuntimeException("Exception in freemarker template '$templateClasspathLocation' " +

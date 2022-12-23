@@ -9,6 +9,7 @@ import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.plugin.resolver.ResolvedFacet
+import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import ch.senegal.plugin.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
@@ -23,6 +24,7 @@ internal class FreemarkerTemplateFileDescriptionCreatorTest {
     @Test
     fun processFileContentWithFreemarker() {
         // arrange
+        val virtualFileSystem = PhysicalFilesVirtualFileSystem()
         val defaultOutputPath = TmpFileUtil.createTempDirectory()
         val resolvedPlugins = createResolvedPlugin()
         val modelTree = createModelTree(resolvedPlugins)
@@ -32,7 +34,7 @@ internal class FreemarkerTemplateFileDescriptionCreatorTest {
             .createTemplateTargets(modelTree, resolvedPlugins, defaultOutputPath)
 
         val templateProcessor = FreemarkerTemplateProcessor(testClasspathBase)
-        templateProcessor.processFileContentWithFreemarker(listOfTemplateTargets)
+        templateProcessor.processFileContentWithFreemarker(listOfTemplateTargets, virtualFileSystem)
 
         // assert
         assertEquals(2, listOfTemplateTargets.size)

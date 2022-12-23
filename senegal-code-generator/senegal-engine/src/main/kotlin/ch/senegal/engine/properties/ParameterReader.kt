@@ -1,6 +1,8 @@
 package ch.senegal.engine.properties
 
-object ParameterReader {
+import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
+
+class ParameterReader(private val virtualFileSystem: VirtualFileSystem) {
 
     private val parameterSources = listOf<ParameterSource>(
         EnvironmentVariablesParameterSource,

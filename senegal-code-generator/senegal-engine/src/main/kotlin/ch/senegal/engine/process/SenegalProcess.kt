@@ -8,37 +8,40 @@ import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.properties.ParameterReader
 import ch.senegal.engine.properties.PathParameterName
-import ch.senegal.engine.util.FileUtil
+import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
+import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.engine.xml.XmlFileParser
 import ch.senegal.engine.xml.schemacreator.XmlSchemaInitializer
 
 object SenegalProcess {
 
     fun runSenegalEngine() {
+        val virtualFileSystem: VirtualFileSystem = PhysicalFilesVirtualFileSystem()
+        val parameterReader = ParameterReader(virtualFileSystem)
+
         val foundPlugins = PluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(foundPlugins)
 
         println("Parameters:")
         println("------------")
-        ParameterReader.getParameterList().forEach { println(it) }
+        parameterReader.getParameterList().forEach { println(it) }
         println("------------")
 
-        val placeholders = ParameterReader.getPlaceholders()
+        val placeholders = parameterReader.getPlaceholders()
         println("Placeholders:")
         println("------------")
         placeholders.forEach { (key, value) -> println("$key=$value") }
         println("------------")
 
-        val definitionDirectory = ParameterReader.getParameter(PathParameterName.DefinitionDirectory)
-        val defaultOutputDirectory = ParameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
-        val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory)
+        val definitionDirectory = parameterReader.getParameter(PathParameterName.DefinitionDirectory)
+        val defaultOutputDirectory = parameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
+        val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory, virtualFileSystem)
 
-        XmlSchemaInitializer.initializeXmlSchemaFile(schemaDirectory, resolvedPlugins)
+        XmlSchemaInitializer.initializeXmlSchemaFile(schemaDirectory, resolvedPlugins, virtualFileSystem)
 
-        val xmlDefinitionFile = ParameterReader.getParameter(PathParameterName.XmlDefinitionFile)
-        FileUtil.checkFileReadable(xmlDefinitionFile)
+        val xmlDefinitionFile = parameterReader.getParameter(PathParameterName.XmlDefinitionFile)
 
-        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders)
+        val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders, virtualFileSystem)
 
         ModelTreeCalculations.executeCalculations(modelTree, resolvedPlugins)
 
@@ -53,6 +56,6 @@ object SenegalProcess {
         }
         println("------------")
 
-        templateProcessor.processFileContentWithFreemarker(freemarkerFileDescriptors)
+        templateProcessor.processFileContentWithFreemarker(freemarkerFileDescriptors, virtualFileSystem)
     }
 }

@@ -1,6 +1,7 @@
 package ch.senegal.engine.freemarker.templateengine
 
 import ch.senegal.engine.TmpFileUtil
+import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readText
 
@@ -8,6 +9,7 @@ internal class FreemarkerTemplateProcessorTest {
 
     @Test
     fun processFileContentWithFreemarker() {
+        val virtualFileSystem = PhysicalFilesVirtualFileSystem()
         val templateProcessor = FreemarkerTemplateProcessor("/ch/senegal/engine/freemarker")
         val targetFilePath = TmpFileUtil.createTempFile("freemarker-test")
         val model = mutableMapOf<String, Any>()
@@ -26,7 +28,7 @@ internal class FreemarkerTemplateProcessorTest {
             model = model,
             templateClassPath = "example-template.ftl"
         )
-        templateProcessor.processFileContentWithFreemarker(fileDescriptor)
+        templateProcessor.processFileContentWithFreemarker(fileDescriptor, virtualFileSystem)
         println("The template has been created at ${fileDescriptor.targetFile}")
         println("Content:")
         println("------------------------------------------------")
