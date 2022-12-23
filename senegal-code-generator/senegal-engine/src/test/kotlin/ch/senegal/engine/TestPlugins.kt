@@ -1,12 +1,13 @@
 package ch.senegal.engine.plugin
 
+import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.plugin.*
 import ch.senegal.plugin.factory.FacetFactory
 import ch.senegal.plugin.model.ModelNode
 import java.nio.file.Path
 
-object TestPluginFinder {
-    fun findAllTestPlugins(): Set<Plugin> {
+object TestPluginFinder: PluginFinder {
+    override fun findAllPlugins(): Set<Plugin> {
         return setOf(
             TestEntityConcept, TestEntityAttributeConcept, TestMapperConcept,
             TestEntityPurpose,

@@ -44,7 +44,7 @@ internal class MutableModelNodeTest {
     }
 
     private fun prepareModelNodeTree(): ModelNode {
-        val plugins = TestPluginFinder.findAllTestPlugins()
+        val plugins = TestPluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
 

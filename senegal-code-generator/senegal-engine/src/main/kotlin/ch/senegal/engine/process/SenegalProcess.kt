@@ -60,5 +60,7 @@ class SenegalProcess(
         println("------------")
 
         templateProcessor.processFileContentWithFreemarker(freemarkerFileDescriptors, virtualFileSystem)
+
+        virtualFileSystem.close()
     }
 }

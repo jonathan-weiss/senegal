@@ -3,6 +3,7 @@ package ch.senegal.engine.xml
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.TestPluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
+import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import ch.senegal.plugin.PurposeFacetCombinedName
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -36,14 +37,15 @@ internal class SenegalSaxParserHandlerTest {
 
     @Test
     fun testSaxParser() {
+        val virtualFileSystem = PhysicalFilesVirtualFileSystem()
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
         factory.isValidating = false // turn of validation as schema is not found
         val saxParser: SAXParser = factory.newSAXParser()
-        val plugins = TestPluginFinder.findAllTestPlugins()
+        val plugins = TestPluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val modelTree = MutableModelTree(resolvedPlugins)
-        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."))
+        val senegalSaxParser = SenegalSaxParserHandler(resolvedPlugins, modelTree, emptyMap(), Paths.get("."), virtualFileSystem)
 
         testXml.byteInputStream().use {
             saxParser.parse(it, senegalSaxParser)

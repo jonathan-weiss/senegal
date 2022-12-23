@@ -107,7 +107,7 @@ internal class XmlDomSchemaCreatorTest {
 
     @Test
     fun testXmlDomSchemaCreator() {
-        val plugins = TestPluginFinder.findAllTestPlugins()
+        val plugins = TestPluginFinder.findAllPlugins()
         val resolvedPlugins = PluginResolver.resolvePlugins(plugins)
         val schemaResult = XmlDomSchemaCreator.createPluginSchema(resolvedPlugins)
         assertEquals(expectedXml, schemaResult)

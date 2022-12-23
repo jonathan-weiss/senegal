@@ -11,4 +11,5 @@ interface VirtualFileSystem {
     fun createDirectory(directoryPath: Path)
     fun writeFile(filePath: Path, fileContent: String)
     fun getFileWriter(filePath: Path): Writer
+    fun close()
 }

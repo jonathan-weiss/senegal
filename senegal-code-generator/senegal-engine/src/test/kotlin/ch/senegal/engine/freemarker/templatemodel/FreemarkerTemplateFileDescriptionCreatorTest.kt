@@ -19,7 +19,27 @@ import kotlin.io.path.readText
 internal class FreemarkerTemplateFileDescriptionCreatorTest {
 
     private val testClasspathBase = ""
-    private val expectedContentClasspath = "/ch/senegal/engine/freemarker/template-model-node-template.result.txt"
+
+    private val expectedContent = """
+        Properties:
+            TestKotlinModelClassname: TestEntityClassNumberOne
+        direct access: TestEntityClassNumberOne
+
+        SubNodes:
+
+            Properties:
+                TestKotlinFieldName: myField
+                TestKotlinFieldType: kotlin.String
+
+        Properties:
+            TestKotlinModelClassname: TestEntityClassNumberTwo
+            TestKotlinModelPackage: ch.senegal.test
+        direct access: TestEntityClassNumberTwo
+
+        SubNodes:
+
+
+    """.trimIndent()
 
     @Test
     fun processFileContentWithFreemarker() {
@@ -46,9 +66,6 @@ internal class FreemarkerTemplateFileDescriptionCreatorTest {
         println(fileDescriptor.targetFile.readText())
         println("------------------------------------------------")
 
-        val expectedContent = FreemarkerTemplateFileDescriptionCreatorTest::class.java
-            .getResource(expectedContentClasspath)
-            ?.readText() ?: fail("Could not read '$expectedContentClasspath'")
         assertEquals(expectedContent, fileDescriptor.targetFile.readText())
     }
 

@@ -8,6 +8,7 @@ import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.util.CaseUtil
 import ch.senegal.engine.util.PlaceholderUtil
+import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.plugin.ConceptName
 import ch.senegal.plugin.PurposeFacetCombinedName
 import org.xml.sax.Attributes
@@ -25,6 +26,7 @@ class SenegalSaxParserHandler(
     private val modelTree: MutableModelTree,
     private val placeholders: Map<String, String>,
     private val schemaFileDirectory: Path,
+    private val virtualFileSystem: VirtualFileSystem,
 ) : DefaultHandler2() {
     private var currentMutableModelInstance: MutableModelInstance = modelTree
     private var isInDefinitionTag = false
@@ -108,7 +110,7 @@ class SenegalSaxParserHandler(
 
     override fun resolveEntity(name: String?, publicId: String?, baseURI: String?, systemId: String?): InputSource? {
         return if(systemId != null && systemId.startsWith("./")) {
-            InputSource(schemaFileDirectory.resolve(systemId).absolutePathString())
+            InputSource(virtualFileSystem.fileAsInputStream(schemaFileDirectory.resolve(systemId).normalize()))
         } else {
             super.resolveEntity(name, publicId, baseURI, systemId)
         }

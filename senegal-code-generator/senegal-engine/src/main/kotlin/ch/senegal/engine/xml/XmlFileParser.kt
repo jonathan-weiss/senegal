@@ -42,7 +42,7 @@ object XmlFileParser {
 
         val modelTree = MutableModelTree(resolvedPlugins)
         val senegalSaxParser =
-            SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders, xmlDefinitionFile.parent)
+            SenegalSaxParserHandler(resolvedPlugins, modelTree, placeholders, xmlDefinitionFile.parent, virtualFileSystem)
 
         virtualFileSystem.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, senegalSaxParser)

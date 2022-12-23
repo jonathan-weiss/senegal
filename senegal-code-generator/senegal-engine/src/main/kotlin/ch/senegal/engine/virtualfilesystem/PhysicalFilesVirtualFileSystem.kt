@@ -1,6 +1,5 @@
 package ch.senegal.engine.virtualfilesystem
 
-import ch.senegal.engine.parameters.sources.DefaultPropertyFileParameterSource
 import ch.senegal.engine.util.FileUtil
 import java.io.InputStream
 import java.io.Writer
@@ -28,5 +27,9 @@ class PhysicalFilesVirtualFileSystem: VirtualFileSystem {
 
     override fun getFileWriter(filePath: Path): Writer {
         return java.io.FileWriter(filePath.toFile())
+    }
+
+    override fun close() {
+        // nothing to do
     }
 }
