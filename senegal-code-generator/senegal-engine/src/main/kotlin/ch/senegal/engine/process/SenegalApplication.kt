@@ -16,7 +16,7 @@ fun main() {
     val parameterSources: List<ParameterSource> = listOf(
         EnvironmentVariablesParameterSource,
         SystemPropertyParameterSource,
-        DefaultPropertyFileParameterSource,
+        DefaultPropertyFileParameterSource(virtualFileSystem = virtualFileSystem),
         )
 
     val process = SenegalProcess(

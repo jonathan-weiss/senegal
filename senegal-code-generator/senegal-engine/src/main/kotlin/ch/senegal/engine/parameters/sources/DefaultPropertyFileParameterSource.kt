@@ -2,11 +2,12 @@ package ch.senegal.engine.parameters.sources
 
 import ch.senegal.engine.parameters.ParameterSource
 import ch.senegal.engine.util.PropertiesToMapConverter
+import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import java.util.*
 
-object DefaultPropertyFileParameterSource : ParameterSource {
+class DefaultPropertyFileParameterSource(private val virtualFileSystem: VirtualFileSystem) : ParameterSource {
 
-    private const val resourceName = "/senegal.properties"
+    private val resourceName = "/senegal.properties"
     private val propertyMap: Map<String, String> = PropertiesToMapConverter.convertToMap(getPropertiesFromFile())
 
     override fun getParameterMap(): Map<String, String> {
@@ -15,10 +16,8 @@ object DefaultPropertyFileParameterSource : ParameterSource {
 
     private fun getPropertiesFromFile(): Properties {
         val props = Properties()
-        val propertiesStream = this.javaClass.getResourceAsStream(resourceName)
-            ?: throw IllegalArgumentException("Resource with name '$resourceName' not found.")
 
-        propertiesStream.use {
+        virtualFileSystem.classpathResourceAsInputStream(resourceName).use {
             props.load(it)
         }
         return props

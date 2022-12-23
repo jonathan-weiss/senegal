@@ -6,6 +6,7 @@ import java.nio.file.Path
 
 interface VirtualFileSystem {
 
+    fun classpathResourceAsInputStream(classpathResource: String): InputStream
     fun fileAsInputStream(filePath: Path): InputStream
     fun createDirectory(directoryPath: Path)
     fun writeFile(filePath: Path, fileContent: String)
