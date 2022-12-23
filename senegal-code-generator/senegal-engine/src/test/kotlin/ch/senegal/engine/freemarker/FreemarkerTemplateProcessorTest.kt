@@ -4,10 +4,25 @@ import ch.senegal.engine.TmpFileUtil
 import ch.senegal.engine.template.TemplateTargetWithModel
 import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import ch.senegal.plugin.TemplateForFreemarker
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readText
 
 internal class FreemarkerTemplateProcessorTest {
+
+    private val expectedContent = """
+        package ch.senegal.engine.freemarker
+        // THIS IS GENERATED SOURCE CODE. DO NOT MODIFY. CHANGES WILL BE LOST!
+
+        // mySpecialDelegate: mySubDelegate, key:bar
+
+        data class MyPerson(
+            val firstname: kotlin.String?
+            val lastname: kotlin.String
+
+        )
+
+    """.trimIndent()
 
     @Test
     fun processFileContentWithFreemarker() {
@@ -31,11 +46,7 @@ internal class FreemarkerTemplateProcessorTest {
             template = TemplateForFreemarker("example-template.ftl")
         )
         templateProcessor.processFileContentWithFreemarker(fileDescriptor, virtualFileSystem)
-        println("The template has been created at ${fileDescriptor.targetFile}")
-        println("Content:")
-        println("------------------------------------------------")
-        println(fileDescriptor.targetFile.readText())
-        println("------------------------------------------------")
+        assertEquals(expectedContent, fileDescriptor.targetFile.readText())
     }
 
     class TestFieldDescription(
@@ -50,7 +61,6 @@ internal class FreemarkerTemplateProcessorTest {
                      private val subDelegate: MyDelegate?) {
 
         operator fun get(key: String): Any? {
-            println("$delegateCode: $key")
             if(subDelegate != null) {
                 return subDelegate
             }

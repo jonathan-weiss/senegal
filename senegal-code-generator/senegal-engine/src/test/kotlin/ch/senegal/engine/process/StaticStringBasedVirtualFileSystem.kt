@@ -63,15 +63,7 @@ class StaticStringBasedVirtualFileSystem(private val classpathResources: Map<Str
     }
 
     override fun close() {
-        closeables.forEach {
-            try {
-                it.second.close()
-                it.second.close()
-            } catch (ex: IOException) {
-                println("Closable ${it.first} was not closed properly!")
-            }
-        }
-
+        // do nothing
     }
 
     fun fetchFileContent(path: Path): String {
