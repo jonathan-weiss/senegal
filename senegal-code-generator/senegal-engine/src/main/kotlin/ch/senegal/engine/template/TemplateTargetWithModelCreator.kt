@@ -12,7 +12,7 @@ object TemplateTargetWithModelCreator {
     const val currentModelName = "templateModel"
 
 
-    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins, defaultOutputPath: Path): List<TemplateTargetWithModel> {
+    fun createTemplateTargets(modelTree: MutableModelTree, defaultOutputPath: Path): List<TemplateTargetWithModel> {
         val modelNodeToTemplateModelMap = createTemplateModelNodeMap(modelTree)
         val rootTemplateModelList = createTemplateModel(modelTree, modelNodeToTemplateModelMap)
         return collectTemplateTargets(

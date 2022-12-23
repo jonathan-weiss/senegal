@@ -22,12 +22,11 @@ internal class TemplateTargetWithModelCreatorTest {
     fun processFileContentWithFreemarker() {
         // arrange
         val defaultOutputPath = TmpFileUtil.createTempDirectory()
-        val resolvedPlugins = createResolvedPlugin()
-        val modelTree = createModelTree(resolvedPlugins)
+        val modelTree = createModelTree(createResolvedPlugin())
 
         // act
         val listOfTemplateTargets = TemplateTargetWithModelCreator
-            .createTemplateTargets(modelTree, resolvedPlugins, defaultOutputPath)
+            .createTemplateTargets(modelTree, defaultOutputPath)
 
         // assert
         assertEquals(2, listOfTemplateTargets.size)

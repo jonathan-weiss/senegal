@@ -49,7 +49,7 @@ class SenegalProcess(
 
         ModelTreeCalculations.executeCalculations(modelTree, resolvedPlugins)
 
-        val templateTargetsWithModel = TemplateTargetWithModelCreator.createTemplateTargets(modelTree, resolvedPlugins, defaultOutputDirectory)
+        val templateTargetsWithModel = TemplateTargetWithModelCreator.createTemplateTargets(modelTree, defaultOutputDirectory)
 
         println("Generated files:")
         println("------------")
