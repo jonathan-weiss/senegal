@@ -1,4 +1,4 @@
-package ch.senegal.engine.properties
+package ch.senegal.engine.parameters
 
 import java.nio.file.Path
 import java.nio.file.Paths

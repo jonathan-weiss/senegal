@@ -1,4 +1,4 @@
-package ch.senegal.engine.properties
+package ch.senegal.engine.parameters
 
 class ParameterReader(private val parameterSources: List<ParameterSource>) {
 

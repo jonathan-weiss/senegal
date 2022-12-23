@@ -6,9 +6,9 @@ import ch.senegal.engine.freemarker.templatemodel.TemplateFileDescriptionCreator
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
-import ch.senegal.engine.properties.ParameterReader
-import ch.senegal.engine.properties.ParameterSource
-import ch.senegal.engine.properties.PathParameterName
+import ch.senegal.engine.parameters.ParameterReader
+import ch.senegal.engine.parameters.ParameterSource
+import ch.senegal.engine.parameters.PathParameterName
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.engine.xml.XmlFileParser
 import ch.senegal.engine.xml.schemacreator.XmlSchemaInitializer

@@ -1,4 +1,4 @@
-package ch.senegal.engine.properties
+package ch.senegal.engine.parameters
 
 import java.util.Properties
 
