@@ -3,12 +3,13 @@ package ch.senegal.engine.parameters
 class ParameterReader(private val parameterSources: List<ParameterSource>) {
 
     fun getParameterList(): List<String> {
-        return ParameterNames.allParameters().map { "${it.propertyName}=${getParameter(it)}" }
+        return ConfigParameterNames.allParameters().map { "${it.propertyName}=${getParameter(it)}" }
     }
 
-    fun <T : Any> getParameter(key: SenegalParameterName<T>): T {
+    fun <T : Any> getParameter(key: ConfigParameterName<T>): T {
         return parameterSources
-            .firstNotNullOfOrNull { parameterSource -> parameterSource.getParameterValue(key) }
+            .map { parameterSource -> parameterSource.getParameterMap() }
+            .firstNotNullOfOrNull { map -> map[key.propertyName] }
             ?.let { value -> key.fromString(value) }
             ?: throw IllegalArgumentException("No value found for key '${key.propertyName}' in sources $parameterSources")
     }
@@ -16,7 +17,15 @@ class ParameterReader(private val parameterSources: List<ParameterSource>) {
     fun getPlaceholders(): Map<String, String> {
         return parameterSources
             .reversed()
-            .map { it.getParameterMap(StringParameterName.Placeholder) }
+            .map { parameterSource -> getPlaceholdersForParameterSource(parameterSource) }
             .fold(emptyMap()) { acc: Map<String, String>, current: Map<String, String> -> acc + current }
+    }
+
+    private fun getPlaceholdersForParameterSource(parameterSource: ParameterSource): Map<String, String> {
+        val placeholderPropertySearchPattern = "${StringConfigParameterName.Placeholder.propertyName}."
+        return parameterSource.getParameterMap()
+            .entries
+            .filter { it.key.startsWith(placeholderPropertySearchPattern) }
+            .associate { Pair(it.key.substring(placeholderPropertySearchPattern.length), it.value) }
     }
 }

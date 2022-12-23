@@ -8,7 +8,7 @@ import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.parameters.ParameterReader
 import ch.senegal.engine.parameters.ParameterSource
-import ch.senegal.engine.parameters.PathParameterName
+import ch.senegal.engine.parameters.PathConfigParameterName
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.engine.xml.XmlFileParser
 import ch.senegal.engine.xml.schemacreator.XmlSchemaInitializer
@@ -36,13 +36,13 @@ class SenegalProcess(
         placeholders.forEach { (key, value) -> println("$key=$value") }
         println("------------")
 
-        val definitionDirectory = parameterReader.getParameter(PathParameterName.DefinitionDirectory)
-        val defaultOutputDirectory = parameterReader.getParameter(PathParameterName.DefaultOutputDirectory)
+        val definitionDirectory = parameterReader.getParameter(PathConfigParameterName.DefinitionDirectory)
+        val defaultOutputDirectory = parameterReader.getParameter(PathConfigParameterName.DefaultOutputDirectory)
         val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(definitionDirectory, virtualFileSystem)
 
         XmlSchemaInitializer.initializeXmlSchemaFile(schemaDirectory, resolvedPlugins, virtualFileSystem)
 
-        val xmlDefinitionFile = parameterReader.getParameter(PathParameterName.XmlDefinitionFile)
+        val xmlDefinitionFile = parameterReader.getParameter(PathConfigParameterName.XmlDefinitionFile)
 
         val modelTree: MutableModelTree = XmlFileParser.validateAndReadXmlFile(resolvedPlugins, xmlDefinitionFile, placeholders, virtualFileSystem)
 
