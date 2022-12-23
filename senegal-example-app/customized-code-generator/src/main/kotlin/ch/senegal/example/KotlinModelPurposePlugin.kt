@@ -103,13 +103,13 @@ object KotlinModelPurposePlugin : Purpose {
 
         if(className != null && packageName != null && targetBasePath != null) {
             val directory = packageName.replace(".", "/")
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}.kt"), "/ch/senegal/pluginexample/kotlin-model-class.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Id.kt"), "/ch/senegal/pluginexample/kotlin-model-id-class.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Repository.kt"), "/ch/senegal/pluginexample/kotlin-model-repository.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Create${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-create-instruction.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Update${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-update-instruction.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Delete${className}Instruction.kt"), "/ch/senegal/pluginexample/kotlin-model-delete-instruction.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Service.kt"), "/ch/senegal/pluginexample/kotlin-model-service.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-class.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Id.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-id-class.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Repository.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-repository.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Create${className}Instruction.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-create-instruction.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Update${className}Instruction.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-update-instruction.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/Delete${className}Instruction.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-delete-instruction.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${className}Service.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-service.ftl")))
         }
 
         return targets

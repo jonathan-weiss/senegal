@@ -16,7 +16,7 @@ object InfoPurposePlugin : Purpose {
 
         val generalTemplate = TemplateTarget(
             defaultOutputPath.resolve("template-tree.txt"),
-            "/ch/senegal/pluginexample/info-template.ftl"
+            TemplateForFreemarker("/ch/senegal/pluginexample/info-template.ftl")
         )
         return setOf(generalTemplate)
     }

@@ -13,14 +13,14 @@ object KotlinModelPurposePlugin : Purpose {
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
         val targets: MutableSet<TemplateTarget> = mutableSetOf()
-        targets.add(TemplateTarget(defaultOutputPath.resolve("general-template.txt"), "/ch/senegal/pluginexample/general-template.ftl"))
+        targets.add(TemplateTarget(defaultOutputPath.resolve("general-template.txt"), TemplateForFreemarker("/ch/senegal/pluginexample/general-template.ftl")))
 
         val className = modelNode.getStringFacetValue(purposeName, kotlinModelClassnameFacet.facetName)
         val packageName = modelNode.getStringFacetValue(purposeName, kotlinModelPackageFacet.facetName)
 
         if(className != null && packageName != null) {
             val directory = packageName.replace(".", "/")
-            targets.add(TemplateTarget(defaultOutputPath.resolve("$directory/$className.kt"), "/ch/senegal/pluginexample/kotlin-model-class.ftl"))
+            targets.add(TemplateTarget(defaultOutputPath.resolve("$directory/$className.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/kotlin-model-class.ftl")))
         }
 
         return targets

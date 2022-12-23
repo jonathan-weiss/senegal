@@ -1,6 +1,5 @@
-package ch.senegal.engine.freemarker.templatemodel
+package ch.senegal.engine.template
 
-import ch.senegal.engine.freemarker.templateengine.FreemarkerFileDescriptor
 import ch.senegal.engine.model.MutableModelNode
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
@@ -8,12 +7,12 @@ import ch.senegal.plugin.Purpose
 import java.nio.file.Path
 
 
-object TemplateFileDescriptionCreator {
-    private const val rootModelListName = "rootTemplateModels"
-    private const val currentModelName = "templateModel"
+object TemplateTargetWithModelCreator {
+    const val rootModelListName = "rootTemplateModels"
+    const val currentModelName = "templateModel"
 
 
-    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins, defaultOutputPath: Path): List<FreemarkerFileDescriptor> {
+    fun createTemplateTargets(modelTree: MutableModelTree, resolvedPlugins: ResolvedPlugins, defaultOutputPath: Path): List<TemplateTargetWithModel> {
         val modelNodeToTemplateModelMap = createTemplateModelNodeMap(modelTree)
         val rootTemplateModelList = createTemplateModel(modelTree, modelNodeToTemplateModelMap)
         return collectTemplateTargets(
@@ -26,7 +25,7 @@ object TemplateFileDescriptionCreator {
     private fun collectTemplateTargets(modelTree: MutableModelTree,
                                        defaultOutputPath: Path,
                                        modelNodeToTemplateModelMap: Map<MutableModelNode, TemplateModelNode>,
-                                       rootTemplateModelList: List<TemplateModelNode>): List<FreemarkerFileDescriptor> {
+                                       rootTemplateModelList: List<TemplateModelNode>): List<TemplateTargetWithModel> {
         return modelTree.getAllModelNodes()
             .flatMap { node -> node.resolvedConcept.enclosedPurposes
                 .flatMap { purpose -> createTemplateTargetsForNode(
@@ -42,7 +41,7 @@ object TemplateFileDescriptionCreator {
                                              defaultOutputPath: Path,
                                              modelNodeToTemplateModelMap: Map<MutableModelNode, TemplateModelNode>,
                                              rootTemplateModelList: List<TemplateModelNode>
-    ): List<FreemarkerFileDescriptor> {
+    ): List<TemplateTargetWithModel> {
         val templateTargets = purpose.createTemplateTargets(mutableModelNode, defaultOutputPath).toList()
 
         val templateRootModel: Map<String, Any> = mapOf(
@@ -51,7 +50,7 @@ object TemplateFileDescriptionCreator {
         )
 
         return templateTargets.map {
-            FreemarkerFileDescriptor(it.targetFile, templateRootModel, it.templateClasspath)
+            TemplateTargetWithModel(it.targetFile, templateRootModel, it.template)
         }
 
     }

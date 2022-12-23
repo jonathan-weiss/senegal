@@ -52,7 +52,7 @@ object SqlDbPurposePlugin : Purpose {
     val sqlDbPrimaryKeyColumnTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("PrimaryKeyColumnType"),
         enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode ->
+    ) { _: ModelNode ->
         return@createCalculatedFacet "UUID"
     }
 
@@ -69,7 +69,7 @@ object SqlDbPurposePlugin : Purpose {
     val sqlDbPrimaryKeyJpaFieldTypeFacet = FacetFactory.StringFacetFactory.createCalculatedFacet(
         facetName = FacetName.of("PrimaryKeyJpaFieldType"),
         enclosingConceptName = EntityConceptPlugin.conceptName
-    ) { modelNode: ModelNode ->
+    ) { _: ModelNode ->
         return@createCalculatedFacet "UUID"
     }
 
@@ -157,7 +157,7 @@ object SqlDbPurposePlugin : Purpose {
         val targetBaseResourcesPath = modelNode.getDirectoryFacetValue(purposeName, sqlDbResourceBasePathFacet.facetName)
 
         if(targetBaseResourcesPath != null) {
-            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/structure.xml"), "/ch/senegal/pluginexample/sql-db-liquibase-includes-xml.ftl"))
+            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/structure.xml"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-liquibase-includes-xml.ftl")))
         }
         return targets
     }
@@ -175,12 +175,11 @@ object SqlDbPurposePlugin : Purpose {
 
         if(jpaEntityName != null && jpaEntityPackage != null && targetBasePath != null && targetBaseResourcesPath != null && tableName != null) {
             val directory = jpaEntityPackage.replace(".", "/")
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}.kt"), "/ch/senegal/pluginexample/sql-db-jpa-entity.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}Repository.kt"), "/ch/senegal/pluginexample/sql-db-jpa-repository.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), "/ch/senegal/pluginexample/sql-db-repository-impl.ftl"))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), "/ch/senegal/pluginexample/sql-db-repository-impl.ftl"))
-
-            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/${tableName}.structure.xml"), "/ch/senegal/pluginexample/sql-db-liquibase-xml.ftl"))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-jpa-entity.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}Repository.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-jpa-repository.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-repository-impl.ftl")))
+            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-repository-impl.ftl")))
+            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/${tableName}.structure.xml"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-liquibase-xml.ftl")))
         }
 
         return targets

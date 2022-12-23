@@ -1,7 +1,9 @@
-package ch.senegal.engine.freemarker.templateengine
+package ch.senegal.engine.freemarker
 
 import ch.senegal.engine.TmpFileUtil
+import ch.senegal.engine.template.TemplateTargetWithModel
 import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
+import ch.senegal.plugin.TemplateForFreemarker
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readText
 
@@ -23,10 +25,10 @@ internal class FreemarkerTemplateProcessorTest {
         val myDelegate = MyDelegate("myDelegate", mySubDelegate)
 
         model["mySpecialDelegate"] = myDelegate
-        val fileDescriptor = FreemarkerFileDescriptor(
+        val fileDescriptor = TemplateTargetWithModel(
             targetFile = targetFilePath,
             model = model,
-            templateClassPath = "example-template.ftl"
+            template = TemplateForFreemarker("example-template.ftl")
         )
         templateProcessor.processFileContentWithFreemarker(fileDescriptor, virtualFileSystem)
         println("The template has been created at ${fileDescriptor.targetFile}")

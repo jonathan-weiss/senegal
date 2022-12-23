@@ -1,4 +1,4 @@
-package ch.senegal.engine.freemarker.templateengine
+package ch.senegal.engine.template
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

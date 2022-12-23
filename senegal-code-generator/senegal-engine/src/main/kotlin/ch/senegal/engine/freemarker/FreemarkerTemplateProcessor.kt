@@ -1,7 +1,8 @@
-package ch.senegal.engine.freemarker.templateengine
+package ch.senegal.engine.freemarker
 
-import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
+import ch.senegal.engine.template.TemplateTargetWithModel
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
+import ch.senegal.plugin.TemplateForFreemarker
 import freemarker.template.Configuration
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler
@@ -14,12 +15,8 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
 
     private val cfg: Configuration = createClasspathBasedFreemarkerConfiguration(templatesClasspathResourceBasePath)
 
-    fun processFileContentWithFreemarker(fileDescriptors: List<FreemarkerFileDescriptor>, virtualFileSystem: VirtualFileSystem) {
-        fileDescriptors.forEach {fileDescriptor -> processFileContentWithFreemarker(fileDescriptor, virtualFileSystem)}
-    }
-
-    fun processFileContentWithFreemarker(fileDescriptor: FreemarkerFileDescriptor, virtualFileSystem: VirtualFileSystem) {
-        val templateClasspathLocation: String = fileDescriptor.templateClassPath
+    fun processFileContentWithFreemarker(fileDescriptor: TemplateTargetWithModel, virtualFileSystem: VirtualFileSystem) {
+        val templateClasspathLocation: String = (fileDescriptor.template as TemplateForFreemarker).templateClasspath
         val model: Map<String, Any?> = fileDescriptor.model
         try {
             virtualFileSystem.createDirectory(fileDescriptor.targetFile.parent)

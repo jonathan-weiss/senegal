@@ -68,7 +68,7 @@ object TestKotlinModelPurpose: Purpose {
         return setOf(
             TemplateTarget(
                 targetFile = defaultOutputPath.resolve("$classname.kt"),
-                templateClasspath = "/ch/senegal/engine/freemarker/template-model-node-template.ftl"
+                template = TemplateForFreemarker("/ch/senegal/engine/freemarker/template-model-node-template.ftl")
             )
         )
     }

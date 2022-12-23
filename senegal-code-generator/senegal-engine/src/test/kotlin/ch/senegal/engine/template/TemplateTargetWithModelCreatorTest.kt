@@ -1,7 +1,7 @@
-package ch.senegal.engine.freemarker.templatemodel
+package ch.senegal.engine.template
 
 import ch.senegal.engine.TmpFileUtil
-import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
+import ch.senegal.engine.freemarker.FreemarkerTemplateProcessor
 import ch.senegal.engine.model.FacetValue
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.*
@@ -9,64 +9,43 @@ import ch.senegal.engine.plugin.resolver.PluginResolver
 import ch.senegal.engine.plugin.resolver.ResolvedConcept
 import ch.senegal.engine.plugin.resolver.ResolvedPlugins
 import ch.senegal.engine.plugin.resolver.ResolvedFacet
+import ch.senegal.engine.template.TemplateTargetWithModelCreator
 import ch.senegal.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
 import ch.senegal.plugin.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readText
 
-internal class FreemarkerTemplateFileDescriptionCreatorTest {
-
-    private val testClasspathBase = ""
-
-    private val expectedContent = """
-        Properties:
-            TestKotlinModelClassname: TestEntityClassNumberOne
-        direct access: TestEntityClassNumberOne
-
-        SubNodes:
-
-            Properties:
-                TestKotlinFieldName: myField
-                TestKotlinFieldType: kotlin.String
-
-        Properties:
-            TestKotlinModelClassname: TestEntityClassNumberTwo
-            TestKotlinModelPackage: ch.senegal.test
-        direct access: TestEntityClassNumberTwo
-
-        SubNodes:
-
-
-    """.trimIndent()
+internal class TemplateTargetWithModelCreatorTest {
 
     @Test
     fun processFileContentWithFreemarker() {
         // arrange
-        val virtualFileSystem = PhysicalFilesVirtualFileSystem()
         val defaultOutputPath = TmpFileUtil.createTempDirectory()
         val resolvedPlugins = createResolvedPlugin()
         val modelTree = createModelTree(resolvedPlugins)
 
         // act
-        val listOfTemplateTargets = TemplateFileDescriptionCreator
+        val listOfTemplateTargets = TemplateTargetWithModelCreator
             .createTemplateTargets(modelTree, resolvedPlugins, defaultOutputPath)
-
-        val templateProcessor = FreemarkerTemplateProcessor(testClasspathBase)
-        templateProcessor.processFileContentWithFreemarker(listOfTemplateTargets, virtualFileSystem)
 
         // assert
         assertEquals(2, listOfTemplateTargets.size)
-        val fileDescriptor = listOfTemplateTargets.first()
+        val firstModelNode = assertIsTemplateModelNode(listOfTemplateTargets.first().model[TemplateTargetWithModelCreator.currentModelName])
 
-        println("The template has been created at ${fileDescriptor.targetFile}")
-        println("Content:")
-        println("------------------------------------------------")
-        println(fileDescriptor.targetFile.readText())
-        println("------------------------------------------------")
+        assertEquals("TestEntityClassNumberOne", firstModelNode["TestKotlinModelClassname"])
+        assertEquals("myField", firstModelNode.childNodes.first()["TestKotlinFieldName"])
+        assertEquals("kotlin.String", firstModelNode.childNodes.first()["TestKotlinFieldType"])
 
-        assertEquals(expectedContent, fileDescriptor.targetFile.readText())
+        val secondModelNode = assertIsTemplateModelNode(listOfTemplateTargets.last().model[TemplateTargetWithModelCreator.currentModelName])
+        assertEquals("TestEntityClassNumberTwo", secondModelNode["TestKotlinModelClassname"])
+        assertEquals("ch.senegal.test", secondModelNode["TestKotlinModelPackage"])
+    }
+
+    private fun assertIsTemplateModelNode(obj: Any?): TemplateModelNode {
+        assertNotNull(obj, "TemplateModelNode was null")
+        assertTrue(obj is TemplateModelNode, "Is not a TemplateModelNode: $obj")
+        return obj as TemplateModelNode
     }
 
     private fun createModelTree(resolvedPlugins: ResolvedPlugins): MutableModelTree {

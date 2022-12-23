@@ -1,8 +1,8 @@
 package ch.senegal.engine.process
 
 import ch.senegal.engine.calculation.ModelTreeCalculations
-import ch.senegal.engine.freemarker.templateengine.FreemarkerTemplateProcessor
-import ch.senegal.engine.freemarker.templatemodel.TemplateFileDescriptionCreator
+import ch.senegal.engine.freemarker.FreemarkerTemplateProcessor
+import ch.senegal.engine.template.TemplateTargetWithModelCreator
 import ch.senegal.engine.model.MutableModelTree
 import ch.senegal.engine.plugin.finder.PluginFinder
 import ch.senegal.engine.plugin.resolver.PluginResolver
@@ -12,6 +12,7 @@ import ch.senegal.engine.parameters.PathConfigParameterName
 import ch.senegal.engine.virtualfilesystem.VirtualFileSystem
 import ch.senegal.engine.xml.XmlFileParser
 import ch.senegal.engine.xml.schemacreator.XmlSchemaInitializer
+import ch.senegal.plugin.TemplateForFreemarker
 
 class SenegalProcess(
     private val pluginFinder: PluginFinder,
@@ -48,18 +49,22 @@ class SenegalProcess(
 
         ModelTreeCalculations.executeCalculations(modelTree, resolvedPlugins)
 
-        val freemarkerFileDescriptors = TemplateFileDescriptionCreator.createTemplateTargets(modelTree, resolvedPlugins, defaultOutputDirectory)
-
-        val templateProcessor = FreemarkerTemplateProcessor("")
+        val templateTargetsWithModel = TemplateTargetWithModelCreator.createTemplateTargets(modelTree, resolvedPlugins, defaultOutputDirectory)
 
         println("Generated files:")
         println("------------")
-        freemarkerFileDescriptors.forEach {
-            println("${it.targetFile} (with template ${it.templateClassPath})")
+        templateTargetsWithModel.forEach {
+            println("${it.targetFile} (with template ${it.template})")
         }
         println("------------")
 
-        templateProcessor.processFileContentWithFreemarker(freemarkerFileDescriptors, virtualFileSystem)
+        val freemarkerTemplateProcessor = FreemarkerTemplateProcessor("")
+        templateTargetsWithModel.forEach { templateTargetWithModel ->
+            when(templateTargetWithModel.template) {
+                is TemplateForFreemarker -> freemarkerTemplateProcessor.processFileContentWithFreemarker(templateTargetWithModel, virtualFileSystem)
+                else -> throw IllegalStateException("Template type is not supported: ${templateTargetWithModel.template}")
+            }
+        }
 
         virtualFileSystem.close()
     }
