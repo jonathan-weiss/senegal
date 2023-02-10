@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<senegal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="keyref-senegal-schema.xsd"
+>
+
+    <entity entityName="Person" kotlinModelClassName="Person" kotlinModelPackage="ch.senegal.person">
+        <entityAttribute entityAttributeName="firstname" entityAttributeType="TEXT" kotlinFieldType="kotlin.String" />
+        <entityAttribute entityAttributeName="lastname" entityAttributeType="NUMBER" kotlinFieldType="kotlin.Int"/>
+        <entityAttribute entityAttributeName="nickname" entityAttributeType="BOOLEAN" kotlinFieldType="kotlin.Boolean"/>
+    </entity>
+
+    <entity entityName="Person2" kotlinModelClassName="Person" kotlinModelPackage="ch.senegal.person">
+        <entityAttribute entityAttributeName="firstname" entityAttributeType="TEXT" kotlinFieldType="kotlin.String" entityReference="Person" />
+        <entityAttribute entityAttributeName="lastname" entityAttributeType="NUMBER" kotlinFieldType="kotlin.Int"/>
+        <entityAttribute entityAttributeName="nickname" entityAttributeType="BOOLEAN" kotlinFieldType="kotlin.Boolean"/>
+    </entity>
+
+    <entity entityName="Address">
+        <entityAttribute entityAttributeName="street" entityAttributeType="TEXT"/>
+        <entityAttribute entityAttributeName="zip" entityAttributeType="TEXT"/>
+    </entity>
+
+</senegal>

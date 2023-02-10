@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="senegal">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="entity"/>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="my-entity-key">
+            <xs:selector xpath="./entity"/>
+            <xs:field xpath="@entityName"/>
+        </xs:key>
+        <xs:keyref name="my-entity-key-ref" refer="my-entity-key">
+            <xs:selector xpath="entity/entityAttribute"/>
+            <xs:field xpath="@entityReference"/>
+        </xs:keyref>
+    </xs:element>
+    <xs:element name="entity">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="entityAttribute"/>
+            </xs:sequence>
+            <xs:attribute name="entityName" type="xs:string" use="required"/>
+            <xs:attribute name="kotlinModelClassName" type="xs:string"/>
+            <xs:attribute name="kotlinModelPackage" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="entityAttribute">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0"/>
+            <xs:attribute name="entityAttributeName" type="xs:string"/>
+            <xs:attribute name="entityReference" type="xs:string"/>
+            <xs:attribute name="entityAttributeType">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="TEXT"/>
+                        <xs:enumeration value="NUMBER"/>
+                        <xs:enumeration value="BOOLEAN"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="kotlinFieldName" type="xs:string"/>
+            <xs:attribute name="kotlinFieldType">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="kotlin.String"/>
+                        <xs:enumeration value="kotlin.Int"/>
+                        <xs:enumeration value="kotlin.Boolean"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
