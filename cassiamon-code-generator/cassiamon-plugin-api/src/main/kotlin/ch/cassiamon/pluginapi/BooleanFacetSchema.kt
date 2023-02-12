@@ -1,10 +1,8 @@
 package ch.cassiamon.pluginapi
 
-import ch.cassiamon.pluginapi.model.ModelNode
-
-class BooleanFacet(
+class BooleanFacetSchema(
     facetName: ch.cassiamon.pluginapi.FacetName,
     enclosingConceptName: ch.cassiamon.pluginapi.ConceptName,
     isOnlyCalculated: Boolean,
     val enhanceFacetValue: (modelNode: ch.cassiamon.pluginapi.model.ModelNode, facetValue: Boolean?) -> Boolean?
-) : ch.cassiamon.pluginapi.Facet(facetName, enclosingConceptName, isOnlyCalculated)
+) : ch.cassiamon.pluginapi.FacetSchema(facetName, enclosingConceptName, isOnlyCalculated)

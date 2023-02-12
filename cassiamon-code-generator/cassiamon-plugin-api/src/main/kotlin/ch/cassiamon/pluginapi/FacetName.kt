@@ -6,9 +6,9 @@ import ch.cassiamon.pluginapi.rules.NameEnforcer
 value class FacetName private constructor(val name: String) {
 
     companion object {
-        fun of(name: String): ch.cassiamon.pluginapi.FacetName {
-            ch.cassiamon.pluginapi.rules.NameEnforcer.isValidNameOrThrow(name)
-            return ch.cassiamon.pluginapi.FacetName(name)
+        fun of(name: String): FacetName {
+            NameEnforcer.isValidNameOrThrow(name)
+            return FacetName(name)
         }
     }
 }

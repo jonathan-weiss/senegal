@@ -6,9 +6,9 @@ import ch.cassiamon.pluginapi.rules.NameEnforcer
 value class ConceptName private constructor(val name: String) {
 
     companion object {
-        fun of(name: String): ch.cassiamon.pluginapi.ConceptName {
-            ch.cassiamon.pluginapi.rules.NameEnforcer.isValidNameOrThrow(name)
-            return ch.cassiamon.pluginapi.ConceptName(name)
+        fun of(name: String): ConceptName {
+            NameEnforcer.isValidNameOrThrow(name)
+            return ConceptName(name)
         }
     }
 }

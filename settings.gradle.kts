@@ -5,6 +5,11 @@ include("senegal-code-generator:senegal-engine")
 include("senegal-code-generator:senegal-plugin-api")
 include("senegal-code-generator:senegal-example-plugins")
 
+include("cassiamon-code-generator")
+include("cassiamon-code-generator:cassiamon-engine")
+include("cassiamon-code-generator:cassiamon-plugin-api")
+include("cassiamon-code-generator:cassiamon-simple-example")
+
 // example project
 include("senegal-example-app")
 include("senegal-example-app:app")
