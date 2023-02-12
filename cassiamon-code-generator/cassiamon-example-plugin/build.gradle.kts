@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    application
 }
 
 allprojects {
@@ -25,4 +26,17 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
+tasks.named("run") {
+    enabled = true
+}
+
+application {
+    mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
 }

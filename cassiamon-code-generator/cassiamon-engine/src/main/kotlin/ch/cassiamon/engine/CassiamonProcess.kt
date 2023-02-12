@@ -9,6 +9,8 @@ import ch.cassiamon.pluginapi.FacetFunction
 
 class CassiamonProcess {
 
+
+
     fun createModelGraph() {
 
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
