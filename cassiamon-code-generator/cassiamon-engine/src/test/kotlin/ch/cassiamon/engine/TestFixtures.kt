@@ -27,17 +27,15 @@ object TestFixtures {
         registrationApi.configure {
             newRootConcept(conceptName = databaseTableConceptName) {
                 addTextFacet(facetName = tableNameFacetName) { _, value -> value.uppercase() }
-
-                newChildConcept(conceptName = databaseTableFieldConceptName, parentConceptName = databaseTableConceptName) {
-                    addTextFacet(tableFieldNameFacetName) { _, value -> value.uppercase() }
-                    addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addIntegerNumberFacet(tableFieldLengthFacetName, setOf(tableFieldTypeFacetName))
-                    addCalculatedTextFacet(
-                        facetName = tableNameAndFieldNameFacetName,
-                        dependingOnFacets = setOf(tableFieldNameFacetName)
-                    ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
-
-                }
+            }
+            newChildConcept(conceptName = databaseTableFieldConceptName, parentConceptName = databaseTableConceptName) {
+                addTextFacet(tableFieldNameFacetName) { _, value -> value.uppercase() }
+                addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                addIntegerNumberFacet(tableFieldLengthFacetName, setOf(tableFieldTypeFacetName))
+                addCalculatedTextFacet(
+                    facetName = tableNameAndFieldNameFacetName,
+                    dependingOnFacets = setOf(tableFieldNameFacetName)
+                ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
             }
         }
