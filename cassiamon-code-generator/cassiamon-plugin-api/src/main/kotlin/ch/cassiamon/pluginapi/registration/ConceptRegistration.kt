@@ -2,16 +2,44 @@ package ch.cassiamon.pluginapi.registration
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.registration.types.*
 
 interface ConceptRegistration {
 
-    fun newTextFacet(facetName: FacetName, textFacetRegistration: TextFacetRegistration.() -> Unit)
-    fun withExistingTextFacet(facetName: FacetName, textFacetRegistration: TextFacetRegistration.() -> Unit)
+    fun addTextFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+        transformationFunction: TextFacetTransformationFunction? = null
+    )
 
-    fun newIntegerNumberFacet(facetName: FacetName, integerNumberFacetRegistration: IntegerNumberFacetRegistration.() -> Unit)
-    fun withExistingIntegerNumberFacet(facetName: FacetName, integerNumberFacetRegistration: IntegerNumberFacetRegistration.() -> Unit)
+    fun addCalculatedTextFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+        calculationFunction: TextFacetCalculationFunction,
+    )
 
-    fun newConceptReferenceFacet(facetName: FacetName, referencedConcept: ConceptName, conceptReferenceFacetRegistration: ConceptReferenceFacetRegistration.() -> Unit)
+    fun addIntegerNumberFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+        transformationFunction: IntegerNumberFacetTransformationFunction? = null,
+    )
 
-    fun withExistingConceptReferenceFacet(facetName: FacetName, referencedConcept: ConceptName, conceptReferenceFacetRegistration: ConceptReferenceFacetRegistration.() -> Unit)
+    fun addCalculatedIntegerNumberFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+        calculationFunction: IntegerNumberFacetCalculationFunction,
+    )
+
+    fun addConceptReferenceFacet(
+        facetName: FacetName,
+        referencedConcept: ConceptName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+    )
+
+    fun addCalculatedConceptReferenceFacet(
+        facetName: FacetName,
+        referencedConcept: ConceptName,
+        dependingOnFacets: Set<FacetName> = emptySet(),
+        calculationFunction: ConceptReferenceFacetCalculationFunction,
+    )
 }

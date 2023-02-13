@@ -1,92 +1,116 @@
 package ch.cassiamon.engine.schema.registration
 
+import ch.cassiamon.engine.schema.types.*
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.registration.types.ConceptReferenceFacetFunction
-import ch.cassiamon.pluginapi.registration.types.IntegerNumberFacetFunction
-import ch.cassiamon.pluginapi.registration.types.TextFacetFunction
+import ch.cassiamon.pluginapi.registration.types.*
 
-class MutableConcept(val conceptName: ConceptName,
-                     val parentConceptName: ConceptName?,
-                     val facets: MutableList<MutableFacet> = mutableListOf()
+
+class MutableConcept(override val conceptName: ConceptName,
+                     override val parentConceptName: ConceptName?,
+                     val mutableFacets: MutableList<Facet> = mutableListOf()
     ):
-    ConceptRegistration
+    ConceptRegistration, Concept
 {
-    override fun newTextFacet(facetName: FacetName, textFacetRegistration: TextFacetRegistration.() -> Unit) {
-        println("ConceptRegistrationDefaultImpl.newTextFacet $facetName")
 
-        val mutableFacet = MutableFacet(
-            concept = this,
-            facetName = facetName,
-            facetType = FacetType.TEXT
-        )
-        textFacetRegistration(mutableFacet)
-        attachFacet(mutableFacet)
-    }
+    override val facets: List<Facet>
+        get() = mutableFacets.toList()
 
-    override fun withExistingTextFacet(facetName: FacetName, textFacetRegistration: TextFacetRegistration.() -> Unit) {
-        println("ConceptRegistrationDefaultImpl.withExistingTextFacet $facetName")
-        val mutableFacet = findExistingFacet(facetName, FacetType.TEXT)
-        textFacetRegistration(mutableFacet)
-    }
-
-    override fun newIntegerNumberFacet(
+    override fun addTextFacet(
         facetName: FacetName,
-        integerNumberFacetRegistration: IntegerNumberFacetRegistration.() -> Unit
+        dependingOnFacets: Set<FacetName>,
+        transformationFunction: TextFacetTransformationFunction?
     ) {
-        println("ConceptRegistrationDefaultImpl.newIntegerNumberFacet $facetName")
-        val mutableFacet = MutableFacet(
-            concept = this,
+        val facet = ManualFacet(
+            conceptName = conceptName,
+            facetName = facetName,
+            facetType = FacetType.TEXT,
+            facetDependencies = dependingOnFacets,
+            facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpTextTransformationFunction
+        )
+        attachFacet(facet)
+    }
+
+    override fun addCalculatedTextFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName>,
+        calculationFunction: TextFacetCalculationFunction
+    ) {
+        val facet = CalculatedFacet(
+            conceptName = conceptName,
+            facetName = facetName,
+            facetType = FacetType.TEXT,
+            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction
+        )
+        attachFacet(facet)
+    }
+
+    override fun addIntegerNumberFacet(
+        facetName: FacetName,
+        dependingOnFacets: Set<FacetName>,
+        transformationFunction: IntegerNumberFacetTransformationFunction?
+    ) {
+        val facet = ManualFacet(
+            conceptName = conceptName,
             facetName = facetName,
             facetType = FacetType.INTEGER_NUMBER,
-            )
-        integerNumberFacetRegistration(mutableFacet)
-        attachFacet(mutableFacet)
+            facetDependencies = dependingOnFacets,
+            facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpIntegerNumberTransformationFunction
+        )
+        attachFacet(facet)
     }
 
-    override fun withExistingIntegerNumberFacet(
+    override fun addCalculatedIntegerNumberFacet(
         facetName: FacetName,
-        integerNumberFacetRegistration: IntegerNumberFacetRegistration.() -> Unit
+        dependingOnFacets: Set<FacetName>,
+        calculationFunction: IntegerNumberFacetCalculationFunction
     ) {
-        println("ConceptRegistrationDefaultImpl.withExistingIntegerNumberFacet $facetName")
-        val mutableFacet = findExistingFacet(facetName, FacetType.TEXT)
-        integerNumberFacetRegistration(mutableFacet)
+        val facet = CalculatedFacet(
+            conceptName = conceptName,
+            facetName = facetName,
+            facetType = FacetType.INTEGER_NUMBER,
+            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction
+        )
+        attachFacet(facet)
     }
 
-    override fun newConceptReferenceFacet(
+    override fun addConceptReferenceFacet(
         facetName: FacetName,
         referencedConcept: ConceptName,
-        conceptReferenceFacetRegistration: ConceptReferenceFacetRegistration.() -> Unit
+        dependingOnFacets: Set<FacetName>
     ) {
-        println("ConceptRegistrationDefaultImpl.newConceptReferenceFacet $facetName -> $referencedConcept")
-        val mutableFacet = MutableFacet(
-            concept = this,
+        val facet = ConceptReferenceManualFacet(
+            conceptName = conceptName,
             facetName = facetName,
             facetType = FacetType.CONCEPT_REFERENCE,
-            referencedFacetConcept = referencedConcept)
-        conceptReferenceFacetRegistration(mutableFacet)
-        attachFacet(mutableFacet)
-
+            facetDependencies = dependingOnFacets,
+            facetTransformationFunction = NoOpTransformationFunctions.noOpConceptReferenceTransformationFunction,
+            referencedConceptName = referencedConcept
+        )
+        attachFacet(facet)
     }
 
-    override fun withExistingConceptReferenceFacet(
+    override fun addCalculatedConceptReferenceFacet(
         facetName: FacetName,
         referencedConcept: ConceptName,
-        conceptReferenceFacetRegistration: ConceptReferenceFacetRegistration.() -> Unit
+        dependingOnFacets: Set<FacetName>,
+        calculationFunction: ConceptReferenceFacetCalculationFunction
     ) {
-        println("ConceptRegistrationDefaultImpl.withExistingConceptReferenceFacet $facetName -> $referencedConcept")
-        val mutableFacet = findExistingFacet(facetName, FacetType.CONCEPT_REFERENCE)
-        conceptReferenceFacetRegistration(mutableFacet)
+        val facet = ConceptReferenceCalculatedFacet(
+            conceptName = conceptName,
+            facetName = facetName,
+            facetType = FacetType.CONCEPT_REFERENCE,
+            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction,
+            referencedConceptName = referencedConcept
+        )
+        attachFacet(facet)
     }
 
-    private fun attachFacet(mutableFacet: MutableFacet) {
-        facets.add(mutableFacet)
+    private fun attachFacet(facet: Facet) {
+        mutableFacets.add(facet)
     }
-
-    private fun findExistingFacet(facetName: FacetName, type: FacetType): MutableFacet {
-        throw RuntimeException("Facet with name ${facetName.name} not found.")
-    }
-
-
 }

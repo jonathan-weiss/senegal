@@ -1,10 +1,15 @@
 package ch.cassiamon.engine.schema.registration
 
+import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.registration.*
 
-class RegistrationApiDefaultImpl: RegistrationApi, Registration {
-    val concepts: MutableSet<MutableConcept> = mutableSetOf()
+class RegistrationApiDefaultImpl: RegistrationApi, Registration, SchemaProvider {
+    private val concepts: MutableSet<MutableConcept> = mutableSetOf()
+
+    override fun provideSchema(): Schema {
+        return Schema(concepts = concepts.toList())
+    }
 
     override fun configure(registration: Registration.() -> Unit) {
         registration(this)
