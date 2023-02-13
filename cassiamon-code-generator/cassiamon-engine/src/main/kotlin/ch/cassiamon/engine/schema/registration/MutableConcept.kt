@@ -4,12 +4,14 @@ import ch.cassiamon.engine.schema.types.*
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.registration.*
+import ch.cassiamon.pluginapi.registration.exceptions.DuplicateFacetNameFoundSchemaException
+import ch.cassiamon.pluginapi.registration.exceptions.FacetDependencyNotFoundSchemaException
 import ch.cassiamon.pluginapi.registration.types.*
 
 
 class MutableConcept(override val conceptName: ConceptName,
                      override val parentConceptName: ConceptName?,
-                     val mutableFacets: MutableList<Facet> = mutableListOf()
+                     private val mutableFacets: MutableList<Facet> = mutableListOf()
     ):
     ConceptRegistration, Concept
 {
@@ -29,7 +31,7 @@ class MutableConcept(override val conceptName: ConceptName,
             facetDependencies = dependingOnFacets,
             facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpTextTransformationFunction
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
     override fun addCalculatedTextFacet(
@@ -44,7 +46,7 @@ class MutableConcept(override val conceptName: ConceptName,
             facetDependencies = dependingOnFacets,
             facetCalculationFunction = calculationFunction
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
     override fun addIntegerNumberFacet(
@@ -59,7 +61,7 @@ class MutableConcept(override val conceptName: ConceptName,
             facetDependencies = dependingOnFacets,
             facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpIntegerNumberTransformationFunction
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
     override fun addCalculatedIntegerNumberFacet(
@@ -74,7 +76,7 @@ class MutableConcept(override val conceptName: ConceptName,
             facetDependencies = dependingOnFacets,
             facetCalculationFunction = calculationFunction
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
     override fun addConceptReferenceFacet(
@@ -90,7 +92,7 @@ class MutableConcept(override val conceptName: ConceptName,
             facetTransformationFunction = NoOpTransformationFunctions.noOpConceptReferenceTransformationFunction,
             referencedConceptName = referencedConcept
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
     override fun addCalculatedConceptReferenceFacet(
@@ -107,10 +109,24 @@ class MutableConcept(override val conceptName: ConceptName,
             facetCalculationFunction = calculationFunction,
             referencedConceptName = referencedConcept
         )
-        attachFacet(facet)
+        validateAndAttachFacet(facet)
     }
 
-    private fun attachFacet(facet: Facet) {
+    private fun validateAndAttachFacet(facet: Facet) {
+        if(facetExists(facet.facetName)) {
+            throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.facetName)
+        }
+
+        val notFoundFacets = facet.facetDependencies.filter { !facetExists(it) }.toSet()
+        if(notFoundFacets.isNotEmpty()) {
+            throw FacetDependencyNotFoundSchemaException(facet.conceptName, notFoundFacets)
+        }
+
+
         mutableFacets.add(facet)
+    }
+
+    private fun facetExists(facetName: FacetName): Boolean {
+        return mutableFacets.map { it.facetName }.contains(facetName)
     }
 }
