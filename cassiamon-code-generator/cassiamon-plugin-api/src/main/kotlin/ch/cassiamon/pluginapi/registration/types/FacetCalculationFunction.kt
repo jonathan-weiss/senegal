@@ -1,7 +1,7 @@
 package ch.cassiamon.pluginapi.registration.types
 
-import ch.cassiamon.pluginapi.registration.GraphNode
+import ch.cassiamon.pluginapi.ConceptNode
 
 sealed interface FacetCalculationFunction<T> {
-    fun invoke(graphNode: GraphNode):T
+    fun invoke(conceptNode: ConceptNode):T
 }

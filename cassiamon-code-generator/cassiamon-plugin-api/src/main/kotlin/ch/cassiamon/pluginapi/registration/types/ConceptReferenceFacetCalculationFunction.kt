@@ -1,5 +1,5 @@
 package ch.cassiamon.pluginapi.registration.types
 
-import ch.cassiamon.pluginapi.registration.GraphNode
+import ch.cassiamon.pluginapi.ConceptNode
 
-fun interface ConceptReferenceFacetCalculationFunction: FacetCalculationFunction<GraphNode>
+fun interface ConceptReferenceFacetCalculationFunction: FacetCalculationFunction<ConceptNode>

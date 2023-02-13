@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.model
+package ch.cassiamon.engine.model.types
 
 import ch.cassiamon.pluginapi.rules.NameEnforcer
 

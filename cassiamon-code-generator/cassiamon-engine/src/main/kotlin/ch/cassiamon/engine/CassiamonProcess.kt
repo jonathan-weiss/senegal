@@ -1,7 +1,13 @@
 package ch.cassiamon.engine
 
+import ch.cassiamon.engine.model.graph.ModelGraphCreator
+import ch.cassiamon.engine.model.inputsource.ModelInputDataBuilder
+import ch.cassiamon.engine.model.types.ConceptIdentifier
+import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.pluginapi.ConceptName
+import ch.cassiamon.pluginapi.FacetName
 
 class CassiamonProcess {
 
@@ -31,9 +37,18 @@ class CassiamonProcess {
         // fill the schema model (?) with help of the resolved schema (e.g. by XML)
         // TODO read the XML file and fill it in flat a modelInputData
 
+        val modelInputDataBuilder = ModelInputDataBuilder()
+        modelInputDataBuilder.attachConceptData(
+            conceptName = ConceptName.of("DatabaseTable"),
+            conceptIdentifier = ConceptIdentifier.of("Person"),
+            facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person")))
+        )
+
+        val modelInputData = modelInputDataBuilder.provideModelInputData()
+
 
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
-        // TODO impl
+        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
 
         // TODO transform to TemplateNodes
         // TODO extract TemplateTargets

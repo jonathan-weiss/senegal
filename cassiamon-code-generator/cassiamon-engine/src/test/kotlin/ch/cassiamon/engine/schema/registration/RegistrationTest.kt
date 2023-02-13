@@ -1,22 +1,23 @@
 package ch.cassiamon.engine.schema.registration
 
+import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.schema.types.FacetType
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.registration.GraphNode
+import ch.cassiamon.pluginapi.ConceptNode
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
 class RegistrationTest {
 
-    private val databaseTableConceptName = ConceptName.of("DatabaseTable")
-    private val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
-    private val tableNameFacetName = FacetName.of("TableName")
-    private val tableFieldNameFacetName = FacetName.of("FieldName")
-    private val tableFieldTypeFacetName = FacetName.of("FieldType")
-    private val tableFieldLengthFacetName = FacetName.of("FieldLength")
-    private val tableNameAndFieldNameFacetName = FacetName.of("TableNameAndFieldName")
+    private val databaseTableConceptName = TestFixtures.databaseTableConceptName
+    private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
+    private val tableNameFacetName = TestFixtures.tableNameFacetName
+    private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetName
+    private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetName
+    private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetName
+    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetName
 
 
     @Test
@@ -103,7 +104,7 @@ class RegistrationTest {
             println("In Registration")
             newRootConcept(dbTableConcept) {
                 println("In ConceptRegistration $dbTableConcept")
-                addTextFacet(dbTableNameFacet, setOf(dbTableNameFacet)) { graphNode: GraphNode, value: String -> value }
+                addTextFacet(dbTableNameFacet, setOf(dbTableNameFacet)) { conceptNode: ConceptNode, value: String -> value }
                 addIntegerNumberFacet(dbTableMaxNumberOfRowsFacet)
             }
             newChildConcept(dbFieldConcept, dbTableConcept) {
