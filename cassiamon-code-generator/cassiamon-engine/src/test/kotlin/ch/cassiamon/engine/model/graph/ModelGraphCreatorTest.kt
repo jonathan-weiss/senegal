@@ -27,10 +27,22 @@ class ModelGraphCreatorTest {
     fun `calculate a simple graph`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
-        val modelInputData = TestFixtures.createModelInputData()
+
+
+        val modelInputDataCollector = ModelInputDataCollector()
+        val personTableId = ConceptIdentifier.of("Person")
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = personTableId,
+            parentConceptIdentifier = null,
+            facetValues = arrayOf(
+                Pair(tableNameFacetName, TextFacetValue("Person"))
+            )
+        )
+
 
         // act
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
+        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)

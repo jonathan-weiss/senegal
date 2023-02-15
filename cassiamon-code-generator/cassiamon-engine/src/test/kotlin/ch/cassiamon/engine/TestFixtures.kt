@@ -50,19 +50,4 @@ object TestFixtures {
 
         return registrationApi.provideSchema()
     }
-
-    fun createModelInputData(): ModelInputData {
-        val modelInputDataCollector = ModelInputDataCollector()
-
-        modelInputDataCollector.attachConceptData(
-            conceptName = ConceptName.of("DatabaseTable"),
-            conceptIdentifier = ConceptIdentifier.of("PersonDbTable"),
-            parentConceptIdentifier = null,
-            facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person")))
-        )
-
-        return modelInputDataCollector.provideModelInputData()
-
-    }
-
 }
