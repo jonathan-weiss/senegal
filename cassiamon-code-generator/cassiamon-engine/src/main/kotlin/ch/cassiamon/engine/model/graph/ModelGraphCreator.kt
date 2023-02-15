@@ -10,7 +10,7 @@ import ch.cassiamon.pluginapi.model.exceptions.ConceptCyclicLoopDetectedModelExc
 object ModelGraphCreator {
 
     fun calculateGraph(schema: Schema, modelInputData: ModelInputData): ModelGraph {
-        modelInputData.entries.forEach { validateSingleEntry(schema, it) }
+        modelInputData.entries.forEach { ModelNodeValidator.validateSingleEntry(schema, it) }
 
         val resolvedEntries: MutableMap<ConceptIdentifier, ModelConceptNode> = mutableMapOf()
         val unresolvedEntries: MutableList<ModelConceptInputDataEntry> = modelInputData.entries.toMutableList()
@@ -54,10 +54,6 @@ object ModelGraphCreator {
             .filter { it.value is ConceptReferenceFacetValue }
             .map { Pair(it.key, it.value as ConceptReferenceFacetValue) }
             .all { resolvedKeys.contains(it.second.conceptReference)}
-    }
-
-    private fun validateSingleEntry(schema: Schema, entry: ModelConceptInputDataEntry) {
-        // TODO validate the entry for his own
     }
 
     private fun linkAndCalculateModelNode(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>): ModelConceptNode {

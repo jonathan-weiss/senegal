@@ -9,4 +9,12 @@ sealed class Facet constructor(
     val facetType: FacetType,
     val facetDependencies: Set<FacetName>,
 ) {
+    fun isCalculatedFacet(): Boolean {
+        return this is CalculatedFacet
+    }
+
+    fun isManualFacet(): Boolean {
+        return this is ManualFacet
+    }
+
 }

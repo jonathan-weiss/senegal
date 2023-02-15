@@ -11,7 +11,7 @@ class RegistrationApiDefaultImpl: RegistrationApi, Registration, SchemaProvider 
     private val concepts: MutableSet<MutableConcept> = mutableSetOf()
 
     override fun provideSchema(): Schema {
-        return Schema(concepts = concepts.toList())
+        return Schema(concepts = concepts.associateBy { it.conceptName })
     }
 
     override fun configure(registration: Registration.() -> Unit) {

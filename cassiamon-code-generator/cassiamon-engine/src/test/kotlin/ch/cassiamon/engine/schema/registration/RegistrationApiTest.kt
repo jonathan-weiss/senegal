@@ -40,7 +40,7 @@ class RegistrationApiTest {
         // assert
         val schema = registrationApi.provideSchema()
         assertNotNull(schema)
-        assertEquals(1, schema.concepts.size)
+        assertEquals(1, schema.numberOfConcepts())
         val firstConcept = findConcept(schema, databaseTableConceptName)
         assertEquals(this.databaseTableConceptName.name, firstConcept.conceptName.name)
 
@@ -75,7 +75,7 @@ class RegistrationApiTest {
         // assert
         val schema = registrationApi.provideSchema()
         assertNotNull(schema)
-        assertEquals(2, schema.concepts.size)
+        assertEquals(2, schema.numberOfConcepts())
         val tableConcept = findConcept(schema, databaseTableConceptName)
         val fieldConcept = findConcept(schema, databaseTableFieldConceptName )
 
@@ -193,8 +193,7 @@ class RegistrationApiTest {
     }
 
     private fun findConcept(schema: Schema, conceptName: ConceptName): Concept {
-        return schema.concepts.firstOrNull { it.conceptName == conceptName }
-            ?: fail("No concept found with name $conceptName.")
+        return schema.conceptByConceptName(conceptName)
     }
 
     private fun findFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): Facet {

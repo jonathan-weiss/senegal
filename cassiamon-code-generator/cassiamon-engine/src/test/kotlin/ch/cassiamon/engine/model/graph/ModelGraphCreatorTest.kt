@@ -1,6 +1,7 @@
 package ch.cassiamon.engine.model.graph
 
 import ch.cassiamon.engine.TestFixtures
+import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
@@ -110,5 +111,6 @@ class ModelGraphCreatorTest {
         // assert
         assertNotNull(modelGraph)
     }
+
 
 }
