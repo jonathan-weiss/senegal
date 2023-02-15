@@ -25,8 +25,6 @@ class ModelNodeValidatorTest {
     private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetName
     private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetName
     private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetName
-    private val tableFieldForeignKeyFacetName = TestFixtures.tableFieldForeignKeyFacetName
-    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetName
 
     @Test
     fun `validate a valid singe root concept entry`() {

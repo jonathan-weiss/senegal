@@ -4,6 +4,7 @@ import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
+import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import org.junit.jupiter.api.Test
@@ -14,11 +15,12 @@ class ModelGraphCreatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
+    private val databaseTableFieldForeignKeyConceptName = TestFixtures.databaseTableFieldForeignKeyConceptName
     private val tableNameFacetName = TestFixtures.tableNameFacetName
     private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetName
     private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetName
     private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetName
-    private val tableFieldForeignKeyFacetName = TestFixtures.tableFieldForeignKeyFacetName
+    private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacetName
     private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetName
 
     @Test
@@ -64,7 +66,7 @@ class ModelGraphCreatorTest {
             facetValues = arrayOf(
                 Pair(tableFieldNameFacetName, TextFacetValue("street")),
                 Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, TextFacetValue("255")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
             )
         )
 
@@ -77,8 +79,17 @@ class ModelGraphCreatorTest {
             facetValues = arrayOf(
                 Pair(tableFieldNameFacetName, TextFacetValue("fkPersonId")),
                 Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
-                Pair(tableFieldLengthFacetName, TextFacetValue("128")),
-                Pair(tableFieldForeignKeyFacetName, ConceptReferenceFacetValue(personTableId)),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
+            )
+        )
+
+        val addressPersonForeignKeyPointerFieldId = ConceptIdentifier.of("Address_fkPerson_pointer")
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableFieldForeignKeyConceptName,
+            conceptIdentifier = addressPersonForeignKeyPointerFieldId,
+            parentConceptIdentifier = addressPersonForeignKeyFieldId,
+            facetValues = arrayOf(
+                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(personTableId)),
             )
         )
 
@@ -101,7 +112,7 @@ class ModelGraphCreatorTest {
             facetValues = arrayOf(
                 Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
                 Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, TextFacetValue("255")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
             )
         )
 
