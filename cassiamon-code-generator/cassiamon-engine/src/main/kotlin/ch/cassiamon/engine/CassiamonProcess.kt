@@ -1,8 +1,8 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.engine.model.graph.ModelGraphCreator
-import ch.cassiamon.engine.model.inputsource.ModelInputDataBuilder
-import ch.cassiamon.engine.model.types.ConceptIdentifier
+import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
@@ -37,14 +37,15 @@ class CassiamonProcess {
         // fill the schema model (?) with help of the resolved schema (e.g. by XML)
         // TODO read the XML file and fill it in flat a modelInputData
 
-        val modelInputDataBuilder = ModelInputDataBuilder()
-        modelInputDataBuilder.attachConceptData(
+        val modelInputDataCollector = ModelInputDataCollector()
+        modelInputDataCollector.attachConceptData(
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
-            facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person")))
+            parentConceptIdentifier = null,
+            facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person"))),
         )
 
-        val modelInputData = modelInputDataBuilder.provideModelInputData()
+        val modelInputData = modelInputDataCollector.provideModelInputData()
 
 
         // traverse whole model and transform (adapt/calculate/transform) the missing model values

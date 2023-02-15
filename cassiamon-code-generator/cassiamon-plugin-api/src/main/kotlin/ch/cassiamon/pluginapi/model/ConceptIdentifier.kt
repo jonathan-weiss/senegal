@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.model.types
+package ch.cassiamon.pluginapi.model
 
 import ch.cassiamon.pluginapi.rules.NameEnforcer
 
@@ -8,7 +8,7 @@ value class ConceptIdentifier private constructor(val code: String) {
 
     companion object {
         fun of(name: String): ConceptIdentifier {
-            NameEnforcer.isValidNameOrThrow(name)
+            NameEnforcer.isValidIdentifierOrThrow(name)
             return ConceptIdentifier(name)
         }
     }

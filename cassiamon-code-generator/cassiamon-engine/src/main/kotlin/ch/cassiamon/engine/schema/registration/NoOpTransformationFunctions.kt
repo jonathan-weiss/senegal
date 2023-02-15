@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.pluginapi.ConceptNode
+import ch.cassiamon.pluginapi.model.ConceptNode
 import ch.cassiamon.pluginapi.registration.types.ConceptReferenceFacetTransformationFunction
 import ch.cassiamon.pluginapi.registration.types.IntegerNumberFacetTransformationFunction
 import ch.cassiamon.pluginapi.registration.types.TextFacetTransformationFunction

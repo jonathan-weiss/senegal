@@ -1,8 +1,8 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.engine.model.inputsource.ModelInputData
-import ch.cassiamon.engine.model.inputsource.ModelInputDataBuilder
-import ch.cassiamon.engine.model.types.ConceptIdentifier
+import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.types.Schema
@@ -16,6 +16,7 @@ object TestFixtures {
     val tableNameFacetName = FacetName.of("TableName")
     val tableFieldNameFacetName = FacetName.of("FieldName")
     val tableFieldTypeFacetName = FacetName.of("FieldType")
+    val tableFieldForeignKeyFacetName = FacetName.of("FieldForeignKey")
     val tableFieldLengthFacetName = FacetName.of("FieldLength")
     val tableNameAndFieldNameFacetName = FacetName.of("TableNameAndFieldName")
     val tableIndexNameFacetName = FacetName.of("TableIndexName")
@@ -38,21 +39,25 @@ object TestFixtures {
                 ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
             }
+            newChildConcept(conceptName = databaseTableFieldIndexConceptName, parentConceptName = databaseTableFieldConceptName) {
+                addTextFacet(tableIndexNameFacetName) { _, value -> value.uppercase() }
+            }
         }
 
         return registrationApi.provideSchema()
     }
 
     fun createModelInputData(): ModelInputData {
-        val modelInputDataBuilder = ModelInputDataBuilder()
+        val modelInputDataCollector = ModelInputDataCollector()
 
-        modelInputDataBuilder.attachConceptData(
+        modelInputDataCollector.attachConceptData(
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("PersonDbTable"),
+            parentConceptIdentifier = null,
             facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person")))
         )
 
-        return modelInputDataBuilder.provideModelInputData()
+        return modelInputDataCollector.provideModelInputData()
 
     }
 

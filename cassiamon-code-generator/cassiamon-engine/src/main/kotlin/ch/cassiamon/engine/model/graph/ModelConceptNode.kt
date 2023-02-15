@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.model.graph
 
-import ch.cassiamon.pluginapi.ConceptNode
+import ch.cassiamon.pluginapi.model.ConceptNode
 
 /**
  * A fully calculated concept node with facet values,

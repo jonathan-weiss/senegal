@@ -2,8 +2,10 @@ package ch.cassiamon.engine.model.graph
 
 import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputData
-import ch.cassiamon.engine.model.types.ConceptIdentifier
+import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.pluginapi.model.exceptions.ConceptCyclicLoopDetectedModelException
 
 object ModelGraphCreator {
 
@@ -24,11 +26,11 @@ object ModelGraphCreator {
                 val entry = unresolvedEntriesIterator.next()
                 println("Inspecting entry $entry")
                 if(allReferencesResolvable(entry, resolvedEntries.keys)) {
-                    println("Entry $entry is resolvable")
-                    resolvedEntries[entry.conceptIdentifier] = ModelFacetsCalculator.linkAndCalculateModelNode(entry, resolvedEntries)
+                    println("Entry is resolvable: $entry")
+                    resolvedEntries[entry.conceptIdentifier] = linkAndCalculateModelNode(entry, resolvedEntries)
                     unresolvedEntriesIterator.remove()
                 } else {
-                    println("Entry $entry is NOT resolvable")
+                    println("Entry is NOT resolvable: $entry")
                 }
             }
         } while (unresolvedEntries.size > 0 && hasNoCyclicDependencies(unresolvedEntries, unresolvedEntriesSizeBefore))
@@ -38,16 +40,30 @@ object ModelGraphCreator {
 
     private fun hasNoCyclicDependencies(unresolvedEntries: List<ModelConceptInputDataEntry>, sizeBefore: Int): Boolean {
         if(unresolvedEntries.size == sizeBefore) {
-            throw RuntimeException("Endless cycle dedected: $unresolvedEntries") // TODO use correct exception
+            throw ConceptCyclicLoopDetectedModelException(unresolvedEntries.toString())
         }
         return true
     }
 
     private fun allReferencesResolvable(entry: ModelConceptInputDataEntry, resolvedKeys: Set<ConceptIdentifier>): Boolean {
-        return true // TODO implement
+        if(entry.parentConceptIdentifier != null && !resolvedKeys.contains(entry.parentConceptIdentifier)) {
+            return false;
+        }
+
+        return entry.facetValues
+            .filter { it.value is ConceptReferenceFacetValue }
+            .map { Pair(it.key, it.value as ConceptReferenceFacetValue) }
+            .all { resolvedKeys.contains(it.second.conceptReference)}
     }
 
     private fun validateSingleEntry(schema: Schema, entry: ModelConceptInputDataEntry) {
         // TODO validate the entry for his own
     }
+
+    private fun linkAndCalculateModelNode(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>): ModelConceptNode {
+        // TODO link the concept childs and the references together
+        // TODO calculate all the facets
+        return ModelConceptNode()
+    }
+
 }
