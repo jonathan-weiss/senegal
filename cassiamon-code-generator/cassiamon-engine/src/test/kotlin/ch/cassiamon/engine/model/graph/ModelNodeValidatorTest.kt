@@ -25,6 +25,7 @@ class ModelNodeValidatorTest {
     private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetName
     private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetName
     private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetName
+    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetName
 
     @Test
     fun `validate a valid singe root concept entry`() {
@@ -182,6 +183,30 @@ class ModelNodeValidatorTest {
                 Pair(tableNameFacetName, TextFacetValue("foobar")), // this facet is not allowed in this concept
                 Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
                 Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            )
+        )
+
+        // act + assert
+        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+    }
+
+    @Test
+    fun `validate a concept with a value for calculated facet`() {
+        // arrange
+        val schema = TestFixtures.createTestFixtureSchema()
+        val modelInputDataCollector = ModelInputDataCollector()
+
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+            facetValues = arrayOf(
+                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+                Pair(tableNameAndFieldNameFacetName, TextFacetValue("manual-data")), //wrong as a calculated facet
             )
         )
 
