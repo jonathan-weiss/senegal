@@ -1,7 +1,6 @@
 package ch.cassiamon.engine.model.graph
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
@@ -27,9 +26,8 @@ class ModelGraphCreatorTest {
     fun `calculate a simple graph`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
-
-
         val modelInputDataCollector = ModelInputDataCollector()
+
         val personTableId = ConceptIdentifier.of("Person")
         modelInputDataCollector.attachConceptData(
             conceptName = databaseTableConceptName,
@@ -49,10 +47,9 @@ class ModelGraphCreatorTest {
     }
 
     @Test
-    fun `calculate a graph with hierarchical and reference dependencies`() {
+    fun `calculate a graph with valid hierarchical and reference dependencies`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
-
         val modelInputDataCollector = ModelInputDataCollector()
 
         val personTableId = ConceptIdentifier.of("Person")
@@ -135,5 +132,65 @@ class ModelGraphCreatorTest {
         assertNotNull(modelGraph)
     }
 
+
+    @Test
+    fun `calculate a graph with invalid cyclic hierarchical dependency`() {
+        // arrange
+        val schema = TestFixtures.createTestFixtureSchema()
+        val modelInputDataCollector = ModelInputDataCollector()
+
+        val addressTableId = ConceptIdentifier.of("Address")
+
+        // ADDRESS table
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = addressTableId,
+            parentConceptIdentifier = null,
+            facetValues = arrayOf(
+                Pair(tableNameFacetName, TextFacetValue("Address")),
+            )
+        )
+
+        // ADDRESS fields
+        val addressStreetFieldId = ConceptIdentifier.of("Address_street")
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = addressStreetFieldId,
+            parentConceptIdentifier = addressTableId,
+            facetValues = arrayOf(
+                Pair(tableFieldNameFacetName, TextFacetValue("street")),
+                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            )
+        )
+
+
+        val addressToAddressForeignKeyFieldId = ConceptIdentifier.of("Address_fk")
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = addressToAddressForeignKeyFieldId,
+            parentConceptIdentifier = addressTableId,
+            facetValues = arrayOf(
+                Pair(tableFieldNameFacetName, TextFacetValue("fkAddressId")),
+                Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
+            )
+        )
+
+        modelInputDataCollector.attachConceptData(
+            conceptName = databaseTableFieldForeignKeyConceptName,
+            conceptIdentifier = ConceptIdentifier.of("Address_to_Address_fk"),
+            parentConceptIdentifier = addressToAddressForeignKeyFieldId,
+            facetValues = arrayOf(
+                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(addressTableId)),
+            )
+        )
+
+        // act
+        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+
+        // assert
+        assertNotNull(modelGraph)
+    }
 
 }

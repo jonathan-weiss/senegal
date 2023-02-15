@@ -57,9 +57,21 @@ object ModelGraphCreator {
     }
 
     private fun linkAndCalculateModelNode(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>): ModelConceptNode {
+        validateConceptIds(entry, otherResolvedEntries)
         // TODO link the concept childs and the references together
         // TODO calculate all the facets
         return ModelConceptNode()
+    }
+
+    private fun validateConceptIds(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>) {
+
+        // TODO check for duplicate
+        otherResolvedEntries.containsKey(entry.conceptIdentifier)
+
+
+        // TODO validate all references/ids to be the correct type
+
+
     }
 
 }
