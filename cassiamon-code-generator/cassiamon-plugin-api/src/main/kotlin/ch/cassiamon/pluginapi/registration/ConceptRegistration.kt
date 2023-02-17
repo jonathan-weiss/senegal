@@ -5,6 +5,7 @@ import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.registration.types.*
 
 interface ConceptRegistration {
+    fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))
 
     fun addTextFacet(
         facetName: FacetName,

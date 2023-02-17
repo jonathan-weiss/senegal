@@ -59,16 +59,17 @@ class RegistrationApiTest {
         registrationApi.configure {
             newRootConcept(conceptName = databaseTableConceptName) {
                 addTextFacet(facetName = tableNameFacetName) { _, value -> value.uppercase() }
-            }
-            newChildConcept(conceptName = databaseTableFieldConceptName, parentConceptName = databaseTableConceptName) {
-                addTextFacet(tableFieldNameFacetName) { _, value -> value.uppercase() }
-                addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                addIntegerNumberFacet(tableFieldLengthFacetName, setOf(tableFieldTypeFacetName))
-                addCalculatedTextFacet(
-                    facetName = tableNameAndFieldNameFacetName,
-                    dependingOnFacets = setOf(tableFieldNameFacetName)
-                ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
+                newChildConcept(conceptName = databaseTableFieldConceptName) {
+                    addTextFacet(tableFieldNameFacetName) { _, value -> value.uppercase() }
+                    addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                    addIntegerNumberFacet(tableFieldLengthFacetName, setOf(tableFieldTypeFacetName))
+                    addCalculatedTextFacet(
+                        facetName = tableNameAndFieldNameFacetName,
+                        dependingOnFacets = setOf(tableFieldNameFacetName)
+                    ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+
+                }
             }
         }
 
@@ -211,16 +212,18 @@ class RegistrationApiTest {
             newRootConcept(conceptName = databaseTableConceptName)
             {
                 addTextFacet(facetName = tableNameFacetName)
-            }
-            newChildConcept(conceptName = databaseTableFieldConceptName,
-                parentConceptName = databaseTableConceptName)
-            {
-                addTextFacet(facetName = tableFieldNameFacetName)
-            }
-            newChildConcept(conceptName = databaseTableFieldIndexConceptName,
-                parentConceptName = databaseTableFieldConceptName)
-            {
-                addTextFacet(facetName = tableIndexNameFacetName)
+
+                newChildConcept(conceptName = databaseTableFieldConceptName)
+                {
+                    addTextFacet(facetName = tableFieldNameFacetName)
+
+                    newChildConcept(conceptName = databaseTableFieldIndexConceptName)
+                    {
+                        addTextFacet(facetName = tableIndexNameFacetName)
+                    }
+
+                }
+
             }
         }
         val schema = registrationApi.provideSchema()
@@ -237,30 +240,32 @@ class RegistrationApiTest {
     }
 
     @Test
-    fun `test concept with unknown concept as parent throws exception`() {
+    fun `test root concept inside a child concept throws exception`() {
         // arrange
         val registrationApi = RegistrationApiDefaultImpl()
 
         // assert
-        val thrown: UnknownParentConceptFoundSchemaException = assertThrows(UnknownParentConceptFoundSchemaException::class.java) {
+        val thrown: CircularConceptHierarchieFoundSchemaException = assertThrows(CircularConceptHierarchieFoundSchemaException::class.java) {
 
             // act
             registrationApi.configure {
                 newRootConcept(databaseTableConceptName) {
                     addTextFacet(facetName = tableFieldNameFacetName)
-                }
-                newChildConcept(
-                    conceptName = databaseTableFieldConceptName,
-                    parentConceptName = databaseTableFieldIndexConceptName
-                )
-                {
-                    addTextFacet(facetName = tableFieldNameFacetName)
+                    newChildConcept(conceptName = databaseTableFieldConceptName)
+                    {
+                        addTextFacet(facetName = tableFieldNameFacetName)
+
+                        newRootConcept(databaseTableConceptName) {
+
+                        }
+                    }
+
                 }
             }
         }
 
-        assertEquals(databaseTableFieldConceptName, thrown.concept)
-        assertEquals(databaseTableFieldIndexConceptName, thrown.parentConcept)
+        assertEquals(databaseTableConceptName, thrown.concept)
+        assertEquals(databaseTableFieldConceptName, thrown.parentConcept)
     }
 
     @Test
@@ -282,30 +287,6 @@ class RegistrationApiTest {
     }
 
     @Test
-    fun `test concept with itself as parent throws exception`() {
-        // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
-
-        // assert
-        val thrown: CircularConceptHierarchieFoundSchemaException = assertThrows(CircularConceptHierarchieFoundSchemaException::class.java) {
-
-            // act
-            registrationApi.configure {
-                newChildConcept(
-                    conceptName = databaseTableFieldConceptName,
-                    parentConceptName = databaseTableFieldConceptName
-                )
-                {
-                    addTextFacet(facetName = tableFieldNameFacetName)
-                }
-            }
-        }
-
-        assertEquals(databaseTableFieldConceptName, thrown.concept)
-        assertEquals(databaseTableFieldConceptName, thrown.parentConcept)
-    }
-
-    @Test
     fun `test multiple concepts in cyclic hierarchy throws exception`() {
         // arrange
         val registrationApi = RegistrationApiDefaultImpl()
@@ -318,16 +299,15 @@ class RegistrationApiTest {
                 newRootConcept(conceptName = databaseTableConceptName)
                 {
                     addTextFacet(facetName = tableNameFacetName)
-                }
-                newChildConcept(conceptName = databaseTableFieldConceptName,
-                    parentConceptName = databaseTableConceptName)
-                {
-                    addTextFacet(facetName = tableFieldNameFacetName)
-                }
-                newChildConcept(conceptName = databaseTableConceptName,
-                    parentConceptName = databaseTableFieldConceptName)
-                {
-                    addTextFacet(facetName = tableIndexNameFacetName)
+                    newChildConcept(conceptName = databaseTableFieldConceptName)
+                    {
+                        addTextFacet(facetName = tableFieldNameFacetName)
+
+                        newChildConcept(conceptName = databaseTableConceptName)
+                        {
+                            addTextFacet(facetName = tableIndexNameFacetName)
+                        }
+                    }
                 }
             }
         }
