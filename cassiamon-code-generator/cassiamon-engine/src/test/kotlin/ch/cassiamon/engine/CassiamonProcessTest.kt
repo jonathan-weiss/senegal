@@ -1,6 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.graph.ModelGraphCreator
+import ch.cassiamon.engine.model.graph.ModelCalculator
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.template.TemplateNodesProviderDefaultImpl
 import org.junit.jupiter.api.Test
@@ -23,7 +23,7 @@ class CassiamonProcessTest {
         println("Templates: $templates")
 
         val modelInputData = TestFixtures.createModelInputData()
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
+        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputData)
 
         val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 

@@ -1,6 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.graph.ModelGraphCreator
+import ch.cassiamon.engine.model.graph.ModelCalculator
 import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
@@ -53,7 +53,7 @@ class CassiamonProcess {
 
 
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
+        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputData)
 
         val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 

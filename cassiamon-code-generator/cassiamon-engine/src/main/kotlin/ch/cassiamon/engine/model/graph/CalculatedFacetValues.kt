@@ -8,7 +8,7 @@ import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.FacetValues
 
-class FacetValuesImpl(val facetValuesMap: Map<FacetName, FacetValue>): FacetValues {
+class CalculatedFacetValues(val facetValuesMap: Map<FacetName, FacetValue>): FacetValues {
 
     override fun allFacetNames(): Set<FacetName> {
         return facetValuesMap.keys

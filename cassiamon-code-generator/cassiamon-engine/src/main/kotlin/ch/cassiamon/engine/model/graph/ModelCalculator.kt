@@ -3,19 +3,17 @@ package ch.cassiamon.engine.model.graph
 import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputData
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
-import ch.cassiamon.engine.schema.types.CalculatedFacet
 import ch.cassiamon.engine.schema.types.Facet
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.model.exceptions.ConceptCyclicLoopDetectedModelException
-import ch.cassiamon.pluginapi.registration.types.TextFacetCalculationFunction
 
-object ModelGraphCreator {
+object ModelCalculator {
 
-    fun calculateGraph(schema: Schema, modelInputData: ModelInputData): ModelGraph {
+    fun calculateGraph(schema: Schema, modelInputData: ModelInputData): CalculatedModel {
         modelInputData.entries.forEach { ModelNodeValidator.validateSingleEntry(schema, it) }
 
-        val resolvedEntries: MutableMap<ConceptIdentifier, ModelConceptNode> = mutableMapOf()
+        val resolvedEntries: MutableMap<ConceptIdentifier, CalculatedModelConceptNode> = mutableMapOf()
         val unresolvedEntries: MutableList<ModelConceptInputDataEntry> = modelInputData.entries.toMutableList()
 
 
@@ -38,7 +36,7 @@ object ModelGraphCreator {
             }
         } while (unresolvedEntries.size > 0 && hasNoCyclicDependencies(unresolvedEntries, unresolvedEntriesSizeBefore))
 
-        return ModelGraph(resolvedEntries)
+        return CalculatedModel(resolvedEntries)
     }
 
     private fun hasNoCyclicDependencies(unresolvedEntries: List<ModelConceptInputDataEntry>, sizeBefore: Int): Boolean {
@@ -62,19 +60,19 @@ object ModelGraphCreator {
     private fun calculateModelNode(
         schema: Schema,
         entry: ModelConceptInputDataEntry,
-        otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>
-    ): ModelConceptNode {
+        otherResolvedEntries: Map<ConceptIdentifier, CalculatedModelConceptNode>
+    ): CalculatedModelConceptNode {
 
         val schemaConcept = schema.conceptByConceptName(entry.conceptName)
 
-        val facetValues = FacetValuesImpl(entry.facetValuesMap)
+        val facetValues = CalculatedFacetValues(entry.facetValuesMap)
 
         schemaConcept.facets
             .map { calculatedFacet -> calc(calculatedFacet, facetValues) }
 
 
         // TODO calculate all the facets
-        return ModelConceptNode(
+        return CalculatedModelConceptNode(
             conceptName = entry.conceptName,
             conceptIdentifier = entry.conceptIdentifier,
             parentConceptIdentifier = entry.parentConceptIdentifier,
@@ -82,7 +80,7 @@ object ModelGraphCreator {
         )
     }
 
-    private fun calc(schemaFacet: Facet, facetValues: FacetValuesImpl, ) {
+    private fun calc(schemaFacet: Facet, facetValues: CalculatedFacetValues, ) {
         // schemaFacet.facetCalculationFunction
     }
 }

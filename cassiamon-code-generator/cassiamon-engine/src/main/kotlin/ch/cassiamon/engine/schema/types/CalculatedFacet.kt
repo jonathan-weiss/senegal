@@ -2,17 +2,19 @@ package ch.cassiamon.engine.schema.types
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.registration.types.*
 
-open class CalculatedFacet constructor(
+abstract class CalculatedFacet(
     conceptName: ConceptName,
     facetName: FacetName,
-    facetType: FacetType,
     facetDependencies: Set<FacetName>,
-    val facetCalculationFunction: FacetCalculationFunction<*>,
-) : Facet(
+): Facet(
     conceptName = conceptName,
     facetName = facetName,
-    facetType = facetType,
     facetDependencies = facetDependencies,
-)
+) {
+    override val isCalculatedFacet: Boolean
+        get() = true
+    override val isManualFacet: Boolean
+        get() = !isCalculatedFacet
+}
+

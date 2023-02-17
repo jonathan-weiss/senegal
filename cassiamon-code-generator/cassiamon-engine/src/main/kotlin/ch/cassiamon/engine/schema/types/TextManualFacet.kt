@@ -2,21 +2,19 @@ package ch.cassiamon.engine.schema.types
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.registration.types.*
 
-class ConceptReferenceCalculatedFacet(
+class TextManualFacet(
     conceptName: ConceptName,
     facetName: FacetName,
     facetDependencies: Set<FacetName>,
-    facetCalculationFunction: ConceptReferenceFacetCalculationFunction,
-    val referencedConceptName: ConceptName,
-) : CalculatedFacet(
+    facetTransformationFunction: TextFacetTransformationFunction,
+) : ManualFacet(
     conceptName = conceptName,
     facetName = facetName,
     facetDependencies = facetDependencies,
 ) {
     override val facetType: FacetType
-        get() = FacetType.CONCEPT_REFERENCE
+        get() = FacetType.TEXT
 }
 

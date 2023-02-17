@@ -44,7 +44,7 @@ object ModelNodeValidator {
                     reason = "Facet with facet name '${entryFacetName.name}' is known by the schema but " +
                             "a calculated facet. Data input is only allowed for manual facets." +
                             "Manual facets are: " +
-                            "[${schemaConcept.facets.filter { it.isManualFacet() }.joinToString { it.facetName.name }}]"
+                            "[${schemaConcept.facets.filter { it.isManualFacet }.joinToString { it.facetName.name }}]"
                 )
             }
         }

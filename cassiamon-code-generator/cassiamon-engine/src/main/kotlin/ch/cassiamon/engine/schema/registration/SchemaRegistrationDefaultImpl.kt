@@ -40,10 +40,9 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         transformationFunction: TextFacetTransformationFunction?
     ) {
         val concept = currentConceptInCreation()
-        val facet = ManualFacet(
+        val facet = TextManualFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.TEXT,
             facetDependencies = dependingOnFacets,
             facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpTextTransformationFunction
         )
@@ -56,10 +55,9 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         calculationFunction: TextFacetCalculationFunction
     ) {
         val concept = currentConceptInCreation()
-        val facet = CalculatedFacet(
+        val facet = TextCalculatedFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.TEXT,
             facetDependencies = dependingOnFacets,
             facetCalculationFunction = calculationFunction
         )
@@ -72,10 +70,9 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         transformationFunction: IntegerNumberFacetTransformationFunction?
     ) {
         val concept = currentConceptInCreation()
-        val facet = ManualFacet(
+        val facet = IntegerNumberManualFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.INTEGER_NUMBER,
             facetDependencies = dependingOnFacets,
             facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpIntegerNumberTransformationFunction
         )
@@ -88,10 +85,9 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         calculationFunction: IntegerNumberFacetCalculationFunction
     ) {
         val concept = currentConceptInCreation()
-        val facet = CalculatedFacet(
+        val facet = IntegerNumberCalculatedFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.INTEGER_NUMBER,
             facetDependencies = dependingOnFacets,
             facetCalculationFunction = calculationFunction
         )
@@ -107,7 +103,6 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         val facet = ConceptReferenceManualFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.CONCEPT_REFERENCE,
             facetDependencies = dependingOnFacets,
             facetTransformationFunction = NoOpTransformationFunctions.noOpConceptReferenceTransformationFunction,
             referencedConceptName = referencedConcept
@@ -125,7 +120,6 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         val facet = ConceptReferenceCalculatedFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetType = FacetType.CONCEPT_REFERENCE,
             facetDependencies = dependingOnFacets,
             facetCalculationFunction = calculationFunction,
             referencedConceptName = referencedConcept

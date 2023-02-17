@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.template
 
-import ch.cassiamon.engine.model.graph.ModelConceptNode
-import ch.cassiamon.engine.model.graph.ModelGraph
+import ch.cassiamon.engine.model.graph.CalculatedModelConceptNode
+import ch.cassiamon.engine.model.graph.CalculatedModel
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
@@ -12,7 +12,7 @@ import ch.cassiamon.pluginapi.template.TemplateNodesProvider
 import ch.cassiamon.pluginapi.template.exceptions.TemplateException
 import java.nio.file.Path
 
-class TemplateNodesProviderDefaultImpl(modelGraph: ModelGraph) : TemplateNodesProvider {
+class TemplateNodesProviderDefaultImpl(calculatedModel: CalculatedModel) : TemplateNodesProvider {
 
     private val nodePool: Map<ConceptIdentifier, MutableTemplateNode>
     private val conceptIdentifiersByParentConceptIdentifier: Map<ConceptIdentifier, List<ConceptIdentifier>>
@@ -22,9 +22,9 @@ class TemplateNodesProviderDefaultImpl(modelGraph: ModelGraph) : TemplateNodesPr
     private val templateNodesByConcept: Map<ConceptName, TemplateNodeBag>
 
     init {
-        nodePool = createNodePool(modelGraph)
-        conceptIdentifiersByParentConceptIdentifier = createConceptIdentifierByParent(modelGraph)
-        linkTemplateNodes(modelGraph)
+        nodePool = createNodePool(calculatedModel)
+        conceptIdentifiersByParentConceptIdentifier = createConceptIdentifierByParent(calculatedModel)
+        linkTemplateNodes(calculatedModel)
 
         allTemplateNodes = TemplateNodeBag(nodePool.values.toList())
         templateNodesByConcept = allTemplateNodes.nodes
@@ -51,16 +51,16 @@ class TemplateNodesProviderDefaultImpl(modelGraph: ModelGraph) : TemplateNodesPr
             .toSet()
     }
 
-    private fun createNodePool(modelGraph: ModelGraph): Map<ConceptIdentifier, MutableTemplateNode> {
-        val modelConceptNodes = modelGraph.resolvedEntries.values
+    private fun createNodePool(calculatedModel: CalculatedModel): Map<ConceptIdentifier, MutableTemplateNode> {
+        val modelConceptNodes = calculatedModel.calculatedEntries.values
 
         return modelConceptNodes.associateBy(
             { modelConceptNode -> modelConceptNode.conceptIdentifier},
             { modelConceptNode -> createUnlinkedTemplateNode(modelConceptNode)},
         ).toMap()
     }
-    private fun createConceptIdentifierByParent(modelGraph: ModelGraph): Map<ConceptIdentifier, List<ConceptIdentifier>> {
-        val modelConceptNodes = modelGraph.resolvedEntries.values
+    private fun createConceptIdentifierByParent(calculatedModel: CalculatedModel): Map<ConceptIdentifier, List<ConceptIdentifier>> {
+        val modelConceptNodes = calculatedModel.calculatedEntries.values
 
         return modelConceptNodes
             .filter { modelConceptNode -> modelConceptNode.parentConceptIdentifier != null }
@@ -70,33 +70,33 @@ class TemplateNodesProviderDefaultImpl(modelGraph: ModelGraph) : TemplateNodesPr
             )
     }
 
-    private fun linkTemplateNodes(modelGraph: ModelGraph) {
-        val modelConceptNodes = modelGraph.resolvedEntries.values
+    private fun linkTemplateNodes(calculatedModel: CalculatedModel) {
+        val modelConceptNodes = calculatedModel.calculatedEntries.values
 
         modelConceptNodes.forEach { modelConceptNode ->
             linkTemplateNode(templateModelFromNodePool(modelConceptNode.conceptIdentifier), modelConceptNode)
         }
     }
 
-    private fun createUnlinkedTemplateNode(modelConceptNode: ModelConceptNode): MutableTemplateNode {
+    private fun createUnlinkedTemplateNode(calculatedModelConceptNode: CalculatedModelConceptNode): MutableTemplateNode {
         return MutableTemplateNode(
-            conceptName = modelConceptNode.conceptName,
-            conceptIdentifier = modelConceptNode.conceptIdentifier,
-            facetValues = MutableTemplateNodeFacetValues(modelConceptNode.facetValues),
+            conceptName = calculatedModelConceptNode.conceptName,
+            conceptIdentifier = calculatedModelConceptNode.conceptIdentifier,
+            facetValues = MutableTemplateNodeFacetValues(calculatedModelConceptNode.facetValues),
             )
     }
 
-    private fun linkTemplateNode(templateNode: MutableTemplateNode, modelConceptNode: ModelConceptNode) {
-        val parentTemplateNode: MutableTemplateNode? = modelConceptNode.parentConceptIdentifier?.let { nodePool[it] }
+    private fun linkTemplateNode(templateNode: MutableTemplateNode, calculatedModelConceptNode: CalculatedModelConceptNode) {
+        val parentTemplateNode: MutableTemplateNode? = calculatedModelConceptNode.parentConceptIdentifier?.let { nodePool[it] }
 
-        val childrenConceptIdentifiers = conceptIdentifiersByParentConceptIdentifier[modelConceptNode.conceptIdentifier] ?: emptyList()
+        val childrenConceptIdentifiers = conceptIdentifiersByParentConceptIdentifier[calculatedModelConceptNode.conceptIdentifier] ?: emptyList()
         val childrenTemplateNodes = childrenConceptIdentifiers
                 .map { templateModelFromNodePool(it) }
                 .groupBy { it.conceptName }
 
         templateNode.assignHierarchicalTemplateNodes(parentTemplateNode, childrenTemplateNodes)
 
-        val referenceTemplateNodeFacetValues = modelConceptNode.facetValues.facetValuesMap
+        val referenceTemplateNodeFacetValues = calculatedModelConceptNode.facetValues.facetValuesMap
             .filter { it.value is ConceptReferenceFacetValue }
             .map { Pair(it.key, it.value as ConceptReferenceFacetValue) }
             .associate { Pair(it.first, templateModelFromNodePool(it.second.conceptReference)) }

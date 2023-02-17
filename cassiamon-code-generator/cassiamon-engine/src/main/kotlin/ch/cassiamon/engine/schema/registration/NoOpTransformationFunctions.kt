@@ -5,6 +5,7 @@ import ch.cassiamon.pluginapi.registration.types.ConceptReferenceFacetTransforma
 import ch.cassiamon.pluginapi.registration.types.IntegerNumberFacetTransformationFunction
 import ch.cassiamon.pluginapi.registration.types.TextFacetTransformationFunction
 
+// TODO Move these functions to its interface
 object NoOpTransformationFunctions {
 
     val noOpTextTransformationFunction: TextFacetTransformationFunction = TextFacetTransformationFunction { _: ConceptNode, value: String -> value }

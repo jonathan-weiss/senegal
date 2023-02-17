@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-class ModelGraphCreatorTest {
+class CalculatedModelCreatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
@@ -40,7 +40,7 @@ class ModelGraphCreatorTest {
 
 
         // act
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)
@@ -126,7 +126,7 @@ class ModelGraphCreatorTest {
         )
 
         // act
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)
@@ -187,7 +187,7 @@ class ModelGraphCreatorTest {
         )
 
         // act
-        val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)

@@ -15,7 +15,7 @@ interface Concept {
 
     fun hasManualFacet(facetName: FacetName): Boolean {
         return facets
-            .filter { it.isManualFacet() }
+            .filter { it.isManualFacet }
             .firstOrNull { it.facetName == facetName } != null
     }
 }
