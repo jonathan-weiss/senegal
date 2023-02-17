@@ -9,6 +9,7 @@ import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 class CassiamonProcess {
 
@@ -23,8 +24,10 @@ class CassiamonProcess {
 
         // resolve the raw concepts and facets to a resolved schema
         val schema = registrationApi.provideSchema()
+        val templates = registrationApi.provideTemplates()
 
         println("Schema: $schema")
+        println("Templates: $templates")
 
 
 
@@ -52,9 +55,14 @@ class CassiamonProcess {
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
         val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
 
-        // TODO transform to TemplateNodes
-        // TODO extract TemplateTargets
+        // TODO transform to TemplateNodes (by implementing interface
+
         // TODO write Templates
+        templates.forEach { templateRenderer: TemplateRenderer ->
+            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
+                templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+            }
+        }
 
 
     }

@@ -12,5 +12,12 @@ fun main() {
     val registrationApi = RegistrationApiDefaultImpl()
     registrars.forEach { it.configure(registrationApi) }
 
+    val schema = registrationApi.provideSchema()
+    val templates = registrationApi.provideTemplates()
+
+    println("Schema: $schema")
+    println("Templates: $templates")
+
+
 
 }
