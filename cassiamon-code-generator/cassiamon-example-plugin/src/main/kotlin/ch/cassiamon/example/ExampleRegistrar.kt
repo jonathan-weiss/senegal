@@ -13,10 +13,20 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
         registrationApi.configure {
             newRootConcept(ConceptName.of("TestConcept")) {
                 // and more stuff
-                newConceptReferenceFacet(
+                addConceptReferenceFacet(
                     FacetName.of("TestRef"),
-                    ConceptName.of("TargetTestConcept")) {
-                    addFacetFunction { node, targetNode ->  targetNode }
+                    ConceptName.of("TargetTestConcept"))
+
+                addIntegerNumberFacet(
+                    FacetName.of("TestInt"),
+                    setOf(FacetName.of("TestRef"))) {
+                        conceptNode, value -> value + 42 // completely stupid
+                }
+
+                addCalculatedTextFacet(FacetName.of("TestCalcString"),
+                    setOf(FacetName.of("TestInt"))) { conceptNode ->
+                        val testIntValue = conceptNode.facetValues.asInt(FacetName.of("TestInt"))
+                        return@addCalculatedTextFacet "# is $testIntValue"
                 }
             }
         }

@@ -1,9 +1,5 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.inputsource.ModelInputData
-import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName

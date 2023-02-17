@@ -7,7 +7,6 @@ import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
