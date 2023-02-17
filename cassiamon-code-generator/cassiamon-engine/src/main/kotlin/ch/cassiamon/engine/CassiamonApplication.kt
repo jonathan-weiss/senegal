@@ -1,9 +1,8 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.schema.finder.RegistrarFinder
+import ch.cassiamon.engine.model.graph.ModelGraph
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
-import ch.cassiamon.engine.schema.registration.TemplateNodesProviderDefaultImpl
+import ch.cassiamon.engine.template.TemplateNodesProviderDefaultImpl
 
 
 fun main() {
@@ -20,7 +19,8 @@ fun main() {
     println("Schema: $schema")
     println("Templates: $templates")
 
-    val templateNodesProvider = TemplateNodesProviderDefaultImpl()
+    val modelGraph = ModelGraph(emptyMap())
+    val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 
     val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
 

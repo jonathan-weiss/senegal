@@ -21,7 +21,7 @@ class ModelInputDataCollector {
             conceptName = conceptName,
             conceptIdentifier = conceptIdentifier,
             parentConceptIdentifier = parentConceptIdentifier,
-            facetValues = facetValues.toMap()
+            facetValuesMap = facetValues.toMap()
         )
     }
 

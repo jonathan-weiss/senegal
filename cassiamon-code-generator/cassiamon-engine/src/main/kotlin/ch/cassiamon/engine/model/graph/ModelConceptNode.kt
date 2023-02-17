@@ -9,11 +9,9 @@ import ch.cassiamon.pluginapi.model.FacetValues
  * A fully calculated concept node with facet values,
  * connected to other ModelConceptNode instances.
  */
-class ModelConceptNode: ConceptNode {
-    override val conceptName: ConceptName
-        get() = TODO("Not yet implemented")
-    override val conceptIdentifier: ConceptIdentifier
-        get() = TODO("Not yet implemented")
-    override val facetValues: FacetValues
-        get() = TODO("Not yet implemented")
-}
+class ModelConceptNode(
+    override val conceptName: ConceptName,
+    override val conceptIdentifier: ConceptIdentifier,
+    val parentConceptIdentifier: ConceptIdentifier?,
+    override val facetValues: FacetValuesImpl
+): ConceptNode

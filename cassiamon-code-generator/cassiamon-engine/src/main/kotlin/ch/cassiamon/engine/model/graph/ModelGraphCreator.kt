@@ -50,17 +50,25 @@ object ModelGraphCreator {
             return false;
         }
 
-        return entry.facetValues
+        return entry.facetValuesMap
             .filter { it.value is ConceptReferenceFacetValue }
             .map { Pair(it.key, it.value as ConceptReferenceFacetValue) }
             .all { resolvedKeys.contains(it.second.conceptReference)}
     }
 
     private fun linkAndCalculateModelNode(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>): ModelConceptNode {
-        validateConceptIds(entry, otherResolvedEntries)
-        // TODO link the concept childs and the references together
+        validateConceptIds(entry, otherResolvedEntries) // TODO -> no, this is done in the template
+        // TODO link the concept childs and the references together -> no, this is done in the template
+
+        val facetValues = FacetValuesImpl(entry.facetValuesMap)
+
         // TODO calculate all the facets
-        return ModelConceptNode()
+        return ModelConceptNode(
+            conceptName = entry.conceptName,
+            conceptIdentifier = entry.conceptIdentifier,
+            parentConceptIdentifier = entry.parentConceptIdentifier,
+            facetValues = facetValues
+        )
     }
 
     private fun validateConceptIds(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>) {

@@ -6,7 +6,7 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.registration.TemplateNodesProviderDefaultImpl
+import ch.cassiamon.engine.template.TemplateNodesProviderDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -55,7 +55,7 @@ class CassiamonProcess {
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
         val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
 
-        val templateNodesProvider = TemplateNodesProviderDefaultImpl()
+        val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 
         // TODO transform to TemplateNodes (by implementing interface
 

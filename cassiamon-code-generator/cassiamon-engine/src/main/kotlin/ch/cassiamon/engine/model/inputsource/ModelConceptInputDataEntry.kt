@@ -9,5 +9,5 @@ data class ModelConceptInputDataEntry(
     val conceptName: ConceptName,
     val conceptIdentifier: ConceptIdentifier,
     val parentConceptIdentifier: ConceptIdentifier?,
-    val facetValues: Map<FacetName, FacetValue>
+    val facetValuesMap: Map<FacetName, FacetValue>
 )

@@ -9,8 +9,8 @@ interface TemplateNode {
     val facetValues: TemplateNodeFacetValues
 
     fun parent(): TemplateNode?
-    fun allChildren(): TemplateNodeBag
-    fun children(conceptName: ConceptName): TemplateNodeBag
+    fun allChildren(): List<TemplateNode>
+    fun children(conceptName: ConceptName): List<TemplateNode>
 
     val asTemplateNodeBag: TemplateNodeBag
         get() = TemplateNodeBag(this)
