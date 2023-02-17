@@ -28,7 +28,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test with single concept`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // act
         registrationApi.configureSchema {
@@ -53,7 +53,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test with nested concept`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // act
         registrationApi.configureSchema {
@@ -97,7 +97,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with duplicate facet names should throw an exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
 
         // assert
@@ -120,7 +120,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with unknown facet dependencies should throw an exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
 
         // assert
@@ -147,7 +147,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with cyclic dependent facets should throw an exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
 
         // assert
@@ -169,7 +169,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with multiple dependent facets`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
 
         // act
@@ -205,7 +205,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test multiple concepts in hierarchie`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // act
         registrationApi.configureSchema {
@@ -242,7 +242,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test root concept inside a child concept throws exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // assert
         val thrown: CircularConceptHierarchieFoundSchemaException = assertThrows(CircularConceptHierarchieFoundSchemaException::class.java) {
@@ -271,7 +271,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with duplicate concept name throws exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {
@@ -289,7 +289,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test multiple concepts in cyclic hierarchy throws exception`() {
         // arrange
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {

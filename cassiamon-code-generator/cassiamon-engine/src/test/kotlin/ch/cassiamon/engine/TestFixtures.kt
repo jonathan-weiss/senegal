@@ -1,6 +1,7 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.schema.registration.SchemaRegistrationApiDefaultImpl
+import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
@@ -19,7 +20,7 @@ object TestFixtures {
     val tableIndexNameFacetName = FacetName.of("TableIndexName")
 
     fun createTestFixtureSchema(): Schema {
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
 
         // act
         registrationApi.configureSchema {

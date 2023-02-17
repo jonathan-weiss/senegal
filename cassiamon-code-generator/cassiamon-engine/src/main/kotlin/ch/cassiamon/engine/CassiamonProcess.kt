@@ -5,7 +5,8 @@ import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
-import ch.cassiamon.engine.schema.registration.SchemaRegistrationApiDefaultImpl
+import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 
@@ -17,7 +18,7 @@ class CassiamonProcess {
 
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrars = RegistrarFinder.findAllRegistrars()
-        val registrationApi = SchemaRegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl()
         registrars.forEach { it.configure(registrationApi) }
 
         // resolve the raw concepts and facets to a resolved schema
