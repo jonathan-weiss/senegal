@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 
-class RegistrationApiTest {
+class SchemaRegistrationApiTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
@@ -28,10 +28,10 @@ class RegistrationApiTest {
     @Test
     fun `test with single concept`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // act
-        registrationApi.configure {
+        registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
                 addTextFacet(facetName = tableNameFacetName)
             }
@@ -53,10 +53,10 @@ class RegistrationApiTest {
     @Test
     fun `test with nested concept`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // act
-        registrationApi.configure {
+        registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
                 addTextFacet(facetName = tableNameFacetName) { _, value -> value.uppercase() }
 
@@ -97,14 +97,14 @@ class RegistrationApiTest {
     @Test
     fun `test concept with duplicate facet names should throw an exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
 
         // assert
         val thrown: DuplicateFacetNameFoundSchemaException = assertThrows(DuplicateFacetNameFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName) {
                     addTextFacet(facetName = tableNameFacetName)
                     addTextFacet(facetName = tableNameFacetName)
@@ -120,14 +120,14 @@ class RegistrationApiTest {
     @Test
     fun `test concept with unknown facet dependencies should throw an exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
 
         // assert
         val thrown: FacetDependencyNotFoundSchemaException = assertThrows(FacetDependencyNotFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableFieldConceptName) {
                     addTextFacet(facetName = tableFieldNameFacetName)
                     addTextFacet(
@@ -147,14 +147,14 @@ class RegistrationApiTest {
     @Test
     fun `test concept with cyclic dependent facets should throw an exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
 
         // assert
         val thrown: FacetDependencyNotFoundSchemaException = assertThrows(FacetDependencyNotFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableFieldConceptName) {
                     addTextFacet(facetName = tableFieldNameFacetName, dependingOnFacets = setOf(tableFieldTypeFacetName))
                     addTextFacet(facetName = tableFieldTypeFacetName, dependingOnFacets = setOf(tableFieldNameFacetName))
@@ -169,11 +169,11 @@ class RegistrationApiTest {
     @Test
     fun `test concept with multiple dependent facets`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
 
         // act
-        registrationApi.configure {
+        registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableFieldConceptName) {
                 addTextFacet(facetName = tableFieldNameFacetName)
                 addTextFacet(facetName = tableFieldTypeFacetName, dependingOnFacets = setOf(tableFieldNameFacetName))
@@ -205,10 +205,10 @@ class RegistrationApiTest {
     @Test
     fun `test multiple concepts in hierarchie`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // act
-        registrationApi.configure {
+        registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName)
             {
                 addTextFacet(facetName = tableNameFacetName)
@@ -242,13 +242,13 @@ class RegistrationApiTest {
     @Test
     fun `test root concept inside a child concept throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // assert
         val thrown: CircularConceptHierarchieFoundSchemaException = assertThrows(CircularConceptHierarchieFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(databaseTableConceptName) {
                     addTextFacet(facetName = tableFieldNameFacetName)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
@@ -271,13 +271,13 @@ class RegistrationApiTest {
     @Test
     fun `test concept with duplicate concept name throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName) {}
                 newRootConcept(conceptName = databaseTableConceptName) {}
             }
@@ -289,13 +289,13 @@ class RegistrationApiTest {
     @Test
     fun `test multiple concepts in cyclic hierarchy throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = SchemaRegistrationApiDefaultImpl()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {
 
             // act
-            registrationApi.configure {
+            registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName)
                 {
                     addTextFacet(facetName = tableNameFacetName)

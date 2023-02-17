@@ -1,4 +1,4 @@
-package ch.cassiamon.pluginapi.template
+package ch.cassiamon.pluginapi.template.helper
 
 import java.io.InputStream
 import java.lang.IllegalArgumentException

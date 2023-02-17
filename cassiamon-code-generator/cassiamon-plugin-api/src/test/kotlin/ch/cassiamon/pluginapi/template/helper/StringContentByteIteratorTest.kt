@@ -1,6 +1,5 @@
-package ch.cassiamon.pluginapi.template
+package ch.cassiamon.pluginapi.template.helper
 
-import ch.cassiamon.pluginapi.registration.exceptions.CircularConceptHierarchieFoundSchemaException
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

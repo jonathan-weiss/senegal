@@ -7,7 +7,7 @@ import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
 import ch.cassiamon.pluginapi.registration.types.*
 
-class RegistrationApiDefaultImpl: RegistrationApi, Registration, ConceptRegistration, SchemaProvider {
+class SchemaRegistrationApiDefaultImpl: RegistrationApi, SchemaRegistration, ConceptRegistration, SchemaProvider {
     private val committedConcepts: MutableSet<MutableConcept> = mutableSetOf()
     private val conceptsInCreationStack: MutableList<MutableConcept> = mutableListOf()
 
@@ -15,9 +15,14 @@ class RegistrationApiDefaultImpl: RegistrationApi, Registration, ConceptRegistra
         return Schema(concepts = committedConcepts.associateBy { it.conceptName })
     }
 
-    override fun configure(registration: Registration.() -> Unit) {
-        registration(this)
+    override fun configureSchema(schemaRegistration: SchemaRegistration.() -> Unit) {
+        schemaRegistration(this)
     }
+
+    override fun configureTemplates(templateRegistration: TemplatesRegistration.() -> Unit) {
+        TODO("Not yet implemented")
+    }
+
 
     override fun newRootConcept(conceptName: ConceptName, conceptRegistration: ConceptRegistration.() -> Unit) {
         if(hasCurrentConceptInCreation()) {
@@ -203,6 +208,4 @@ class RegistrationApiDefaultImpl: RegistrationApi, Registration, ConceptRegistra
     private fun conceptExistsInCreationStack(conceptName: ConceptName): Boolean {
         return conceptsInCreationStack.map { it.conceptName }.contains(conceptName)
     }
-
-
 }

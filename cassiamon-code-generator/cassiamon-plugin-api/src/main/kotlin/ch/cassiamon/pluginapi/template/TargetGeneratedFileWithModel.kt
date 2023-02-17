@@ -2,7 +2,7 @@ package ch.cassiamon.pluginapi.template
 
 import java.nio.file.Path
 
-data class TemplateTarget(
+data class TargetGeneratedFileWithModel(
     val targetFile: Path,
-    val targetFileContent: ByteIterator,
+    val model: TemplateNodeBag
 )
