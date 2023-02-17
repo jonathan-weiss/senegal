@@ -1,17 +1,15 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.template.TemplateRenderer
 
-class TemplateRegistrationDefaultImpl(val templateNodesProvider: TemplateNodesProviderDefaultImpl): TemplatesRegistration, TemplateProvider {
-    private val templateRenderers: MutableList<TemplateRenderer> = mutableListOf()
+class TemplateRegistrationDefaultImpl(): TemplatesRegistration, TemplateProvider {
+    private val templateFunctions: MutableList<TemplateFunction> = mutableListOf()
 
     override fun newTemplate(templateFunction: TemplateFunction) {
-        val templateRenderer = templateFunction.invoke(templateNodesProvider)
-        templateRenderers.add(templateRenderer)
+        templateFunctions.add(templateFunction)
     }
 
-    override fun provideTemplates(): List<TemplateRenderer> {
-        return templateRenderers
+    override fun provideTemplates(): List<TemplateFunction> {
+        return templateFunctions
     }
 }

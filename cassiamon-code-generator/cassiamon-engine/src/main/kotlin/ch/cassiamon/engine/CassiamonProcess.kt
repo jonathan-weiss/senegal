@@ -6,7 +6,7 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
+import ch.cassiamon.engine.schema.registration.TemplateNodesProviderDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -55,12 +55,17 @@ class CassiamonProcess {
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
         val modelGraph = ModelGraphCreator.calculateGraph(schema, modelInputData)
 
+        val templateNodesProvider = TemplateNodesProviderDefaultImpl()
+
         // TODO transform to TemplateNodes (by implementing interface
 
         // TODO write Templates
-        templates.forEach { templateRenderer: TemplateRenderer ->
+        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
+
+        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
             templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
-                templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+                // TODO write file
             }
         }
 

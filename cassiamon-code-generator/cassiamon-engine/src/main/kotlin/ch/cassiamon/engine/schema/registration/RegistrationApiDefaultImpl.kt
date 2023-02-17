@@ -6,8 +6,7 @@ import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 class RegistrationApiDefaultImpl: RegistrationApi, SchemaProvider, TemplateProvider {
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
-    private val templateNodesProviderImpl = TemplateNodesProviderDefaultImpl()
-    private val templateRegistrationImpl = TemplateRegistrationDefaultImpl(templateNodesProviderImpl)
+    private val templateRegistrationImpl = TemplateRegistrationDefaultImpl()
 
     override fun configureSchema(schemaRegistration: SchemaRegistration.() -> Unit) {
         schemaRegistration(schemaRegistrationImpl)
@@ -21,7 +20,7 @@ class RegistrationApiDefaultImpl: RegistrationApi, SchemaProvider, TemplateProvi
         return schemaRegistrationImpl.provideSchema()
     }
 
-    override fun provideTemplates(): List<TemplateRenderer> {
+    override fun provideTemplates(): List<TemplateFunction> {
         return templateRegistrationImpl.provideTemplates()
     }
 }
