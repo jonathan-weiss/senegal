@@ -1,8 +1,8 @@
-package ch.cassiamon.pluginapi
+package ch.cassiamon.pluginapi.template
 
 import java.nio.file.Path
 
 data class TemplateTarget(
     val targetFile: Path,
-    val template: Template,
+    val targetFileContent: ByteIterator,
 )
