@@ -10,9 +10,10 @@ import ch.cassiamon.pluginapi.model.FacetValues
 
 class FacetValuesImpl(val facetValuesMap: Map<FacetName, FacetValue>): FacetValues {
 
-    private fun mandatoryFacetValue(facetName: FacetName): FacetValue {
-        return requireNotNull(facetValuesMap[facetName])
+    override fun allFacetNames(): Set<FacetName> {
+        return facetValuesMap.keys
     }
+
     override fun asString(facetName: FacetName): String {
         return (mandatoryFacetValue(facetName) as TextFacetValue).text
     }
@@ -24,4 +25,9 @@ class FacetValuesImpl(val facetValuesMap: Map<FacetName, FacetValue>): FacetValu
     override fun asConceptIdentifier(facetName: FacetName): ConceptIdentifier {
         return (mandatoryFacetValue(facetName) as ConceptReferenceFacetValue).conceptReference
     }
+
+    private fun mandatoryFacetValue(facetName: FacetName): FacetValue {
+        return requireNotNull(facetValuesMap[facetName])
+    }
+
 }

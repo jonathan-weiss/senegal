@@ -3,9 +3,12 @@ package ch.cassiamon.engine.model.graph
 import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputData
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
+import ch.cassiamon.engine.schema.types.CalculatedFacet
+import ch.cassiamon.engine.schema.types.Facet
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.model.exceptions.ConceptCyclicLoopDetectedModelException
+import ch.cassiamon.pluginapi.registration.types.TextFacetCalculationFunction
 
 object ModelGraphCreator {
 
@@ -27,7 +30,7 @@ object ModelGraphCreator {
                 println("Inspecting entry $entry")
                 if(allReferencesResolvable(entry, resolvedEntries.keys)) {
                     println("Entry is resolvable: $entry")
-                    resolvedEntries[entry.conceptIdentifier] = linkAndCalculateModelNode(entry, resolvedEntries)
+                    resolvedEntries[entry.conceptIdentifier] = calculateModelNode(schema, entry, resolvedEntries)
                     unresolvedEntriesIterator.remove()
                 } else {
                     println("Entry is NOT resolvable: $entry")
@@ -56,11 +59,19 @@ object ModelGraphCreator {
             .all { resolvedKeys.contains(it.second.conceptReference)}
     }
 
-    private fun linkAndCalculateModelNode(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>): ModelConceptNode {
-        validateConceptIds(entry, otherResolvedEntries) // TODO -> no, this is done in the template
-        // TODO link the concept childs and the references together -> no, this is done in the template
+    private fun calculateModelNode(
+        schema: Schema,
+        entry: ModelConceptInputDataEntry,
+        otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>
+    ): ModelConceptNode {
+
+        val schemaConcept = schema.conceptByConceptName(entry.conceptName)
 
         val facetValues = FacetValuesImpl(entry.facetValuesMap)
+
+        schemaConcept.facets
+            .map { calculatedFacet -> calc(calculatedFacet, facetValues) }
+
 
         // TODO calculate all the facets
         return ModelConceptNode(
@@ -71,15 +82,7 @@ object ModelGraphCreator {
         )
     }
 
-    private fun validateConceptIds(entry: ModelConceptInputDataEntry, otherResolvedEntries: Map<ConceptIdentifier, ModelConceptNode>) {
-
-        // TODO check for duplicate
-        otherResolvedEntries.containsKey(entry.conceptIdentifier)
-
-
-        // TODO validate all references/ids to be the correct type
-
-
+    private fun calc(schemaFacet: Facet, facetValues: FacetValuesImpl, ) {
+        // schemaFacet.facetCalculationFunction
     }
-
 }
