@@ -1,15 +1,13 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.inputsource.ModelInputData
-import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.inputsource.ModelInputData
+import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.registration.SchemaRegistrationDefaultImpl
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.registration.TemplateFunction
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -64,16 +62,19 @@ object TestFixtures {
             // test a file generation for all nodes
             newTemplate { templateNodesProvider ->
 
-                val targetFiles = templateNodesProvider
-                    .targetGeneratedFileForEachTemplateNode(databaseTableConceptName) { templateNode ->
-                        Paths.get("db_${templateNode.facetValues.asString(tableNameFacetName)}.create.sql")
-                    }
+                val templateNodes = templateNodesProvider
+                    .conceptModelNodesByConceptName(databaseTableConceptName)
 
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                val tagetGeneratedFiles = templateNodes
+                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.asString(tableNameFacetName)}.create.sql"), templateNodes) }
+                    .toSet()
+
+
+                return@newTemplate TemplateRenderer(tagetGeneratedFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           CREATE TABLE ${targetGeneratedFileWithModel.model.asSingleTemplateNode.facetValues.asString(tableNameFacetName)} ;
+                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.asString(tableNameFacetName)} ;
                            --
                         """.trimIndent()
                     )
@@ -84,13 +85,13 @@ object TestFixtures {
             newTemplate { templateNodesProvider ->
 
                 val templateNodes = templateNodesProvider
-                    .fetchTemplateNodes(databaseTableConceptName)
+                    .conceptModelNodesByConceptName(databaseTableConceptName)
 
                 return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.sql"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           ${templateNodes.nodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.asString(
+                           ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.asString(
                             tableNameFacetName)}" }}
                            --
                         """.trimIndent()
@@ -103,7 +104,7 @@ object TestFixtures {
         return registrationApi.provideTemplates()
     }
 
-    fun createModelInputData():ModelInputData {
+    fun createModelInputData(): ModelInputData {
         val modelInputDataCollector = ModelInputDataCollector()
 
         val personTableId = ConceptIdentifier.of("Person")

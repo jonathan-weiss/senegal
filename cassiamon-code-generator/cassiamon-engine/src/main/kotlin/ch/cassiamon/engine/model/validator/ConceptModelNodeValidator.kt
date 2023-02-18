@@ -1,6 +1,6 @@
-package ch.cassiamon.engine.model.graph
+package ch.cassiamon.engine.model.validator
 
-import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
+import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
@@ -10,7 +10,7 @@ import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 
-object ModelNodeValidator {
+object ConceptModelNodeValidator {
 
     internal fun validateSingleEntry(schema: Schema, entry: ModelConceptInputDataEntry) {
         if(!schema.hasConceptName(entry.conceptName)) {

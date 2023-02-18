@@ -1,8 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.graph.ModelCalculator
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.template.TemplateNodesProviderDefaultImpl
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
 
@@ -23,22 +21,22 @@ class CassiamonProcessTest {
         println("Templates: $templates")
 
         val modelInputData = TestFixtures.createModelInputData()
-        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
-
-        val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
-
-        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
-
-        println("TemplateRenderer: $templateRenderers")
-
-        templateRenderers.forEach { templateRenderer ->
-            templateRenderer.targetFilesWithModel.forEach { file ->
-                println("File to render: ${file.targetFile}")
-                println("Model for rendering: ${file.model}")
-                val byteIterator = byteIteratorAsString(templateRenderer.templateRenderer(file))
-                println("ByteIterator from templateRenderer: \n$byteIterator")
-            }
-        }
+//        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
+//
+//        val templateNodesProvider = ConceptModelGraphDefaultImpl(modelGraph)
+//
+//        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
+//
+//        println("TemplateRenderer: $templateRenderers")
+//
+//        templateRenderers.forEach { templateRenderer ->
+//            templateRenderer.targetFilesWithModel.forEach { file ->
+//                println("File to render: ${file.targetFile}")
+//                println("Model for rendering: ${file.model}")
+//                val byteIterator = byteIteratorAsString(templateRenderer.templateRenderer(file))
+//                println("ByteIterator from templateRenderer: \n$byteIterator")
+//            }
+//        }
 
     }
 

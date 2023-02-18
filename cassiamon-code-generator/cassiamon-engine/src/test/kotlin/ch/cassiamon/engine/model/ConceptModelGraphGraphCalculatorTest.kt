@@ -1,16 +1,15 @@
-package ch.cassiamon.engine.model.graph
+package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
-class CalculatedModelCreatorTest {
+class ConceptModelGraphGraphCalculatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
@@ -22,8 +21,10 @@ class CalculatedModelCreatorTest {
     private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacetName
     private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetName
 
+
     @Test
-    fun `calculate a simple graph`() {
+    fun `test simple successful graph`() {
+
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
@@ -40,10 +41,18 @@ class CalculatedModelCreatorTest {
 
 
         // act
-        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
+        val templateModel = ConceptModelGraphCalculator.calculateConceptModelGraph(
+            schema,
+            modelInputDataCollector.provideModelInputData()
+        )
 
         // assert
-        assertNotNull(modelGraph)
+        assertNotNull(templateModel)
+        assertEquals(1, templateModel.conceptModelNodesByConceptName(databaseTableConceptName).size)
+        val personTemplateModelNode = templateModel.conceptModelNodesByConceptName(databaseTableConceptName).first()
+        assertEquals(personTableId, personTemplateModelNode.conceptIdentifier)
+        assertEquals("Person", personTemplateModelNode.facetValues.asString(tableNameFacetName))
+
     }
 
     @Test
@@ -126,10 +135,14 @@ class CalculatedModelCreatorTest {
         )
 
         // act
-        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
+        val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
+            schema,
+            modelInputDataCollector.provideModelInputData()
+        )
 
         // assert
-        assertNotNull(modelGraph)
+        assertNotNull(templateModelGraph)
+
     }
 
 
@@ -187,10 +200,14 @@ class CalculatedModelCreatorTest {
         )
 
         // act
-        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
+        val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
+            schema,
+            modelInputDataCollector.provideModelInputData()
+        )
 
         // assert
-        assertNotNull(modelGraph)
+        assertNotNull(templateModelGraph)
+
     }
 
 }

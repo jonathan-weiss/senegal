@@ -1,7 +1,7 @@
 package ch.cassiamon.pluginapi.registration.types
 
-import ch.cassiamon.pluginapi.model.ConceptNode
+import ch.cassiamon.pluginapi.model.ConceptModelNode
 
 fun interface FacetCalculationFunction<T> {
-    operator fun invoke(conceptNode: ConceptNode):T
+    operator fun invoke(conceptModelNode: ConceptModelNode):T
 }

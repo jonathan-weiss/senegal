@@ -55,7 +55,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             newTemplate { templateNodesProvider ->
 
                 val templateNodes = templateNodesProvider
-                    .fetchTemplateNodes(ConceptName.of("TestConcept"))
+                    .conceptModelNodesByConceptName(ConceptName.of("TestConcept"))
 
                 return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(

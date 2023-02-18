@@ -1,15 +1,12 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.model.graph.ModelCalculator
-import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.template.TemplateNodesProviderDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 class CassiamonProcess {
 
@@ -52,22 +49,22 @@ class CassiamonProcess {
         val modelInputData = modelInputDataCollector.provideModelInputData()
 
 
-        // traverse whole model and transform (adapt/calculate/transform) the missing model values
-        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
-
-        val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
-
-        // TODO transform to TemplateNodes (by implementing interface
-
-        // TODO write Templates
-        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
-
-        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
-            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
-                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
-                // TODO write file
-            }
-        }
+//        // traverse whole model and transform (adapt/calculate/transform) the missing model values
+//        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
+//
+//        val templateNodesProvider = ConceptModelGraphDefaultImpl(modelGraph)
+//
+//        // TODO transform to TemplateNodes (by implementing interface
+//
+//        // TODO write Templates
+//        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
+//
+//        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
+//            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
+//                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+//                // TODO write file
+//            }
+//        }
 
 
     }

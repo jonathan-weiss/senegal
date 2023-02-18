@@ -1,8 +1,8 @@
-package ch.cassiamon.engine.model.graph
+package ch.cassiamon.engine.model.validator
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
-import ch.cassiamon.engine.model.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
+import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.types.Schema
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import kotlin.reflect.KClass
 
-class ModelNodeValidatorTest {
+class ConceptModelNodeValidatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
@@ -239,13 +239,13 @@ class ModelNodeValidatorTest {
     private fun testModelNodeValidator(entryId: ConceptIdentifier, collector: ModelInputDataCollector, schema: Schema, expectedExceptionType: KClass<out Throwable>? = null) {
         val entryToTest = entryByConceptIdentifier(entryId, collector)
         if(expectedExceptionType == null) {
-            ModelNodeValidator.validateSingleEntry(
+            ConceptModelNodeValidator.validateSingleEntry(
                 schema = schema,
                 entry = entryToTest
             )
         } else {
             assertThrows(expectedExceptionType.java) {
-                ModelNodeValidator.validateSingleEntry(
+                ConceptModelNodeValidator.validateSingleEntry(
                     schema = schema,
                     entry = entryToTest
                 )

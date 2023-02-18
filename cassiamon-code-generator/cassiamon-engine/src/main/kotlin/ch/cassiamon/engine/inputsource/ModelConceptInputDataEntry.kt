@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.model.inputsource
+package ch.cassiamon.engine.inputsource
 
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.model.types.FacetValue
