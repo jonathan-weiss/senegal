@@ -8,7 +8,7 @@ class ConceptReferenceManualFacet(
     conceptName: ConceptName,
     facetName: FacetName,
     facetDependencies: Set<FacetName>,
-    facetTransformationFunction: ConceptReferenceFacetTransformationFunction,
+    val facetTransformationFunction: ConceptReferenceFacetTransformationFunction,
     val referencedConceptName: ConceptName,
 ) : ManualFacet(
     conceptName = conceptName,

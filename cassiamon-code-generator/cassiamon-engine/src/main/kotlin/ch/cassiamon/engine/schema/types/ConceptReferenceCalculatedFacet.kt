@@ -9,7 +9,7 @@ class ConceptReferenceCalculatedFacet(
     conceptName: ConceptName,
     facetName: FacetName,
     facetDependencies: Set<FacetName>,
-    facetCalculationFunction: ConceptReferenceFacetCalculationFunction,
+    val facetCalculationFunction: ConceptReferenceFacetCalculationFunction,
     val referencedConceptName: ConceptName,
 ) : CalculatedFacet(
     conceptName = conceptName,

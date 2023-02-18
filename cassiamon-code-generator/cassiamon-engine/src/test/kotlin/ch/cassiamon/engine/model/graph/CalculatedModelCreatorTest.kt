@@ -40,7 +40,7 @@ class CalculatedModelCreatorTest {
 
 
         // act
-        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)
@@ -126,7 +126,7 @@ class CalculatedModelCreatorTest {
         )
 
         // act
-        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)
@@ -187,7 +187,7 @@ class CalculatedModelCreatorTest {
         )
 
         // act
-        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputDataCollector.provideModelInputData())
+        val modelGraph = ModelCalculator.calculateModel(schema, modelInputDataCollector.provideModelInputData())
 
         // assert
         assertNotNull(modelGraph)

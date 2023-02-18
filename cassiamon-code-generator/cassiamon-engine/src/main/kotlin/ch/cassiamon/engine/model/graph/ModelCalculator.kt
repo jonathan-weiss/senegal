@@ -3,14 +3,19 @@ package ch.cassiamon.engine.model.graph
 import ch.cassiamon.engine.model.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.model.inputsource.ModelInputData
 import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
-import ch.cassiamon.engine.schema.types.Facet
+import ch.cassiamon.engine.model.types.FacetValue
+import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
+import ch.cassiamon.engine.model.types.TextFacetValue
+import ch.cassiamon.engine.schema.types.*
+import ch.cassiamon.pluginapi.ConceptName
+import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.pluginapi.model.FacetValues
 import ch.cassiamon.pluginapi.model.exceptions.ConceptCyclicLoopDetectedModelException
 
 object ModelCalculator {
 
-    fun calculateGraph(schema: Schema, modelInputData: ModelInputData): CalculatedModel {
+    fun calculateModel(schema: Schema, modelInputData: ModelInputData): CalculatedModel {
         modelInputData.entries.forEach { ModelNodeValidator.validateSingleEntry(schema, it) }
 
         val resolvedEntries: MutableMap<ConceptIdentifier, CalculatedModelConceptNode> = mutableMapOf()
@@ -28,7 +33,7 @@ object ModelCalculator {
                 println("Inspecting entry $entry")
                 if(allReferencesResolvable(entry, resolvedEntries.keys)) {
                     println("Entry is resolvable: $entry")
-                    resolvedEntries[entry.conceptIdentifier] = calculateModelNode(schema, entry, resolvedEntries)
+                    resolvedEntries[entry.conceptIdentifier] = calculateModelNode(schema, entry)
                     unresolvedEntriesIterator.remove()
                 } else {
                     println("Entry is NOT resolvable: $entry")
@@ -60,27 +65,61 @@ object ModelCalculator {
     private fun calculateModelNode(
         schema: Schema,
         entry: ModelConceptInputDataEntry,
-        otherResolvedEntries: Map<ConceptIdentifier, CalculatedModelConceptNode>
     ): CalculatedModelConceptNode {
 
-        val schemaConcept = schema.conceptByConceptName(entry.conceptName)
+        val schemaConcept: Concept = schema.conceptByConceptName(entry.conceptName)
 
-        val facetValues = CalculatedFacetValues(entry.facetValuesMap)
+        val facetValues = entry.facetValuesMap.toMutableMap()
 
         schemaConcept.facets
-            .map { calculatedFacet -> calc(calculatedFacet, facetValues) }
+            .forEach { facet ->
+                calculateFacetAndUpdateValueMap(
+                    schemaFacet = facet,
+                    conceptName = entry.conceptName,
+                    conceptIdentifier = entry.conceptIdentifier,
+                    facetValuesMap = facetValues,
+                )
+            }
 
-
-        // TODO calculate all the facets
         return CalculatedModelConceptNode(
             conceptName = entry.conceptName,
             conceptIdentifier = entry.conceptIdentifier,
             parentConceptIdentifier = entry.parentConceptIdentifier,
-            facetValues = facetValues
+            facetValues = FacetValuesImpl(facetValues)
         )
     }
 
-    private fun calc(schemaFacet: Facet, facetValues: CalculatedFacetValues, ) {
-        // schemaFacet.facetCalculationFunction
+    private fun calculateFacetAndUpdateValueMap(
+        schemaFacet: Facet,
+        conceptName: ConceptName,
+        conceptIdentifier: ConceptIdentifier,
+        facetValuesMap: MutableMap<FacetName, FacetValue>,
+    ) {
+
+        val facetName = schemaFacet.facetName
+        val facetValues = FacetValuesImpl(facetValuesMap)
+
+        val facetRestrictedConceptNode = ConceptNodeImpl(
+            conceptName = conceptName,
+            conceptIdentifier = conceptIdentifier,
+            facetValues = keyRestrictedFacetValue(facetValuesMap, schemaFacet),
+        )
+
+        val newFacetValue: FacetValue = when(schemaFacet) {
+            is TextManualFacet -> TextFacetValue(schemaFacet.facetTransformationFunction(facetRestrictedConceptNode, facetValues.asString(facetName)))
+            is TextCalculatedFacet -> TextFacetValue(schemaFacet.facetCalculationFunction(facetRestrictedConceptNode))
+            is IntegerNumberManualFacet -> IntegerNumberFacetValue(schemaFacet.facetTransformationFunction(facetRestrictedConceptNode, facetValues.asInt(facetName)))
+            is IntegerNumberCalculatedFacet -> IntegerNumberFacetValue(schemaFacet.facetCalculationFunction(facetRestrictedConceptNode))
+            is ConceptReferenceManualFacet -> ConceptReferenceFacetValue(schemaFacet.facetTransformationFunction(facetRestrictedConceptNode, facetValues.asConceptIdentifier(facetName)))
+            is ConceptReferenceCalculatedFacet -> ConceptReferenceFacetValue(schemaFacet.facetCalculationFunction(facetRestrictedConceptNode))
+            else -> throw IllegalStateException("The facet type $schemaFacet is not supported.")
+        }
+
+        facetValuesMap[facetName] = newFacetValue
+    }
+
+    private fun keyRestrictedFacetValue(facetValues: MutableMap<FacetName, FacetValue>,
+                                        schemaFacet: Facet): FacetValues {
+        return FacetValuesImpl(facetValues) // TODO implement the restrictions
     }
 }

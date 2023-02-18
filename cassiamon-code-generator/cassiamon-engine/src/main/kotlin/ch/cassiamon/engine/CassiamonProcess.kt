@@ -53,7 +53,7 @@ class CassiamonProcess {
 
 
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
-        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputData)
+        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
 
         val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 

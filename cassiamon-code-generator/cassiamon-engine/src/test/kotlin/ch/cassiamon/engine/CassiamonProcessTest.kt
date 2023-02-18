@@ -23,7 +23,7 @@ class CassiamonProcessTest {
         println("Templates: $templates")
 
         val modelInputData = TestFixtures.createModelInputData()
-        val modelGraph = ModelCalculator.calculateGraph(schema, modelInputData)
+        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
 
         val templateNodesProvider = TemplateNodesProviderDefaultImpl(modelGraph)
 

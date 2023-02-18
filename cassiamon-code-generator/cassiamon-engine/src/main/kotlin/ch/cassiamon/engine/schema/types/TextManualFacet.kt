@@ -8,7 +8,7 @@ class TextManualFacet(
     conceptName: ConceptName,
     facetName: FacetName,
     facetDependencies: Set<FacetName>,
-    facetTransformationFunction: TextFacetTransformationFunction,
+    val facetTransformationFunction: TextFacetTransformationFunction,
 ) : ManualFacet(
     conceptName = conceptName,
     facetName = facetName,

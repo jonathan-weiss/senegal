@@ -8,7 +8,7 @@ class IntegerNumberManualFacet(
     conceptName: ConceptName,
     facetName: FacetName,
     facetDependencies: Set<FacetName>,
-    facetTransformationFunction: IntegerNumberFacetTransformationFunction,
+    val facetTransformationFunction: IntegerNumberFacetTransformationFunction,
 ) : ManualFacet(
     conceptName = conceptName,
     facetName = facetName,
