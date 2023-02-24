@@ -1,46 +1,70 @@
 package ch.cassiamon.pluginapi.registration
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.registration.types.*
 
 interface ConceptRegistration {
     fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))
 
     fun addTextFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
-        transformationFunction: TextFacetTransformationFunction? = null
+        facetName: NameOfMandatoryTextFacet
+    )
+
+    fun addTextFacet(
+        facetName: NameOfOptionalTextFacet
+    )
+
+
+    fun addCalculatedTextFacet(
+        facetName: NameOfMandatoryTextFacet,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> String,
     )
 
     fun addCalculatedTextFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
-        calculationFunction: TextFacetCalculationFunction,
+        facetName: NameOfOptionalTextFacet,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> String?,
+    )
+
+
+    fun addIntegerNumberFacet(
+        facetName: NameOfMandatoryIntegerNumberFacet
     )
 
     fun addIntegerNumberFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
-        transformationFunction: IntegerNumberFacetTransformationFunction? = null,
+        facetName: NameOfOptionalIntegerNumberFacet
     )
 
     fun addCalculatedIntegerNumberFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
-        calculationFunction: IntegerNumberFacetCalculationFunction,
+        facetName: NameOfMandatoryIntegerNumberFacet,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> Int,
+    )
+    fun addCalculatedIntegerNumberFacet(
+        facetName: NameOfOptionalIntegerNumberFacet,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> Int?,
     )
 
     fun addConceptReferenceFacet(
-        facetName: FacetName,
+        facetName: NameOfMandatoryConceptReferenceFacet,
         referencedConcept: ConceptName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
+    )
+
+    fun addConceptReferenceFacet(
+        facetName: NameOfOptionalConceptReferenceFacet,
+        referencedConcept: ConceptName,
     )
 
     fun addCalculatedConceptReferenceFacet(
-        facetName: FacetName,
+        facetName: NameOfMandatoryConceptReferenceFacet,
         referencedConcept: ConceptName,
-        dependingOnFacets: Set<FacetName> = emptySet(),
-        calculationFunction: ConceptReferenceFacetCalculationFunction,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptIdentifier,
     )
+
+    fun addCalculatedConceptReferenceFacet(
+        facetName: NameOfOptionalConceptReferenceFacet,
+        referencedConcept: ConceptName,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptIdentifier?,
+    )
+
 }

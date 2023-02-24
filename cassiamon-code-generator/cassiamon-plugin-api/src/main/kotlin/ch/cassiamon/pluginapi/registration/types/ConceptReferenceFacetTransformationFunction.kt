@@ -1,5 +1,0 @@
-package ch.cassiamon.pluginapi.registration.types
-
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-
-fun interface ConceptReferenceFacetTransformationFunction: FacetTransformationFunction<ConceptIdentifier>

@@ -5,8 +5,7 @@ import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.types.Schema
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.registration.TemplateFunction
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
@@ -19,34 +18,32 @@ object TestFixtures {
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
     val databaseTableFieldForeignKeyConceptName = ConceptName.of("DatabaseFieldForeignKey")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
-    val tableNameFacetName = FacetName.of("TableName")
-    val tableFieldNameFacetName = FacetName.of("FieldName")
-    val tableFieldTypeFacetName = FacetName.of("FieldType")
-    val tableFieldLengthFacetName = FacetName.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacetName = FacetName.of("FieldForeignKey")
-    val tableNameAndFieldNameFacetName = FacetName.of("TableNameAndFieldName")
-    val tableIndexNameFacetName = FacetName.of("TableIndexName")
+    val tableNameFacetName = NameOfMandatoryTextFacet.of("TableName")
+    val tableFieldNameFacetName = NameOfMandatoryTextFacet.of("FieldName")
+    val tableFieldTypeFacetName = NameOfMandatoryTextFacet.of("FieldType")
+    val tableFieldLengthFacetName = NameOfMandatoryIntegerNumberFacet.of("FieldLength")
+    val tableFieldForeignKeyConceptIdFacetName = NameOfMandatoryConceptReferenceFacet.of("FieldForeignKey")
+    val tableNameAndFieldNameFacetName = NameOfMandatoryTextFacet.of("TableNameAndFieldName")
+    val tableIndexNameFacetName = NameOfMandatoryTextFacet.of("TableIndexName")
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl()): Schema {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetName = tableNameFacetName) { _, value -> value.uppercase() }
+                addTextFacet(facetName = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addTextFacet(tableFieldNameFacetName) { _, value -> value.uppercase() }
-                    addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addIntegerNumberFacet(tableFieldLengthFacetName, setOf(tableFieldTypeFacetName))
-                    addCalculatedTextFacet(
-                        facetName = tableNameAndFieldNameFacetName,
-                        dependingOnFacets = setOf(tableFieldNameFacetName)
+                    addTextFacet(facetName = tableFieldNameFacetName)
+                    addTextFacet(facetName = tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                    addIntegerNumberFacet(facetName = tableFieldLengthFacetName)
+                    addCalculatedTextFacet(facetName = tableNameAndFieldNameFacetName
                     ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
                     newChildConcept(conceptName = databaseTableFieldForeignKeyConceptName) {
                         addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName, databaseTableConceptName)
                     }
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
-                        addTextFacet(tableIndexNameFacetName) { _, value -> value.uppercase() }
+                        addTextFacet(tableIndexNameFacetName)
                     }
 
 

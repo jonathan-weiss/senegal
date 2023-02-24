@@ -1,17 +1,19 @@
 package ch.cassiamon.pluginapi.model
 
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.*
 
 interface ConceptModelNodeFacetValues {
 
     fun allFacetNames(): Set<FacetName>
 
-    fun asString(facetName: FacetName): String
+    fun asString(facetName: NameOfMandatoryTextFacet): String
+    fun asString(facetName: NameOfOptionalTextFacet): String?
 
-    fun asInt(facetName: FacetName): Int
+    fun asInt(facetName: NameOfMandatoryIntegerNumberFacet): Int
+    fun asInt(facetName: NameOfOptionalIntegerNumberFacet): Int?
 
-    fun asConceptIdentifier(facetName: FacetName): ConceptIdentifier
-    fun asReferencedConceptModelNode(facetName: FacetName): ConceptModelNode
+    fun asReferencedConceptModelNode(facetName: NameOfMandatoryConceptReferenceFacet): ConceptModelNode
+    fun asReferencedConceptModelNode(facetName: NameOfOptionalConceptReferenceFacet): ConceptModelNode?
 
     /**
     Support for template engines

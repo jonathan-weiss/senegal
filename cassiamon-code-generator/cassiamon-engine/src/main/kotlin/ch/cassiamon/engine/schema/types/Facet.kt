@@ -1,15 +1,21 @@
 package ch.cassiamon.engine.schema.types
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.*
 
 sealed class Facet (
     val conceptName: ConceptName,
     val facetName: FacetName,
-    val facetDependencies: Set<FacetName>,
 ) {
 
-    abstract val facetType: FacetType
+    val facetType: FacetType
+        get() = when(facetName) {
+            is NameOfMandatoryConceptReferenceFacet -> FacetType.CONCEPT_REFERENCE
+            is NameOfMandatoryIntegerNumberFacet -> FacetType.INTEGER_NUMBER
+            is NameOfMandatoryTextFacet -> FacetType.TEXT
+            is NameOfOptionalConceptReferenceFacet -> FacetType.CONCEPT_REFERENCE
+            is NameOfOptionalIntegerNumberFacet -> FacetType.INTEGER_NUMBER
+            is NameOfOptionalTextFacet -> FacetType.TEXT
+        }
     abstract val isCalculatedFacet: Boolean
     abstract val isManualFacet: Boolean
 }

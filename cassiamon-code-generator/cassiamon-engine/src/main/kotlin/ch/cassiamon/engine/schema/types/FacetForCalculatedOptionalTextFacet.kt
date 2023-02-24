@@ -2,17 +2,14 @@ package ch.cassiamon.engine.schema.types
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.model.ConceptModelNode
 
-abstract class CalculatedFacet(
+
+class FacetForCalculatedOptionalTextFacet (
     conceptName: ConceptName,
     facetName: FacetName,
-): Facet(
+    val facetCalculationFunction: (ConceptModelNode) -> String?,
+) : CalculatedFacet(
     conceptName = conceptName,
     facetName = facetName,
-) {
-    override val isCalculatedFacet: Boolean
-        get() = true
-    override val isManualFacet: Boolean
-        get() = !isCalculatedFacet
-}
-
+)

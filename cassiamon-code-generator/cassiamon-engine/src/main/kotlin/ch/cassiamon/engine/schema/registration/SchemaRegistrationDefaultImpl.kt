@@ -1,8 +1,9 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.schema.types.*
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
 import ch.cassiamon.pluginapi.registration.types.*
@@ -35,92 +36,151 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
     }
 
     override fun addTextFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName>,
-        transformationFunction: TextFacetTransformationFunction?
+        facetName: NameOfMandatoryTextFacet
     ) {
         val concept = currentConceptInCreation()
-        val facet = TextManualFacet(
+        val facet = FacetForManuelText(
             conceptName = concept.conceptName,
-            facetName = facetName,
-            facetDependencies = dependingOnFacets,
-            facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpTextTransformationFunction
+            facetName = facetName
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addTextFacet(
+        facetName: NameOfOptionalTextFacet
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForManuelText(
+            conceptName = concept.conceptName,
+            facetName = facetName
         )
         validateAndAttachFacet(concept, facet)
     }
 
     override fun addCalculatedTextFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName>,
-        calculationFunction: TextFacetCalculationFunction
+        facetName: NameOfMandatoryTextFacet,
+        calculationFunction: (ConceptModelNode) -> String
     ) {
         val concept = currentConceptInCreation()
-        val facet = TextCalculatedFacet(
+        val facet = FacetForCalculatedMandatoryTextFacet(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addCalculatedTextFacet(
+        facetName: NameOfOptionalTextFacet,
+        calculationFunction: (ConceptModelNode) -> String?
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForCalculatedOptionalTextFacet(
+            conceptName = concept.conceptName,
+            facetName = facetName,
             facetCalculationFunction = calculationFunction
         )
         validateAndAttachFacet(concept, facet)
     }
 
     override fun addIntegerNumberFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName>,
-        transformationFunction: IntegerNumberFacetTransformationFunction?
+        facetName: NameOfMandatoryIntegerNumberFacet
     ) {
         val concept = currentConceptInCreation()
-        val facet = IntegerNumberManualFacet(
+        val facet = FacetForManualIntegerNumber(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetDependencies = dependingOnFacets,
-            facetTransformationFunction = transformationFunction ?: NoOpTransformationFunctions.noOpIntegerNumberTransformationFunction
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addIntegerNumberFacet(
+        facetName: NameOfOptionalIntegerNumberFacet
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForManualIntegerNumber(
+            conceptName = concept.conceptName,
+            facetName = facetName,
         )
         validateAndAttachFacet(concept, facet)
     }
 
     override fun addCalculatedIntegerNumberFacet(
-        facetName: FacetName,
-        dependingOnFacets: Set<FacetName>,
-        calculationFunction: IntegerNumberFacetCalculationFunction
+        facetName: NameOfMandatoryIntegerNumberFacet,
+        calculationFunction: (ConceptModelNode) -> Int
     ) {
         val concept = currentConceptInCreation()
-        val facet = IntegerNumberCalculatedFacet(
+        val facet = FacetForCalculatedMandatoryIntegerNumber(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addCalculatedIntegerNumberFacet(
+        facetName: NameOfOptionalIntegerNumberFacet,
+        calculationFunction: (ConceptModelNode) -> Int?
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForCalculatedOptionalIntegerNumber(
+            conceptName = concept.conceptName,
+            facetName = facetName,
             facetCalculationFunction = calculationFunction
         )
         validateAndAttachFacet(concept, facet)
     }
 
     override fun addConceptReferenceFacet(
-        facetName: FacetName,
+        facetName: NameOfMandatoryConceptReferenceFacet,
         referencedConcept: ConceptName,
-        dependingOnFacets: Set<FacetName>
     ) {
         val concept = currentConceptInCreation()
-        val facet = ConceptReferenceManualFacet(
+        val facet = FacetForManualConceptReference(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetDependencies = dependingOnFacets,
-            facetTransformationFunction = NoOpTransformationFunctions.noOpConceptReferenceTransformationFunction,
+            referencedConceptName = referencedConcept
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addConceptReferenceFacet(
+        facetName: NameOfOptionalConceptReferenceFacet,
+        referencedConcept: ConceptName,
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForManualConceptReference(
+            conceptName = concept.conceptName,
+            facetName = facetName,
             referencedConceptName = referencedConcept
         )
         validateAndAttachFacet(concept, facet)
     }
 
     override fun addCalculatedConceptReferenceFacet(
-        facetName: FacetName,
+        facetName: NameOfMandatoryConceptReferenceFacet,
         referencedConcept: ConceptName,
-        dependingOnFacets: Set<FacetName>,
-        calculationFunction: ConceptReferenceFacetCalculationFunction
+        calculationFunction: (ConceptModelNode) -> ConceptIdentifier
     ) {
         val concept = currentConceptInCreation()
-        val facet = ConceptReferenceCalculatedFacet(
+        val facet = FacetForCalculatedMandatoryConceptReference(
             conceptName = concept.conceptName,
             facetName = facetName,
-            facetDependencies = dependingOnFacets,
+            facetCalculationFunction = calculationFunction,
+            referencedConceptName = referencedConcept
+        )
+        validateAndAttachFacet(concept, facet)
+    }
+
+    override fun addCalculatedConceptReferenceFacet(
+        facetName: NameOfOptionalConceptReferenceFacet,
+        referencedConcept: ConceptName,
+        calculationFunction: (ConceptModelNode) -> ConceptIdentifier?
+    ) {
+        val concept = currentConceptInCreation()
+        val facet = FacetForCalculatedOptionalConceptReference(
+            conceptName = concept.conceptName,
+            facetName = facetName,
             facetCalculationFunction = calculationFunction,
             referencedConceptName = referencedConcept
         )
@@ -131,12 +191,6 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         if(facetExists(concept, facet.facetName)) {
             throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.facetName)
         }
-
-        val notFoundFacets = facet.facetDependencies.filter { !facetExists(concept, it) }.toSet()
-        if(notFoundFacets.isNotEmpty()) {
-            throw FacetDependencyNotFoundSchemaException(facet.conceptName, notFoundFacets)
-        }
-
 
         concept.mutableFacets.add(facet)
     }

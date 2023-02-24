@@ -3,16 +3,10 @@ package ch.cassiamon.engine.schema.types
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 
-abstract class ManualFacet(
+class FacetForManualIntegerNumber(
     conceptName: ConceptName,
-    facetName: FacetName,
-): Facet(
+    facetName: FacetName
+) : ManualFacet(
     conceptName = conceptName,
     facetName = facetName,
-) {
-    override val isCalculatedFacet: Boolean
-        get() = !isManualFacet
-    override val isManualFacet: Boolean
-        get() = true
-
-}
+)

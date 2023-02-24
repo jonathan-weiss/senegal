@@ -6,7 +6,7 @@ import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.NameOfMandatoryTextFacet
 
 class CassiamonProcess {
 
@@ -43,7 +43,7 @@ class CassiamonProcess {
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
-            facetValues = arrayOf(Pair(FacetName.of("TableName"), TextFacetValue("Person"))),
+            facetValues = arrayOf(Pair(NameOfMandatoryTextFacet.of("TableName"), TextFacetValue("Person"))),
         )
 
         val modelInputData = modelInputDataCollector.provideModelInputData()
