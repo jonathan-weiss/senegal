@@ -33,14 +33,11 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
         val personTableId = ConceptIdentifier.of("Person")
 
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema)
@@ -53,14 +50,11 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
         val personTableId = ConceptIdentifier.of("Person")
 
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = ConceptName.of("UnknownConcept"), // unknown concept
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptNotKnownModelException::class)
@@ -74,26 +68,22 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
         val personTableId = ConceptIdentifier.of("Person")
 
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
 
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+        ).attach()
 
 
         // act + assert
@@ -108,14 +98,11 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
         val personTableId = ConceptIdentifier.of("Person")
 
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = ConceptIdentifier.of("InvalidParentIdentifier"), // wrong concept
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
@@ -129,16 +116,15 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
 
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = null, // parent concept missing
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, TextFacetValue("255")),
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, TextFacetValue("255")),
+            ).attach()
 
 
         // act + assert
@@ -152,14 +138,11 @@ class ConceptModelNodeValidatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
         val personTableId = ConceptIdentifier.of("Person")
 
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                // facet tableNameFacetName missing
-            )
-        )
+        ).attach()// facet tableNameFacetName missing
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -173,17 +156,16 @@ class ConceptModelNodeValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableNameFacetName, TextFacetValue("foobar")), // this facet is not allowed in this concept
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+            Pair(tableNameFacetName, TextFacetValue("foobar")), // this facet is not allowed in this concept
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            ).attach()
 
         // act + assert
         testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -197,17 +179,16 @@ class ConceptModelNodeValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-                Pair(tableNameAndFieldNameFacetName, TextFacetValue("manual-data")), //wrong as a calculated facet
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            Pair(tableNameAndFieldNameFacetName, TextFacetValue("manual-data")), //wrong as a calculated facet
+        ).attach()
 
         // act + assert
         testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -221,16 +202,15 @@ class ConceptModelNodeValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, TextFacetValue("255")), // wrong type
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, TextFacetValue("255")), // wrong type
+        ).attach()
 
         // act + assert
         testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)

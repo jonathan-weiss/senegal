@@ -102,14 +102,11 @@ object TestFixtures {
         val modelInputDataCollector = ModelInputDataCollector()
 
         val personTableId = ConceptIdentifier.of("Person")
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
 
         return modelInputDataCollector.provideModelInputData()
     }

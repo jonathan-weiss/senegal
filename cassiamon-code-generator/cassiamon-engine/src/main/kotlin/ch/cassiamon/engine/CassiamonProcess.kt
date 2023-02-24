@@ -39,12 +39,13 @@ class CassiamonProcess {
         // TODO read the XML file and fill it in flat a modelInputData
 
         val modelInputDataCollector = ModelInputDataCollector()
-        modelInputDataCollector.attachConceptData(
+        modelInputDataCollector.newConceptData(
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
-            facetValues = arrayOf(Pair(NameOfMandatoryTextFacet.of("TableName"), TextFacetValue("Person"))),
-        )
+        ).withFacetValue(
+            NameOfMandatoryTextFacet.of("TableName"), TextFacetValue("Person")
+        ).attach()
 
         val modelInputData = modelInputDataCollector.provideModelInputData()
 

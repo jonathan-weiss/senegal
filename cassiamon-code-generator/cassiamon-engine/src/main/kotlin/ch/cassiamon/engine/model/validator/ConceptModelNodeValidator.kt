@@ -26,7 +26,9 @@ object ConceptModelNodeValidator {
         }
 
         // iterate through all entry facet values to find invalid/obsolet ones
-        entry.facetValuesMap.keys.forEach { entryFacetName ->
+        entry.facetValues.forEach { entryFacet ->
+            val entryFacetName = entryFacet.facetName
+            val entryFacetValue = entryFacet.facetValue
             if(!schemaConcept.hasFacet(entryFacetName)) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = entry.conceptName,
@@ -53,7 +55,7 @@ object ConceptModelNodeValidator {
         schemaConcept.facets
             .filterIsInstance<ManualFacet>()
             .forEach { manualSchemaFacet ->
-                val facetValue = entry.facetValuesMap[manualSchemaFacet.facetName]
+                val facetValue = null //entry.facetValuesMap[manualSchemaFacet.facetName]
                 validateAgainstSchemaFacet(manualSchemaFacet, facetValue, entry)
             }
     }

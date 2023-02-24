@@ -2,9 +2,11 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputData
+import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.schema.types.Concept
 import ch.cassiamon.engine.schema.types.Schema
 import ch.cassiamon.pluginapi.ConceptName
+import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.ConceptModelNode
@@ -45,7 +47,7 @@ object ConceptModelGraphCalculator {
 
         val schemaConcept: Concept = schema.conceptByConceptName(entry.conceptName)
 
-        val facetValues = entry.facetValuesMap.toMutableMap()
+        val facetValues = emptyMap<FacetName, FacetValue>()// entry.facetValuesMap.toMutableMap()
 
         return MutableConceptModelNode(
             conceptName = entry.conceptName,

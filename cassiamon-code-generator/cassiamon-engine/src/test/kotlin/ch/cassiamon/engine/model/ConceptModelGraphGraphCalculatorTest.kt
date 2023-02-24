@@ -111,36 +111,29 @@ class ConceptModelGraphGraphCalculatorTest {
     }
 
     private fun ModelInputDataCollector.attachTable(table: ConceptIdentifier) {
-        this.attachConceptData(
+        this.newConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = table,
             parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue(table.code)),
-            )
-        )
+        ).withFacetValue(tableNameFacetName, TextFacetValue(table.code)).attach()
 
     }
 
     private fun ModelInputDataCollector.attachUuidTableField(table: ConceptIdentifier,
                                                              field: ConceptIdentifier,
                                                              foreignKeyToTable: ConceptIdentifier? = null,) {
-        val facetValues = mutableListOf(
+        this.newConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = field,
+            parentConceptIdentifier = table,
+        ).withFacetValues(
             Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
             Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
             Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
             )
+            .withFacetValueIfNotNull(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable?.let { ConceptReferenceFacetValue(it) })
+            .attach()
 
-        if(foreignKeyToTable != null) {
-            facetValues.add(Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(foreignKeyToTable)))
-        }
-
-        this.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = field,
-            parentConceptIdentifier = table,
-            facetValues = facetValues.toTypedArray()
-        )
     }
 
     private fun fieldNameFromIdentifier(field: ConceptIdentifier): String {
@@ -150,15 +143,14 @@ class ConceptModelGraphGraphCalculatorTest {
     private fun ModelInputDataCollector.attachVarcharTableField(
         table: ConceptIdentifier,
         field: ConceptIdentifier) {
-        this.attachConceptData(
+        this.newConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = field,
             parentConceptIdentifier = table,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
+        ).withFacetValues(
+            Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
+            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            ).attach()
     }
 }
