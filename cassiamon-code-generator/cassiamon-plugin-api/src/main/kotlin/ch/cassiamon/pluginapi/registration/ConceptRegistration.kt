@@ -3,7 +3,6 @@ package ch.cassiamon.pluginapi.registration
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.registration.types.*
 
 interface ConceptRegistration {
     fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))

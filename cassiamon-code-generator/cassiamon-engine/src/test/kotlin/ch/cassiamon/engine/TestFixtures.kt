@@ -16,13 +16,12 @@ import java.nio.file.Paths
 object TestFixtures {
     val databaseTableConceptName = ConceptName.of("DatabaseTable")
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
-    val databaseTableFieldForeignKeyConceptName = ConceptName.of("DatabaseFieldForeignKey")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
     val tableNameFacetName = NameOfMandatoryTextFacet.of("TableName")
     val tableFieldNameFacetName = NameOfMandatoryTextFacet.of("FieldName")
     val tableFieldTypeFacetName = NameOfMandatoryTextFacet.of("FieldType")
     val tableFieldLengthFacetName = NameOfMandatoryIntegerNumberFacet.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacetName = NameOfMandatoryConceptReferenceFacet.of("FieldForeignKey")
+    val tableFieldForeignKeyConceptIdFacetName = NameOfOptionalConceptReferenceFacet.of("FieldForeignKey")
     val tableNameAndFieldNameFacetName = NameOfMandatoryTextFacet.of("TableNameAndFieldName")
     val tableIndexNameFacetName = NameOfMandatoryTextFacet.of("TableIndexName")
 
@@ -39,9 +38,7 @@ object TestFixtures {
                     addCalculatedTextFacet(facetName = tableNameAndFieldNameFacetName
                     ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
-                    newChildConcept(conceptName = databaseTableFieldForeignKeyConceptName) {
-                        addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName, databaseTableConceptName)
-                    }
+                    addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName, databaseTableConceptName)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
                         addTextFacet(tableIndexNameFacetName)
                     }

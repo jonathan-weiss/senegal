@@ -14,7 +14,6 @@ class ConceptModelGraphGraphCalculatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
-    private val databaseTableFieldForeignKeyConceptName = TestFixtures.databaseTableFieldForeignKeyConceptName
     private val tableNameFacetName = TestFixtures.tableNameFacetName
     private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetName
     private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetName
@@ -62,9 +61,7 @@ class ConceptModelGraphGraphCalculatorTest {
 
         modelInputDataCollector.attachTable(table = addressTableId)
         modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetId)
-        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressPersonForeignKeyFieldId)
-        modelInputDataCollector.attachForeignKey(foreignKeyIdentifier = addressPersonForeignKeyPointerFieldId,
-            parentField = addressPersonForeignKeyFieldId, referencedTable = personTableId,)
+        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressPersonForeignKeyFieldId, foreignKeyToTable = personTableId)
         modelInputDataCollector.attachTable(table = personTableId)
         modelInputDataCollector.attachVarcharTableField(table = personTableId, field = personFirstnameFieldId)
 
@@ -78,11 +75,11 @@ class ConceptModelGraphGraphCalculatorTest {
         assertNotNull(conceptModelGraph)
 
         assertEquals(2, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
-        val addressFkConceptModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableFieldForeignKeyConceptName).first()
-        assertEquals(addressPersonForeignKeyPointerFieldId, addressFkConceptModelNode.conceptIdentifier)
-        // assertEquals(personTableId, addressConceptModelNode.facetValues.asConceptIdentifier(tableFieldForeignKeyConceptIdFacetName))
 
-
+        val fkField = conceptModelGraph.conceptModelNodeByConceptIdentifier(addressPersonForeignKeyFieldId)
+        val referencedConcept = fkField.facetValues.asReferencedConceptModelNode(tableFieldForeignKeyConceptIdFacetName)
+        assertNotNull(referencedConcept)
+        assertEquals(personTableId, referencedConcept?.conceptIdentifier)
     }
 
 
@@ -100,8 +97,7 @@ class ConceptModelGraphGraphCalculatorTest {
         modelInputDataCollector.attachTable(table = addressTableId)
         modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetFieldId)
         modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressToAddressForeignKeyFieldId)
-        modelInputDataCollector.attachForeignKey(referencedTable = addressTableId,
-            parentField = addressToAddressForeignKeyFieldId, foreignKeyIdentifier = addressToAddressForeignKeyFieldPointerId)
+        // TODO add here a circular dependency
 
         // act
         val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
@@ -127,16 +123,23 @@ class ConceptModelGraphGraphCalculatorTest {
     }
 
     private fun ModelInputDataCollector.attachUuidTableField(table: ConceptIdentifier,
-                                                             field: ConceptIdentifier) {
+                                                             field: ConceptIdentifier,
+                                                             foreignKeyToTable: ConceptIdentifier? = null,) {
+        val facetValues = mutableListOf(
+            Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
+            Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
+            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
+            )
+
+        if(foreignKeyToTable != null) {
+            facetValues.add(Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(foreignKeyToTable)))
+        }
+
         this.attachConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = field,
             parentConceptIdentifier = table,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
-                Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
-            )
+            facetValues = facetValues.toTypedArray()
         )
     }
 
@@ -158,20 +161,4 @@ class ConceptModelGraphGraphCalculatorTest {
             )
         )
     }
-
-    private fun ModelInputDataCollector.attachForeignKey(
-        foreignKeyIdentifier: ConceptIdentifier,
-        parentField: ConceptIdentifier,
-        referencedTable: ConceptIdentifier,
-        ) {
-        this.attachConceptData(
-            conceptName = databaseTableFieldForeignKeyConceptName,
-            conceptIdentifier = foreignKeyIdentifier,
-            parentConceptIdentifier = parentField,
-            facetValues = arrayOf(
-                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(referencedTable)),
-            )
-        )
-    }
-
 }

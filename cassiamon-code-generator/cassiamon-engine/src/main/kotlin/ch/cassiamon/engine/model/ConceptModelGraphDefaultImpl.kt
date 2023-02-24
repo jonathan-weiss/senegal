@@ -1,6 +1,7 @@
 package ch.cassiamon.engine.model
 
 import ch.cassiamon.pluginapi.ConceptName
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 
@@ -13,7 +14,9 @@ class ConceptModelGraphDefaultImpl(private val allConceptModelNodesList: List<Co
 
     override fun conceptModelNodesByConceptName(conceptName: ConceptName): List<ConceptModelNode> {
         return conceptModelNodesByConceptNameMap[conceptName] ?: emptyList()
-
     }
 
+    override fun conceptModelNodeByConceptIdentifier(conceptIdentifier: ConceptIdentifier): ConceptModelNode {
+        return allConceptModelNodesList.first { it.conceptIdentifier == conceptIdentifier }
+    }
 }
