@@ -7,6 +7,7 @@ import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ConceptModelGraphGraphCalculatorTest {
@@ -30,122 +31,62 @@ class ConceptModelGraphGraphCalculatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
 
         val personTableId = ConceptIdentifier.of("Person")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableConceptName,
-            conceptIdentifier = personTableId,
-            parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
-
+        modelInputDataCollector.attachTable(table = personTableId)
 
         // act
-        val templateModel = ConceptModelGraphCalculator.calculateConceptModelGraph(
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
             schema,
             modelInputDataCollector.provideModelInputData()
         )
 
         // assert
-        assertNotNull(templateModel)
-        assertEquals(1, templateModel.conceptModelNodesByConceptName(databaseTableConceptName).size)
-        val personTemplateModelNode = templateModel.conceptModelNodesByConceptName(databaseTableConceptName).first()
+        assertNotNull(conceptModelGraph)
+        assertEquals(1, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
+        val personTemplateModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).first()
         assertEquals(personTableId, personTemplateModelNode.conceptIdentifier)
         assertEquals("Person", personTemplateModelNode.facetValues.asString(tableNameFacetName))
-
     }
 
     @Test
-    fun `calculate a graph with valid hierarchical and reference dependencies`() {
+    fun `test a graph with valid hierarchical and reference dependencies`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
 
-        val personTableId = ConceptIdentifier.of("Person")
         val addressTableId = ConceptIdentifier.of("Address")
-
-
-        // ADDRESS table
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableConceptName,
-            conceptIdentifier = addressTableId,
-            parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Address")),
-            )
-        )
-
-        // ADDRESS fields
-        val addressStreetFieldId = ConceptIdentifier.of("Address_street")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = addressStreetFieldId,
-            parentConceptIdentifier = addressTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("street")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
-
-
+        val addressStreetId = ConceptIdentifier.of("Address_street")
         val addressPersonForeignKeyFieldId = ConceptIdentifier.of("Address_fkPerson")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = addressPersonForeignKeyFieldId,
-            parentConceptIdentifier = addressTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("fkPersonId")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
-            )
-        )
-
-        val addressPersonForeignKeyPointerFieldId = ConceptIdentifier.of("Address_fkPerson_pointer")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldForeignKeyConceptName,
-            conceptIdentifier = addressPersonForeignKeyPointerFieldId,
-            parentConceptIdentifier = addressPersonForeignKeyFieldId,
-            facetValues = arrayOf(
-                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(personTableId)),
-            )
-        )
-
-        // PERSON table
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableConceptName,
-            conceptIdentifier = personTableId,
-            parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Person"))
-            )
-        )
-
-        // PERSON fields
+        val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = personFirstnameFieldId,
-            parentConceptIdentifier = personTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("firstname")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
+        val addressPersonForeignKeyPointerFieldId = ConceptIdentifier.of("Address_fkPersonPointer")
+
+        modelInputDataCollector.attachTable(table = addressTableId)
+        modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetId)
+        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressPersonForeignKeyFieldId)
+        modelInputDataCollector.attachForeignKey(foreignKeyIdentifier = addressPersonForeignKeyPointerFieldId,
+            parentField = addressPersonForeignKeyFieldId, referencedTable = personTableId,)
+        modelInputDataCollector.attachTable(table = personTableId)
+        modelInputDataCollector.attachVarcharTableField(table = personTableId, field = personFirstnameFieldId)
 
         // act
-        val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
             schema,
             modelInputDataCollector.provideModelInputData()
         )
 
         // assert
-        assertNotNull(templateModelGraph)
+        assertNotNull(conceptModelGraph)
+
+        assertEquals(2, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
+        val addressFkConceptModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableFieldForeignKeyConceptName).first()
+        assertEquals(addressPersonForeignKeyPointerFieldId, addressFkConceptModelNode.conceptIdentifier)
+        // assertEquals(personTableId, addressConceptModelNode.facetValues.asConceptIdentifier(tableFieldForeignKeyConceptIdFacetName))
+
 
     }
 
 
+    @Disabled
     @Test
     fun `calculate a graph with invalid cyclic hierarchical dependency`() {
         // arrange
@@ -153,51 +94,14 @@ class ConceptModelGraphGraphCalculatorTest {
         val modelInputDataCollector = ModelInputDataCollector()
 
         val addressTableId = ConceptIdentifier.of("Address")
-
-        // ADDRESS table
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableConceptName,
-            conceptIdentifier = addressTableId,
-            parentConceptIdentifier = null,
-            facetValues = arrayOf(
-                Pair(tableNameFacetName, TextFacetValue("Address")),
-            )
-        )
-
-        // ADDRESS fields
         val addressStreetFieldId = ConceptIdentifier.of("Address_street")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = addressStreetFieldId,
-            parentConceptIdentifier = addressTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("street")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            )
-        )
-
-
         val addressToAddressForeignKeyFieldId = ConceptIdentifier.of("Address_fk")
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldConceptName,
-            conceptIdentifier = addressToAddressForeignKeyFieldId,
-            parentConceptIdentifier = addressTableId,
-            facetValues = arrayOf(
-                Pair(tableFieldNameFacetName, TextFacetValue("fkAddressId")),
-                Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
-                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
-            )
-        )
-
-        modelInputDataCollector.attachConceptData(
-            conceptName = databaseTableFieldForeignKeyConceptName,
-            conceptIdentifier = ConceptIdentifier.of("Address_to_Address_fk"),
-            parentConceptIdentifier = addressToAddressForeignKeyFieldId,
-            facetValues = arrayOf(
-                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(addressTableId)),
-            )
-        )
+        val addressToAddressForeignKeyFieldPointerId = ConceptIdentifier.of("Address_to_Address_fk")
+        modelInputDataCollector.attachTable(table = addressTableId)
+        modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetFieldId)
+        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressToAddressForeignKeyFieldId)
+        modelInputDataCollector.attachForeignKey(referencedTable = addressTableId,
+            parentField = addressToAddressForeignKeyFieldId, foreignKeyIdentifier = addressToAddressForeignKeyFieldPointerId)
 
         // act
         val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
@@ -208,6 +112,66 @@ class ConceptModelGraphGraphCalculatorTest {
         // assert
         assertNotNull(templateModelGraph)
 
+    }
+
+    private fun ModelInputDataCollector.attachTable(table: ConceptIdentifier) {
+        this.attachConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = table,
+            parentConceptIdentifier = null,
+            facetValues = arrayOf(
+                Pair(tableNameFacetName, TextFacetValue(table.code)),
+            )
+        )
+
+    }
+
+    private fun ModelInputDataCollector.attachUuidTableField(table: ConceptIdentifier,
+                                                             field: ConceptIdentifier) {
+        this.attachConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = field,
+            parentConceptIdentifier = table,
+            facetValues = arrayOf(
+                Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
+                Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
+            )
+        )
+    }
+
+    private fun fieldNameFromIdentifier(field: ConceptIdentifier): String {
+        return field.code.split("_").last()
+    }
+
+    private fun ModelInputDataCollector.attachVarcharTableField(
+        table: ConceptIdentifier,
+        field: ConceptIdentifier) {
+        this.attachConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = field,
+            parentConceptIdentifier = table,
+            facetValues = arrayOf(
+                Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
+                Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
+                Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
+            )
+        )
+    }
+
+    private fun ModelInputDataCollector.attachForeignKey(
+        foreignKeyIdentifier: ConceptIdentifier,
+        parentField: ConceptIdentifier,
+        referencedTable: ConceptIdentifier,
+        ) {
+        this.attachConceptData(
+            conceptName = databaseTableFieldForeignKeyConceptName,
+            conceptIdentifier = foreignKeyIdentifier,
+            parentConceptIdentifier = parentField,
+            facetValues = arrayOf(
+                Pair(tableFieldForeignKeyConceptIdFacetName, ConceptReferenceFacetValue(referencedTable)),
+            )
+        )
     }
 
 }

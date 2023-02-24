@@ -12,26 +12,33 @@ import ch.cassiamon.pluginapi.model.ConceptModelNode
 object ConceptModelGraphCalculator {
 
     fun calculateConceptModelGraph(schema: Schema, modelInputData: ModelInputData): ConceptModelGraph {
-        val nodePool: Map<ConceptIdentifier, MutableConceptModelNode>
-        val conceptIdentifiersByParentConceptIdentifier: Map<ConceptIdentifier, List<ConceptIdentifier>>
+        val nodePool: Map<ConceptIdentifier, MutableConceptModelNode> = createNodePool(schema, modelInputData)
+        val conceptIdentifiersByParentConceptIdentifier: Map<ConceptIdentifier, List<ConceptIdentifier>> = createConceptIdentifierByParent(modelInputData)
 
 
-
-        nodePool = createNodePool(schema, modelInputData)
-        conceptIdentifiersByParentConceptIdentifier = createConceptIdentifierByParent(modelInputData)
         // linkTemplateNodes(calculatedModel)
 
-        val allTemplateNodes: List<ConceptModelNode> = nodePool.values.toList()
-        val templateNodesByConcept: Map<ConceptName, List<ConceptModelNode>> = allTemplateNodes
+        val allConceptModelNodes: List<ConceptModelNode> = nodePool.values.toList()
+        val templateNodesByConcept: Map<ConceptName, List<ConceptModelNode>> = allConceptModelNodes
             .groupBy { it.conceptName}
             .mapValues { entry -> entry.value }
             .toMap()
 
-        return ConceptModelGraphDefaultImpl(allTemplateNodes, templateNodesByConcept)
+        return ConceptModelGraphDefaultImpl(allConceptModelNodes, templateNodesByConcept)
     }
 
 
-    private fun createModelNode(
+
+    private fun createNodePool(schema: Schema,modelInputData: ModelInputData): Map<ConceptIdentifier, MutableConceptModelNode> {
+        val modelConceptNodes = modelInputData.entries.map { createConceptModelNodeFromInputEntry(schema, it) }
+
+        return modelConceptNodes.associateBy(
+            { modelConceptNode -> modelConceptNode.conceptIdentifier},
+            { modelConceptNode -> modelConceptNode},
+        ).toMap()
+    }
+
+    private fun createConceptModelNodeFromInputEntry(
         schema: Schema,
         entry: ModelConceptInputDataEntry,
     ): MutableConceptModelNode {
@@ -47,14 +54,6 @@ object ConceptModelGraphCalculator {
         )
     }
 
-    private fun createNodePool(schema: Schema,modelInputData: ModelInputData): Map<ConceptIdentifier, MutableConceptModelNode> {
-        val modelConceptNodes = modelInputData.entries.map { createModelNode(schema, it) }
-
-        return modelConceptNodes.associateBy(
-            { modelConceptNode -> modelConceptNode.conceptIdentifier},
-            { modelConceptNode -> modelConceptNode},
-        ).toMap()
-    }
     private fun createConceptIdentifierByParent(modelInputData: ModelInputData): Map<ConceptIdentifier, List<ConceptIdentifier>> {
         val modelConceptNodes = modelInputData.entries
 
