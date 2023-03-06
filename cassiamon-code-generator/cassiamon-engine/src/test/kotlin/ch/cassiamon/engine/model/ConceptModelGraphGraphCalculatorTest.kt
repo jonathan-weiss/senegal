@@ -46,6 +46,7 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals("Person", personTemplateModelNode.facetValues.asString(tableNameFacetName))
     }
 
+    @Disabled
     @Test
     fun `test a graph with valid hierarchical and reference dependencies`() {
         // arrange

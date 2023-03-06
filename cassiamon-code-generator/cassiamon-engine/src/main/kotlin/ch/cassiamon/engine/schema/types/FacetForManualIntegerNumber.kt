@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.FacetName
 
 class FacetForManualIntegerNumber(
     conceptName: ConceptName,
-    facetName: FacetName
+    facetName: FacetName,
 ) : ManualFacet(
     conceptName = conceptName,
     facetName = facetName,

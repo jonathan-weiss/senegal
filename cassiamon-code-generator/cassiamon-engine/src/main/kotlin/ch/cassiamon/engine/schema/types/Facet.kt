@@ -17,5 +17,12 @@ sealed class Facet (
             is NameOfOptionalTextFacet -> FacetType.TEXT
         }
     abstract val isCalculatedFacet: Boolean
-    abstract val isManualFacet: Boolean
+    val isManualFacet: Boolean
+        get() = !isCalculatedFacet
+
+    val isMandatoryFacet: Boolean
+        get() = facetName.isMandatoryFacetValue
+    val isOptionalFacet: Boolean
+        get() = facetName.isOptionalFacetValue
+
 }

@@ -6,7 +6,6 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
-import ch.cassiamon.pluginapi.registration.types.*
 
 class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, SchemaProvider {
     private val committedConcepts: MutableSet<MutableConcept> = mutableSetOf()

@@ -12,7 +12,5 @@ abstract class CalculatedFacet(
 ) {
     override val isCalculatedFacet: Boolean
         get() = true
-    override val isManualFacet: Boolean
-        get() = !isCalculatedFacet
 }
 

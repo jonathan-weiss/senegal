@@ -11,8 +11,5 @@ abstract class ManualFacet(
     facetName = facetName,
 ) {
     override val isCalculatedFacet: Boolean
-        get() = !isManualFacet
-    override val isManualFacet: Boolean
-        get() = true
-
+        get() = false
 }

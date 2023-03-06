@@ -1,6 +1,5 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
@@ -17,7 +16,7 @@ class MutableConceptModelNodeFacetValues(val facetValuesMap: Map<FacetName, Face
     ConceptModelNodeFacetValues {
 
     private var referenceConceptModelNodeFacetValues: Map<FacetName, ConceptModelNode> = emptyMap()
-    fun assignTemplateNodeFacetValues(referenceConceptModelNodeFacetValues: Map<FacetName, ConceptModelNode>) {
+    fun assignReferenceNodeFacetValues(referenceConceptModelNodeFacetValues: Map<FacetName, ConceptModelNode>) {
         this.referenceConceptModelNodeFacetValues = referenceConceptModelNodeFacetValues
     }
 

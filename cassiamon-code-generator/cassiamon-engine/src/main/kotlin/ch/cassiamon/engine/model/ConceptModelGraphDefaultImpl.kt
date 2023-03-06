@@ -5,8 +5,9 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 
-class ConceptModelGraphDefaultImpl(private val allConceptModelNodesList: List<ConceptModelNode>,
-                                   private val conceptModelNodesByConceptNameMap: Map<ConceptName, List<ConceptModelNode>>) : ConceptModelGraph {
+class ConceptModelGraphDefaultImpl(private val allConceptModelNodesList: List<ConceptModelNode>) : ConceptModelGraph {
+
+    private val conceptModelNodesByConceptNameMap: Map<ConceptName, List<ConceptModelNode>> = allConceptModelNodesList.groupBy { it.conceptName }
 
     override fun allConceptModelNodes(): List<ConceptModelNode> {
         return allConceptModelNodesList
