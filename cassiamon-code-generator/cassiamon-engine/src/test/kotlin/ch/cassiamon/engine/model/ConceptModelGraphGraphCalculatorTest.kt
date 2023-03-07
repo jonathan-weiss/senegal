@@ -116,7 +116,7 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = table,
             parentConceptIdentifier = null,
-        ).withFacetValue(tableNameFacetName, TextFacetValue(table.code)).attach()
+        ).addTextFacetValue(tableNameFacetName, table.code).attach()
 
     }
 
@@ -127,14 +127,12 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = field,
             parentConceptIdentifier = table,
-        ).withFacetValues(
-            Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
-            Pair(tableFieldTypeFacetName, TextFacetValue("UUID")),
-            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(128)),
-            )
-            .withFacetValueIfNotNull(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable?.let { ConceptReferenceFacetValue(it) })
+        )
+            .addTextFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
+            .addTextFacetValue(tableFieldTypeFacetName, "UUID")
+            .addIntegerNumberFacetValue(tableFieldLengthFacetName, 128)
+            .addConceptReferenceFacetValue(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable)
             .attach()
-
     }
 
     private fun fieldNameFromIdentifier(field: ConceptIdentifier): String {
@@ -148,10 +146,10 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = field,
             parentConceptIdentifier = table,
-        ).withFacetValues(
-            Pair(tableFieldNameFacetName, TextFacetValue(fieldNameFromIdentifier(field))),
-            Pair(tableFieldTypeFacetName, TextFacetValue("VARCHAR")),
-            Pair(tableFieldLengthFacetName, IntegerNumberFacetValue(255)),
-            ).attach()
+        )
+            .addTextFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
+            .addTextFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addIntegerNumberFacetValue(tableFieldLengthFacetName, 255)
+            .attach()
     }
 }

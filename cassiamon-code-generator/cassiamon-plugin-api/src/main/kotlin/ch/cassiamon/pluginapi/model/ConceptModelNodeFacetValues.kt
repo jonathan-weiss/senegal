@@ -6,14 +6,14 @@ interface ConceptModelNodeFacetValues {
 
     fun allFacetNames(): Set<FacetName>
 
-    fun asString(facetName: NameOfMandatoryTextFacet): String
-    fun asString(facetName: NameOfOptionalTextFacet): String?
+    fun asString(facetDescriptor: ManualMandatoryTextFacetDescriptor): String
+    fun asString(facetDescriptor: ManualOptionalTextFacetDescriptor): String?
 
-    fun asInt(facetName: NameOfMandatoryIntegerNumberFacet): Int
-    fun asInt(facetName: NameOfOptionalIntegerNumberFacet): Int?
+    fun asInt(facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor): Int
+    fun asInt(facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor): Int?
 
-    fun asReferencedConceptModelNode(facetName: NameOfMandatoryConceptReferenceFacet): ConceptModelNode
-    fun asReferencedConceptModelNode(facetName: NameOfOptionalConceptReferenceFacet): ConceptModelNode?
+    fun asReferencedConceptModelNode(facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor): ConceptModelNode
+    fun asReferencedConceptModelNode(facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor): ConceptModelNode?
 
     /**
     Support for template engines

@@ -8,62 +8,58 @@ interface ConceptRegistration {
     fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))
 
     fun addTextFacet(
-        facetName: NameOfMandatoryTextFacet
+        facetDescriptor: ManualMandatoryTextFacetDescriptor
     )
 
     fun addTextFacet(
-        facetName: NameOfOptionalTextFacet
+        facetDescriptor: ManualOptionalTextFacetDescriptor
     )
 
 
     fun addCalculatedTextFacet(
-        facetName: NameOfMandatoryTextFacet,
+        facetDescriptor: CalculatedMandatoryTextFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> String,
     )
 
     fun addCalculatedTextFacet(
-        facetName: NameOfOptionalTextFacet,
+        facetDescriptor: CalculatedOptionalTextFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> String?,
     )
 
 
     fun addIntegerNumberFacet(
-        facetName: NameOfMandatoryIntegerNumberFacet
+        facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor
     )
 
     fun addIntegerNumberFacet(
-        facetName: NameOfOptionalIntegerNumberFacet
+        facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor
     )
 
     fun addCalculatedIntegerNumberFacet(
-        facetName: NameOfMandatoryIntegerNumberFacet,
+        facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> Int,
     )
     fun addCalculatedIntegerNumberFacet(
-        facetName: NameOfOptionalIntegerNumberFacet,
+        facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> Int?,
     )
 
     fun addConceptReferenceFacet(
-        facetName: NameOfMandatoryConceptReferenceFacet,
-        referencedConcept: ConceptName,
+        facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor,
     )
 
     fun addConceptReferenceFacet(
-        facetName: NameOfOptionalConceptReferenceFacet,
-        referencedConcept: ConceptName,
+        facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor,
     )
 
     fun addCalculatedConceptReferenceFacet(
-        facetName: NameOfMandatoryConceptReferenceFacet,
-        referencedConcept: ConceptName,
-        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptIdentifier,
+        facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptModelNode,
     )
 
     fun addCalculatedConceptReferenceFacet(
-        facetName: NameOfOptionalConceptReferenceFacet,
-        referencedConcept: ConceptName,
-        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptIdentifier?,
+        facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor,
+        calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptModelNode?,
     )
 
 }

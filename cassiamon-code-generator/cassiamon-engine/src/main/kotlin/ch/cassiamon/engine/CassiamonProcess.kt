@@ -2,11 +2,10 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.NameOfMandatoryTextFacet
+import ch.cassiamon.pluginapi.ManualMandatoryTextFacetDescriptor
 
 class CassiamonProcess {
 
@@ -43,9 +42,7 @@ class CassiamonProcess {
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
-        ).withFacetValue(
-            NameOfMandatoryTextFacet.of("TableName"), TextFacetValue("Person")
-        ).attach()
+        ).addTextFacetValue(ManualMandatoryTextFacetDescriptor.of("TableName"), "Person").attach()
 
         val modelInputData = modelInputDataCollector.provideModelInputData()
 

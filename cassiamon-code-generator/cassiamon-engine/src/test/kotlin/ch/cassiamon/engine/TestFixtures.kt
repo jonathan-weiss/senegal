@@ -2,9 +2,8 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.registration.TemplateFunction
@@ -17,30 +16,29 @@ object TestFixtures {
     val databaseTableConceptName = ConceptName.of("DatabaseTable")
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
-    val tableNameFacetName = NameOfMandatoryTextFacet.of("TableName")
-    val tableFieldNameFacetName = NameOfMandatoryTextFacet.of("FieldName")
-    val tableFieldTypeFacetName = NameOfMandatoryTextFacet.of("FieldType")
-    val tableFieldLengthFacetName = NameOfMandatoryIntegerNumberFacet.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacetName = NameOfOptionalConceptReferenceFacet.of("FieldForeignKey")
-    val tableNameAndFieldNameFacetName = NameOfMandatoryTextFacet.of("TableNameAndFieldName")
-    val tableIndexNameFacetName = NameOfMandatoryTextFacet.of("TableIndexName")
+    val tableNameFacetName = ManualMandatoryTextFacetDescriptor.of("TableName")
+    val tableFieldNameFacetName = ManualMandatoryTextFacetDescriptor.of("FieldName")
+    val tableFieldTypeFacetName = ManualMandatoryTextFacetDescriptor.of("FieldType")
+    val tableFieldLengthFacetName = ManualMandatoryIntegerNumberFacetDescriptor.of("FieldLength")
+    val tableFieldForeignKeyConceptIdFacetName = ManualOptionalConceptReferenceFacetDescriptor.of("FieldForeignKey", databaseTableConceptName)
+    val tableNameAndFieldNameFacetName = CalculatedMandatoryTextFacetDescriptor.of("TableNameAndFieldName")
+    val tableIndexNameFacetName = ManualMandatoryTextFacetDescriptor.of("TableIndexName")
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl()): Schema {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetName = tableNameFacetName)
+                addTextFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addTextFacet(facetName = tableFieldNameFacetName)
-                    addTextFacet(facetName = tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addIntegerNumberFacet(facetName = tableFieldLengthFacetName)
-                    addCalculatedTextFacet(facetName = tableNameAndFieldNameFacetName
-                    ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
+                    addTextFacet(facetDescriptor = tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                    addIntegerNumberFacet(facetDescriptor = tableFieldLengthFacetName)
+                    addCalculatedTextFacet(facetDescriptor = tableNameAndFieldNameFacetName) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
-                    addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName, databaseTableConceptName)
+                    addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
-                        addTextFacet(tableIndexNameFacetName)
+                        addTextFacet(facetDescriptor = tableIndexNameFacetName)
                     }
 
 
@@ -106,7 +104,7 @@ object TestFixtures {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).withFacetValue(tableNameFacetName, TextFacetValue("Person")).attach()
+        ).addTextFacetValue(tableNameFacetName, "Person").attach()
 
         return modelInputDataCollector.provideModelInputData()
     }

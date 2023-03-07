@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.schema.Schema
 
 interface SchemaProvider {
 

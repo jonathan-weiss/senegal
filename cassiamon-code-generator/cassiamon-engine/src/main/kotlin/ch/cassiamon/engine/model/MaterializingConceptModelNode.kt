@@ -1,9 +1,8 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.types.FacetValue
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.model.facets.ManualFacetValueAccess
+import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeFacetValues
@@ -14,7 +13,7 @@ class MaterializingConceptModelNode(
     nodePool: ConceptModelNodePool,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
-    manualFacetValues: Map<FacetName, FacetValue>,
+    manualFacetValues: ManualFacetValueAccess,
 ) : ConceptModelNode {
 
     private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeFacetValues(

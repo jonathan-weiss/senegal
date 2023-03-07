@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.schema.types
+package ch.cassiamon.engine.schema
 
 import ch.cassiamon.pluginapi.ConceptName
 

@@ -1,8 +1,7 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 class RegistrationApiDefaultImpl: RegistrationApi, SchemaProvider, TemplateProvider {
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()

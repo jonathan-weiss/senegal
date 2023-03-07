@@ -5,7 +5,10 @@ import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
-import ch.cassiamon.engine.schema.types.*
+import ch.cassiamon.engine.schema.Concept
+import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.schema.facets.FacetType
+import ch.cassiamon.engine.schema.facets.ManualFacetSchema
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
@@ -26,47 +29,46 @@ object ConceptModelNodeValidator {
         }
 
         // iterate through all entry facet values to find invalid/obsolet ones
-        entry.facetValues.forEach { entryFacet ->
-            val entryFacetName = entryFacet.facetName
-            val entryFacetValue = entryFacet.facetValue
-            if(!schemaConcept.hasFacet(entryFacetName)) {
+        entry.facetValueAccess
+        entry.facetValueAccess.getFacetNames().forEach { facetName ->
+            if(!schemaConcept.hasFacet(facetName)) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = entry.conceptName,
                     conceptIdentifier = entry.conceptIdentifier,
-                    facetName = entryFacetName,
-                    reason = "Facet with facet name '${entryFacetName.name}' is not known by the schema. " +
-                            "Known facets are: [${schemaConcept.facets.joinToString { it.facetName.name }}]"
+                    facetName = facetName,
+                    reason = "Facet with facet name '${facetName.name}' is not known by the schema. " +
+                            "Known facets are: [${schemaConcept.facets.joinToString { it.facetDescriptor.facetName.name }}]"
                 )
             }
-            if(!schemaConcept.hasManualFacet(entryFacetName)) {
+            if(!schemaConcept.hasManualFacet(facetName)) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = entry.conceptName,
                     conceptIdentifier = entry.conceptIdentifier,
-                    facetName = entryFacetName,
-                    reason = "Facet with facet name '${entryFacetName.name}' is known by the schema but " +
+                    facetName = facetName,
+                    reason = "Facet with facet name '${facetName.name}' is known by the schema but " +
                             "a calculated facet. Data input is only allowed for manual facets." +
                             "Manual facets are: " +
-                            "[${schemaConcept.facets.filter { it.isManualFacet }.joinToString { it.facetName.name }}]"
+                            "[${schemaConcept.facets.filter { it.facetDescriptor.isManualFacetValue }.joinToString { it.facetDescriptor.facetName.name }}]"
                 )
             }
         }
 
         // iterate through all manual schema facets to validate
         schemaConcept.facets
-            .filterIsInstance<ManualFacet>()
+            .filterIsInstance<ManualFacetSchema<*,*>>()
             .forEach { manualSchemaFacet ->
                 val facetValue = null //entry.facetValuesMap[manualSchemaFacet.facetName]
                 validateAgainstSchemaFacet(manualSchemaFacet, facetValue, entry)
             }
     }
 
-    private fun validateAgainstSchemaFacet(schemaFacet: ManualFacet, facetValue: FacetValue?, entry: ModelConceptInputDataEntry) {
+    private fun validateAgainstSchemaFacet(schemaFacet: ManualFacetSchema<*,*>, facetValue: FacetValue?, entry: ModelConceptInputDataEntry) {
         if(facetValue == null) {
             throw InvalidFacetConfigurationModelException(
                 conceptName = entry.conceptName,
                 conceptIdentifier = entry.conceptIdentifier,
-                facetName = schemaFacet.facetName,
-                reason = "No data found for facet '${schemaFacet.facetName.name}'. "
+                facetName = schemaFacet.facetDescriptor.facetName,
+                reason = "No data found for facet '${schemaFacet.facetDescriptor.facetName.name}'. "
             )
         }
 
@@ -76,7 +78,7 @@ object ConceptModelNodeValidator {
                     throw InvalidFacetConfigurationModelException(
                         conceptName = entry.conceptName,
                         conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetName,
+                        facetName = schemaFacet.facetDescriptor.facetName,
                         reason = "Facet value is not of type '${FacetType.TEXT}'. "
                     )
 
@@ -87,7 +89,7 @@ object ConceptModelNodeValidator {
                     throw InvalidFacetConfigurationModelException(
                         conceptName = entry.conceptName,
                         conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetName,
+                        facetName = schemaFacet.facetDescriptor.facetName,
                         reason = "Facet value is not of type '${FacetType.INTEGER_NUMBER}'. "
                     )
 
@@ -98,7 +100,7 @@ object ConceptModelNodeValidator {
                     throw InvalidFacetConfigurationModelException(
                         conceptName = entry.conceptName,
                         conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetName,
+                        facetName = schemaFacet.facetDescriptor.facetName,
                         reason = "Facet value is not of type '${FacetType.CONCEPT_REFERENCE}'. "
                     )
                 }

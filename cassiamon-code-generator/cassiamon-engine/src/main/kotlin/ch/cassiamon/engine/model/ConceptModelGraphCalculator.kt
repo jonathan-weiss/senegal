@@ -2,12 +2,9 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputData
-import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
-import ch.cassiamon.engine.schema.types.Concept
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateConceptIdentifierFoundModelException
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateFacetNameFoundModelException
@@ -26,17 +23,17 @@ object ConceptModelGraphCalculator {
             checkForDuplicateFacetNames(inputDataEntry)
             ConceptModelNodeValidator.validateSingleEntry(schema, inputDataEntry)
 
-            val manualFacetValues = inputDataEntry.facetValues.associate { Pair(it.facetName, it.facetValue) }
-            val conceptModelNode = MaterializingConceptModelNode(
-                schema = schema,
-                infiniteLoopDetector = infiniteLoopDetector,
-                nodePool = nodePool,
-                conceptName = inputDataEntry.conceptName,
-                conceptIdentifier = inputDataEntry.conceptIdentifier,
-                manualFacetValues = manualFacetValues,
-            )
-
-            nodePool.addConceptModelNode(conceptModelNode)
+//            val manualFacetValues = inputDataEntry.facetValues.associate { Pair(it.facetDescriptor, it.facetValue) }
+//            val conceptModelNode = MaterializingConceptModelNode(
+//                schema = schema,
+//                infiniteLoopDetector = infiniteLoopDetector,
+//                nodePool = nodePool,
+//                conceptName = inputDataEntry.conceptName,
+//                conceptIdentifier = inputDataEntry.conceptIdentifier,
+//                manualFacetValues = manualFacetValues,
+//            )
+//
+//            nodePool.addConceptModelNode(conceptModelNode)
         }
 
 
@@ -68,7 +65,7 @@ object ConceptModelGraphCalculator {
     private fun checkForDuplicateFacetNames(inputDataEntry: ModelConceptInputDataEntry) {
         val alreadyUsedFacetNames = mutableSetOf<FacetName>()
 
-        inputDataEntry.facetValues.map { it.facetName }.forEach { facetName ->
+        inputDataEntry.facetValueAccess.getFacetNames().forEach { facetName ->
             if (alreadyUsedFacetNames.contains(facetName)) {
                 throw DuplicateFacetNameFoundModelException(inputDataEntry.conceptName, inputDataEntry.conceptIdentifier, facetName)
             }

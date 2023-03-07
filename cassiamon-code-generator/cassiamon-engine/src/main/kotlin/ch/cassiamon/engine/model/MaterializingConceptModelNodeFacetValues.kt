@@ -1,8 +1,10 @@
 package ch.cassiamon.engine.model
 
+import ch.cassiamon.engine.model.facets.ManualFacetValueAccess
 import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
-import ch.cassiamon.engine.schema.types.*
+import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.schema.facets.FacetSchema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNodeFacetValues
@@ -18,33 +20,33 @@ class MaterializingConceptModelNodeFacetValues(
     private val nodePool: ConceptModelNodePool,
     private val conceptName: ConceptName,
     private val conceptIdentifier: ConceptIdentifier,
-    private val manualFacetValues: Map<FacetName, FacetValue>,
+    private val manualFacetValues: ManualFacetValueAccess,
 ): ConceptModelNodeFacetValues {
 
-    private val schemaFacets: Map<FacetName, Facet> = schema.conceptByConceptName(conceptName).facets.associateBy { it.facetName }
+    private val schemaFacets: Map<FacetName, FacetSchema<*>> = schema.conceptByConceptName(conceptName).facets.associateBy { it.facetDescriptor.facetName }
     private val materializedFacetValues: MutableMap<FacetName, FacetValue> = mutableMapOf()
     private val materializedFacets: MutableSet<FacetName> = mutableSetOf() // separate set to support optional values with null
     override fun allFacetNames(): Set<FacetName> {
-        return schema.conceptByConceptName(conceptName).facets.map { it.facetName }.toSet()
+        return schema.conceptByConceptName(conceptName).facets.map { it.facetDescriptor.facetName }.toSet()
     }
 
-    override fun asString(facetName: NameOfMandatoryTextFacet): String {
-        if(materializedFacets.contains(facetName)) {
-            return mandatoryFacetValue(facetName, TextFacetValue::class.java).text
+    override fun asString(facetDescriptor: ManualMandatoryTextFacetDescriptor): String {
+        if(materializedFacets.contains(facetDescriptor.facetName)) {
+            return mandatoryFacetValue(facetDescriptor.facetName, TextFacetValue::class.java).text
         }
         TODO("Not yet implemented")
     }
 
-    override fun asString(facetName: NameOfOptionalTextFacet): String? {
-        if(materializedFacets.contains(facetName)) {
-            return optionalFacetValue(facetName, TextFacetValue::class.java)?.text
+    override fun asString(facetDescriptor: ManualOptionalTextFacetDescriptor): String? {
+        if(materializedFacets.contains(facetDescriptor.facetName)) {
+            return optionalFacetValue(facetDescriptor.facetName, TextFacetValue::class.java)?.text
         }
 
-        val schemaFacet = schemaFacetOf(facetName)
-        if(schemaFacet.isManualFacet) {
-            val manualFacetValue = manualFacetValues[facetName]
-                ?: if(schemaFacet.isMandatoryFacet) {
-                    throw MissingFacetValueModelException(conceptName, conceptIdentifier, facetName)
+        val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
+        if(schemaFacet.facetDescriptor.isManualFacetValue) {
+            val manualFacetValue = manualFacetValues.getTextFacetValue(facetDescriptor)
+                ?: if(schemaFacet.facetDescriptor.isMandatoryFacetValue) {
+                    throw MissingFacetValueModelException(conceptName, conceptIdentifier, facetDescriptor.facetName)
                 } else {
                     return null
                 }
@@ -57,29 +59,29 @@ class MaterializingConceptModelNodeFacetValues(
         TODO("Not yet implemented")
     }
 
-    private fun checkFacetNameTypeValid(facetName: FacetName) {
-        val schemaFacet = schemaFacetOf(facetName)
+    private fun checkFacetNameTypeValid(facetDescriptor: FacetDescriptor<*>) {
+        val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
 
-        if(schemaFacet.isMandatoryFacet != facetName.isMandatoryFacetValue) {
-            throw InvalidFacetConfigurationModelException(conceptName, conceptIdentifier, facetName, "Facet value is mandatory.")
+        if(schemaFacet.facetDescriptor.isMandatoryFacetValue != facetDescriptor.isMandatoryFacetValue) {
+            throw InvalidFacetConfigurationModelException(conceptName, conceptIdentifier, facetDescriptor.facetName, "Facet value is mandatory.")
         }
 
 
     }
 
-    override fun asInt(facetName: NameOfMandatoryIntegerNumberFacet): Int {
+    override fun asInt(facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor): Int {
         TODO("Not yet implemented")
     }
 
-    override fun asInt(facetName: NameOfOptionalIntegerNumberFacet): Int? {
+    override fun asInt(facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor): Int? {
         TODO("Not yet implemented")
     }
 
-    override fun asReferencedConceptModelNode(facetName: NameOfMandatoryConceptReferenceFacet): ConceptModelNode {
+    override fun asReferencedConceptModelNode(facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor): ConceptModelNode {
         TODO("Not yet implemented")
     }
 
-    override fun asReferencedConceptModelNode(facetName: NameOfOptionalConceptReferenceFacet): ConceptModelNode? {
+    override fun asReferencedConceptModelNode(facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor): ConceptModelNode? {
         TODO("Not yet implemented")
     }
 
@@ -87,7 +89,7 @@ class MaterializingConceptModelNodeFacetValues(
         TODO("Not yet implemented")
     }
 
-    private fun schemaFacetOf(facetName: FacetName): Facet {
+    private fun schemaFacetOf(facetName: FacetName): FacetSchema<*> {
         return schemaFacets[facetName] ?: throw UnknownFacetNameFoundModelException(conceptName, conceptIdentifier, facetName)
     }
     private inline fun <reified T: FacetValue> optionalFacetValue(facetName: FacetName, clazz: Class<T>): T? {

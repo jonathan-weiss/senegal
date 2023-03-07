@@ -1,10 +1,10 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.schema.types.Concept
-import ch.cassiamon.engine.schema.types.Facet
-import ch.cassiamon.engine.schema.types.FacetType
-import ch.cassiamon.engine.schema.types.Schema
+import ch.cassiamon.engine.schema.facets.FacetSchema
+import ch.cassiamon.engine.schema.Concept
+import ch.cassiamon.engine.schema.facets.FacetType
+import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.registration.exceptions.*
@@ -34,7 +34,7 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetName = tableNameFacetName)
+                addTextFacet(facetDescriptor = tableNameFacetName)
             }
         }
 
@@ -46,8 +46,8 @@ class SchemaRegistrationApiTest {
         assertEquals(this.databaseTableConceptName.name, firstConcept.conceptName.name)
 
         assertEquals(1, firstConcept.facets.size)
-        val firstFacet = findFacet(schema, databaseTableConceptName, tableNameFacetName)
-        assertEquals(this.tableNameFacetName.name, firstFacet.facetName.name)
+        val firstFacet = findFacet(schema, databaseTableConceptName, tableNameFacetName.facetName)
+        assertEquals(this.tableNameFacetName.facetName, firstFacet.facetDescriptor.facetName)
         assertEquals(FacetType.TEXT, firstFacet.facetType)
     }
 
@@ -59,14 +59,14 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetName = tableNameFacetName)
+                addTextFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
                     addTextFacet(tableFieldNameFacetName)
                     addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
                     addIntegerNumberFacet(tableFieldLengthFacetName)
                     addCalculatedTextFacet(
-                        facetName = tableNameAndFieldNameFacetName
+                        facetDescriptor = tableNameAndFieldNameFacetName
                     ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
                 }
@@ -81,13 +81,13 @@ class SchemaRegistrationApiTest {
         val fieldConcept = findConcept(schema, databaseTableFieldConceptName )
 
         assertEquals(1, tableConcept.facets.size)
-        val tableNameFacet = findFacet(schema, databaseTableConceptName, tableNameFacetName)
-        assertEquals(this.tableNameFacetName.name, tableNameFacet.facetName.name)
+        val tableNameFacet = findFacet(schema, databaseTableConceptName, tableNameFacetName.facetName)
+        assertEquals(this.tableNameFacetName.facetName.name, tableNameFacet.facetDescriptor.facetName.name)
         assertEquals(FacetType.TEXT, tableNameFacet.facetType)
 
         assertEquals(4, fieldConcept.facets.size)
-        val tableNameAndFieldFacet = findFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacetName)
-        assertEquals(this.tableNameAndFieldNameFacetName.name, tableNameAndFieldFacet.facetName.name)
+        val tableNameAndFieldFacet = findFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacetName.facetName)
+        assertEquals(this.tableNameAndFieldNameFacetName.facetName.name, tableNameAndFieldFacet.facetDescriptor.facetName.name)
         assertEquals(FacetType.TEXT, tableNameAndFieldFacet.facetType)
     }
 
@@ -103,15 +103,15 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName) {
-                    addTextFacet(facetName = tableNameFacetName)
-                    addTextFacet(facetName = tableNameFacetName)
+                    addTextFacet(facetDescriptor = tableNameFacetName)
+                    addTextFacet(facetDescriptor = tableNameFacetName)
                 }
             }
 
         }
 
         assertEquals(thrown.concept, databaseTableConceptName)
-        assertEquals(thrown.facet, tableNameFacetName)
+        assertEquals(thrown.facetName, tableNameFacetName)
     }
 
     @Test
@@ -196,8 +196,8 @@ class SchemaRegistrationApiTest {
         return schema.conceptByConceptName(conceptName)
     }
 
-    private fun findFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): Facet {
-        return findConcept(schema, conceptName).facets.firstOrNull { it.facetName == facetName }
+    private fun findFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): FacetSchema<*> {
+        return findConcept(schema, conceptName).facets.firstOrNull { it.facetDescriptor.facetName == facetName }
             ?: fail("No facet found for $conceptName and $facetName.")
     }
 
@@ -210,15 +210,15 @@ class SchemaRegistrationApiTest {
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName)
             {
-                addTextFacet(facetName = tableNameFacetName)
+                addTextFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName)
                 {
-                    addTextFacet(facetName = tableFieldNameFacetName)
+                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
 
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName)
                     {
-                        addTextFacet(facetName = tableIndexNameFacetName)
+                        addTextFacet(facetDescriptor = tableIndexNameFacetName)
                     }
 
                 }
@@ -249,10 +249,10 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(databaseTableConceptName) {
-                    addTextFacet(facetName = tableFieldNameFacetName)
+                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addTextFacet(facetName = tableFieldNameFacetName)
+                        addTextFacet(facetDescriptor = tableFieldNameFacetName)
 
                         newRootConcept(databaseTableConceptName) {
 
@@ -297,14 +297,14 @@ class SchemaRegistrationApiTest {
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName)
                 {
-                    addTextFacet(facetName = tableNameFacetName)
+                    addTextFacet(facetDescriptor = tableNameFacetName)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addTextFacet(facetName = tableFieldNameFacetName)
+                        addTextFacet(facetDescriptor = tableFieldNameFacetName)
 
                         newChildConcept(conceptName = databaseTableConceptName)
                         {
-                            addTextFacet(facetName = tableIndexNameFacetName)
+                            addTextFacet(facetDescriptor = tableIndexNameFacetName)
                         }
                     }
                 }

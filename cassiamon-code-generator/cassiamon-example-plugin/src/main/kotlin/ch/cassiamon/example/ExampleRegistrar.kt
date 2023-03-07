@@ -1,7 +1,7 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.FacetDescriptor
 import ch.cassiamon.pluginapi.ProjectName
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.registration.RegistrationApi
@@ -18,18 +18,18 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             newRootConcept(ConceptName.of("TestConcept")) {
                 // and more stuff
                 addConceptReferenceFacet(
-                    FacetName.of("TestRef"),
+                    FacetDescriptor.of("TestRef"),
                     ConceptName.of("TargetTestConcept"))
 
                 addIntegerNumberFacet(
-                    FacetName.of("TestInt"),
-                    setOf(FacetName.of("TestRef"))) {
+                    FacetDescriptor.of("TestInt"),
+                    setOf(FacetDescriptor.of("TestRef"))) {
                         conceptNode, value -> value + 42 // completely stupid
                 }
 
-                addCalculatedTextFacet(FacetName.of("TestCalcString"),
-                    setOf(FacetName.of("TestInt"))) { conceptNode ->
-                        val testIntValue = conceptNode.facetValues.asInt(FacetName.of("TestInt"))
+                addCalculatedTextFacet(FacetDescriptor.of("TestCalcString"),
+                    setOf(FacetDescriptor.of("TestInt"))) { conceptNode ->
+                        val testIntValue = conceptNode.facetValues.asInt(FacetDescriptor.of("TestInt"))
                         return@addCalculatedTextFacet "# is $testIntValue"
                 }
             }
