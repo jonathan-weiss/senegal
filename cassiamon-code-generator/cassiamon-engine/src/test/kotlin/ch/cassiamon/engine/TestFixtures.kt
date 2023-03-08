@@ -16,29 +16,29 @@ object TestFixtures {
     val databaseTableConceptName = ConceptName.of("DatabaseTable")
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
-    val tableNameFacetName = ManualMandatoryTextFacetDescriptor.of("TableName")
-    val tableFieldNameFacetName = ManualMandatoryTextFacetDescriptor.of("FieldName")
-    val tableFieldTypeFacetName = ManualMandatoryTextFacetDescriptor.of("FieldType")
-    val tableFieldLengthFacetName = ManualMandatoryIntegerNumberFacetDescriptor.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacetName = ManualOptionalConceptReferenceFacetDescriptor.of("FieldForeignKey", databaseTableConceptName)
-    val tableNameAndFieldNameFacetName = CalculatedMandatoryTextFacetDescriptor.of("TableNameAndFieldName")
-    val tableIndexNameFacetName = ManualMandatoryTextFacetDescriptor.of("TableIndexName")
+    val tableNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("TableName")
+    val tableFieldNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("FieldName")
+    val tableFieldTypeFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("FieldType")
+    val tableFieldLengthFacetDescriptor = ManualMandatoryIntegerNumberFacetDescriptor.of("FieldLength")
+    val tableFieldForeignKeyConceptIdFacetDescriptor = ManualOptionalConceptReferenceFacetDescriptor.of("FieldForeignKey", databaseTableConceptName)
+    val tableNameAndFieldNameFacetDescriptor = CalculatedMandatoryTextFacetDescriptor.of("TableNameAndFieldName")
+    val tableIndexNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("TableIndexName")
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl()): Schema {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addFacet(facetDescriptor = tableNameFacetName)
+                addFacet(facetDescriptor = tableNameFacetDescriptor)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addFacet(facetDescriptor = tableFieldNameFacetName)
-                    addFacet(facetDescriptor = tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addFacet(facetDescriptor = tableFieldLengthFacetName)
-                    addFacet(facetDescriptor = tableNameAndFieldNameFacetName) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
+                    addFacet(facetDescriptor = tableFieldTypeFacetDescriptor) // TODO use enumeration as soon as available
+                    addFacet(facetDescriptor = tableFieldLengthFacetDescriptor)
+                    addFacet(facetDescriptor = tableNameAndFieldNameFacetDescriptor) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
-                    addFacet(tableFieldForeignKeyConceptIdFacetName)
+                    addFacet(tableFieldForeignKeyConceptIdFacetDescriptor)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
-                        addFacet(facetDescriptor = tableIndexNameFacetName)
+                        addFacet(facetDescriptor = tableIndexNameFacetDescriptor)
                     }
 
 
@@ -58,7 +58,7 @@ object TestFixtures {
                     .conceptModelNodesByConceptName(databaseTableConceptName)
 
                 val tagetGeneratedFiles = templateNodes
-                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.asString(tableNameFacetName)}.create.sql"), templateNodes) }
+                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.asString(tableNameFacetDescriptor)}.create.sql"), templateNodes) }
                     .toSet()
 
 
@@ -66,7 +66,7 @@ object TestFixtures {
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.asString(tableNameFacetName)} ;
+                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.asString(tableNameFacetDescriptor)} ;
                            --
                         """.trimIndent()
                     )
@@ -84,7 +84,7 @@ object TestFixtures {
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
                            ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.asString(
-                            tableNameFacetName)}" }}
+                            tableNameFacetDescriptor)}" }}
                            --
                         """.trimIndent()
                     )
@@ -104,7 +104,7 @@ object TestFixtures {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetDescriptor, "Person").attach()
 
         return modelInputDataCollector.provideModelInputData()
     }
