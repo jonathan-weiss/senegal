@@ -1,13 +1,8 @@
 package ch.cassiamon.engine.model.validator
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
-import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
-import ch.cassiamon.engine.model.types.FacetValue
-import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
-import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.engine.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.FacetType
 import ch.cassiamon.engine.schema.facets.ManualFacetSchema
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
@@ -62,7 +57,7 @@ object ConceptModelNodeValidator {
             }
     }
 
-    private fun validateAgainstSchemaFacet(schemaFacet: ManualFacetSchema<*,*>, facetValue: FacetValue?, entry: ModelConceptInputDataEntry) {
+    private fun validateAgainstSchemaFacet(schemaFacet: ManualFacetSchema<*,*>, facetValue: Any?, entry: ModelConceptInputDataEntry) {
         if(facetValue == null) {
             throw InvalidFacetConfigurationModelException(
                 conceptName = entry.conceptName,
@@ -70,41 +65,6 @@ object ConceptModelNodeValidator {
                 facetName = schemaFacet.facetDescriptor.facetName,
                 reason = "No data found for facet '${schemaFacet.facetDescriptor.facetName.name}'. "
             )
-        }
-
-        when(facetValue) {
-            is TextFacetValue -> {
-                if(schemaFacet.facetType != FacetType.TEXT) {
-                    throw InvalidFacetConfigurationModelException(
-                        conceptName = entry.conceptName,
-                        conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetDescriptor.facetName,
-                        reason = "Facet value is not of type '${FacetType.TEXT}'. "
-                    )
-
-                }
-            }
-            is IntegerNumberFacetValue -> {
-                if(schemaFacet.facetType != FacetType.INTEGER_NUMBER) {
-                    throw InvalidFacetConfigurationModelException(
-                        conceptName = entry.conceptName,
-                        conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetDescriptor.facetName,
-                        reason = "Facet value is not of type '${FacetType.INTEGER_NUMBER}'. "
-                    )
-
-                }
-            }
-            is ConceptReferenceFacetValue -> {
-                if(schemaFacet.facetType != FacetType.CONCEPT_REFERENCE) {
-                    throw InvalidFacetConfigurationModelException(
-                        conceptName = entry.conceptName,
-                        conceptIdentifier = entry.conceptIdentifier,
-                        facetName = schemaFacet.facetDescriptor.facetName,
-                        reason = "Facet value is not of type '${FacetType.CONCEPT_REFERENCE}'. "
-                    )
-                }
-            }
         }
     }
 
