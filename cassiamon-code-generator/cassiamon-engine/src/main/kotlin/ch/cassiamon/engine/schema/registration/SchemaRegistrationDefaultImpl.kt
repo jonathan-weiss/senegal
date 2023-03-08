@@ -189,7 +189,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
     }
 
     private fun facetExists(concept: MutableConceptSchema, facetDescriptor: FacetDescriptor<*>): Boolean {
-        return concept.mutableFacets.map { it.facetDescriptor.facetName }.contains(facetDescriptor.facetName)
+        return concept.hasFacet(facetDescriptor.facetName)
     }
 
     private fun prepareConceptInCreation(conceptName: ConceptName): MutableConceptSchema {
