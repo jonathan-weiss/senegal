@@ -1,36 +1,41 @@
 package ch.cassiamon.example
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetDescriptor
-import ch.cassiamon.pluginapi.ProjectName
+import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
+    val testConceptName = ConceptName.of("TestConcept")
+    val targetTestConceptName = ConceptName.of("TargetTestConcept")
+
+    val testRefFacet = ManualMandatoryConceptReferenceFacetDescriptor.of("TestRef", targetTestConceptName)
+    val testCalculatedIntFacet = CalculatedMandatoryIntegerNumberFacetDescriptor.of("TestInt")
+    val testCalculatedStringFacet = CalculatedMandatoryTextFacetDescriptor.of("TestCalcString")
+
+
+
     override fun configure(registrationApi: RegistrationApi) {
         println("In the $projectName registrar")
         registrationApi.configureSchema {
-            newRootConcept(ConceptName.of("TestConcept")) {
+            newRootConcept(testConceptName) {
                 // and more stuff
-                addConceptReferenceFacet(
-                    FacetDescriptor.of("TestRef"),
-                    ConceptName.of("TargetTestConcept"))
+                addFacet(testRefFacet)
 
-                addIntegerNumberFacet(
-                    FacetDescriptor.of("TestInt"),
-                    setOf(FacetDescriptor.of("TestRef"))) {
-                        conceptNode, value -> value + 42 // completely stupid
+                addFacet(testCalculatedIntFacet) {
+                    conceptModelNode -> conceptModelNode.facetValues
+                        .asReferencedConceptModelNode(testRefFacet)
+                        .conceptIdentifier.hashCode() // completely stupid
                 }
 
-                addCalculatedTextFacet(FacetDescriptor.of("TestCalcString"),
-                    setOf(FacetDescriptor.of("TestInt"))) { conceptNode ->
-                        val testIntValue = conceptNode.facetValues.asInt(FacetDescriptor.of("TestInt"))
-                        return@addCalculatedTextFacet "# is $testIntValue"
+                addFacet(testCalculatedStringFacet) { conceptModelNode ->
+                    val testCalculatedIntValue = conceptModelNode.facetValues.asInt(testCalculatedIntFacet).toString()
+                    return@addFacet "# is $testCalculatedIntValue"
                 }
             }
         }
@@ -39,10 +44,12 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             // test a file generation for all nodes
             newTemplate { templateNodesProvider ->
 
-                val targetFiles = templateNodesProvider
-                    .targetGeneratedFileForEachTemplateNode(ConceptName.of("TestConcept")) { templateNode ->
-                    Paths.get("$templateNode.conceptIdentifier.code-xyz.json")
-                }
+//                val targetFiles = templateNodesProvider
+//                    .targetGeneratedFileForEachTemplateNode(ConceptName.of("TestConcept")) { templateNode ->
+//                    Paths.get("$templateNode.conceptIdentifier.code-xyz.json")
+//                }
+
+                val targetFiles = emptySet<TargetGeneratedFileWithModel>()
 
                 return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
