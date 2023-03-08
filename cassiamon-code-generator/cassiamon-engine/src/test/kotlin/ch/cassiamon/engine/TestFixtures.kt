@@ -66,7 +66,7 @@ object TestFixtures {
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.asString(tableNameFacetDescriptor)} ;
+                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.facetValue(tableNameFacetDescriptor)} ;
                            --
                         """.trimIndent()
                     )
@@ -83,7 +83,7 @@ object TestFixtures {
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.asString(
+                           ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.facetValue(
                             tableNameFacetDescriptor)}" }}
                            --
                         """.trimIndent()

@@ -28,34 +28,24 @@ class MaterializingConceptModelNodeFacetValues(
         return schema.conceptByConceptName(conceptName).facets.map { it.facetDescriptor.facetName }.toSet()
     }
 
-    override fun asString(facetDescriptor: ManualMandatoryTextFacetDescriptor): String {
-        if(materializedFacets.contains(facetDescriptor.facetName)) {
-            return mandatoryFacetValue(facetDescriptor.facetName, String::class.java)
-        }
-        TODO("Not yet implemented")
+    override fun <T> facetValue(facetDescriptor: FacetDescriptor<T>): T {
+//        if(materializedFacets.contains(facetDescriptor.facetName)) {
+//            return optionalFacetValue(facetDescriptor.facetName, String::class.java)
+//        }
+//
+//        val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
+//        if(schemaFacet.facetDescriptor.isManualFacetValue) {
+//            val manualFacetValue = manualFacetValues.getTextFacetValue(facetDescriptor)
+//                ?: if(schemaFacet.facetDescriptor.isMandatoryFacetValue) {
+//                    throw MissingFacetValueModelException(conceptName, conceptIdentifier, facetDescriptor.facetName)
+//                } else {
+//                    return null
+//                }
+//        }
+
+        TODO("Not implemented, yet")
     }
 
-    override fun asString(facetDescriptor: ManualOptionalTextFacetDescriptor): String? {
-        if(materializedFacets.contains(facetDescriptor.facetName)) {
-            return optionalFacetValue(facetDescriptor.facetName, String::class.java)
-        }
-
-        val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
-        if(schemaFacet.facetDescriptor.isManualFacetValue) {
-            val manualFacetValue = manualFacetValues.getTextFacetValue(facetDescriptor)
-                ?: if(schemaFacet.facetDescriptor.isMandatoryFacetValue) {
-                    throw MissingFacetValueModelException(conceptName, conceptIdentifier, facetDescriptor.facetName)
-                } else {
-                    return null
-                }
-
-
-
-        }
-
-
-        TODO("Not yet implemented")
-    }
 
     private fun checkFacetNameTypeValid(facetDescriptor: FacetDescriptor<*>) {
         val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
@@ -67,49 +57,10 @@ class MaterializingConceptModelNodeFacetValues(
 
     }
 
-    override fun asInt(facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun asInt(facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor): Int? {
-        TODO("Not yet implemented")
-    }
-
-    override fun asReferencedConceptModelNode(facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor): ConceptModelNode {
-        TODO("Not yet implemented")
-    }
-
-    override fun asReferencedConceptModelNode(facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor): ConceptModelNode? {
-        TODO("Not yet implemented")
-    }
-
-    override fun asString(facetDescriptor: CalculatedMandatoryTextFacetDescriptor): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun asString(facetDescriptor: CalculatedOptionalTextFacetDescriptor): String? {
-        TODO("Not yet implemented")
-    }
-
-    override fun asInt(facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun asInt(facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor): Int? {
-        TODO("Not yet implemented")
-    }
-
-    override fun asReferencedConceptModelNode(facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor): ConceptModelNode {
-        TODO("Not yet implemented")
-    }
-
-    override fun asReferencedConceptModelNode(facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor): ConceptModelNode? {
-        TODO("Not yet implemented")
-    }
-
     override fun get(key: String): Any? {
         TODO("Not yet implemented")
     }
+
 
     private fun schemaFacetOf(facetName: FacetName): FacetSchema<*> {
         return schemaFacets[facetName] ?: throw UnknownFacetNameFoundModelException(conceptName, conceptIdentifier, facetName)

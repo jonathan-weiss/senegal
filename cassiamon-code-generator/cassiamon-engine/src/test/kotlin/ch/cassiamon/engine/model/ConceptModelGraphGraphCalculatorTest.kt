@@ -40,7 +40,7 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(1, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
         val personTemplateModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).first()
         assertEquals(personTableId, personTemplateModelNode.conceptIdentifier)
-        assertEquals("Person", personTemplateModelNode.facetValues.asString(tableNameFacetName))
+        assertEquals("Person", personTemplateModelNode.facetValues.facetValue(tableNameFacetName))
     }
 
     @Disabled
@@ -75,7 +75,7 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(2, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
 
         val fkField = conceptModelGraph.conceptModelNodeByConceptIdentifier(addressPersonForeignKeyFieldId)
-        val referencedConcept = fkField.facetValues.asReferencedConceptModelNode(tableFieldForeignKeyConceptIdFacetName)
+        val referencedConcept = fkField.facetValues.facetValue(tableFieldForeignKeyConceptIdFacetName)
         assertNotNull(referencedConcept)
         assertEquals(personTableId, referencedConcept?.conceptIdentifier)
     }

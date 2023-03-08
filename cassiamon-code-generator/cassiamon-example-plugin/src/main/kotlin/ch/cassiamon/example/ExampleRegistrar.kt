@@ -15,7 +15,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
     val targetTestConceptName = ConceptName.of("TargetTestConcept")
 
     val testRefFacet = ManualMandatoryConceptReferenceFacetDescriptor.of("TestRef", targetTestConceptName)
-    val testCalculatedIntFacet = CalculatedMandatoryIntegerNumberFacetDescriptor.of("TestInt")
+    val testCalculatedIntFacet = CalculatedOptionalIntegerNumberFacetDescriptor.of("TestInt")
     val testCalculatedStringFacet = CalculatedMandatoryTextFacetDescriptor.of("TestCalcString")
 
 
@@ -29,12 +29,12 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
                 addFacet(testCalculatedIntFacet) {
                     conceptModelNode -> conceptModelNode.facetValues
-                        .asReferencedConceptModelNode(testRefFacet)
+                        .facetValue(testRefFacet)
                         .conceptIdentifier.hashCode() // completely stupid
                 }
 
                 addFacet(testCalculatedStringFacet) { conceptModelNode ->
-                    val testCalculatedIntValue = conceptModelNode.facetValues.asInt(testCalculatedIntFacet).toString()
+                    val testCalculatedIntValue = conceptModelNode.facetValues.facetValue(testCalculatedIntFacet)
                     return@addFacet "# is $testCalculatedIntValue"
                 }
             }
