@@ -34,7 +34,7 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetDescriptor = tableNameFacetName)
+                addFacet(facetDescriptor = tableNameFacetName)
             }
         }
 
@@ -59,13 +59,13 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetDescriptor = tableNameFacetName)
+                addFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addTextFacet(tableFieldNameFacetName)
-                    addTextFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addIntegerNumberFacet(tableFieldLengthFacetName)
-                    addCalculatedTextFacet(
+                    addFacet(tableFieldNameFacetName)
+                    addFacet(tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                    addFacet(tableFieldLengthFacetName)
+                    addFacet(
                         facetDescriptor = tableNameAndFieldNameFacetName
                     ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
@@ -103,8 +103,8 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName) {
-                    addTextFacet(facetDescriptor = tableNameFacetName)
-                    addTextFacet(facetDescriptor = tableNameFacetName)
+                    addFacet(facetDescriptor = tableNameFacetName)
+                    addFacet(facetDescriptor = tableNameFacetName)
                 }
             }
 
@@ -210,15 +210,15 @@ class SchemaRegistrationApiTest {
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName)
             {
-                addTextFacet(facetDescriptor = tableNameFacetName)
+                addFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName)
                 {
-                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
+                    addFacet(facetDescriptor = tableFieldNameFacetName)
 
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName)
                     {
-                        addTextFacet(facetDescriptor = tableIndexNameFacetName)
+                        addFacet(facetDescriptor = tableIndexNameFacetName)
                     }
 
                 }
@@ -249,10 +249,10 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(databaseTableConceptName) {
-                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
+                    addFacet(facetDescriptor = tableFieldNameFacetName)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addTextFacet(facetDescriptor = tableFieldNameFacetName)
+                        addFacet(facetDescriptor = tableFieldNameFacetName)
 
                         newRootConcept(databaseTableConceptName) {
 
@@ -297,14 +297,14 @@ class SchemaRegistrationApiTest {
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName)
                 {
-                    addTextFacet(facetDescriptor = tableNameFacetName)
+                    addFacet(facetDescriptor = tableNameFacetName)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addTextFacet(facetDescriptor = tableFieldNameFacetName)
+                        addFacet(facetDescriptor = tableFieldNameFacetName)
 
                         newChildConcept(conceptName = databaseTableConceptName)
                         {
-                            addTextFacet(facetDescriptor = tableIndexNameFacetName)
+                            addFacet(facetDescriptor = tableIndexNameFacetName)
                         }
                     }
                 }

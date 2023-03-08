@@ -36,7 +36,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndCommitConcept()
     }
 
-    override fun addTextFacet(
+    override fun addFacet(
         facetDescriptor: ManualMandatoryTextFacetDescriptor
     ) {
         val concept = currentConceptInCreation()
@@ -47,7 +47,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addTextFacet(
+    override fun addFacet(
         facetDescriptor: ManualOptionalTextFacetDescriptor
     ) {
         val concept = currentConceptInCreation()
@@ -58,7 +58,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedTextFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedMandatoryTextFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> String
     ) {
@@ -71,7 +71,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedTextFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedOptionalTextFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> String?
     ) {
@@ -84,7 +84,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addIntegerNumberFacet(
+    override fun addFacet(
         facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor
     ) {
         val concept = currentConceptInCreation()
@@ -95,7 +95,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addIntegerNumberFacet(
+    override fun addFacet(
         facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor
     ) {
         val concept = currentConceptInCreation()
@@ -106,7 +106,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedIntegerNumberFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> Int
     ) {
@@ -119,7 +119,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedIntegerNumberFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> Int?
     ) {
@@ -132,7 +132,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addConceptReferenceFacet(
+    override fun addFacet(
         facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor,
     ) {
         val concept = currentConceptInCreation()
@@ -143,7 +143,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addConceptReferenceFacet(
+    override fun addFacet(
         facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor,
     ) {
         val concept = currentConceptInCreation()
@@ -154,7 +154,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedConceptReferenceFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> ConceptModelNode
     ) {
@@ -167,7 +167,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    override fun addCalculatedConceptReferenceFacet(
+    override fun addFacet(
         facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor,
         calculationFunction: (ConceptModelNode) -> ConceptModelNode?
     ) {

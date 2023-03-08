@@ -28,17 +28,17 @@ object TestFixtures {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addTextFacet(facetDescriptor = tableNameFacetName)
+                addFacet(facetDescriptor = tableNameFacetName)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addTextFacet(facetDescriptor = tableFieldNameFacetName)
-                    addTextFacet(facetDescriptor = tableFieldTypeFacetName) // TODO use enumeration as soon as available
-                    addIntegerNumberFacet(facetDescriptor = tableFieldLengthFacetName)
-                    addCalculatedTextFacet(facetDescriptor = tableNameAndFieldNameFacetName) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(facetDescriptor = tableFieldNameFacetName)
+                    addFacet(facetDescriptor = tableFieldTypeFacetName) // TODO use enumeration as soon as available
+                    addFacet(facetDescriptor = tableFieldLengthFacetName)
+                    addFacet(facetDescriptor = tableNameAndFieldNameFacetName) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
-                    addConceptReferenceFacet(tableFieldForeignKeyConceptIdFacetName)
+                    addFacet(tableFieldForeignKeyConceptIdFacetName)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
-                        addTextFacet(facetDescriptor = tableIndexNameFacetName)
+                        addFacet(facetDescriptor = tableIndexNameFacetName)
                     }
 
 

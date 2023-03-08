@@ -1,63 +1,62 @@
 package ch.cassiamon.pluginapi.registration
 
 import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 
 interface ConceptRegistration {
     fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))
 
-    fun addTextFacet(
+    fun addFacet(
         facetDescriptor: ManualMandatoryTextFacetDescriptor
     )
 
-    fun addTextFacet(
+    fun addFacet(
         facetDescriptor: ManualOptionalTextFacetDescriptor
     )
 
 
-    fun addCalculatedTextFacet(
+    fun addFacet(
         facetDescriptor: CalculatedMandatoryTextFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> String,
     )
 
-    fun addCalculatedTextFacet(
+    fun addFacet(
         facetDescriptor: CalculatedOptionalTextFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> String?,
     )
 
 
-    fun addIntegerNumberFacet(
+    fun addFacet(
         facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor
     )
 
-    fun addIntegerNumberFacet(
+    fun addFacet(
         facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor
     )
 
-    fun addCalculatedIntegerNumberFacet(
+    fun addFacet(
         facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> Int,
     )
-    fun addCalculatedIntegerNumberFacet(
+    fun addFacet(
         facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> Int?,
     )
 
-    fun addConceptReferenceFacet(
+    fun addFacet(
         facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor,
     )
 
-    fun addConceptReferenceFacet(
+    fun addFacet(
         facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor,
     )
 
-    fun addCalculatedConceptReferenceFacet(
+    fun addFacet(
         facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptModelNode,
     )
 
-    fun addCalculatedConceptReferenceFacet(
+    fun addFacet(
         facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor,
         calculationFunction: (conceptModelNode: ConceptModelNode) -> ConceptModelNode?,
     )
