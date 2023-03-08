@@ -2,7 +2,7 @@ package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.schema.facets.FacetSchema
-import ch.cassiamon.engine.schema.Concept
+import ch.cassiamon.engine.schema.ConceptSchema
 import ch.cassiamon.engine.schema.facets.FacetType
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
@@ -192,7 +192,7 @@ class SchemaRegistrationApiTest {
 //            findFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacetName).facetDependencies)
     }
 
-    private fun findConcept(schema: Schema, conceptName: ConceptName): Concept {
+    private fun findConcept(schema: Schema, conceptName: ConceptName): ConceptSchema {
         return schema.conceptByConceptName(conceptName)
     }
 

@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 
 
-interface Concept {
+interface ConceptSchema {
     val conceptName: ConceptName
     val parentConceptName: ConceptName?
     val facets: List<FacetSchema<*>>

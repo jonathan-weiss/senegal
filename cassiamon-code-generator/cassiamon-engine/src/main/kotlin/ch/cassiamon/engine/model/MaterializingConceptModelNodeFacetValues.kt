@@ -85,6 +85,30 @@ class MaterializingConceptModelNodeFacetValues(
         TODO("Not yet implemented")
     }
 
+    override fun asString(facetDescriptor: CalculatedMandatoryTextFacetDescriptor): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun asString(facetDescriptor: CalculatedOptionalTextFacetDescriptor): String? {
+        TODO("Not yet implemented")
+    }
+
+    override fun asInt(facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun asInt(facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor): Int? {
+        TODO("Not yet implemented")
+    }
+
+    override fun asReferencedConceptModelNode(facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor): ConceptModelNode {
+        TODO("Not yet implemented")
+    }
+
+    override fun asReferencedConceptModelNode(facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor): ConceptModelNode? {
+        TODO("Not yet implemented")
+    }
+
     override fun get(key: String): Any? {
         TODO("Not yet implemented")
     }

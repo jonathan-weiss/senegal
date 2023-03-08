@@ -10,8 +10,8 @@ import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
 
 class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, SchemaProvider {
-    private val committedConcepts: MutableSet<MutableConcept> = mutableSetOf()
-    private val conceptsInCreationStack: MutableList<MutableConcept> = mutableListOf()
+    private val committedConcepts: MutableSet<MutableConceptSchema> = mutableSetOf()
+    private val conceptsInCreationStack: MutableList<MutableConceptSchema> = mutableListOf()
 
     override fun provideSchema(): Schema {
         return Schema(concepts = committedConcepts.associateBy { it.conceptName })
@@ -180,7 +180,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachFacet(concept, facet)
     }
 
-    private fun validateAndAttachFacet(concept: MutableConcept, facet: FacetSchema<*>) {
+    private fun validateAndAttachFacet(concept: MutableConceptSchema, facet: FacetSchema<*>) {
         if(facetExists(concept, facet.facetDescriptor)) {
             throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.facetDescriptor.facetName)
         }
@@ -188,14 +188,14 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         concept.mutableFacets.add(facet)
     }
 
-    private fun facetExists(concept: MutableConcept, facetDescriptor: FacetDescriptor<*>): Boolean {
+    private fun facetExists(concept: MutableConceptSchema, facetDescriptor: FacetDescriptor<*>): Boolean {
         return concept.mutableFacets.map { it.facetDescriptor.facetName }.contains(facetDescriptor.facetName)
     }
 
-    private fun prepareConceptInCreation(conceptName: ConceptName): MutableConcept {
+    private fun prepareConceptInCreation(conceptName: ConceptName): MutableConceptSchema {
 
         val parentConceptName: ConceptName? = if(hasCurrentConceptInCreation()) currentConceptInCreation().conceptName else null
-        val conceptInCreation = MutableConcept(
+        val conceptInCreation = MutableConceptSchema(
             conceptName = conceptName,
             parentConceptName = parentConceptName,
         )
@@ -203,7 +203,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         return conceptInCreation
     }
 
-    private fun currentConceptInCreation(): MutableConcept {
+    private fun currentConceptInCreation(): MutableConceptSchema {
         return conceptsInCreationStack.last()
     }
 

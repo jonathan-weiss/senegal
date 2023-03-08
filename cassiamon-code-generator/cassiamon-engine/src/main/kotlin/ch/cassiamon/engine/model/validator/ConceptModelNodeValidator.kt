@@ -5,7 +5,7 @@ import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
 import ch.cassiamon.engine.model.types.FacetValue
 import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
 import ch.cassiamon.engine.model.types.TextFacetValue
-import ch.cassiamon.engine.schema.Concept
+import ch.cassiamon.engine.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.schema.facets.FacetType
 import ch.cassiamon.engine.schema.facets.ManualFacetSchema
@@ -109,7 +109,7 @@ object ConceptModelNodeValidator {
     }
 
 
-    private fun isValidParentConcept(schemaConcept: Concept, entry: ModelConceptInputDataEntry): Boolean {
+    private fun isValidParentConcept(schemaConcept: ConceptSchema, entry: ModelConceptInputDataEntry): Boolean {
         if(schemaConcept.parentConceptName != null && entry.parentConceptIdentifier == null) {
             return false
         }
