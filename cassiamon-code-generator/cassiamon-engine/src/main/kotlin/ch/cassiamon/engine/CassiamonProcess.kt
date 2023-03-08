@@ -42,7 +42,7 @@ class CassiamonProcess {
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
-        ).addTextFacetValue(ManualMandatoryTextFacetDescriptor.of("TableName"), "Person").attach()
+        ).addFacetValue(ManualMandatoryTextFacetDescriptor.of("TableName"), "Person").attach()
 
         val modelInputData = modelInputDataCollector.provideModelInputData()
 

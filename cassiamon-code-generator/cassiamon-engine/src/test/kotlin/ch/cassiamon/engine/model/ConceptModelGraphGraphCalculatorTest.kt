@@ -2,9 +2,6 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.model.types.ConceptReferenceFacetValue
-import ch.cassiamon.engine.model.types.IntegerNumberFacetValue
-import ch.cassiamon.engine.model.types.TextFacetValue
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
@@ -116,7 +113,7 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = table,
             parentConceptIdentifier = null,
-        ).addTextFacetValue(tableNameFacetName, table.code).attach()
+        ).addFacetValue(tableNameFacetName, table.code).attach()
 
     }
 
@@ -128,10 +125,10 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptIdentifier = field,
             parentConceptIdentifier = table,
         )
-            .addTextFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
-            .addTextFacetValue(tableFieldTypeFacetName, "UUID")
-            .addIntegerNumberFacetValue(tableFieldLengthFacetName, 128)
-            .addConceptReferenceFacetValue(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable)
+            .addFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
+            .addFacetValue(tableFieldTypeFacetName, "UUID")
+            .addFacetValue(tableFieldLengthFacetName, 128)
+            .addFacetValue(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable)
             .attach()
     }
 
@@ -147,9 +144,9 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptIdentifier = field,
             parentConceptIdentifier = table,
         )
-            .addTextFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
-            .addTextFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addIntegerNumberFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
+            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addFacetValue(tableFieldLengthFacetName, 255)
             .attach()
     }
 }

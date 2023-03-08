@@ -104,7 +104,7 @@ object TestFixtures {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addTextFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetName, "Person").attach()
 
         return modelInputDataCollector.provideModelInputData()
     }

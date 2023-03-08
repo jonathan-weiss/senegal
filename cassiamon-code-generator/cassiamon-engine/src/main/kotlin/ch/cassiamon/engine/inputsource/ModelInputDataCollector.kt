@@ -26,27 +26,27 @@ class ModelInputDataCollector {
         private val facetValueCollector: ManualFacetValueCollector = ManualFacetValueCollector()
         private var isAttached: Boolean = false
 
-        fun addTextFacetValue(facet: ManualOptionalTextFacetDescriptor, value: String?): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualOptionalTextFacetDescriptor, value: String?): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addTextFacetValue(facet, value)
             return this
         }
-        fun addTextFacetValue(facet: ManualMandatoryTextFacetDescriptor, value: String): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualMandatoryTextFacetDescriptor, value: String): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addTextFacetValue(facet, value)
             return this
         }
-        fun addIntegerNumberFacetValue(facet: ManualOptionalIntegerNumberFacetDescriptor, value: Int?): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualOptionalIntegerNumberFacetDescriptor, value: Int?): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addIntegerNumberFacetValue(facet, value)
             return this
         }
-        fun addIntegerNumberFacetValue(facet: ManualMandatoryIntegerNumberFacetDescriptor, value: Int): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualMandatoryIntegerNumberFacetDescriptor, value: Int): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addIntegerNumberFacetValue(facet, value)
             return this
         }
-        fun addConceptReferenceFacetValue(facet: ManualOptionalConceptReferenceFacetDescriptor, value: ConceptIdentifier?): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualOptionalConceptReferenceFacetDescriptor, value: ConceptIdentifier?): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addConceptReferenceFacetValue(facet, value)
             return this
         }
-        fun addConceptReferenceFacetValue(facet: ManualMandatoryConceptReferenceFacetDescriptor, value: ConceptIdentifier): ModelConceptInputDataEntryBuilder {
+        fun addFacetValue(facet: ManualMandatoryConceptReferenceFacetDescriptor, value: ConceptIdentifier): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addConceptReferenceFacetValue(facet, value)
             return this
         }
