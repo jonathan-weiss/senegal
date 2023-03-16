@@ -1,11 +1,11 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.facets.ManualFacetValueAccess
+import ch.cassiamon.engine.model.facets.InputFacetValueAccess
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodeFacetValues
+import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 
 class MaterializingConceptModelNode(
     schema: Schema,
@@ -13,10 +13,10 @@ class MaterializingConceptModelNode(
     nodePool: ConceptModelNodePool,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
-    manualFacetValues: ManualFacetValueAccess,
+    manualFacetValues: InputFacetValueAccess,
 ) : ConceptModelNode {
 
-    private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeFacetValues(
+    private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeTemplateFacetValues(
         schema = schema,
         infiniteLoopDetector = infiniteLoopDetector,
         nodePool = nodePool,
@@ -38,7 +38,7 @@ class MaterializingConceptModelNode(
         return materializedChildren[conceptName] ?: emptyList() // TODO ask nodePool and materialize the parent
     }
 
-    override val facetValues: ConceptModelNodeFacetValues
+    override val templateFacetValues: ConceptModelNodeTemplateFacetValues
         get() = materializingConceptModelNodeFacetValues
 
     override fun get(key: String): Any? {

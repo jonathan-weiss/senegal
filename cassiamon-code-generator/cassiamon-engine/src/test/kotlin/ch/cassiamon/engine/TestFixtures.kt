@@ -6,6 +6,10 @@ import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.pluginapi.model.facets.MandatoryNumberInputAndTemplateFacet
+import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
+import ch.cassiamon.pluginapi.model.facets.MandatoryTextTemplateFacet
+import ch.cassiamon.pluginapi.model.facets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet
 import ch.cassiamon.pluginapi.registration.TemplateFunction
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -16,29 +20,29 @@ object TestFixtures {
     val databaseTableConceptName = ConceptName.of("DatabaseTable")
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
-    val tableNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("TableName")
-    val tableFieldNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("FieldName")
-    val tableFieldTypeFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("FieldType")
-    val tableFieldLengthFacetDescriptor = ManualMandatoryIntegerNumberFacetDescriptor.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacetDescriptor = ManualOptionalConceptReferenceFacetDescriptor.of("FieldForeignKey", databaseTableConceptName)
-    val tableNameAndFieldNameFacetDescriptor = CalculatedMandatoryTextFacetDescriptor.of("TableNameAndFieldName")
-    val tableIndexNameFacetDescriptor = ManualMandatoryTextFacetDescriptor.of("TableIndexName")
+    val tableNameFacet = MandatoryTextInputAndTemplateFacet.of("TableName")
+    val tableFieldNameFacet = MandatoryTextInputAndTemplateFacet.of("FieldName")
+    val tableFieldTypeFacet = MandatoryTextInputAndTemplateFacet.of("FieldType")
+    val tableFieldLengthFacet = MandatoryNumberInputAndTemplateFacet.of("FieldLength")
+    val tableFieldForeignKeyConceptIdFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("FieldForeignKey", databaseTableConceptName)
+    val tableNameAndFieldNameFacet = MandatoryTextTemplateFacet.of("TableNameAndFieldName")
+    val tableIndexNameFacet = MandatoryTextInputAndTemplateFacet.of("TableIndexName")
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl()): Schema {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addFacet(facetDescriptor = tableNameFacetDescriptor)
+                addFacet(tableNameFacet)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
-                    addFacet(facetDescriptor = tableFieldTypeFacetDescriptor) // TODO use enumeration as soon as available
-                    addFacet(facetDescriptor = tableFieldLengthFacetDescriptor)
-                    addFacet(facetDescriptor = tableNameAndFieldNameFacetDescriptor) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(tableFieldNameFacet)
+                    addFacet(tableFieldTypeFacet) // TODO use enumeration as soon as available
+                    addFacet(tableFieldLengthFacet)
+                    addFacet(tableNameAndFieldNameFacet) { _ -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
-                    addFacet(tableFieldForeignKeyConceptIdFacetDescriptor)
+                    addFacet(tableFieldForeignKeyConceptIdFacet)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
-                        addFacet(facetDescriptor = tableIndexNameFacetDescriptor)
+                        addFacet(tableIndexNameFacet)
                     }
 
 
@@ -58,7 +62,7 @@ object TestFixtures {
                     .conceptModelNodesByConceptName(databaseTableConceptName)
 
                 val tagetGeneratedFiles = templateNodes
-                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.facetValue(tableNameFacetDescriptor)}.create.sql"), templateNodes) }
+                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.templateFacetValues.facetValue(tableNameFacet)}.create.sql"), templateNodes) }
                     .toSet()
 
 
@@ -66,7 +70,7 @@ object TestFixtures {
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().facetValues.facetValue(tableNameFacetDescriptor)} ;
+                           CREATE TABLE ${targetGeneratedFileWithModel.model.first().templateFacetValues.facetValue(tableNameFacet)} ;
                            --
                         """.trimIndent()
                     )
@@ -83,8 +87,8 @@ object TestFixtures {
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
-                           ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.facetValues.facetValue(
-                            tableNameFacetDescriptor)}" }}
+                           ${templateNodes.joinToString("\n") { "-- ${it.conceptIdentifier.code}: ${it.templateFacetValues.facetValue(
+                            tableNameFacet)}" }}
                            --
                         """.trimIndent()
                     )
@@ -104,7 +108,7 @@ object TestFixtures {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetDescriptor, "Person").attach()
+        ).addFacetValue(tableNameFacet, "Person").attach()
 
         return modelInputDataCollector.provideModelInputData()
     }

@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.ManualMandatoryTextFacetDescriptor
+import ch.cassiamon.pluginapi.model.facets.*
 
 class CassiamonProcess {
 
@@ -31,6 +31,7 @@ class CassiamonProcess {
 
 
 
+
         // create a XML schema to validate directly on xml
         // TODO call XML schema creator passing the schema
 
@@ -42,9 +43,21 @@ class CassiamonProcess {
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
-        ).addFacetValue(ManualMandatoryTextFacetDescriptor.of("TableName"), "Person").attach()
+        )
+            .addFacetValue(MandatoryTextInputFacet.of("TableName"), "Person")
+            .addFacetValue(MandatoryNumberInputFacet.of("TableSize"), 2323)
+            .addFacetValue(OptionalNumberInputFacet.of("TableSize"), null)
+            .addFacetValue(OptionalNumberInputFacet.of("TableSize"), 2345)
+            .attach()
+
+
 
         val modelInputData = modelInputDataCollector.provideModelInputData()
+        val x = modelInputData.entries[0].inputFacetValueAccess.facetValue(MandatoryNumberInputFacet.of("TableSize"))
+        val y = modelInputData.entries[0].inputFacetValueAccess.facetValue(MandatoryTextInputFacet.of("TableSize"))
+        val z = modelInputData.entries[0].inputFacetValueAccess.facetValue(OptionalNumberInputFacet.of("TableSize"))
+        val a = modelInputData.entries[0].inputFacetValueAccess.facetValue(MandatoryTextInputAndTemplateFacet.of("TableSize"))
+        // val b = modelInputData.entries[0].inputFacetValueAccess.facetValue(MandatoryTextTemplateFacet.of("TableSize"))
 
 
 //        // traverse whole model and transform (adapt/calculate/transform) the missing model values

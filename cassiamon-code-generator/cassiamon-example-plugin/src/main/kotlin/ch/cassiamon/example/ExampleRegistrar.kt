@@ -1,42 +1,40 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
-import java.nio.file.Path
 import java.nio.file.Paths
 
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
-    val testConceptName = ConceptName.of("TestConcept")
-    val targetTestConceptName = ConceptName.of("TargetTestConcept")
-
-    val testRefFacet = ManualMandatoryConceptReferenceFacetDescriptor.of("TestRef", targetTestConceptName)
-    val testCalculatedIntFacet = CalculatedOptionalIntegerNumberFacetDescriptor.of("TestInt")
-    val testCalculatedStringFacet = CalculatedMandatoryTextFacetDescriptor.of("TestCalcString")
-
+    private val testConceptName = ConceptName.of("TestConcept")
+    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
+    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
+    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRef", targetTestConceptName)
+    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestRef")
+    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
+    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
 
 
     override fun configure(registrationApi: RegistrationApi) {
         println("In the $projectName registrar")
         registrationApi.configureSchema {
             newRootConcept(testConceptName) {
-                // and more stuff
-                addFacet(testRefFacet)
 
-                addFacet(testCalculatedIntFacet) {
-                    conceptModelNode -> conceptModelNode.facetValues
-                        .facetValue(testRefFacet)
-                        .conceptIdentifier.hashCode() // completely stupid
+                addFacet(testTextInputFacet)
+                addFacet(testRefInputAndTemplateFacet)
+                addFacet(testCalculatedIntTemplateFacet) {
+                        it.conceptModelNode.templateFacetValues.facetValue(testRefInputAndTemplateFacet)?.conceptIdentifier.hashCode() // completely stupid
                 }
-
-                addFacet(testCalculatedStringFacet) { conceptModelNode ->
-                    val testCalculatedIntValue = conceptModelNode.facetValues.facetValue(testCalculatedIntFacet)
+                addFacet(testCalculatedStringTemplateFacet) {
+                    val testCalculatedIntValue = it.conceptModelNode.templateFacetValues.facetValue(testCalculatedIntTemplateFacet)
                     return@addFacet "# is $testCalculatedIntValue"
                 }
+                addFacet(testTextComposedFacet)
             }
         }
 

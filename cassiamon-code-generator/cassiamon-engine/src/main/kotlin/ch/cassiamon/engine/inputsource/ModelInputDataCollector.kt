@@ -1,8 +1,9 @@
 package ch.cassiamon.engine.inputsource
 
-import ch.cassiamon.engine.model.facets.ManualFacetValueCollector
+import ch.cassiamon.engine.model.facets.InputFacetValueCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.facets.InputFacet
 
 class ModelInputDataCollector {
     private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()
@@ -21,33 +22,11 @@ class ModelInputDataCollector {
         private val parentConceptIdentifier: ConceptIdentifier?,
         
     ) {
-
-
-        private val facetValueCollector: ManualFacetValueCollector = ManualFacetValueCollector()
+        private val facetValueCollector: InputFacetValueCollector = InputFacetValueCollector()
         private var isAttached: Boolean = false
 
-        fun addFacetValue(facet: ManualOptionalTextFacetDescriptor, value: String?): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addTextFacetValue(facet, value)
-            return this
-        }
-        fun addFacetValue(facet: ManualMandatoryTextFacetDescriptor, value: String): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addTextFacetValue(facet, value)
-            return this
-        }
-        fun addFacetValue(facet: ManualOptionalIntegerNumberFacetDescriptor, value: Int?): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addIntegerNumberFacetValue(facet, value)
-            return this
-        }
-        fun addFacetValue(facet: ManualMandatoryIntegerNumberFacetDescriptor, value: Int): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addIntegerNumberFacetValue(facet, value)
-            return this
-        }
-        fun addFacetValue(facet: ManualOptionalConceptReferenceFacetDescriptor, value: ConceptIdentifier?): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addConceptReferenceFacetValue(facet, value)
-            return this
-        }
-        fun addFacetValue(facet: ManualMandatoryConceptReferenceFacetDescriptor, value: ConceptIdentifier): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addConceptReferenceFacetValue(facet, value)
+        fun <T> addFacetValue(facet: InputFacet<T>, value: T): ModelConceptInputDataEntryBuilder {
+            facetValueCollector.addFacetValue(facet, value)
             return this
         }
 
@@ -60,7 +39,7 @@ class ModelInputDataCollector {
                 conceptName = conceptName,
                 conceptIdentifier = conceptIdentifier,
                 parentConceptIdentifier = parentConceptIdentifier,
-                facetValueAccess = facetValueCollector
+                inputFacetValueAccess = facetValueCollector
             )
             this@ModelInputDataCollector.entries.add(entry)
         }

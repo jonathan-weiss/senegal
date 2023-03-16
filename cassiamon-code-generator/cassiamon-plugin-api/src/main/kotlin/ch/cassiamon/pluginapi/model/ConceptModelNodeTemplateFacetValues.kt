@@ -1,12 +1,13 @@
 package ch.cassiamon.pluginapi.model
 
 import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 
-interface ConceptModelNodeFacetValues {
+interface ConceptModelNodeTemplateFacetValues {
 
-    fun <T> facetValue(facetDescriptor: FacetDescriptor<T>): T
+    fun <T> facetValue(facet: TemplateFacet<T>): T
 
-    fun allFacetNames(): Set<FacetName>
+    fun allTemplateFacetNames(): Set<FacetName>
 
     /**
     Support for template engines

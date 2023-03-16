@@ -1,11 +1,13 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.CalculatedFacetSchema
-import ch.cassiamon.engine.schema.facets.FacetSchema
-import ch.cassiamon.engine.schema.facets.ManualFacetSchema
+import ch.cassiamon.engine.schema.facets.*
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptModelNode
+import ch.cassiamon.pluginapi.model.TemplateFacetCalculationData
+import ch.cassiamon.pluginapi.model.facets.InputAndTemplateFacet
+import ch.cassiamon.pluginapi.model.facets.InputFacet
+import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
 
@@ -36,161 +38,55 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndCommitConcept()
     }
 
-    override fun addFacet(
-        facetDescriptor: ManualMandatoryTextFacetDescriptor
-    ) {
+    override fun <T> addFacet(facet: InputFacet<T>) {
         val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
+        val inputFacetSchema = InputFacetSchema(
             conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor
+            inputFacet = facet
         )
-        validateAndAttachFacet(concept, facet)
+        validateAndAttachInputFacet(concept, inputFacetSchema)
     }
 
-    override fun addFacet(
-        facetDescriptor: ManualOptionalTextFacetDescriptor
-    ) {
+    override fun <T> addFacet(facet: TemplateFacet<T>,
+                              facetCalculationFunction: (TemplateFacetCalculationData) -> T) {
         val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
+        val templateFacetSchema = TemplateFacetSchema(
             conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor
+            templateFacet = facet
         )
-        validateAndAttachFacet(concept, facet)
+        validateAndAttachTemplateFacet(concept, templateFacetSchema)
     }
 
-    override fun addFacet(
-        facetDescriptor: CalculatedMandatoryTextFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> String
-    ) {
+    override fun <I, O> addFacet(facet: InputAndTemplateFacet<I, O>) {
         val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
+        val inputFacetSchema = InputFacetSchema(
             conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction
+            inputFacet = facet
         )
-        validateAndAttachFacet(concept, facet)
+        val templateFacetSchema = TemplateFacetSchema(
+            conceptName = concept.conceptName,
+            templateFacet = facet
+        )
+        validateAndAttachInputFacet(concept, inputFacetSchema)
+        validateAndAttachTemplateFacet(concept, templateFacetSchema)
     }
 
-    override fun addFacet(
-        facetDescriptor: CalculatedOptionalTextFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> String?
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
-            conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: ManualMandatoryIntegerNumberFacetDescriptor
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
-            conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor,
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: ManualOptionalIntegerNumberFacetDescriptor
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
-            conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor,
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: CalculatedMandatoryIntegerNumberFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> Int
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
-            conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: CalculatedOptionalIntegerNumberFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> Int?
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
-            conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: ManualMandatoryConceptReferenceFacetDescriptor,
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
-            conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: ManualOptionalConceptReferenceFacetDescriptor,
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = ManualFacetSchema(
-            conceptName = concept.conceptName,
-            manualFacetDescriptor = facetDescriptor,
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: CalculatedMandatoryConceptReferenceFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> ConceptModelNode
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
-            conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction,
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    override fun addFacet(
-        facetDescriptor: CalculatedOptionalConceptReferenceFacetDescriptor,
-        calculationFunction: (ConceptModelNode) -> ConceptModelNode?
-    ) {
-        val concept = currentConceptInCreation()
-        val facet = CalculatedFacetSchema(
-            conceptName = concept.conceptName,
-            calculatedFacetDescriptor = facetDescriptor,
-            facetCalculationFunction = calculationFunction,
-        )
-        validateAndAttachFacet(concept, facet)
-    }
-
-    private fun validateAndAttachFacet(concept: MutableConceptSchema, facet: FacetSchema<*>) {
-        if(facetExists(concept, facet.facetDescriptor)) {
-            throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.facetDescriptor.facetName)
+    private fun validateAndAttachInputFacet(concept: MutableConceptSchema, facet: InputFacetSchema<*>) {
+        if(concept.hasInputFacet(facet.inputFacet.facetName)) {
+            throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.inputFacet.facetName)
         }
 
-        concept.mutableFacets.add(facet)
+        concept.mutableInputFacets.add(facet)
     }
 
-    private fun facetExists(concept: MutableConceptSchema, facetDescriptor: FacetDescriptor<*>): Boolean {
-        return concept.hasFacet(facetDescriptor.facetName)
+    private fun validateAndAttachTemplateFacet(concept: MutableConceptSchema, facet: TemplateFacetSchema<*>) {
+        if(concept.hasTemplateFacet(facet.templateFacet.facetName)) {
+            throw DuplicateFacetNameFoundSchemaException(facet.conceptName, facet.templateFacet.facetName)
+        }
+
+        concept.mutableTemplateFacets.add(facet)
     }
+
 
     private fun prepareConceptInCreation(conceptName: ConceptName): MutableConceptSchema {
 

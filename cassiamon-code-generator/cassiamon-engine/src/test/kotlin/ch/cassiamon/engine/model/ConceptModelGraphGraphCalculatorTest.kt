@@ -11,12 +11,12 @@ class ConceptModelGraphGraphCalculatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
-    private val tableNameFacetName = TestFixtures.tableNameFacetDescriptor
-    private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetDescriptor
-    private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetDescriptor
-    private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetDescriptor
-    private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacetDescriptor
-    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetDescriptor
+    private val tableNameFacetName = TestFixtures.tableNameFacet
+    private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacet
+    private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacet
+    private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacet
+    private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacet
+    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacet
 
 
     @Test
@@ -40,7 +40,7 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(1, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
         val personTemplateModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).first()
         assertEquals(personTableId, personTemplateModelNode.conceptIdentifier)
-        assertEquals("Person", personTemplateModelNode.facetValues.facetValue(tableNameFacetName))
+        assertEquals("Person", personTemplateModelNode.templateFacetValues.facetValue(tableNameFacetName))
     }
 
     @Disabled
@@ -75,7 +75,7 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(2, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
 
         val fkField = conceptModelGraph.conceptModelNodeByConceptIdentifier(addressPersonForeignKeyFieldId)
-        val referencedConcept = fkField.facetValues.facetValue(tableFieldForeignKeyConceptIdFacetName)
+        val referencedConcept = fkField.templateFacetValues.facetValue(tableFieldForeignKeyConceptIdFacetName)
         assertNotNull(referencedConcept)
         assertEquals(personTableId, referencedConcept?.conceptIdentifier)
     }

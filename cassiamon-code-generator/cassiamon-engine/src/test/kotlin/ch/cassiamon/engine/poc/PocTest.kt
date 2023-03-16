@@ -8,12 +8,12 @@ class PocTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
-    private val tableNameFacetName = TestFixtures.tableNameFacetDescriptor
-    private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacetDescriptor
-    private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacetDescriptor
-    private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacetDescriptor
-    private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacetDescriptor
-    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacetDescriptor
+    private val tableNameFacetName = TestFixtures.tableNameFacet
+    private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacet
+    private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacet
+    private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacet
+    private val tableFieldForeignKeyConceptIdFacetName = TestFixtures.tableFieldForeignKeyConceptIdFacet
+    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacet
 
     sealed class FacetDescription<T>(val name: String) {
 

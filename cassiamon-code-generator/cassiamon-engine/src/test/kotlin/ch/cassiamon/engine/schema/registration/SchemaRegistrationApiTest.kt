@@ -1,13 +1,15 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.schema.facets.FacetSchema
 import ch.cassiamon.engine.schema.ConceptSchema
-import ch.cassiamon.engine.schema.facets.FacetType
 import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.schema.facets.InputFacetSchema
+import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.registration.exceptions.*
+import ch.cassiamon.pluginapi.registration.exceptions.CircularConceptHierarchieFoundSchemaException
+import ch.cassiamon.pluginapi.registration.exceptions.DuplicateConceptNameFoundSchemaException
+import ch.cassiamon.pluginapi.registration.exceptions.DuplicateFacetNameFoundSchemaException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -18,12 +20,12 @@ class SchemaRegistrationApiTest {
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
     private val databaseTableFieldIndexConceptName = TestFixtures.databaseTableFieldIndexConceptName
-    private val tableNameFacetDescriptor = TestFixtures.tableNameFacetDescriptor
-    private val tableFieldNameFacetDescriptor = TestFixtures.tableFieldNameFacetDescriptor
-    private val tableFieldTypeFacetDescriptor = TestFixtures.tableFieldTypeFacetDescriptor
-    private val tableFieldLengthFacetDescriptor = TestFixtures.tableFieldLengthFacetDescriptor
-    private val tableNameAndFieldNameFacetDescriptor = TestFixtures.tableNameAndFieldNameFacetDescriptor
-    private val tableIndexNameFacetDescriptor = TestFixtures.tableIndexNameFacetDescriptor
+    private val tableNameFacet = TestFixtures.tableNameFacet
+    private val tableFieldNameFacet = TestFixtures.tableFieldNameFacet
+    private val tableFieldTypeFacet = TestFixtures.tableFieldTypeFacet
+    private val tableFieldLengthFacet = TestFixtures.tableFieldLengthFacet
+    private val tableNameAndFieldNameFacet = TestFixtures.tableNameAndFieldNameFacet
+    private val tableIndexNameFacet = TestFixtures.tableIndexNameFacet
 
 
     @Test
@@ -34,7 +36,7 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addFacet(facetDescriptor = tableNameFacetDescriptor)
+                addFacet(facet = tableNameFacet)
             }
         }
 
@@ -45,10 +47,12 @@ class SchemaRegistrationApiTest {
         val firstConcept = findConcept(schema, databaseTableConceptName)
         assertEquals(this.databaseTableConceptName.name, firstConcept.conceptName.name)
 
-        assertEquals(1, firstConcept.facets.size)
-        val firstFacet = findFacet(schema, databaseTableConceptName, tableNameFacetDescriptor.facetName)
-        assertEquals(this.tableNameFacetDescriptor.facetName, firstFacet.facetDescriptor.facetName)
-        assertEquals(FacetType.TEXT, firstFacet.facetType)
+        assertEquals(1, firstConcept.inputFacets.size)
+        assertEquals(1, firstConcept.templateFacets.size)
+        val firstInputFacet = findInputFacet(schema, databaseTableConceptName, tableNameFacet.facetName)
+        val firstTemplateFacet = findTemplateFacet(schema, databaseTableConceptName, tableNameFacet.facetName)
+        assertEquals(this.tableNameFacet, firstInputFacet.inputFacet)
+        assertEquals(this.tableNameFacet, firstTemplateFacet.templateFacet)
     }
 
     @Test
@@ -59,15 +63,13 @@ class SchemaRegistrationApiTest {
         // act
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
-                addFacet(facetDescriptor = tableNameFacetDescriptor)
+                addFacet(facet = tableNameFacet)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName) {
-                    addFacet(tableFieldNameFacetDescriptor)
-                    addFacet(tableFieldTypeFacetDescriptor) // TODO use enumeration as soon as available
-                    addFacet(tableFieldLengthFacetDescriptor)
-                    addFacet(
-                        facetDescriptor = tableNameAndFieldNameFacetDescriptor
-                    ) { node -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(facet = tableFieldNameFacet)
+                    addFacet(facet = tableFieldTypeFacet) // TODO use enumeration as soon as available
+                    addFacet(facet = tableFieldLengthFacet)
+                    addFacet(facet = tableNameAndFieldNameFacet) { "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
 
                 }
             }
@@ -80,15 +82,17 @@ class SchemaRegistrationApiTest {
         val tableConcept = findConcept(schema, databaseTableConceptName)
         val fieldConcept = findConcept(schema, databaseTableFieldConceptName )
 
-        assertEquals(1, tableConcept.facets.size)
-        val tableNameFacet = findFacet(schema, databaseTableConceptName, tableNameFacetDescriptor.facetName)
-        assertEquals(this.tableNameFacetDescriptor.facetName.name, tableNameFacet.facetDescriptor.facetName.name)
-        assertEquals(FacetType.TEXT, tableNameFacet.facetType)
+        assertEquals(1, tableConcept.inputFacets.size)
+        assertEquals(1, tableConcept.templateFacets.size)
+        val tableNameInputFacet = findInputFacet(schema, databaseTableConceptName, tableNameFacet.facetName)
+        assertEquals(this.tableNameFacet, tableNameInputFacet.inputFacet)
+        val tableNameTemplateFacet = findTemplateFacet(schema, databaseTableConceptName, tableNameFacet.facetName)
+        assertEquals(this.tableNameFacet, tableNameTemplateFacet.templateFacet)
 
-        assertEquals(4, fieldConcept.facets.size)
-        val tableNameAndFieldFacet = findFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacetDescriptor.facetName)
-        assertEquals(this.tableNameAndFieldNameFacetDescriptor.facetName.name, tableNameAndFieldFacet.facetDescriptor.facetName.name)
-        assertEquals(FacetType.TEXT, tableNameAndFieldFacet.facetType)
+        assertEquals(3, fieldConcept.inputFacets.size)
+        assertEquals(4, fieldConcept.templateFacets.size)
+        val tableNameAndFieldFacet = findTemplateFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacet.facetName)
+        assertEquals(this.tableNameAndFieldNameFacet, tableNameAndFieldFacet.templateFacet)
     }
 
     @Test
@@ -103,15 +107,15 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName) {
-                    addFacet(facetDescriptor = tableNameFacetDescriptor)
-                    addFacet(facetDescriptor = tableNameFacetDescriptor)
+                    addFacet(facet = tableNameFacet)
+                    addFacet(facet = tableNameFacet)
                 }
             }
 
         }
 
         assertEquals(thrown.concept, databaseTableConceptName)
-        assertEquals(thrown.facetName, tableNameFacetDescriptor.facetName)
+        assertEquals(thrown.facetName, tableNameFacet.facetName)
     }
 
     @Test
@@ -196,9 +200,14 @@ class SchemaRegistrationApiTest {
         return schema.conceptByConceptName(conceptName)
     }
 
-    private fun findFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): FacetSchema<*> {
-        return findConcept(schema, conceptName).facets.firstOrNull { it.facetDescriptor.facetName == facetName }
-            ?: fail("No facet found for $conceptName and $facetName.")
+    private fun findInputFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): InputFacetSchema<*> {
+        return findConcept(schema, conceptName).inputFacets.firstOrNull { it.inputFacet.facetName == facetName }
+            ?: fail("No input facet found for $conceptName and $facetName.")
+    }
+
+    private fun findTemplateFacet(schema: Schema, conceptName: ConceptName, facetName: FacetName): TemplateFacetSchema<*> {
+        return findConcept(schema, conceptName).templateFacets.firstOrNull { it.templateFacet.facetName == facetName }
+            ?: fail("No template facet found for $conceptName and $facetName.")
     }
 
     @Test
@@ -210,15 +219,15 @@ class SchemaRegistrationApiTest {
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName)
             {
-                addFacet(facetDescriptor = tableNameFacetDescriptor)
+                addFacet(facet = tableNameFacet)
 
                 newChildConcept(conceptName = databaseTableFieldConceptName)
                 {
-                    addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
+                    addFacet(facet = tableFieldNameFacet)
 
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName)
                     {
-                        addFacet(facetDescriptor = tableIndexNameFacetDescriptor)
+                        addFacet(facet = tableIndexNameFacet)
                     }
 
                 }
@@ -249,10 +258,10 @@ class SchemaRegistrationApiTest {
             // act
             registrationApi.configureSchema {
                 newRootConcept(databaseTableConceptName) {
-                    addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
+                    addFacet(facet = tableFieldNameFacet)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
+                        addFacet(facet = tableFieldNameFacet)
 
                         newRootConcept(databaseTableConceptName) {
 
@@ -297,14 +306,14 @@ class SchemaRegistrationApiTest {
             registrationApi.configureSchema {
                 newRootConcept(conceptName = databaseTableConceptName)
                 {
-                    addFacet(facetDescriptor = tableNameFacetDescriptor)
+                    addFacet(facet = tableNameFacet)
                     newChildConcept(conceptName = databaseTableFieldConceptName)
                     {
-                        addFacet(facetDescriptor = tableFieldNameFacetDescriptor)
+                        addFacet(facet = tableFieldNameFacet)
 
                         newChildConcept(conceptName = databaseTableConceptName)
                         {
-                            addFacet(facetDescriptor = tableIndexNameFacetDescriptor)
+                            addFacet(facet = tableIndexNameFacet)
                         }
                     }
                 }

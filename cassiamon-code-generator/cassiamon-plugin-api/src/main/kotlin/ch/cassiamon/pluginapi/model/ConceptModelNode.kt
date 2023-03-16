@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.ConceptName
 interface ConceptModelNode {
     val conceptName: ConceptName
     val conceptIdentifier: ConceptIdentifier
-    val facetValues: ConceptModelNodeFacetValues
+    val templateFacetValues: ConceptModelNodeTemplateFacetValues
 
     fun parent(): ConceptModelNode?
     fun allChildren(): List<ConceptModelNode>

@@ -1,34 +1,36 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.facets.ManualFacetValueAccess
+import ch.cassiamon.engine.model.facets.InputFacetValueAccess
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.FacetSchema
-import ch.cassiamon.pluginapi.*
+import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
+import ch.cassiamon.pluginapi.ConceptName
+import ch.cassiamon.pluginapi.FacetDescriptor
+import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.ConceptModelNodeFacetValues
-import ch.cassiamon.pluginapi.model.ConceptModelNode
+import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.exceptions.MissingFacetValueModelException
 import ch.cassiamon.pluginapi.model.exceptions.UnknownFacetNameFoundModelException
 import ch.cassiamon.pluginapi.model.exceptions.WrongTypeForFacetValueModelException
+import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 
-class MaterializingConceptModelNodeFacetValues(
+class MaterializingConceptModelNodeTemplateFacetValues(
     private val schema: Schema,
     private val infiniteLoopDetector: InfiniteLoopDetector,
     private val nodePool: ConceptModelNodePool,
     private val conceptName: ConceptName,
     private val conceptIdentifier: ConceptIdentifier,
-    private val manualFacetValues: ManualFacetValueAccess,
-): ConceptModelNodeFacetValues {
+    private val manualFacetValues: InputFacetValueAccess,
+): ConceptModelNodeTemplateFacetValues {
 
-    private val schemaFacets: Map<FacetName, FacetSchema<*>> = schema.conceptByConceptName(conceptName).facets.associateBy { it.facetDescriptor.facetName }
+    private val templateFacetSchemas: Map<FacetName, TemplateFacetSchema<*>> = schema.conceptByConceptName(conceptName).templateFacets.associateBy { it.templateFacet.facetName }
     private val materializedFacetValues: MutableMap<FacetName, Any?> = mutableMapOf()
     private val materializedFacets: MutableSet<FacetName> = mutableSetOf() // separate set to support optional values with null
-    override fun allFacetNames(): Set<FacetName> {
-        return schema.conceptByConceptName(conceptName).facets.map { it.facetDescriptor.facetName }.toSet()
+    override fun allTemplateFacetNames(): Set<FacetName> {
+        return schema.conceptByConceptName(conceptName).templateFacets.map { it.templateFacet.facetName }.toSet()
     }
 
-    override fun <T> facetValue(facetDescriptor: FacetDescriptor<T>): T {
+    override fun <T> facetValue(facet: TemplateFacet<T>): T {
 //        if(materializedFacets.contains(facetDescriptor.facetName)) {
 //            return optionalFacetValue(facetDescriptor.facetName, String::class.java)
 //        }
@@ -48,9 +50,9 @@ class MaterializingConceptModelNodeFacetValues(
 
 
     private fun checkFacetNameTypeValid(facetDescriptor: FacetDescriptor<*>) {
-        val schemaFacet = schemaFacetOf(facetDescriptor.facetName)
+        val templateFacetSchema = templateFacetSchemaOf(facetDescriptor.facetName)
 
-        if(schemaFacet.facetDescriptor.isMandatoryFacetValue != facetDescriptor.isMandatoryFacetValue) {
+        if(templateFacetSchema.templateFacet.isMandatoryTemplateFacetValue != facetDescriptor.isMandatoryFacetValue) {
             throw InvalidFacetConfigurationModelException(conceptName, conceptIdentifier, facetDescriptor.facetName, "Facet value is mandatory.")
         }
 
@@ -62,8 +64,8 @@ class MaterializingConceptModelNodeFacetValues(
     }
 
 
-    private fun schemaFacetOf(facetName: FacetName): FacetSchema<*> {
-        return schemaFacets[facetName] ?: throw UnknownFacetNameFoundModelException(conceptName, conceptIdentifier, facetName)
+    private fun templateFacetSchemaOf(facetName: FacetName): TemplateFacetSchema<*> {
+        return templateFacetSchemas[facetName] ?: throw UnknownFacetNameFoundModelException(conceptName, conceptIdentifier, facetName)
     }
     private inline fun <reified T: Any?> optionalFacetValue(facetName: FacetName, clazz: Class<T>): T? {
         val facetValue = materializedFacetValues[facetName] ?: return null

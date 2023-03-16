@@ -65,7 +65,7 @@ object ConceptModelGraphCalculator {
     private fun checkForDuplicateFacetNames(inputDataEntry: ModelConceptInputDataEntry) {
         val alreadyUsedFacetNames = mutableSetOf<FacetName>()
 
-        inputDataEntry.facetValueAccess.getFacetNames().forEach { facetName ->
+        inputDataEntry.inputFacetValueAccess.getFacetNames().forEach { facetName ->
             if (alreadyUsedFacetNames.contains(facetName)) {
                 throw DuplicateFacetNameFoundModelException(inputDataEntry.conceptName, inputDataEntry.conceptIdentifier, facetName)
             }
