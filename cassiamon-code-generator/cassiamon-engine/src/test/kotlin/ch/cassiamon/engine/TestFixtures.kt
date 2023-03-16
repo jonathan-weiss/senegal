@@ -58,7 +58,7 @@ object TestFixtures {
                     .conceptModelNodesByConceptName(databaseTableConceptName)
 
                 val tagetGeneratedFiles = templateNodes
-                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.asString(tableNameFacetDescriptor)}.create.sql"), templateNodes) }
+                    .map { templateNode -> TargetGeneratedFileWithModel(Paths.get("db_${templateNode.facetValues.facetValue(tableNameFacetDescriptor)}.create.sql"), templateNodes) }
                     .toSet()
 
 

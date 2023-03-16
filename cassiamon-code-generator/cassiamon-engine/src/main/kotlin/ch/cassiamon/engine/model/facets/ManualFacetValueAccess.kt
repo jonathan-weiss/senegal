@@ -4,6 +4,9 @@ import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 
 interface ManualFacetValueAccess {
+
+    fun <T> facetValue(facetDescriptor: FacetDescriptor<T>): T
+
     fun getIntegerNumberFacetValue(facet: ManualMandatoryIntegerNumberFacetDescriptor): Int
     fun getIntegerNumberFacetValue(facet: ManualOptionalIntegerNumberFacetDescriptor): Int?
     fun getTextFacetValue(facet: ManualMandatoryTextFacetDescriptor): String
