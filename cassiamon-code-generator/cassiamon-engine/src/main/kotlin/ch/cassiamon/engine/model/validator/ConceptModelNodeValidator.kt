@@ -37,11 +37,11 @@ object ConceptModelNodeValidator {
         }
 
         // iterate through all manual schema facets to validate
-        schemaConcept.inputFacets
-            .forEach { inputFacetSchema ->
-                val facetValue = null //entry.facetValuesMap[inputFacetSchema.facetName]
-                validateValueAgainstInputSchemaFacet(inputFacetSchema, facetValue, entry)
-            }
+//        schemaConcept.inputFacets
+//            .forEach { inputFacetSchema ->
+//                val facetValue = entry.inputFacetValueAccess.facetValue(inputFacetSchema)
+//                validateValueAgainstInputSchemaFacet(inputFacetSchema, facetValue, entry)
+//            }
     }
 
     private fun validateValueAgainstInputSchemaFacet(schemaFacet: InputFacetSchema<*>, facetValue: Any?, entry: ModelConceptInputDataEntry) {

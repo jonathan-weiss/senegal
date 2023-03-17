@@ -22,8 +22,6 @@ object ConceptModelGraphCalculator {
             conceptModelNodePool = nodePool
         )
 
-        // TODO create list of conceptNodes directly here
-
         modelInputData.entries.forEach { inputDataEntry ->
 
             checkForDuplicateConceptIdentifier(inputDataEntry, nodePool)
@@ -35,7 +33,22 @@ object ConceptModelGraphCalculator {
         }
 
         // TODO calculate all concepts of the nodePool to detect errors/infinite loops
+        nodePool.allConceptModelNodes().forEach { checkConceptModelNode(schema, it) }
+
         return ConceptModelGraphDefaultImpl(nodePool.allConceptModelNodes())
+    }
+
+    private fun checkConceptModelNode(schema: Schema, conceptModelNode: ConceptModelNode) {
+        val templateFacetSchemas = schema.conceptByConceptName(conceptModelNode.conceptName).templateFacets
+
+        conceptModelNode.parent()
+        conceptModelNode.allChildren()
+        val templateFacetNames = conceptModelNode.templateFacetValues.allTemplateFacetNames()
+        for(templateFacetName in templateFacetNames) {
+            val templateFacetSchema = templateFacetSchemas.first { it.templateFacet.facetName == templateFacetName }
+            //conceptModelNode.templateFacetValues.facetValue(templateFacetSchema)
+        }
+
     }
 
 
