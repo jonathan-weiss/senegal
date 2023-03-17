@@ -20,8 +20,8 @@ class DirectAccessConceptModelNodeTemplateFacetValues(
 
     override fun <T> facetValue(templateFacet: TemplateFacet<T>): T {
         val templateFacetSchema: TemplateFacetSchema<T> = calculationAndValidationData.schema
-            .conceptByConceptName(conceptModelNode.conceptName).templateFacets
-            .first { it.templateFacet == templateFacet } as TemplateFacetSchema<T>
+            .conceptByConceptName(conceptModelNode.conceptName)
+            .templateFacetSchemaOf(templateFacet)
 
 
         val calculationData = calculationAndValidationData
@@ -36,6 +36,8 @@ class DirectAccessConceptModelNodeTemplateFacetValues(
     }
 
     override fun get(key: String): Any? {
+
+
         TODO("Not yet implemented")
     }
 

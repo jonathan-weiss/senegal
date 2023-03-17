@@ -4,6 +4,7 @@ import ch.cassiamon.engine.schema.facets.InputFacetSchema
 import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.model.facets.*
 
 
 interface ConceptSchema {
@@ -20,5 +21,8 @@ interface ConceptSchema {
         return templateFacets
             .any { it.templateFacet.facetName == facetName }
     }
+
+    fun <T> templateFacetSchemaOf(templateFacet: TemplateFacet<T>): TemplateFacetSchema<T>;
+
 
 }
