@@ -3,8 +3,7 @@ package ch.cassiamon.engine.schema.registration
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.schema.facets.*
 import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.TemplateFacetCalculationData
+import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 import ch.cassiamon.pluginapi.model.facets.InputAndTemplateFacet
 import ch.cassiamon.pluginapi.model.facets.InputFacet
 import ch.cassiamon.pluginapi.model.facets.TemplateFacet
@@ -48,7 +47,7 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
     }
 
     override fun <T> addFacet(facet: TemplateFacet<T>,
-                              facetCalculationFunction: (TemplateFacetCalculationData) -> T) {
+                              facetCalculationFunction: (ConceptModelNodeCalculationData) -> T) {
         val concept = currentConceptInCreation()
         val templateFacetSchema = TemplateFacetSchema(
             conceptName = concept.conceptName,

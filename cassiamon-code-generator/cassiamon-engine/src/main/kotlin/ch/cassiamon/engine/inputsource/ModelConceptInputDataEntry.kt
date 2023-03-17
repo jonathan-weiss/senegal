@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.inputsource
 
-import ch.cassiamon.engine.model.facets.InputFacetValueAccess
+import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.ConceptName
 

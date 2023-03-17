@@ -1,12 +1,13 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.facets.InputFacetValueAccess
+import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetDescriptor
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.pluginapi.model.ConceptModelNodePool
 import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.exceptions.MissingFacetValueModelException

@@ -6,12 +6,12 @@ import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
+import ch.cassiamon.pluginapi.model.ConceptModelNode
+import ch.cassiamon.pluginapi.model.ConceptModelNodePool
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateConceptIdentifierFoundModelException
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateFacetNameFoundModelException
 
 object ConceptModelGraphCalculator {
-
-
 
     fun calculateConceptModelGraph(schema: Schema, modelInputData: ModelInputData): ConceptModelGraph {
         val infiniteLoopDetector = InfiniteLoopDetector()
@@ -23,34 +23,32 @@ object ConceptModelGraphCalculator {
             checkForDuplicateFacetNames(inputDataEntry)
             ConceptModelNodeValidator.validateSingleEntry(schema, inputDataEntry)
 
-//            val manualFacetValues = inputDataEntry.facetValues.associate { Pair(it.facetDescriptor, it.facetValue) }
-//            val conceptModelNode = MaterializingConceptModelNode(
-//                schema = schema,
-//                infiniteLoopDetector = infiniteLoopDetector,
-//                nodePool = nodePool,
-//                conceptName = inputDataEntry.conceptName,
-//                conceptIdentifier = inputDataEntry.conceptIdentifier,
-//                manualFacetValues = manualFacetValues,
-//            )
-//
-//            nodePool.addConceptModelNode(conceptModelNode)
+            val conceptModelNode = createConceptModelNode(inputDataEntry, schema, infiniteLoopDetector, nodePool)
+            nodePool.addConceptModelNode(conceptModelNode, inputDataEntry.inputFacetValueAccess)
         }
 
-
-//        val nodePool: Map<ConceptIdentifier, MutableConceptModelNode> = createNodePool(schema, modelInputData)
-//        val conceptIdentifiersByParentConceptIdentifier: Map<ConceptIdentifier, List<ConceptIdentifier>> = createConceptIdentifierByParent(modelInputData)
-//
-//
-//        // linkTemplateNodes(calculatedModel)
-//
-//        val allConceptModelNodes: List<ConceptModelNode> = nodePool.values.toList()
-//        val templateNodesByConcept: Map<ConceptName, List<ConceptModelNode>> = allConceptModelNodes
-//            .groupBy { it.conceptName}
-//            .mapValues { entry -> entry.value }
-//            .toMap()
-//
-        //return ConceptModelGraphDefaultImpl(allConceptModelNodes, templateNodesByConcept)
+        // TODO calculate all concepts of the nodePool to detect errors/infinite loops
         return ConceptModelGraphDefaultImpl(nodePool.allConceptModelNodes())
+    }
+
+
+    private fun createConceptModelNode(
+        inputDataEntry: ModelConceptInputDataEntry,
+        schema: Schema,
+        infiniteLoopDetector: InfiniteLoopDetector,
+        nodePool: MutableConceptModelNodePool,
+    ): ConceptModelNode {
+
+
+        // TODO Add MaterializedVersion if wanted
+        return DirectAccessConceptModelNode(
+            schema = schema,
+            infiniteLoopDetector = infiniteLoopDetector,
+            nodePool = nodePool,
+            conceptName = inputDataEntry.conceptName,
+            conceptIdentifier = inputDataEntry.conceptIdentifier,
+            inputFacetValues = inputDataEntry.inputFacetValueAccess
+        )
     }
 
     private fun checkForDuplicateConceptIdentifier(
@@ -73,7 +71,4 @@ object ConceptModelGraphCalculator {
         }
 
     }
-
-
-
 }

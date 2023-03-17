@@ -1,11 +1,8 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.facets.InputFacetValueAccess
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
+import ch.cassiamon.pluginapi.model.*
 
 class DirectAccessConceptModelNode(
     schema: Schema,
@@ -13,16 +10,16 @@ class DirectAccessConceptModelNode(
     nodePool: ConceptModelNodePool,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
-    manualFacetValues: InputFacetValueAccess,
+    inputFacetValues: InputFacetValueAccess,
 ) : ConceptModelNode {
 
-    private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeTemplateFacetValues(
+    private val directAccessConceptModelNodeFacetValues = DirectAccessConceptModelNodeTemplateFacetValues(
         schema = schema,
         infiniteLoopDetector = infiniteLoopDetector,
         nodePool = nodePool,
         conceptName = conceptName,
         conceptIdentifier = conceptIdentifier,
-        manualFacetValues = manualFacetValues
+        manualFacetValues = inputFacetValues
     )
     private var materializedParent: ConceptModelNode? = null;
     private var materializedChildren: Map<ConceptName, List<ConceptModelNode>> = emptyMap();
@@ -39,7 +36,7 @@ class DirectAccessConceptModelNode(
     }
 
     override val templateFacetValues: ConceptModelNodeTemplateFacetValues
-        get() = materializingConceptModelNodeFacetValues
+        get() = directAccessConceptModelNodeFacetValues
 
     override fun get(key: String): Any? {
         TODO("Not yet implemented")

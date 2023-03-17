@@ -1,6 +1,7 @@
 package ch.cassiamon.engine.model.facets
 
 import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 import ch.cassiamon.pluginapi.model.facets.*
 
 class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
