@@ -51,7 +51,8 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         val concept = currentConceptInCreation()
         val templateFacetSchema = TemplateFacetSchema(
             conceptName = concept.conceptName,
-            templateFacet = facet
+            templateFacet = facet,
+            facetCalculationFunction = facetCalculationFunction,
         )
         validateAndAttachTemplateFacet(concept, templateFacetSchema)
     }
@@ -64,7 +65,8 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         )
         val templateFacetSchema = TemplateFacetSchema(
             conceptName = concept.conceptName,
-            templateFacet = facet
+            templateFacet = facet,
+            facetCalculationFunction = facet.facetCalculationFunction,
         )
         validateAndAttachInputFacet(concept, inputFacetSchema)
         validateAndAttachTemplateFacet(concept, templateFacetSchema)
