@@ -14,8 +14,15 @@ import ch.cassiamon.pluginapi.model.exceptions.DuplicateFacetNameFoundModelExcep
 object ConceptModelGraphCalculator {
 
     fun calculateConceptModelGraph(schema: Schema, modelInputData: ModelInputData): ConceptModelGraph {
-        val infiniteLoopDetector = InfiniteLoopDetector()
         val nodePool = MutableConceptModelNodePool()
+
+        val calculationAndValidationData = CalculationAndValidationData(
+            schema = schema,
+            infiniteLoopDetector = InfiniteLoopDetector(),
+            conceptModelNodePool = nodePool
+        )
+
+        // TODO create list of conceptNodes directly here
 
         modelInputData.entries.forEach { inputDataEntry ->
 
@@ -23,8 +30,8 @@ object ConceptModelGraphCalculator {
             checkForDuplicateFacetNames(inputDataEntry)
             ConceptModelNodeValidator.validateSingleEntry(schema, inputDataEntry)
 
-            val conceptModelNode = createConceptModelNode(inputDataEntry, schema, infiniteLoopDetector, nodePool)
-            nodePool.addConceptModelNode(conceptModelNode, inputDataEntry.inputFacetValueAccess)
+            val conceptModelNode = createConceptModelNode(inputDataEntry, calculationAndValidationData)
+            nodePool.addConceptModelNode(conceptModelNode)
         }
 
         // TODO calculate all concepts of the nodePool to detect errors/infinite loops
@@ -34,20 +41,16 @@ object ConceptModelGraphCalculator {
 
     private fun createConceptModelNode(
         inputDataEntry: ModelConceptInputDataEntry,
-        schema: Schema,
-        infiniteLoopDetector: InfiniteLoopDetector,
-        nodePool: MutableConceptModelNodePool,
+        calculationAndValidationData: CalculationAndValidationData,
     ): ConceptModelNode {
-
 
         // TODO Add MaterializedVersion if wanted
         return DirectAccessConceptModelNode(
-            schema = schema,
-            infiniteLoopDetector = infiniteLoopDetector,
-            nodePool = nodePool,
             conceptName = inputDataEntry.conceptName,
             conceptIdentifier = inputDataEntry.conceptIdentifier,
-            inputFacetValues = inputDataEntry.inputFacetValueAccess
+            parentConceptIdentifier = inputDataEntry.parentConceptIdentifier,
+            inputFacetValues = inputDataEntry.inputFacetValueAccess,
+            calculationAndValidationData = calculationAndValidationData
         )
     }
 

@@ -1,42 +1,36 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.*
+import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.pluginapi.model.ConceptModelNode
+import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
+import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 
 class DirectAccessConceptModelNode(
-    schema: Schema,
-    infiniteLoopDetector: InfiniteLoopDetector,
-    nodePool: ConceptModelNodePool,
+    private val calculationAndValidationData: CalculationAndValidationData,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
-    inputFacetValues: InputFacetValueAccess,
+    private val parentConceptIdentifier: ConceptIdentifier?,
+    inputFacetValues: InputFacetValueAccess
 ) : ConceptModelNode {
 
-    private val directAccessConceptModelNodeFacetValues = DirectAccessConceptModelNodeTemplateFacetValues(
-        schema = schema,
-        infiniteLoopDetector = infiniteLoopDetector,
-        nodePool = nodePool,
-        conceptName = conceptName,
-        conceptIdentifier = conceptIdentifier,
-        manualFacetValues = inputFacetValues
+    override val templateFacetValues = DirectAccessConceptModelNodeTemplateFacetValues(
+        conceptModelNode = this,
+        calculationAndValidationData = calculationAndValidationData,
+        inputFacetValues = inputFacetValues,
     )
-    private var materializedParent: ConceptModelNode? = null;
-    private var materializedChildren: Map<ConceptName, List<ConceptModelNode>> = emptyMap();
     override fun parent(): ConceptModelNode? {
-        return materializedParent // TODO ask nodePool and materialize the parent
+        return parentConceptIdentifier?.let { calculationAndValidationData.conceptModelNodePool.getConcept(it) }
     }
 
     override fun allChildren(): List<ConceptModelNode> {
-        return materializedChildren.values.flatten() // TODO ask nodePool and materialize the parent
+        return calculationAndValidationData.conceptModelNodePool.allConceptModelNodes().filter { it.parent()?.conceptIdentifier == conceptIdentifier }
     }
 
     override fun children(conceptName: ConceptName): List<ConceptModelNode> {
-        return materializedChildren[conceptName] ?: emptyList() // TODO ask nodePool and materialize the parent
+        return allChildren().filter { it.conceptName == conceptName }
     }
 
-    override val templateFacetValues: ConceptModelNodeTemplateFacetValues
-        get() = directAccessConceptModelNodeFacetValues
 
     override fun get(key: String): Any? {
         TODO("Not yet implemented")

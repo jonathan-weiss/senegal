@@ -20,10 +20,10 @@ class MaterializingConceptModelNodeTemplateFacetValues(
         return materializedAllTemplateFacetNames
     }
 
-    override fun <T> facetValue(facet: TemplateFacet<T>): T {
-        materializeFacetIfNecessary(facet)
+    override fun <T> facetValue(templateFacet: TemplateFacet<T>): T {
+        materializeFacetIfNecessary(templateFacet)
         // TODO add a facet value collector
-        return materializedTemplateFacetValues[facet.facetName] as T
+        return materializedTemplateFacetValues[templateFacet.facetName] as T
     }
 
 

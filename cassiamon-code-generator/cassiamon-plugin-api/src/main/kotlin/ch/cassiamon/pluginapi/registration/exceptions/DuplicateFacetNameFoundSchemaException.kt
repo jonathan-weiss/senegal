@@ -1,7 +1,6 @@
 package ch.cassiamon.pluginapi.registration.exceptions
 
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetDescriptor
 import ch.cassiamon.pluginapi.FacetName
 
 

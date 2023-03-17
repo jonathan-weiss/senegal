@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 
 interface ConceptModelNodeTemplateFacetValues {
 
-    fun <T> facetValue(facet: TemplateFacet<T>): T
+    fun <T> facetValue(templateFacet: TemplateFacet<T>): T
 
     fun allTemplateFacetNames(): Set<FacetName>
 

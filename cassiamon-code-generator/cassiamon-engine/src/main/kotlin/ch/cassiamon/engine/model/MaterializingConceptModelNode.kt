@@ -5,7 +5,7 @@ import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 
 class MaterializingConceptModelNode(
-    private val conceptModelNode: DirectAccessConceptModelNode
+    private val conceptModelNode: ConceptModelNode
 ) : ConceptModelNode by conceptModelNode {
 
     private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeTemplateFacetValues(
