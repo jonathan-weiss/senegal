@@ -17,10 +17,6 @@ class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
             is MandatoryTextInputAndTemplateFacet -> facetValueInternal(facet)
             is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
             is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
-
-            is InputAndTemplateFacetCombo<*, *> -> throw buildVirtualFacetInputNotAllowedException(facet)
-            is MandatoryInputFacet -> throw buildVirtualFacetInputNotAllowedException(facet)
-            is OptionalInputFacet -> throw buildVirtualFacetInputNotAllowedException(facet)
         }
     }
 

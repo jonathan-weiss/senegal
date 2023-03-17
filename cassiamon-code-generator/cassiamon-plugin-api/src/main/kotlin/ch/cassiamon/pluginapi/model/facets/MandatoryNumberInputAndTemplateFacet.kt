@@ -1,14 +1,19 @@
 package ch.cassiamon.pluginapi.model.facets
 
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 
-class MandatoryNumberInputAndTemplateFacet private constructor(
-    override val facetName: FacetName,
-    private val inputFacet: InputFacet<MandatoryNumberFacetType> = MandatoryInputFacet(facetName),
-    private val templateFacet: TemplateFacet<MandatoryNumberFacetType> = MandatoryTemplateFacet(facetName),
-    private val facetComposition: InputAndTemplateFacetCombo<MandatoryNumberFacetType, MandatoryNumberFacetType>
-    = InputAndTemplateFacetCombo(facetName, inputFacet, templateFacet) { it.inputFacetValues.facetValue(inputFacet) }
-): InputAndTemplateFacet<MandatoryNumberFacetType, MandatoryNumberFacetType> by facetComposition {
+class MandatoryNumberInputAndTemplateFacet private constructor(override val facetName: FacetName)
+    : InputAndTemplateFacet<MandatoryNumberFacetKotlinType, MandatoryNumberFacetKotlinType> {
+
+    override val inputFacetType: FacetType<MandatoryNumberFacetKotlinType>
+        get() = MandatoryNumberFacetType
+
+    override val templateFacetType: FacetType<MandatoryNumberFacetKotlinType>
+        get() = MandatoryNumberFacetType
+
+    override val facetCalculationFunction: (ConceptModelNodeCalculationData) -> MandatoryNumberFacetKotlinType
+        get() = { it.inputFacetValues.facetValue(this) }
 
     companion object {
         fun of(facetName: String): MandatoryNumberInputAndTemplateFacet {
