@@ -1,42 +1,50 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.facets.InputFacetValueAccess
-import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 
 class MaterializingConceptModelNode(
-    schema: Schema,
-    infiniteLoopDetector: InfiniteLoopDetector,
-    nodePool: ConceptModelNodePool,
-    override val conceptName: ConceptName,
-    override val conceptIdentifier: ConceptIdentifier,
-    manualFacetValues: InputFacetValueAccess,
-) : ConceptModelNode {
+    private val conceptModelNode: DirectAccessConceptModelNode
+) : ConceptModelNode by conceptModelNode {
 
     private val materializingConceptModelNodeFacetValues = MaterializingConceptModelNodeTemplateFacetValues(
-        schema = schema,
-        infiniteLoopDetector = infiniteLoopDetector,
-        nodePool = nodePool,
-        conceptName = conceptName,
-        conceptIdentifier = conceptIdentifier,
-        manualFacetValues = manualFacetValues
+        conceptModelNode = conceptModelNode,
     )
+    private var isParentMaterialized: Boolean = false
     private var materializedParent: ConceptModelNode? = null;
+
+    private var isChildrenMaterialized: Boolean = false
     private var materializedChildren: Map<ConceptName, List<ConceptModelNode>> = emptyMap();
     override fun parent(): ConceptModelNode? {
-        return materializedParent // TODO ask nodePool and materialize the parent
+        fetchParentIfNecessary()
+        return materializedParent
     }
 
     override fun allChildren(): List<ConceptModelNode> {
-        return materializedChildren.values.flatten() // TODO ask nodePool and materialize the parent
+        fetchChildrenIfNecessary()
+        return materializedChildren.values.flatten()
     }
 
     override fun children(conceptName: ConceptName): List<ConceptModelNode> {
-        return materializedChildren[conceptName] ?: emptyList() // TODO ask nodePool and materialize the parent
+        fetchChildrenIfNecessary()
+        return materializedChildren[conceptName] ?: emptyList()
     }
+
+    private fun fetchChildrenIfNecessary() {
+        if(!isChildrenMaterialized) {
+            materializedChildren = conceptModelNode.allChildren().groupBy { it.conceptName }
+            isChildrenMaterialized = true
+        }
+    }
+
+    private fun fetchParentIfNecessary() {
+        if(!isParentMaterialized) {
+            materializedParent = conceptModelNode.parent()
+            isParentMaterialized = true
+        }
+    }
+
 
     override val templateFacetValues: ConceptModelNodeTemplateFacetValues
         get() = materializingConceptModelNodeFacetValues
