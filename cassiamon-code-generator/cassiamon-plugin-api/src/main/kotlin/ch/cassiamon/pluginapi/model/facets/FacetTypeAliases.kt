@@ -9,19 +9,6 @@ typealias ConceptReferenceFacetKotlinType = ConceptIdentifier
 typealias ConceptFacetKotlinType = ConceptModelNode
 
 
-typealias MandatoryTextFacetKotlinType = String
-typealias OptionalTextFacetKotlinType = MandatoryTextFacetKotlinType?
-
-typealias MandatoryNumberFacetKotlinType = Long
-typealias OptionalNumberFacetKotlinType = MandatoryNumberFacetKotlinType?
-
-typealias MandatoryConceptReferenceFacetKotlinType = ConceptIdentifier
-typealias OptionalConceptReferenceFacetKotlinType = MandatoryConceptReferenceFacetKotlinType?
-
-typealias MandatoryConceptFacetKotlinType = ConceptModelNode
-typealias OptionalConceptFacetKotlinType = MandatoryConceptFacetKotlinType?
-
-
 // facet types
 sealed interface FacetType<C> {
     val isMandatory: Boolean
@@ -35,14 +22,14 @@ sealed interface OptionalFacetType<C: Any?>: FacetType<C> {
         get() = false
 
 }
-object MandatoryTextFacetType: MandatoryFacetType<MandatoryTextFacetKotlinType>
-object OptionalTextFacetType: OptionalFacetType<OptionalTextFacetKotlinType>
-object MandatoryNumberFacetType: MandatoryFacetType<MandatoryNumberFacetKotlinType>
-object OptionalNumberFacetType: OptionalFacetType<OptionalNumberFacetKotlinType>
+object MandatoryTextFacetType: MandatoryFacetType<TextFacetKotlinType>
+object OptionalTextFacetType: OptionalFacetType<TextFacetKotlinType?>
+object MandatoryNumberFacetType: MandatoryFacetType<NumberFacetKotlinType>
+object OptionalNumberFacetType: OptionalFacetType<NumberFacetKotlinType?>
 
-object MandatoryConceptReferenceFacetType: MandatoryFacetType<MandatoryConceptReferenceFacetKotlinType>
-object OptionalConceptReferenceFacetType: OptionalFacetType<OptionalConceptReferenceFacetKotlinType>
+object MandatoryConceptReferenceFacetType: MandatoryFacetType<ConceptReferenceFacetKotlinType>
+object OptionalConceptReferenceFacetType: OptionalFacetType<ConceptReferenceFacetKotlinType?>
 
-object MandatoryConceptFacetType: MandatoryFacetType<MandatoryConceptFacetKotlinType>
-object OptionalConceptFacetType: OptionalFacetType<OptionalConceptFacetKotlinType>
+object MandatoryConceptFacetType: MandatoryFacetType<ConceptFacetKotlinType>
+object OptionalConceptFacetType: OptionalFacetType<ConceptFacetKotlinType?>
 

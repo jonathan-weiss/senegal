@@ -3,9 +3,9 @@ package ch.cassiamon.pluginapi.model.facets
 import ch.cassiamon.pluginapi.FacetName
 
 class MandatoryTextInputFacet private constructor(override val facetName: FacetName)
-    : MandatoryInputFacet<MandatoryTextFacetKotlinType> {
+    : MandatoryInputFacet<TextFacetKotlinType> {
 
-    override val inputFacetType: MandatoryFacetType<MandatoryTextFacetKotlinType>
+    override val inputFacetType: MandatoryFacetType<TextFacetKotlinType>
         get() = MandatoryTextFacetType
 
     companion object {
