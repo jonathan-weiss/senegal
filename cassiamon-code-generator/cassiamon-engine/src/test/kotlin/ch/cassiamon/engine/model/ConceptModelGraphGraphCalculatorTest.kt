@@ -4,7 +4,6 @@ import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ConceptModelGraphGraphCalculatorTest {
@@ -26,7 +25,7 @@ class ConceptModelGraphGraphCalculatorTest {
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
 
-        val personTableId = ConceptIdentifier.of("Person")
+        val personTableId = ConceptIdentifier.of("PERSON")
         modelInputDataCollector.attachTable(table = personTableId)
 
         // act
@@ -40,22 +39,20 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(1, conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).size)
         val personTemplateModelNode = conceptModelGraph.conceptModelNodesByConceptName(databaseTableConceptName).first()
         assertEquals(personTableId, personTemplateModelNode.conceptIdentifier)
-        assertEquals("Person", personTemplateModelNode.templateFacetValues.facetValue(tableNameFacetName))
+        assertEquals("PERSON", personTemplateModelNode.templateFacetValues.facetValue(tableNameFacetName))
     }
 
-    @Disabled
     @Test
     fun `test a graph with valid hierarchical and reference dependencies`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
 
-        val addressTableId = ConceptIdentifier.of("Address")
-        val addressStreetId = ConceptIdentifier.of("Address_street")
-        val addressPersonForeignKeyFieldId = ConceptIdentifier.of("Address_fkPerson")
-        val personTableId = ConceptIdentifier.of("Person")
-        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        val addressPersonForeignKeyPointerFieldId = ConceptIdentifier.of("Address_fkPersonPointer")
+        val addressTableId = ConceptIdentifier.of("ADDRESS")
+        val addressStreetId = ConceptIdentifier.of("ADDRESS_STREET")
+        val addressPersonForeignKeyFieldId = ConceptIdentifier.of("ADDRESS_FK_PERSON_ID")
+        val personTableId = ConceptIdentifier.of("PERSON")
+        val personFirstnameFieldId = ConceptIdentifier.of("PERSON_FIRSTNAME")
 
         modelInputDataCollector.attachTable(table = addressTableId)
         modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetId)
@@ -80,31 +77,80 @@ class ConceptModelGraphGraphCalculatorTest {
         assertEquals(personTableId, referencedConcept?.conceptIdentifier)
     }
 
-
-    @Disabled
     @Test
-    fun `calculate a graph with invalid cyclic hierarchical dependency`() {
+    fun `test a graph with calculated methods`() {
         // arrange
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
 
-        val addressTableId = ConceptIdentifier.of("Address")
-        val addressStreetFieldId = ConceptIdentifier.of("Address_street")
-        val addressToAddressForeignKeyFieldId = ConceptIdentifier.of("Address_fk")
-        val addressToAddressForeignKeyFieldPointerId = ConceptIdentifier.of("Address_to_Address_fk")
-        modelInputDataCollector.attachTable(table = addressTableId)
-        modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetFieldId)
-        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressToAddressForeignKeyFieldId)
-        // TODO add here a circular dependency
+        val personTableId = ConceptIdentifier.of("PERSON")
+        val personFirstnameFieldId = ConceptIdentifier.of("FIRSTNAME")
+
+        modelInputDataCollector.attachTable(table = personTableId)
+        modelInputDataCollector.attachVarcharTableField(table = personTableId, field = personFirstnameFieldId)
 
         // act
-        val templateModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
             schema,
             modelInputDataCollector.provideModelInputData()
         )
 
         // assert
-        assertNotNull(templateModelGraph)
+        assertNotNull(conceptModelGraph)
+        val personFirstnameField = conceptModelGraph.conceptModelNodeByConceptIdentifier(personFirstnameFieldId)
+        assertNotNull(personFirstnameField)
+        assertEquals("PERSON.FIRSTNAME", personFirstnameField.templateFacetValues.facetValue(tableNameAndFieldNameFacetName))
+    }
+
+
+
+    @Test
+    fun `calculate a graph with valid mutual dependency`() {
+        // arrange
+        val schema = TestFixtures.createTestFixtureSchema()
+        val modelInputDataCollector = ModelInputDataCollector()
+
+        val addressTableId = ConceptIdentifier.of("ADDRESS")
+        val addressStreetId = ConceptIdentifier.of("ADDRESS_STREET")
+        val addressToPersonForeignKeyFieldId = ConceptIdentifier.of("ADDRESS_FK_PERSON_ID")
+        val personTableId = ConceptIdentifier.of("PERSON")
+        val personFirstnameFieldId = ConceptIdentifier.of("PERSON_FIRSTNAME")
+        val personToAddressForeignKeyFieldId = ConceptIdentifier.of("PERSON_FK_ADDRESS_ID")
+
+        modelInputDataCollector.attachTable(table = addressTableId)
+        modelInputDataCollector.attachVarcharTableField(table = addressTableId, field = addressStreetId)
+        modelInputDataCollector.attachUuidTableField(table = addressTableId, field = addressToPersonForeignKeyFieldId, foreignKeyToTable = personTableId)
+        modelInputDataCollector.attachTable(table = personTableId)
+        modelInputDataCollector.attachVarcharTableField(table = personTableId, field = personFirstnameFieldId)
+        modelInputDataCollector.attachUuidTableField(table = personTableId, field = personToAddressForeignKeyFieldId, foreignKeyToTable = addressTableId)
+
+        // act
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(
+            schema,
+            modelInputDataCollector.provideModelInputData()
+        )
+
+        // assert
+        assertNotNull(conceptModelGraph)
+
+        val personTable = conceptModelGraph.conceptModelNodeByConceptIdentifier(personTableId)
+        val addressTable = conceptModelGraph.conceptModelNodeByConceptIdentifier(addressTableId)
+
+        val personFkField = conceptModelGraph.conceptModelNodeByConceptIdentifier(personToAddressForeignKeyFieldId)
+        val addressFkField = conceptModelGraph.conceptModelNodeByConceptIdentifier(addressToPersonForeignKeyFieldId)
+
+        val referenceToAddressTable = personFkField.templateFacetValues.facetValue(tableFieldForeignKeyConceptIdFacetName)
+        val referenceToPersonTable = addressFkField.templateFacetValues.facetValue(tableFieldForeignKeyConceptIdFacetName)
+
+        assertNotNull(referenceToPersonTable)
+        assertNotNull(referenceToAddressTable)
+
+        assertEquals(personTable, referenceToPersonTable)
+        assertEquals(addressTable, referenceToAddressTable)
+
+        assertEquals(personTableId, referenceToPersonTable?.conceptIdentifier)
+        assertEquals(addressTableId, referenceToAddressTable?.conceptIdentifier)
+
 
     }
 

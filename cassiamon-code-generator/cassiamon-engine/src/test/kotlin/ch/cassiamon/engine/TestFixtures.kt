@@ -38,7 +38,10 @@ object TestFixtures {
                     addFacet(tableFieldNameFacet)
                     addFacet(tableFieldTypeFacet) // TODO use enumeration as soon as available
                     addFacet(tableFieldLengthFacet)
-                    addFacet(tableNameAndFieldNameFacet) { _ -> "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(tableNameAndFieldNameFacet) { data ->
+                        requireNotNull(data.conceptModelNode.parent()).templateFacetValues.facetValue(tableNameFacet) +
+                                "." +
+                                data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
 
                     addFacet(tableFieldForeignKeyConceptIdFacet)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {

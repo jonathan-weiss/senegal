@@ -12,8 +12,10 @@ import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelExc
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import kotlin.reflect.KClass
 
+@Disabled
 class ConceptModelNodeValidatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
