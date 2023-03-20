@@ -4,6 +4,8 @@ import ch.cassiamon.engine.model.facets.InputFacetValueCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.facets.InputFacet
+import ch.cassiamon.pluginapi.model.facets.MandatoryInputFacet
+import ch.cassiamon.pluginapi.model.facets.OptionalInputFacet
 
 class ModelInputDataCollector {
     private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()
@@ -25,7 +27,12 @@ class ModelInputDataCollector {
         private val facetValueCollector: InputFacetValueCollector = InputFacetValueCollector()
         private var isAttached: Boolean = false
 
-        fun <T> addFacetValue(facet: InputFacet<T>, value: T): ModelConceptInputDataEntryBuilder {
+        fun <T> addFacetValue(facet: OptionalInputFacet<T>, value: T): ModelConceptInputDataEntryBuilder {
+            facetValueCollector.addFacetValue(facet, value)
+            return this
+        }
+
+        fun <T: Any> addFacetValue(facet: MandatoryInputFacet<T>, value: T): ModelConceptInputDataEntryBuilder {
             facetValueCollector.addFacetValue(facet, value)
             return this
         }

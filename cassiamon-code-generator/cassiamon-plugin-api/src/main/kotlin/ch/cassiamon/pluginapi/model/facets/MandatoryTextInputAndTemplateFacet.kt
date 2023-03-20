@@ -4,12 +4,12 @@ import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 
 class MandatoryTextInputAndTemplateFacet private constructor(override val facetName: FacetName, )
-    : InputAndTemplateFacet<MandatoryTextFacetKotlinType, MandatoryTextFacetKotlinType> {
+    : MandatoryInputAndTemplateFacet<MandatoryTextFacetKotlinType, MandatoryTextFacetKotlinType> {
 
-    override val inputFacetType: FacetType<MandatoryTextFacetKotlinType>
+    override val inputFacetType: MandatoryFacetType<MandatoryTextFacetKotlinType>
         get() = MandatoryTextFacetType
 
-    override val templateFacetType: FacetType<MandatoryTextFacetKotlinType>
+    override val templateFacetType: MandatoryFacetType<MandatoryTextFacetKotlinType>
         get() = MandatoryTextFacetType
 
     override val facetCalculationFunction: (ConceptModelNodeCalculationData) -> MandatoryTextFacetKotlinType

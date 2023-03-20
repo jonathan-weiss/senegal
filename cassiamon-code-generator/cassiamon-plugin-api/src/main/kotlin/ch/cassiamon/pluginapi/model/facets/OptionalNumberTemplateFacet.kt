@@ -3,8 +3,8 @@ package ch.cassiamon.pluginapi.model.facets
 import ch.cassiamon.pluginapi.FacetName
 
 class OptionalNumberTemplateFacet private constructor(override val facetName: FacetName)
-    : TemplateFacet<OptionalNumberFacetKotlinType> {
-    override val templateFacetType: FacetType<OptionalNumberFacetKotlinType>
+    : OptionalTemplateFacet<OptionalNumberFacetKotlinType> {
+    override val templateFacetType: OptionalFacetType<OptionalNumberFacetKotlinType>
         get() = OptionalNumberFacetType
 
     companion object {

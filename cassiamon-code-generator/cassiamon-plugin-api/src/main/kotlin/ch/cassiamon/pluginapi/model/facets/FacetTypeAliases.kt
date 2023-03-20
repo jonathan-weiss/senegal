@@ -3,6 +3,12 @@ package ch.cassiamon.pluginapi.model.facets
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 
+typealias TextFacetKotlinType = String
+typealias NumberFacetKotlinType = Long
+typealias ConceptReferenceFacetKotlinType = ConceptIdentifier
+typealias ConceptFacetKotlinType = ConceptModelNode
+
+
 typealias MandatoryTextFacetKotlinType = String
 typealias OptionalTextFacetKotlinType = MandatoryTextFacetKotlinType?
 
@@ -20,11 +26,11 @@ typealias OptionalConceptFacetKotlinType = MandatoryConceptFacetKotlinType?
 sealed interface FacetType<C> {
     val isMandatory: Boolean
 }
-sealed interface MandatoryFacetType<C>: FacetType<C> {
+sealed interface MandatoryFacetType<C: Any>: FacetType<C> {
     override val isMandatory: Boolean
         get() = true
 }
-sealed interface OptionalFacetType<C>: FacetType<C> {
+sealed interface OptionalFacetType<C: Any?>: FacetType<C> {
     override val isMandatory: Boolean
         get() = false
 

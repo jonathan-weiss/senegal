@@ -5,12 +5,12 @@ import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 
 class OptionalConceptIdentifierInputAndConceptNodeTemplateFacet private constructor(override val facetName: FacetName)
-    : InputAndTemplateFacet<OptionalConceptReferenceFacetKotlinType, OptionalConceptFacetKotlinType> {
+    : OptionalInputAndTemplateFacet<OptionalConceptReferenceFacetKotlinType, OptionalConceptFacetKotlinType> {
 
-    override val inputFacetType: FacetType<OptionalConceptReferenceFacetKotlinType>
+    override val inputFacetType: OptionalFacetType<OptionalConceptReferenceFacetKotlinType>
         get() = OptionalConceptReferenceFacetType
 
-    override val templateFacetType: FacetType<OptionalConceptFacetKotlinType>
+    override val templateFacetType: OptionalFacetType<OptionalConceptFacetKotlinType>
         get() = OptionalConceptFacetType
 
     override val facetCalculationFunction: (ConceptModelNodeCalculationData) -> OptionalConceptFacetKotlinType

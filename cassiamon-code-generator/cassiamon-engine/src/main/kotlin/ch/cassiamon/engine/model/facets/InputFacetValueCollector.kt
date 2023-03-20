@@ -20,7 +20,11 @@ class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
         }
     }
 
-    override fun <T> addFacetValue(facet: InputFacet<T>, value: T){
+    override fun <T: Any> addFacetValue(facet: MandatoryInputFacet<T>, value: T){
+        inputFacets[facet] = InputFacetValue(facet, value)
+    }
+
+    override fun <T: Any?> addFacetValue(facet: OptionalInputFacet<T>, value: T){
         inputFacets[facet] = InputFacetValue(facet, value)
     }
 
