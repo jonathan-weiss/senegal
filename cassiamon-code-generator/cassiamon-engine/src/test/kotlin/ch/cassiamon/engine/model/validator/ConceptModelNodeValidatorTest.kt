@@ -9,6 +9,7 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
+import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -163,6 +164,30 @@ class ConceptModelNodeValidatorTest {
         )
             .addFacetValue(tableFieldNameFacetName, "firstname")
             .addFacetValue(tableNameFacetName, "foobar") // this facet is not allowed in this concept
+            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addFacetValue(tableFieldLengthFacetName, 255)
+            .attach()
+
+        // act + assert
+        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+    }
+
+    @Test
+    fun `validate a concept with wrong facet type`() {
+        // arrange
+        val schema = TestFixtures.createTestFixtureSchema()
+        val modelInputDataCollector = ModelInputDataCollector()
+
+        val fieldNameWrongTyped = 23
+
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
+        modelInputDataCollector.newConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addFacetValue(tableFieldNameFacetName, fieldNameWrongTyped) // TODO this should not be possible
             .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
             .addFacetValue(tableFieldLengthFacetName, 255)
             .attach()
