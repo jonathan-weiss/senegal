@@ -6,7 +6,7 @@ import ch.cassiamon.pluginapi.model.*
 import ch.cassiamon.pluginapi.model.exceptions.MissingFacetValueModelException
 import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 
-class DirectAccessConceptModelNodeTemplateFacetValues(
+class ReactiveConceptModelNodeTemplateFacetValues(
     private val calculationAndValidationData: CalculationAndValidationData,
     private val conceptModelNode: ConceptModelNode,
     private val inputFacetValues: InputFacetValueAccess

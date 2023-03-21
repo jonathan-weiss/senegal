@@ -58,7 +58,7 @@ object ConceptModelGraphCalculator {
     ): ConceptModelNode {
 
         // TODO Add MaterializedVersion if wanted
-        return DirectAccessConceptModelNode(
+        return ReactiveConceptModelNode(
             conceptName = inputDataEntry.conceptName,
             conceptIdentifier = inputDataEntry.conceptIdentifier,
             parentConceptIdentifier = inputDataEntry.parentConceptIdentifier,

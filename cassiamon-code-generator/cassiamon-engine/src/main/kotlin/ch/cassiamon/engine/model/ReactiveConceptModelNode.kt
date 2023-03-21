@@ -3,10 +3,9 @@ package ch.cassiamon.engine.model
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
 import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 
-class DirectAccessConceptModelNode(
+class ReactiveConceptModelNode(
     private val calculationAndValidationData: CalculationAndValidationData,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
@@ -14,7 +13,7 @@ class DirectAccessConceptModelNode(
     inputFacetValues: InputFacetValueAccess
 ) : ConceptModelNode {
 
-    override val templateFacetValues = DirectAccessConceptModelNodeTemplateFacetValues(
+    override val templateFacetValues = ReactiveConceptModelNodeTemplateFacetValues(
         conceptModelNode = this,
         calculationAndValidationData = calculationAndValidationData,
         inputFacetValues = inputFacetValues,
