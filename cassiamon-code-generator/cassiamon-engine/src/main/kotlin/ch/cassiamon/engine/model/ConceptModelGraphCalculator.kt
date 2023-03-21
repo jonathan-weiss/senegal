@@ -32,13 +32,12 @@ object ConceptModelGraphCalculator {
             nodePool.addConceptModelNode(conceptModelNode)
         }
 
-        // TODO calculate all concepts of the nodePool to detect errors/infinite loops
-        nodePool.allConceptModelNodes().forEach { checkConceptModelNode(schema, it) }
+        nodePool.allConceptModelNodes().forEach { checkConceptModelNodeBy(schema, it) }
 
         return ConceptModelGraphDefaultImpl(nodePool.allConceptModelNodes())
     }
 
-    private fun checkConceptModelNode(schema: Schema, conceptModelNode: ConceptModelNode) {
+    private fun checkConceptModelNodeBy(schema: Schema, conceptModelNode: ConceptModelNode) {
         val templateFacetSchemas = schema.conceptByConceptName(conceptModelNode.conceptName).templateFacets
 
         conceptModelNode.parent()
@@ -46,7 +45,7 @@ object ConceptModelGraphCalculator {
         val templateFacetNames = conceptModelNode.templateFacetValues.allTemplateFacetNames()
         for(templateFacetName in templateFacetNames) {
             val templateFacetSchema = templateFacetSchemas.first { it.templateFacet.facetName == templateFacetName }
-            //conceptModelNode.templateFacetValues.facetValue(templateFacetSchema)
+            conceptModelNode.templateFacetValues.facetValue(templateFacetSchema.templateFacet)
         }
 
     }
