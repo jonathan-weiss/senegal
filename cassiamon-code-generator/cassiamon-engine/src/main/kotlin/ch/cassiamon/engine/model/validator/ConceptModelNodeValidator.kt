@@ -23,6 +23,23 @@ object ConceptModelNodeValidator {
                 parentConceptIdentifier = entry.parentConceptIdentifier)
         }
 
+        // iterate through all schema facets to find missing ones
+        schemaConcept.inputFacets
+            .filter { it.inputFacet.isMandatoryInputFacetValue }
+            .forEach { mandatoryInputFacetSchema ->
+                val missingFacetException = InvalidFacetConfigurationModelException(
+                    conceptName = entry.conceptName,
+                    conceptIdentifier = entry.conceptIdentifier,
+                    facetName = mandatoryInputFacetSchema.inputFacet.facetName,
+                    reason = "Mandatory facet with facet name '${mandatoryInputFacetSchema.inputFacet.facetName.name}' is missing. "
+                )
+                try {
+                    entry.inputFacetValueAccess.facetValue(mandatoryInputFacetSchema.inputFacet) ?: throw missingFacetException
+                } catch (ex: IllegalStateException) {
+                    throw missingFacetException
+                }
+            }
+
         // iterate through all entry facet values to find invalid/obsolet ones
         entry.inputFacetValueAccess.getFacetNames().forEach { facetName ->
             if(!schemaConcept.hasInputFacet(facetName)) {

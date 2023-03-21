@@ -54,10 +54,6 @@ class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
         throw IllegalStateException("Facet not found for facet name '${facet.facetName}'.")
     }
 
-    private fun buildVirtualFacetInputNotAllowedException(facet: InputFacet<*>): Exception {
-        return IllegalStateException("Can not use internal InputFacet classes (facet: ${facet.facetName})")
-    }
-
     private fun buildWrongFacetTypeException(facet: InputFacet<*>): Exception {
         throw IllegalStateException("Facet with facet name '${facet.facetName}' had a value with the wrong type.")
     }

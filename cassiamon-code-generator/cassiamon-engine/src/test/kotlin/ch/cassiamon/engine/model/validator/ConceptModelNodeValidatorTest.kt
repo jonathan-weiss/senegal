@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
 import kotlin.reflect.KClass
 
-@Disabled
 class ConceptModelNodeValidatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
@@ -163,7 +162,7 @@ class ConceptModelNodeValidatorTest {
             parentConceptIdentifier = personTableId,
         )
             .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableFieldNameFacetName, "foobar") // this facet is not allowed in this concept
+            .addFacetValue(tableNameFacetName, "foobar") // this facet is not allowed in this concept
             .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
             .addFacetValue(tableFieldLengthFacetName, 255)
             .attach()
@@ -172,28 +171,6 @@ class ConceptModelNodeValidatorTest {
         testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
-//    @Test
-//    fun `validate a concept with a value for calculated facet`() {
-//        // arrange
-//        val schema = TestFixtures.createTestFixtureSchema()
-//        val modelInputDataCollector = ModelInputDataCollector()
-//
-//        val personTableId = ConceptIdentifier.of("Person")
-//        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-//        modelInputDataCollector.newConceptData(
-//            conceptName = databaseTableFieldConceptName,
-//            conceptIdentifier = personFirstnameFieldId,
-//            parentConceptIdentifier = personTableId,
-//        )
-//            .addTextFacetValue(tableFieldNameFacetName, "firstname")
-//            .addTextFacetValue(tableFieldTypeFacetName, "VARCHAR")
-//            .addIntegerNumberFacetValue(tableFieldLengthFacetName, 255)
-//            .addTextFacetValue(tableNameAndFieldNameFacetName, "manual-data") //wrong as a calculated facet
-//            .attach()
-//
-//        // act + assert
-//        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
-//    }
 
     private fun testModelNodeValidator(entryId: ConceptIdentifier, collector: ModelInputDataCollector, schema: Schema, expectedExceptionType: KClass<out Throwable>? = null) {
         val entryToTest = entryByConceptIdentifier(entryId, collector)
