@@ -2,7 +2,7 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputData
-import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
+import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
@@ -26,7 +26,7 @@ object ConceptModelGraphCalculator {
 
             checkForDuplicateConceptIdentifier(inputDataEntry, nodePool)
             checkForDuplicateFacetNames(inputDataEntry)
-            ConceptModelNodeValidator.validateSingleEntry(schema, inputDataEntry)
+            ModelConceptInputDataValidator.validateSingleEntry(schema, inputDataEntry)
 
             val conceptModelNode = createConceptModelNode(inputDataEntry, calculationAndValidationData)
             nodePool.addConceptModelNode(conceptModelNode)

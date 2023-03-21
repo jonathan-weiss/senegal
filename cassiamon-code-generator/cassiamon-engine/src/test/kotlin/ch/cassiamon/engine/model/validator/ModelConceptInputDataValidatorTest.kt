@@ -10,13 +10,12 @@ import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.facets.InputFacetValue
-import ch.cassiamon.pluginapi.model.facets.TextFacetKotlinType
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import kotlin.reflect.KClass
 
-class ConceptModelNodeValidatorTest {
+class ModelConceptInputDataValidatorTest {
 
     private val databaseTableConceptName = TestFixtures.databaseTableConceptName
     private val databaseTableFieldConceptName = TestFixtures.databaseTableFieldConceptName
@@ -24,7 +23,6 @@ class ConceptModelNodeValidatorTest {
     private val tableFieldNameFacetName = TestFixtures.tableFieldNameFacet
     private val tableFieldTypeFacetName = TestFixtures.tableFieldTypeFacet
     private val tableFieldLengthFacetName = TestFixtures.tableFieldLengthFacet
-    private val tableNameAndFieldNameFacetName = TestFixtures.tableNameAndFieldNameFacet
 
     @Test
     fun `validate a valid singe root concept entry`() {
@@ -40,7 +38,7 @@ class ConceptModelNodeValidatorTest {
         ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
-        testModelNodeValidator(personTableId, modelInputDataCollector, schema)
+        testModelConceptInputDataValidator(personTableId, modelInputDataCollector, schema)
     }
 
     @Test
@@ -57,7 +55,7 @@ class ConceptModelNodeValidatorTest {
         ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
-        testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptNotKnownModelException::class)
+        testModelConceptInputDataValidator(personTableId, modelInputDataCollector, schema, ConceptNotKnownModelException::class)
     }
 
 
@@ -87,7 +85,7 @@ class ConceptModelNodeValidatorTest {
 
 
         // act + assert
-        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema)
+        testModelConceptInputDataValidator(personFirstnameFieldId, modelInputDataCollector, schema)
     }
 
 
@@ -105,7 +103,7 @@ class ConceptModelNodeValidatorTest {
         ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
-        testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
+        testModelConceptInputDataValidator(personTableId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
     }
 
 
@@ -129,7 +127,7 @@ class ConceptModelNodeValidatorTest {
 
 
         // act + assert
-        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
+        testModelConceptInputDataValidator(personFirstnameFieldId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
     }
 
     @Test
@@ -146,7 +144,7 @@ class ConceptModelNodeValidatorTest {
         ).attach()// facet tableNameFacetName missing
 
         // act + assert
-        testModelNodeValidator(personTableId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        testModelConceptInputDataValidator(personTableId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
     @Test
@@ -169,7 +167,7 @@ class ConceptModelNodeValidatorTest {
             .attach()
 
         // act + assert
-        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        testModelConceptInputDataValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
     @Test
@@ -194,7 +192,7 @@ class ConceptModelNodeValidatorTest {
             .attach()
 
         // act + assert
-        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        testModelConceptInputDataValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
     @Test
@@ -219,19 +217,19 @@ class ConceptModelNodeValidatorTest {
             .attach()
 
         // act + assert
-        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        testModelConceptInputDataValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
-    private fun testModelNodeValidator(entryId: ConceptIdentifier, collector: ModelInputDataCollector, schema: Schema, expectedExceptionType: KClass<out Throwable>? = null) {
+    private fun testModelConceptInputDataValidator(entryId: ConceptIdentifier, collector: ModelInputDataCollector, schema: Schema, expectedExceptionType: KClass<out Throwable>? = null) {
         val entryToTest = entryByConceptIdentifier(entryId, collector)
         if(expectedExceptionType == null) {
-            ConceptModelNodeValidator.validateSingleEntry(
+            ModelConceptInputDataValidator.validateSingleEntry(
                 schema = schema,
                 entry = entryToTest
             )
         } else {
             assertThrows(expectedExceptionType.java) {
-                ConceptModelNodeValidator.validateSingleEntry(
+                ModelConceptInputDataValidator.validateSingleEntry(
                     schema = schema,
                     entry = entryToTest
                 )

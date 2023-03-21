@@ -9,7 +9,7 @@ import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelExceptio
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.facets.*
 
-object ConceptModelNodeValidator {
+object ModelConceptInputDataValidator {
 
     internal fun validateSingleEntry(schema: Schema, entry: ModelConceptInputDataEntry) {
         if(!schema.hasConceptName(entry.conceptName)) {
