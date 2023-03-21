@@ -10,11 +10,10 @@ import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.facets.InputFacetValue
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
+import ch.cassiamon.pluginapi.model.facets.TextFacetKotlinType
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 import kotlin.reflect.KClass
 
 class ConceptModelNodeValidatorTest {
@@ -198,6 +197,30 @@ class ConceptModelNodeValidatorTest {
         testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
     }
 
+    @Test
+    fun `validate a concept with mandatory facet type but null value`() {
+        // arrange
+        val schema = TestFixtures.createTestFixtureSchema()
+        val modelInputDataCollector = ModelInputDataCollector()
+
+
+        val nullFacetValue = InputFacetValue(tableFieldNameFacetName, null) // type field with wrong type
+
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
+        modelInputDataCollector.newConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addFacetValue(nullFacetValue) // mandatory type with null value
+            .addFacetValue(tableFieldTypeFacetName.facetValue( "VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue( 255))
+            .attach()
+
+        // act + assert
+        testModelNodeValidator(personFirstnameFieldId, modelInputDataCollector, schema, InvalidFacetConfigurationModelException::class)
+    }
 
     private fun testModelNodeValidator(entryId: ConceptIdentifier, collector: ModelInputDataCollector, schema: Schema, expectedExceptionType: KClass<out Throwable>? = null) {
         val entryToTest = entryByConceptIdentifier(entryId, collector)

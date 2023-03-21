@@ -27,6 +27,8 @@ class SchemaRegistrationApiTest {
     private val tableNameAndFieldNameFacet = TestFixtures.tableNameAndFieldNameFacet
     private val tableIndexNameFacet = TestFixtures.tableIndexNameFacet
 
+    private val tableNameAndFieldNameFunction = TestFixtures.tableNameAndFieldNameFunction
+
 
     @Test
     fun `test with single concept`() {
@@ -69,7 +71,7 @@ class SchemaRegistrationApiTest {
                     addFacet(facet = tableFieldNameFacet)
                     addFacet(facet = tableFieldTypeFacet) // TODO use enumeration as soon as available
                     addFacet(facet = tableFieldLengthFacet)
-                    addFacet(facet = tableNameAndFieldNameFacet) { "TODO write <TableName>.<FieldName>" } // TODO write simple code example as soon as nodes have properties
+                    addFacet(facet = tableNameAndFieldNameFacet, facetCalculationFunction = tableNameAndFieldNameFunction)
 
                 }
             }
@@ -116,84 +118,6 @@ class SchemaRegistrationApiTest {
 
         assertEquals(thrown.concept, databaseTableConceptName)
         assertEquals(thrown.facetName, tableNameFacet.facetName)
-    }
-
-    @Test
-    @Disabled
-    fun `test concept with unknown facet dependencies should throw an exception`() {
-        // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
-
-
-        // assert
-//        val thrown: FacetDependencyNotFoundSchemaException = assertThrows(FacetDependencyNotFoundSchemaException::class.java) {
-//
-//            // act
-//            registrationApi.configureSchema {
-//                newRootConcept(conceptName = databaseTableFieldConceptName) {
-//                    addTextFacet(facetName = tableFieldNameFacetName)
-//                    addTextFacet(
-//                        facetName = tableFieldTypeFacetName,
-//                        dependingOnFacets = setOf(tableFieldLengthFacetName, tableFieldNameFacetName)
-//                    )
-//                    addIntegerNumberFacet(facetName = tableFieldLengthFacetName)
-//                }
-//            }
-//
-//        }
-//
-//        assertEquals(databaseTableFieldConceptName, thrown.concept)
-//        assertEquals(setOf(tableFieldLengthFacetName), thrown.facets)
-    }
-
-    @Test
-    @Disabled
-    fun `test concept with cyclic dependent facets should throw an exception`() {
-        // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
-
-
-        // assert
-//        val thrown: FacetDependencyNotFoundSchemaException = assertThrows(FacetDependencyNotFoundSchemaException::class.java) {
-//
-//            // act
-//            registrationApi.configureSchema {
-//                newRootConcept(conceptName = databaseTableFieldConceptName) {
-//                    addTextFacet(facetName = tableFieldNameFacetName, dependingOnFacets = setOf(tableFieldTypeFacetName))
-//                    addTextFacet(facetName = tableFieldTypeFacetName, dependingOnFacets = setOf(tableFieldNameFacetName))
-//                }
-//            }
-//
-//        }
-//
-//        assertEquals(databaseTableFieldConceptName, thrown.concept)
-    }
-
-    @Test
-    @Disabled
-    fun `test concept with multiple dependent facets`() {
-        // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
-
-
-//        // act
-//        registrationApi.configureSchema {
-//            newRootConcept(conceptName = databaseTableFieldConceptName) {
-//                addTextFacet(facetName = tableFieldNameFacetName)
-//                addTextFacet(facetName = tableFieldTypeFacetName)
-//                addIntegerNumberFacet(facetName = tableFieldLengthFacetName)
-//
-//                addTextFacet(
-//                    facetName = tableNameAndFieldNameFacetName,
-//                )
-//            }
-//        }
-//        val schema = registrationApi.provideSchema()
-//
-//        // assert
-//        assertEquals(databaseTableFieldConceptName, findConcept(schema, databaseTableFieldConceptName).conceptName)
-//        assertEquals(setOf(tableFieldNameFacetName, tableFieldTypeFacetName, tableFieldLengthFacetName),
-//            findFacet(schema, databaseTableFieldConceptName, tableNameAndFieldNameFacetName).facetDependencies)
     }
 
     private fun findConcept(schema: Schema, conceptName: ConceptName): ConceptSchema {

@@ -6,10 +6,8 @@ import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.facets.MandatoryNumberInputAndTemplateFacet
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextTemplateFacet
-import ch.cassiamon.pluginapi.model.facets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet
+import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
+import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.TemplateFunction
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -28,6 +26,11 @@ object TestFixtures {
     val tableNameAndFieldNameFacet = MandatoryTextTemplateFacet.of("TableNameAndFieldName")
     val tableIndexNameFacet = MandatoryTextInputAndTemplateFacet.of("TableIndexName")
 
+    val tableNameAndFieldNameFunction: (ConceptModelNodeCalculationData) -> TextFacetKotlinType = { data ->
+        requireNotNull(data.conceptModelNode.parent()).templateFacetValues.facetValue(tableNameFacet) +
+                "." +
+                data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
+
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl()): Schema {
 
         registrationApi.configureSchema {
@@ -38,10 +41,7 @@ object TestFixtures {
                     addFacet(tableFieldNameFacet)
                     addFacet(tableFieldTypeFacet) // TODO use enumeration as soon as available
                     addFacet(tableFieldLengthFacet)
-                    addFacet(tableNameAndFieldNameFacet) { data ->
-                        requireNotNull(data.conceptModelNode.parent()).templateFacetValues.facetValue(tableNameFacet) +
-                                "." +
-                                data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
+                    addFacet(tableNameAndFieldNameFacet, tableNameAndFieldNameFunction)
 
                     addFacet(tableFieldForeignKeyConceptIdFacet)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {
