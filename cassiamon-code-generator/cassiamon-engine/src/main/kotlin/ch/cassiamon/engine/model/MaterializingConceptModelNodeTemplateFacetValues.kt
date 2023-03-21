@@ -3,7 +3,7 @@ package ch.cassiamon.engine.model
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
-import ch.cassiamon.pluginapi.model.facets.TemplateFacet
+import ch.cassiamon.pluginapi.model.facets.*
 
 class MaterializingConceptModelNodeTemplateFacetValues(
     private val conceptModelNode: ConceptModelNode
@@ -12,8 +12,13 @@ class MaterializingConceptModelNodeTemplateFacetValues(
     private var isFacetNamesMaterialized = false
     private var materializedAllTemplateFacetNames: Set<FacetName> = emptySet()
 
-    private val materializedTemplateFacetValues: MutableMap<FacetName, Any?> = mutableMapOf()
-    private val materializedTemplateFacets: MutableSet<FacetName> = mutableSetOf() // separate set to support optional values with null
+    private val materializedTemplateFacetValues: MutableMap<TemplateFacet<*>, TemplateFacetValue<*>> = mutableMapOf()
+    private val materializedTemplateFacetNames: MutableSet<FacetName> = mutableSetOf() // separate set to support optional values with null
+
+    data class TemplateFacetValue<T>(
+        val templateFacet: TemplateFacet<T>,
+        val templateFacetValue: T,
+    )
 
     override fun allTemplateFacetNames(): Set<FacetName> {
         materializeFacetNamesIfNecessary()
@@ -23,7 +28,27 @@ class MaterializingConceptModelNodeTemplateFacetValues(
     override fun <T> facetValue(templateFacet: TemplateFacet<T>): T {
         materializeFacetIfNecessary(templateFacet)
         // TODO add a facet value collector
-        return materializedTemplateFacetValues[templateFacet.facetName] as T
+
+        return when(templateFacet) {
+            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
+            is MandatoryNumberInputAndTemplateFacet -> facetValueInternal(templateFacet)
+            is MandatoryTextInputAndTemplateFacet -> facetValueInternal(templateFacet)
+            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
+            is MandatoryTextTemplateFacet -> facetValueInternal(templateFacet)
+            is OptionalNumberTemplateFacet -> facetValueInternal(templateFacet)
+        }
+    }
+
+    private inline fun <reified T> facetValueInternal(facet: TemplateFacet<T>): T {
+        val facetValueWrapper: TemplateFacetValue<*>? = materializedTemplateFacetValues[facet]
+
+        val facetValue = facetValueWrapper?.templateFacetValue ?: return null as T
+
+        if(facetValue is T) {
+            return facetValue
+        }
+        throw IllegalArgumentException("Facet value for facet type '$facet' has wrong type: $facetValue")
+
     }
 
 
@@ -40,9 +65,9 @@ class MaterializingConceptModelNodeTemplateFacetValues(
     }
 
     private fun <T> materializeFacetIfNecessary(facet: TemplateFacet<T>) {
-        if(!materializedTemplateFacets.contains(facet.facetName)) {
-            materializedTemplateFacetValues[facet.facetName] = conceptModelNode.templateFacetValues.facetValue(facet)
-            materializedTemplateFacets.add(facet.facetName)
+        if(!materializedTemplateFacetNames.contains(facet.facetName)) {
+            materializedTemplateFacetValues[facet] = TemplateFacetValue(facet, conceptModelNode.templateFacetValues.facetValue(facet))
+            materializedTemplateFacetNames.add(facet.facetName)
         }
     }
 }
