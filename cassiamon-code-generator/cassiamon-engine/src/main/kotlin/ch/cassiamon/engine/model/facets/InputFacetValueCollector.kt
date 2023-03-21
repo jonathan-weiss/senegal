@@ -20,14 +20,9 @@ class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
         }
     }
 
-    override fun <T: Any> addFacetValue(facet: MandatoryInputFacet<T>, value: T){
-        inputFacets[facet] = InputFacetValue(facet, value)
+    override fun <T> addFacetValue(facetWithValue: InputFacetValue<T>){
+        inputFacets[facetWithValue.inputFacet] = facetWithValue
     }
-
-    override fun <T: Any?> addFacetValue(facet: OptionalInputFacet<T>, value: T){
-        inputFacets[facet] = InputFacetValue(facet, value)
-    }
-
 
     private inline fun <reified T> facetValueInternal(facet: InputFacet<T>): T {
         val facetValueWrapper: InputFacetValue<*>? = inputFacets[facet]

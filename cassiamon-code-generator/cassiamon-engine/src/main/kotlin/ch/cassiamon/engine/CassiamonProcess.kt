@@ -44,10 +44,10 @@ class CassiamonProcess {
             conceptIdentifier = ConceptIdentifier.of("Person"),
             parentConceptIdentifier = null,
         )
-            .addFacetValue(MandatoryTextInputFacet.of("TableName"), "Person")
-            .addFacetValue(MandatoryNumberInputFacet.of("TableSize"), 2323)
-            .addFacetValue(OptionalNumberInputFacet.of("TableSize"), null)
-            .addFacetValue(OptionalNumberInputFacet.of("TableSize"), 2345)
+            .addFacetValue(MandatoryTextInputFacet.of("TableName").facetValue("Person"))
+            .addFacetValue(MandatoryNumberInputFacet.of("TableSize").facetValue(2323))
+            .addFacetValue(OptionalNumberInputFacet.of("TableSize").facetValue(null))
+            .addFacetValue(OptionalNumberInputFacet.of("TableSize").facetValue(2345))
             .attach()
 
 

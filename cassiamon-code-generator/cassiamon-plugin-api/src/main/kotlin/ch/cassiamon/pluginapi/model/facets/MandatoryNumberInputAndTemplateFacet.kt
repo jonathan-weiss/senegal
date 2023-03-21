@@ -15,6 +15,10 @@ class MandatoryNumberInputAndTemplateFacet private constructor(override val face
     override val facetCalculationFunction: (ConceptModelNodeCalculationData) -> NumberFacetKotlinType
         get() = { it.inputFacetValues.facetValue(this) }
 
+    fun facetValue(value: NumberFacetKotlinType): InputFacetValue<NumberFacetKotlinType> {
+        return InputFacetValue(this, value)
+    }
+
     companion object {
         fun of(facetName: String): MandatoryNumberInputAndTemplateFacet {
             return MandatoryNumberInputAndTemplateFacet(FacetName.of(facetName))

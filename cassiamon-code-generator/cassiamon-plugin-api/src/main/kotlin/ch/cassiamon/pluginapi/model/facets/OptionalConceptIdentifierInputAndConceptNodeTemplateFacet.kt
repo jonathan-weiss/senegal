@@ -17,6 +17,10 @@ class OptionalConceptIdentifierInputAndConceptNodeTemplateFacet private construc
         get() = { calculationData -> calculationData.inputFacetValues.facetValue(this)
             ?.let { calculationData.conceptModelNodePool.getConcept(it) } }
 
+    fun facetValue(value: ConceptReferenceFacetKotlinType?): InputFacetValue<ConceptReferenceFacetKotlinType?> {
+        return InputFacetValue(this, value)
+    }
+
     companion object {
         fun of(facetName: String, referencedConceptName: ConceptName): OptionalConceptIdentifierInputAndConceptNodeTemplateFacet {
             // TODO what is with the target concept?

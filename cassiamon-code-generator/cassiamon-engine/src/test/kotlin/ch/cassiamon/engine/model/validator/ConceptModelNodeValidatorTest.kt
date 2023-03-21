@@ -9,6 +9,7 @@ import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
+import ch.cassiamon.pluginapi.model.facets.InputFacetValue
 import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
 import org.junit.jupiter.api.Test
 
@@ -37,7 +38,7 @@ class ConceptModelNodeValidatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema)
@@ -54,7 +55,7 @@ class ConceptModelNodeValidatorTest {
             conceptName = ConceptName.of("UnknownConcept"), // unknown concept
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptNotKnownModelException::class)
@@ -72,7 +73,7 @@ class ConceptModelNodeValidatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
         modelInputDataCollector.newConceptData(
@@ -80,9 +81,9 @@ class ConceptModelNodeValidatorTest {
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldNameFacetName.facetValue("firstname"))
+            .addFacetValue(tableFieldTypeFacetName.facetValue("VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue(255))
             .attach()
 
 
@@ -102,7 +103,7 @@ class ConceptModelNodeValidatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = ConceptIdentifier.of("InvalidParentIdentifier"), // wrong concept
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addFacetValue(tableNameFacetName.facetValue("Person")).attach()
 
         // act + assert
         testModelNodeValidator(personTableId, modelInputDataCollector, schema, ConceptParentInvalidModelException::class)
@@ -121,9 +122,9 @@ class ConceptModelNodeValidatorTest {
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = null, // parent concept missing
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldNameFacetName.facetValue("firstname"))
+            .addFacetValue(tableFieldTypeFacetName.facetValue("VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue(255))
             .attach()
 
 
@@ -162,10 +163,10 @@ class ConceptModelNodeValidatorTest {
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableNameFacetName, "foobar") // this facet is not allowed in this concept
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldNameFacetName.facetValue("firstname"))
+            .addFacetValue(tableNameFacetName.facetValue("foobar")) // this facet is not allowed in this concept
+            .addFacetValue(tableFieldTypeFacetName.facetValue("VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue(255))
             .attach()
 
         // act + assert
@@ -178,7 +179,8 @@ class ConceptModelNodeValidatorTest {
         val schema = TestFixtures.createTestFixtureSchema()
         val modelInputDataCollector = ModelInputDataCollector()
 
-        val fieldNameWrongTyped = 23
+
+        val wrongTypeFieldFacetValue = InputFacetValue<Any>(tableFieldNameFacetName, 23) // type field with wrong type
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
@@ -187,9 +189,9 @@ class ConceptModelNodeValidatorTest {
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, fieldNameWrongTyped) // TODO this should not be possible
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(wrongTypeFieldFacetValue) // type field with wrong type
+            .addFacetValue(tableFieldTypeFacetName.facetValue( "VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue( 255))
             .attach()
 
         // act + assert

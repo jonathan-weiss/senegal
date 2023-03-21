@@ -159,7 +159,7 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = table,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, table.code).attach()
+        ).addFacetValue(tableNameFacetName.facetValue(table.code)).attach()
 
     }
 
@@ -171,10 +171,10 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptIdentifier = field,
             parentConceptIdentifier = table,
         )
-            .addFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
-            .addFacetValue(tableFieldTypeFacetName, "UUID")
-            .addFacetValue(tableFieldLengthFacetName, 128)
-            .addFacetValue(tableFieldForeignKeyConceptIdFacetName, foreignKeyToTable)
+            .addFacetValue(tableFieldNameFacetName.facetValue(fieldNameFromIdentifier(field)))
+            .addFacetValue(tableFieldTypeFacetName.facetValue( "UUID"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue(128))
+            .addFacetValue(tableFieldForeignKeyConceptIdFacetName.facetValue(foreignKeyToTable))
             .attach()
     }
 
@@ -190,9 +190,9 @@ class ConceptModelGraphGraphCalculatorTest {
             conceptIdentifier = field,
             parentConceptIdentifier = table,
         )
-            .addFacetValue(tableFieldNameFacetName, fieldNameFromIdentifier(field))
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldNameFacetName.facetValue(fieldNameFromIdentifier(field)))
+            .addFacetValue(tableFieldTypeFacetName.facetValue("VARCHAR"))
+            .addFacetValue(tableFieldLengthFacetName.facetValue(255))
             .attach()
     }
 }

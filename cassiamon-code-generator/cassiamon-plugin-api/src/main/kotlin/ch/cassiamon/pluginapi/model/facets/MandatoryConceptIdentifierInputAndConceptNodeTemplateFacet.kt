@@ -18,6 +18,10 @@ class MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet private constru
             .let { calculationData.conceptModelNodePool.getConcept(it) }
         }
 
+    fun facetValue(value: ConceptReferenceFacetKotlinType): InputFacetValue<ConceptReferenceFacetKotlinType> {
+        return InputFacetValue(this, value)
+    }
+
     companion object {
         fun of(facetName: String, referencedConceptName: ConceptName): MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet {
             // TODO what is with the target concept?
