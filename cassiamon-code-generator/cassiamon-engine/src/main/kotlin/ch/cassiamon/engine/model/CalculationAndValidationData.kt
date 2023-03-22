@@ -1,5 +1,6 @@
 package ch.cassiamon.engine.model
 
+import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
@@ -8,7 +9,7 @@ import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 
 data class CalculationAndValidationData(
     val schema: Schema,
-    val infiniteLoopDetector: InfiniteLoopDetector,
+    val circularFacetDependencyDetector: CircularFacetDependencyDetector,
     val conceptModelNodePool: ConceptModelNodePool,
 ) {
     fun createConceptModelNodeCalculationData(conceptModelNode: ConceptModelNode, inputFacetValues: InputFacetValueAccess): ConceptModelNodeCalculationData {

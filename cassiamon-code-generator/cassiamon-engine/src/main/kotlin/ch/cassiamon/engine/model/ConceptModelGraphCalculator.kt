@@ -2,17 +2,16 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputData
+import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
 import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodePool
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateConceptIdentifierFoundModelException
 import ch.cassiamon.pluginapi.model.exceptions.DuplicateFacetNameFoundModelException
-import ch.cassiamon.pluginapi.model.exceptions.InvalidTemplateFacetConfigurationModelException
 
 object ConceptModelGraphCalculator {
 
@@ -21,7 +20,7 @@ object ConceptModelGraphCalculator {
 
         val calculationAndValidationData = CalculationAndValidationData(
             schema = schema,
-            infiniteLoopDetector = InfiniteLoopDetector(),
+            circularFacetDependencyDetector = CircularFacetDependencyDetector(),
             conceptModelNodePool = nodePool
         )
 
