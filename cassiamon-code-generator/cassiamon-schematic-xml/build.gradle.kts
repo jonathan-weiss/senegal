@@ -11,6 +11,7 @@ allprojects {
 
 dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
+    implementation(project(":cassiamon-code-generator:cassiamon-engine"))
 
 
     testImplementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))

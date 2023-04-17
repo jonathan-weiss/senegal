@@ -84,6 +84,8 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
                 .newConceptData(testConceptName, ConceptIdentifier.of("Mein-zweites-Testkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
+
+
         }
     }
 }
