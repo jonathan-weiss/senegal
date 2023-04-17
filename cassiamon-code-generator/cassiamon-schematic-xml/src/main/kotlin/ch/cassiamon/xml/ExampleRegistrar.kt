@@ -1,7 +1,6 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.registration.RegistrationApi
@@ -22,8 +21,6 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
 
     override fun configure(registrationApi: RegistrationApi) {
-
-
         println("In the $projectName registrar")
         registrationApi.configureSchema {
             newRootConcept(testConceptName) {
@@ -72,18 +69,6 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
                 }
             }
 
-        }
-
-        registrationApi.collectData { dataCollector ->
-            dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("Mein-Testkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
-                .attach()
-
-            dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("Mein-zweites-Testkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
-                .attach()
         }
     }
 }

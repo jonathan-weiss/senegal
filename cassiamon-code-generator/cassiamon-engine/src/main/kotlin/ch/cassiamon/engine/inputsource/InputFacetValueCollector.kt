@@ -1,10 +1,10 @@
-package ch.cassiamon.engine.model.facets
+package ch.cassiamon.engine.inputsource
 
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.InputFacetValueAccess
 import ch.cassiamon.pluginapi.model.facets.*
 
-class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
+class InputFacetValueCollector: InputFacetValueAccess {
 
     private val inputFacets: MutableMap<InputFacet<*>, InputFacetValue<*>> = mutableMapOf()
 
@@ -20,7 +20,7 @@ class InputFacetValueCollector: InputFacetValueAddition, InputFacetValueAccess {
         }
     }
 
-    override fun <T> addFacetValue(facetWithValue: InputFacetValue<T>){
+    fun <T> addFacetValue(facetWithValue: InputFacetValue<T>){
         inputFacets[facetWithValue.inputFacet] = facetWithValue
     }
 

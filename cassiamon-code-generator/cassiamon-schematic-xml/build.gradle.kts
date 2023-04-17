@@ -11,8 +11,6 @@ allprojects {
 
 dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
-    implementation(project(":cassiamon-code-generator:cassiamon-engine"))
-    implementation(project(":cassiamon-code-generator:cassiamon-schematic-xml"))
 
 
     testImplementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
@@ -27,17 +25,4 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-}
-
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
-
-tasks.named("run") {
-    enabled = true
-}
-
-application {
-    mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
 }

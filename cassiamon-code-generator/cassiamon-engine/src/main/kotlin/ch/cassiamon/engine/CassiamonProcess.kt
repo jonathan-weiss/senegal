@@ -39,6 +39,7 @@ class CassiamonProcess {
         // TODO read the XML file and fill it in flat a modelInputData
 
         val modelInputDataCollector = ModelInputDataCollector()
+
         modelInputDataCollector.newConceptData(
             conceptName = ConceptName.of("DatabaseTable"),
             conceptIdentifier = ConceptIdentifier.of("Person"),
