@@ -12,12 +12,12 @@ class CassiamonProcess {
 
 
     fun createModelGraph() {
-
+        val processFacades = ProcessFacades()
 
 
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrars = RegistrarFinder.findAllRegistrars()
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl(processFacades)
         registrars.forEach { it.configure(registrationApi) }
 
         // resolve the raw concepts and facets to a resolved schema

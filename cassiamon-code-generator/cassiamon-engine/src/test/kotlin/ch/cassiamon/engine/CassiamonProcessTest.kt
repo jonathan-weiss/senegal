@@ -8,10 +8,11 @@ class CassiamonProcessTest {
 
     @Test
     fun createModelGraph() {
+        val processFacades = ProcessFacades()
         val registrars = listOf(TestRegistrar())
         println("Registrars: [${registrars.joinToString { it.projectName.name }}]")
 
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = RegistrationApiDefaultImpl(processFacades)
         registrars.forEach { it.configure(registrationApi) }
 
         val schema = registrationApi.provideSchema()

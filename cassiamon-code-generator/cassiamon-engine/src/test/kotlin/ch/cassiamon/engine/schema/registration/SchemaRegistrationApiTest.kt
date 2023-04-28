@@ -1,5 +1,6 @@
 package ch.cassiamon.engine.schema.registration
 
+import ch.cassiamon.engine.ProcessFacades
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
@@ -7,6 +8,7 @@ import ch.cassiamon.pluginapi.schema.InputFacetSchema
 import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.registration.exceptions.CircularConceptHierarchieFoundSchemaException
 import ch.cassiamon.pluginapi.registration.exceptions.DuplicateConceptNameFoundSchemaException
 import ch.cassiamon.pluginapi.registration.exceptions.DuplicateFacetNameFoundSchemaException
@@ -32,7 +34,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test with single concept`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // act
         registrationApi.configureSchema {
@@ -59,7 +61,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test with nested concept`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // act
         registrationApi.configureSchema {
@@ -99,7 +101,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with duplicate facet names should throw an exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
 
         // assert
@@ -136,7 +138,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test multiple concepts in hierarchie`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // act
         registrationApi.configureSchema {
@@ -173,7 +175,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test root concept inside a child concept throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // assert
         val thrown: CircularConceptHierarchieFoundSchemaException = assertThrows(CircularConceptHierarchieFoundSchemaException::class.java) {
@@ -202,7 +204,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test concept with duplicate concept name throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {
@@ -220,7 +222,7 @@ class SchemaRegistrationApiTest {
     @Test
     fun `test multiple concepts in cyclic hierarchy throws exception`() {
         // arrange
-        val registrationApi = RegistrationApiDefaultImpl()
+        val registrationApi = getRegistrationApi()
 
         // assert
         val thrown: DuplicateConceptNameFoundSchemaException = assertThrows(DuplicateConceptNameFoundSchemaException::class.java) {
@@ -244,6 +246,10 @@ class SchemaRegistrationApiTest {
         }
 
         assertEquals(databaseTableConceptName, thrown.concept)
+    }
+
+    private fun getRegistrationApi(): RegistrationApiDefaultImpl {
+        return RegistrationApiDefaultImpl(ProcessFacades())
     }
 
 }

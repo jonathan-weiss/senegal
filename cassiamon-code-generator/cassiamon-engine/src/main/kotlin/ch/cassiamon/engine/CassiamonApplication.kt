@@ -10,7 +10,7 @@ fun main() {
     val registrars = RegistrarFinder.findAllRegistrars()
     println("Registrars: [${registrars.joinToString { it.projectName.name }}]")
 
-    val registrationApi = RegistrationApiDefaultImpl()
+    val registrationApi = RegistrationApiDefaultImpl(ProcessFacades())
     registrars.forEach { it.configure(registrationApi) }
 
     val schema = registrationApi.provideSchema()

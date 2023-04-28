@@ -89,7 +89,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
                 .attach()
 
             val pathToXmlFile = Paths.get("my.xml")
-            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, pathToXmlFile, receiveFileSystemAccess(), receiveLoggerFacade())
+            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, pathToXmlFile, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
 
         }
     }

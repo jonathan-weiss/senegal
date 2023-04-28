@@ -2,6 +2,7 @@ package ch.cassiamon.xml.schemagic
 
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade
+import ch.cassiamon.pluginapi.parameter.ParameterAccess
 import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
 import ch.cassiamon.pluginapi.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.SaxParserHandler
@@ -17,14 +18,16 @@ object XmlSchemagicFactory {
     private const val schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI
     private const val schemaFeature = "http://apache.org/xml/features/validation/schema"
 
-    fun parseXml(schemaAccess: SchemaAccess,
-                 dataCollector: InputSourceDataCollector,
-                 xmlDefinitionFile: Path,
-                 fileSystemAccess: FileSystemAccess,
-                 logger: LoggerFacade,
+    fun parseXml(
+        schemaAccess: SchemaAccess,
+        dataCollector: InputSourceDataCollector,
+        xmlDefinitionFile: Path,
+        fileSystemAccess: FileSystemAccess,
+        logger: LoggerFacade,
+        receiveParameterAccess: ParameterAccess,
                  ) {
 
-        val placeholders: Map<String, String> = emptyMap() // TODO implement this as interface
+        val placeholders: Map<String, String> = receiveParameterAccess.getParameterMap()
 
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
