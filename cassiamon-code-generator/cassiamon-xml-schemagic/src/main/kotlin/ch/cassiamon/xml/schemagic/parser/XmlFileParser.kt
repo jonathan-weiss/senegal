@@ -1,8 +1,8 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.engine.logger.CassiamonLogger
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.virtualfilesystem.VirtualFileSystem
+import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
+import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
 import java.nio.file.Path
 import javax.xml.XMLConstants
@@ -22,8 +22,8 @@ object XmlFileParser {
         dataCollector: InputSourceDataCollector,
         xmlDefinitionFile: Path,
         placeholders: Map<String, String>,
-        virtualFileSystem: VirtualFileSystem,
-        logger: CassiamonLogger,
+        fileSystemAccess: FileSystemAccess,
+        logger: LoggerFacade,
     ) {
 
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
@@ -35,7 +35,7 @@ object XmlFileParser {
 
         val senegalSchemaXsd = xmlDefinitionFile.parent.resolve("schema").resolve("senegal-schema.xsd")
         val sources = listOf(
-            StreamSource(virtualFileSystem.fileAsInputStream(senegalSchemaXsd))
+            StreamSource(fileSystemAccess.fileAsInputStream(senegalSchemaXsd))
         )
 
         val schemaFactory: SchemaFactory = SchemaFactory.newInstance(schemaLanguage)
@@ -43,9 +43,9 @@ object XmlFileParser {
 
         val saxParser: SAXParser = factory.newSAXParser()
 
-        val saxParserHandler = SaxParserHandler(schema, dataCollector, placeholders, xmlDefinitionFile.parent, virtualFileSystem, logger)
+        val saxParserHandler = SaxParserHandler(schema, dataCollector, placeholders, xmlDefinitionFile.parent, fileSystemAccess, logger)
 
-        virtualFileSystem.fileAsInputStream(xmlDefinitionFile).use {
+        fileSystemAccess.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, saxParserHandler)
         }
     }

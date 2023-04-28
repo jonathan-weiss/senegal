@@ -1,15 +1,16 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.engine.logger.CassiamonLogger
 import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.util.PlaceholderUtil
-import ch.cassiamon.engine.virtualfilesystem.VirtualFileSystem
+import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
+import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.registration.InputSourceConceptFacetValueBuilder
 import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
+import ch.cassiamon.pluginapi.schema.SchemaAccess
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.SAXException
@@ -20,12 +21,12 @@ import java.util.*
 
 
 class SaxParserHandler(
-    private val schema: Schema,
+    private val schema: SchemaAccess,
     private val dataCollector: InputSourceDataCollector,
     private val placeholders: Map<String, String>,
     private val schemaFileDirectory: Path,
-    private val virtualFileSystem: VirtualFileSystem,
-    private val logger: CassiamonLogger,
+    private val fileSystemAccess: FileSystemAccess,
+    private val logger: LoggerFacade,
 ) : DefaultHandler2() {
 
     private var conceptIdentifierStack: MutableList<ConceptIdentifier> = mutableListOf()
@@ -119,7 +120,7 @@ class SaxParserHandler(
     override fun resolveEntity(name: String?, publicId: String?, baseURI: String?, systemId: String?): InputSource? {
         logger.logDebug { "XML: resolveEntity: systemId:$systemId, publicId:$publicId, baseURI:$baseURI" }
         return if(systemId != null && systemId.startsWith("./")) {
-            InputSource(virtualFileSystem.fileAsInputStream(schemaFileDirectory.resolve(systemId).normalize()))
+            InputSource(fileSystemAccess.fileAsInputStream(schemaFileDirectory.resolve(systemId).normalize()))
         } else {
             super.resolveEntity(name, publicId, baseURI, systemId)
         }

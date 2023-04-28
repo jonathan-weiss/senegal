@@ -1,41 +1,42 @@
 package ch.cassiamon.engine.logger
 
-import ch.cassiamon.engine.virtualfilesystem.VirtualFileSystem
+import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
+import ch.cassiamon.pluginapi.logger.LoggerFacade
 import java.util.logging.Level
 import java.util.logging.LogManager
 import java.util.logging.Logger
 
-class CassiamonLogger(virtualFileSystem: VirtualFileSystem) {
+class JavaUtilLoggerFacade(fileSystemAccess: FileSystemAccess) : LoggerFacade {
     private val logger: Logger = Logger.getLogger("cassiamon")
 
     init {
         // must set before the Logger
         // loads logging.properties from the classpath
-        virtualFileSystem.classpathResourceAsInputStream("/cassiamon-logging.properties").use {
+        fileSystemAccess.classpathResourceAsInputStream("/cassiamon-logging.properties").use {
             LogManager.getLogManager().readConfiguration(it)
         }
     }
-    fun logDebug(msg: String) {
+    override fun logDebug(msg: String) {
         logger.log(Level.FINE, msg)
     }
 
-    fun logDebug(msgProvider: () -> String) {
+    override fun logDebug(msgProvider: () -> String) {
         logger.log(Level.FINE, msgProvider)
     }
 
-    fun logUserInfo(msg: String) {
+    override fun logUserInfo(msg: String) {
         logger.log(Level.INFO, msg)
     }
 
-    fun logUserInfo(msgProvider: () -> String) {
+    override fun logUserInfo(msgProvider: () -> String) {
         logger.log(Level.INFO, msgProvider)
     }
 
-    fun logWarnings(msg: String) {
+    override fun logWarnings(msg: String) {
         logger.log(Level.WARNING, msg)
     }
 
-    fun logWarnings(msgProvider: () -> String) {
+    override fun logWarnings(msgProvider: () -> String) {
         logger.log(Level.WARNING, msgProvider)
     }
 

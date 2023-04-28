@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.virtualfilesystem
+package ch.cassiamon.engine.filesystem
 
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString

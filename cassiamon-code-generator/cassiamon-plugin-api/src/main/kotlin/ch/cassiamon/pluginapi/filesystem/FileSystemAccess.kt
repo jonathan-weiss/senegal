@@ -1,10 +1,10 @@
-package ch.cassiamon.engine.virtualfilesystem
+package ch.cassiamon.pluginapi.filesystem
 
 import java.io.InputStream
 import java.io.Writer
 import java.nio.file.Path
 
-interface VirtualFileSystem {
+interface FileSystemAccess {
 
     fun classpathResourceAsInputStream(classpathResource: String): InputStream
     fun fileAsInputStream(filePath: Path): InputStream

@@ -1,12 +1,12 @@
 package ch.cassiamon.xml.schemagic.parser
 
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.logger.CassiamonLogger
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.virtualfilesystem.PhysicalFilesVirtualFileSystem
+import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputFacet
+import ch.cassiamon.pluginapi.schema.SchemaAccess
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
@@ -47,13 +47,13 @@ internal class SaxParserHandlerTest {
 
     @Test
     fun testSaxParser() {
-        val virtualFileSystem = PhysicalFilesVirtualFileSystem()
-        val logger = CassiamonLogger(virtualFileSystem)
+        val virtualFileSystem = PhysicalFilesFileSystemAccess()
+        val logger = JavaUtilLoggerFacade(virtualFileSystem)
         val factory: SAXParserFactory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
         factory.isValidating = false // turn of validation as schema is not found
         val saxParser: SAXParser = factory.newSAXParser()
-        val schema = schema()
+        val schema = createSchema()
         val dataCollector = ModelInputDataCollector()
 
         val saxParserHandler = SaxParserHandler(schema, dataCollector, emptyMap(), Paths.get("."), virtualFileSystem, logger)
@@ -82,7 +82,7 @@ internal class SaxParserHandlerTest {
         assertEquals("ch.senegal.entities", addressRootNode.inputFacetValueAccess.facetValue(testEntityKotlinModelPackageFacet))
     }
 
-    private fun schema(): Schema {
+    private fun createSchema(): SchemaAccess {
         val registrationApi = RegistrationApiDefaultImpl()
 
         registrationApi.configureSchema {

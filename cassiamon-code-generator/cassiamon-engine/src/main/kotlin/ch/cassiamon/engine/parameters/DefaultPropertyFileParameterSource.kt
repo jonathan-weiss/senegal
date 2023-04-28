@@ -1,9 +1,9 @@
 package ch.cassiamon.engine.parameters
 
-import ch.cassiamon.engine.virtualfilesystem.VirtualFileSystem
+import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import java.util.*
 
-class DefaultPropertyFileParameterSource(private val virtualFileSystem: VirtualFileSystem) : ParameterSource {
+class DefaultPropertyFileParameterSource(private val fileSystemAccess: FileSystemAccess) : ParameterSource {
 
     private val resourceName = "/cassiamon.properties"
     private val propertyMap: Map<String, String> = PropertiesToMapConverter.convertToMap(getPropertiesFromFile())
@@ -15,7 +15,7 @@ class DefaultPropertyFileParameterSource(private val virtualFileSystem: VirtualF
     private fun getPropertiesFromFile(): Properties {
         val props = Properties()
 
-        virtualFileSystem.classpathResourceAsInputStream(resourceName).use {
+        fileSystemAccess.classpathResourceAsInputStream(resourceName).use {
             props.load(it)
         }
         return props

@@ -1,10 +1,11 @@
-package ch.cassiamon.engine.virtualfilesystem
+package ch.cassiamon.engine.filesystem
 
+import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import java.io.InputStream
 import java.io.Writer
 import java.nio.file.Path
 
-class PhysicalFilesVirtualFileSystem: VirtualFileSystem {
+class PhysicalFilesFileSystemAccess: FileSystemAccess {
 
     override fun classpathResourceAsInputStream(classpathResource: String): InputStream {
         return this.javaClass.getResourceAsStream(classpathResource)
