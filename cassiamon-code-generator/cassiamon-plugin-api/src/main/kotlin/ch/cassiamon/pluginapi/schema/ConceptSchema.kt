@@ -1,7 +1,5 @@
-package ch.cassiamon.engine.schema
+package ch.cassiamon.pluginapi.schema
 
-import ch.cassiamon.engine.schema.facets.InputFacetSchema
-import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.facets.*

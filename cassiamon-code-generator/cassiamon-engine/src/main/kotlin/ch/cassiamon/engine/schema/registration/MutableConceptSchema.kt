@@ -1,10 +1,9 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.schema.ConceptSchema
-import ch.cassiamon.engine.schema.facets.InputFacetSchema
-import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
+import ch.cassiamon.pluginapi.schema.ConceptSchema
+import ch.cassiamon.pluginapi.schema.InputFacetSchema
+import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 import ch.cassiamon.pluginapi.model.facets.*
 
 

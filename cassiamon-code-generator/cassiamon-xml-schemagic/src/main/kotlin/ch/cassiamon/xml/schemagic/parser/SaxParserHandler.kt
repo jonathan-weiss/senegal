@@ -1,7 +1,7 @@
-package ch.cassiamon.xml.schematic
+package ch.cassiamon.xml.schemagic.parser
 
 import ch.cassiamon.engine.logger.CassiamonLogger
-import ch.cassiamon.engine.schema.ConceptSchema
+import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.util.PlaceholderUtil
 import ch.cassiamon.engine.virtualfilesystem.VirtualFileSystem

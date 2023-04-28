@@ -1,7 +1,6 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
-import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
+import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.*
 import ch.cassiamon.pluginapi.model.exceptions.MissingFacetValueModelException

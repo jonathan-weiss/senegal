@@ -8,6 +8,7 @@ import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Paths
 
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
@@ -74,17 +75,19 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
         }
 
-        registrationApi.collectData { dataCollector ->
-            dataCollector
+        registrationApi.configureDataCollector {
+
+            receiveDataCollector()
                 .newConceptData(testConceptName, ConceptIdentifier.of("Mein-Testkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
-            dataCollector
+            receiveDataCollector()
                 .newConceptData(testConceptName, ConceptIdentifier.of("Mein-zweites-Testkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
+            XmlSchemagicFactory.parseXml(receiveDataCollector(), Paths.get("my.xml"))
 
         }
     }

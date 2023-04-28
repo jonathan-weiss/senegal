@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.schema.facets
+package ch.cassiamon.pluginapi.schema
 
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.facets.InputFacet

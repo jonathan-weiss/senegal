@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.model.validator
 
-import ch.cassiamon.engine.schema.ConceptSchema
-import ch.cassiamon.engine.schema.facets.TemplateFacetSchema
+import ch.cassiamon.pluginapi.schema.ConceptSchema
+import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.exceptions.InvalidTemplateFacetConfigurationModelException
 import ch.cassiamon.pluginapi.model.facets.*

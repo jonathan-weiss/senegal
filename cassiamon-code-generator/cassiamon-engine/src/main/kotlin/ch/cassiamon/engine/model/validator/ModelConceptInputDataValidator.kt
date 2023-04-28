@@ -1,9 +1,9 @@
 package ch.cassiamon.engine.model.validator
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
-import ch.cassiamon.engine.schema.ConceptSchema
+import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.InputFacetSchema
+import ch.cassiamon.pluginapi.schema.InputFacetSchema
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException

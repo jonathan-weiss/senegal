@@ -7,9 +7,10 @@ import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.registration.*
 
 class RegistrationApiDefaultImpl: RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
+    private val modelInputDataCollector = ModelInputDataCollector()
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
     private val templateRegistrationImpl = TemplateRegistrationDefaultImpl()
-    private val modelInputDataCollector = ModelInputDataCollector()
+    private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(modelInputDataCollector, schemaRegistrationImpl)
 
 
 
@@ -21,12 +22,12 @@ class RegistrationApiDefaultImpl: RegistrationApi, SchemaProvider, TemplateProvi
         templateRegistration(templateRegistrationImpl)
     }
 
-    override fun provideModelInputData(): ModelInputData {
-        return modelInputDataCollector.provideModelInputData()
+    override fun configureDataCollector(inputSourceRegistration: InputSourceRegistration.() -> Unit) {
+        inputSourceRegistration(inputSourceRegistrationImpl)
     }
 
-    override fun collectData(inputSourceRegistration: (dataCollector: InputSourceDataCollector) -> Unit) {
-        inputSourceRegistration(modelInputDataCollector)
+    override fun provideModelInputData(): ModelInputData {
+        return modelInputDataCollector.provideModelInputData()
     }
 
     override fun provideSchema(): Schema {

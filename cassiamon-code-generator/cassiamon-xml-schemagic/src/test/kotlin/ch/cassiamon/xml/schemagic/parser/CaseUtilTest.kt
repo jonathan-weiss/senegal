@@ -1,4 +1,4 @@
-package ch.cassiamon.xml.schematic
+package ch.cassiamon.xml.schemagic.parser
 
 import org.junit.jupiter.api.Test
 

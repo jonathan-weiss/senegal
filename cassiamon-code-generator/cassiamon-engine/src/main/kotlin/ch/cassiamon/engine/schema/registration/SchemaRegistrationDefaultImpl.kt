@@ -1,7 +1,6 @@
 package ch.cassiamon.engine.schema.registration
 
 import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.schema.facets.*
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 import ch.cassiamon.pluginapi.model.facets.InputAndTemplateFacet
@@ -9,6 +8,8 @@ import ch.cassiamon.pluginapi.model.facets.InputFacet
 import ch.cassiamon.pluginapi.model.facets.TemplateFacet
 import ch.cassiamon.pluginapi.registration.*
 import ch.cassiamon.pluginapi.registration.exceptions.*
+import ch.cassiamon.pluginapi.schema.InputFacetSchema
+import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 
 class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, SchemaProvider {
     private val committedConcepts: MutableSet<MutableConceptSchema> = mutableSetOf()

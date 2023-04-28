@@ -1,4 +1,4 @@
-package ch.cassiamon.xml.schematic
+package ch.cassiamon.xml.schemagic.parser
 
 import ch.cassiamon.engine.logger.CassiamonLogger
 import ch.cassiamon.engine.schema.Schema

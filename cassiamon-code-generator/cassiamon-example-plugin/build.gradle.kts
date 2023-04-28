@@ -12,7 +12,7 @@ allprojects {
 dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
     implementation(project(":cassiamon-code-generator:cassiamon-engine"))
-    implementation(project(":cassiamon-code-generator:cassiamon-schematic-xml"))
+    implementation(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
 
 
     testImplementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
