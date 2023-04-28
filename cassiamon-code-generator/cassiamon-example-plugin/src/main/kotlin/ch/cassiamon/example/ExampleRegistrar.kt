@@ -76,18 +76,20 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
         }
 
         registrationApi.configureDataCollector {
+            val dataCollector = receiveDataCollector()
 
-            receiveDataCollector()
+            dataCollector
                 .newConceptData(testConceptName, ConceptIdentifier.of("Mein-Testkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
-            receiveDataCollector()
+            dataCollector
                 .newConceptData(testConceptName, ConceptIdentifier.of("Mein-zweites-Testkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
-            XmlSchemagicFactory.parseXml(receiveDataCollector(), Paths.get("my.xml"))
+            val pathToXmlFile = Paths.get("my.xml")
+            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, pathToXmlFile, receiveFileSystemAccess(), receiveLoggerFacade())
 
         }
     }

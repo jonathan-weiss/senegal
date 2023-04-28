@@ -1,5 +1,7 @@
 package ch.cassiamon.engine
 
+import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
+import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 

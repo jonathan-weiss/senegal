@@ -13,6 +13,8 @@ class CassiamonProcess {
 
     fun createModelGraph() {
 
+
+
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrars = RegistrarFinder.findAllRegistrars()
         val registrationApi = RegistrationApiDefaultImpl()
