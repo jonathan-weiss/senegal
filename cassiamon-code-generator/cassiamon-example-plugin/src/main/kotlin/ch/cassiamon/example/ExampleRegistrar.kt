@@ -9,9 +9,14 @@ import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
 import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
+    companion object {
+        val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
+        val xmlFilename = "definition-file.xml"
+    }
 
     private val testConceptName = ConceptName.of("TestConcept")
     private val targetTestConceptName = ConceptName.of("TargetTestConcept")
@@ -88,8 +93,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
-            val pathToXmlFile = Paths.get("my.xml")
-            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, pathToXmlFile, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
+            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
 
         }
     }

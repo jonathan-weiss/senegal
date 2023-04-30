@@ -16,9 +16,9 @@ class EngineProcessTest {
 
     private val testXmlDefinitionFileContent = """
         <?xml version="1.0" encoding="utf-8" ?>
-        <senegal xmlns="https://senegal.ch/senegal"
+        <cassiamon xmlns="https://cassiamon.ch/cassiamon-schemagic"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="https://senegal.ch/senegal ./schema/senegal-schema.xsd">
+                 xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
             <configuration testKotlinModelPackage="ch.senegal.entities"/>
             <definitions>
                 <testEntity testEntityName="Person" testKotlinModelClassname="Person">
@@ -31,7 +31,7 @@ class EngineProcessTest {
                     <testEntityAttribute testEntityAttributeName="zip" testEntityAttributeType="TEXT"/>
                 </testEntity>
             </definitions>
-        </senegal>
+        </cassiamon>
     """.trimIndent()
 
     private val expectedTemplateOutput = """
@@ -87,9 +87,10 @@ class EngineProcessTest {
             java.util.logging.SimpleFormatter.format=%5${'$'}s%n
     """.trimIndent()
 
-    private val definitionDirectory = Paths.get("definition/directory")
+    private val definitionDirectory = ExampleRegistrar.xmlDefinitionDirectory
+    private val xmlFilename = ExampleRegistrar.xmlFilename
     private val defaultOutputDirectory = Paths.get("default/output/directory")
-    private val definitionXmlFile = definitionDirectory.resolve("definition-file.xml")
+    private val definitionXmlFile = definitionDirectory.resolve(xmlFilename)
 
     private val classpathResourcesWithContent: Map<String, String> = mapOf(
         loggingConfigurationClasspath to loggingConfiguration
@@ -107,7 +108,7 @@ class EngineProcessTest {
 
 
     @Test
-    @Disabled
+    //@Disabled
     fun `run example registrar`() {
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))

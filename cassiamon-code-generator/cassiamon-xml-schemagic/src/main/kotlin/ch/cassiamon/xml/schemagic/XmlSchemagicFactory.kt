@@ -6,6 +6,7 @@ import ch.cassiamon.pluginapi.parameter.ParameterAccess
 import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
 import ch.cassiamon.pluginapi.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.SaxParserHandler
+import ch.cassiamon.xml.schemagic.schemacreator.XmlSchemaInitializer
 import java.nio.file.Path
 import javax.xml.XMLConstants
 import javax.xml.parsers.SAXParser
@@ -21,11 +22,18 @@ object XmlSchemagicFactory {
     fun parseXml(
         schemaAccess: SchemaAccess,
         dataCollector: InputSourceDataCollector,
-        xmlDefinitionFile: Path,
+        xmlDefinitionDirectory: Path,
+        xmlDefinitionFilename: String,
         fileSystemAccess: FileSystemAccess,
         logger: LoggerFacade,
         receiveParameterAccess: ParameterAccess,
                  ) {
+
+        val xmlDefinitionFile = xmlDefinitionDirectory.resolve(xmlDefinitionFilename)
+        val schemaDirectory = XmlSchemaInitializer.createSchemaDirectory(xmlDefinitionDirectory, fileSystemAccess)
+
+        XmlSchemaInitializer.initializeXmlSchemaFile(schemaDirectory, schemaAccess, fileSystemAccess)
+
 
         val placeholders: Map<String, String> = receiveParameterAccess.getParameterMap()
 
@@ -36,9 +44,9 @@ object XmlSchemagicFactory {
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
         factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false)
 
-//        val senegalSchemaXsd = xmlDefinitionFile.parent.resolve("schema").resolve("senegal-schema.xsd")
+        val senegalSchemaXsd = xmlDefinitionFile.parent.resolve("schema").resolve("cassiamon-schemagic-schema.xsd")
         val sources = listOf<StreamSource>(
-//            StreamSource(fileSystemAccess.fileAsInputStream(senegalSchemaXsd))
+            StreamSource(fileSystemAccess.fileAsInputStream(senegalSchemaXsd))
         )
 
         val schemaFactory: SchemaFactory = SchemaFactory.newInstance(schemaLanguage)
@@ -46,7 +54,7 @@ object XmlSchemagicFactory {
 
         val saxParser: SAXParser = factory.newSAXParser()
 
-        val saxParserHandler = SaxParserHandler(schemaAccess, dataCollector, placeholders, xmlDefinitionFile.parent, fileSystemAccess, logger)
+        val saxParserHandler = SaxParserHandler(schemaAccess, dataCollector, placeholders, xmlDefinitionDirectory, fileSystemAccess, logger)
 
         fileSystemAccess.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, saxParserHandler)
