@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.util
+package ch.cassiamon.xml.schemagic.parser
 
 
 object PlaceholderUtil {

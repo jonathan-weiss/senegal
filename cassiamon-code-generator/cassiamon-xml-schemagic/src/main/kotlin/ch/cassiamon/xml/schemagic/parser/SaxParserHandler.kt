@@ -1,8 +1,6 @@
 package ch.cassiamon.xml.schemagic.parser
 
 import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.engine.schema.Schema
-import ch.cassiamon.engine.util.PlaceholderUtil
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.FacetName
@@ -40,7 +38,7 @@ class SaxParserHandler(
 
         if(isInDefinitionTag) {
             val conceptSchema = getConceptByXmlLocalName(localName) ?: return
-            val conceptIdentifier = ConceptIdentifier.random() // TODO
+            val conceptIdentifier = ConceptIdentifier.random() // TODO implement
             val parentConceptIdentifier = conceptIdentifierStack.lastOrNull()
             val currentConceptBuilder = dataCollector.newConceptData(conceptSchema.conceptName, conceptIdentifier, parentConceptIdentifier)
             addAttributes(conceptSchema, currentConceptBuilder, xmlAttributes)

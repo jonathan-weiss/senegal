@@ -1,6 +1,6 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.engine.ProcessFacades
+import ch.cassiamon.engine.EngineProcessHelpers
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
@@ -84,7 +84,7 @@ internal class SaxParserHandlerTest {
     }
 
     private fun createSchema(): SchemaAccess {
-        val registrationApi = RegistrationApiDefaultImpl(ProcessFacades())
+        val registrationApi = RegistrationApiDefaultImpl(EngineProcessHelpers())
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = testEntityConceptName) {

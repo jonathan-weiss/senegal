@@ -36,9 +36,9 @@ object XmlSchemagicFactory {
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
         factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false)
 
-        val senegalSchemaXsd = xmlDefinitionFile.parent.resolve("schema").resolve("senegal-schema.xsd")
-        val sources = listOf(
-            StreamSource(fileSystemAccess.fileAsInputStream(senegalSchemaXsd))
+//        val senegalSchemaXsd = xmlDefinitionFile.parent.resolve("schema").resolve("senegal-schema.xsd")
+        val sources = listOf<StreamSource>(
+//            StreamSource(fileSystemAccess.fileAsInputStream(senegalSchemaXsd))
         )
 
         val schemaFactory: SchemaFactory = SchemaFactory.newInstance(schemaLanguage)

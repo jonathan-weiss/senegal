@@ -1,25 +1,22 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.ProcessFacades
-import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
+import ch.cassiamon.engine.EngineProcessHelpers
 import ch.cassiamon.engine.inputsource.InputSourceDataProvider
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
-import ch.cassiamon.engine.parameters.MultipleSourcesParameterAccess
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.registration.*
 
-class RegistrationApiDefaultImpl(processFacades: ProcessFacades): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
+class RegistrationApiDefaultImpl(engineProcessHelpers: EngineProcessHelpers): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
     private val modelInputDataCollector = ModelInputDataCollector()
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
     private val templateRegistrationImpl = TemplateRegistrationDefaultImpl()
     private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(
         modelInputDataCollector= modelInputDataCollector,
         schemaProvider = schemaRegistrationImpl,
-        loggerFacade = processFacades.loggerFacade,
-        fileSystemAccess = processFacades.fileSystemAccess,
-        parameterAccess = processFacades.parameterAccess,
+        loggerFacade = engineProcessHelpers.loggerFacade,
+        fileSystemAccess = engineProcessHelpers.fileSystemAccess,
+        parameterAccess = engineProcessHelpers.parameterAccess,
         )
 
 

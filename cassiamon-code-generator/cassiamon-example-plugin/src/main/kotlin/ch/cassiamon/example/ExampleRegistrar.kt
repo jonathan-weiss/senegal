@@ -16,8 +16,8 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
     private val testConceptName = ConceptName.of("TestConcept")
     private val targetTestConceptName = ConceptName.of("TargetTestConcept")
     private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
-    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRef", targetTestConceptName)
-    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestRef")
+    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRefManual", targetTestConceptName)
+    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
     private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
     private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
 
@@ -79,12 +79,12 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             val dataCollector = receiveDataCollector()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("Mein-Testkonzept"))
+                .newConceptData(testConceptName, ConceptIdentifier.of("MeinTestkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("Mein-zweites-Testkonzept"))
+                .newConceptData(testConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
                 .addFacetValue(testTextInputFacet.facetValue( "UUID"))
                 .attach()
 

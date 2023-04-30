@@ -2,22 +2,18 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.engine.schema.finder.RegistrarFinder
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.pluginapi.registration.Registrar
 
-class CassiamonProcess {
-
-
-
-    fun createModelGraph() {
-        val processFacades = ProcessFacades()
+class EngineProcess(private val registrars: List<Registrar>, private val engineProcessHelpers: EngineProcessHelpers) {
 
 
+
+    fun runProcess() {
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
-        val registrars = RegistrarFinder.findAllRegistrars()
-        val registrationApi = RegistrationApiDefaultImpl(processFacades)
+        val registrationApi = RegistrationApiDefaultImpl(engineProcessHelpers)
         registrars.forEach { it.configure(registrationApi) }
 
         // resolve the raw concepts and facets to a resolved schema
