@@ -50,7 +50,7 @@ class MaterializingConceptModelNode(
         get() = materializingConceptModelNodeFacetValues
 
     override fun get(key: String): Any? {
-        TODO("Not yet implemented")
+        return key // TODO implement that properly
     }
 
 
