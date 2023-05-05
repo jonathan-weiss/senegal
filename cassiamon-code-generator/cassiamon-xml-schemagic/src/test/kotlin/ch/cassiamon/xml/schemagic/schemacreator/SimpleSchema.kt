@@ -1,12 +1,12 @@
-package ch.cassiamon.engine.schema
+package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.pluginapi.schema.SchemaAccess
 
-data class Schema(
-    private val concepts: Map<ConceptName, ConceptSchema>
-): SchemaAccess {
+class SimpleSchema(conceptList: List<ConceptSchema>): SchemaAccess {
+
+    private val concepts: Map<ConceptName, ConceptSchema> = conceptList.associateBy { it.conceptName }
     override fun conceptByConceptName(conceptName: ConceptName): ConceptSchema {
         return concepts[conceptName]
             ?: throw IllegalStateException("Concept with name '$conceptName' not found in schema: $concepts")
@@ -27,8 +27,5 @@ data class Schema(
     override fun allChildrenConcepts(concept: ConceptSchema): Set<ConceptSchema> {
         return allConcepts().filter { it.parentConceptName == concept.conceptName }.toSet()
     }
-
-    fun numberOfConcepts(): Int {
-        return concepts.size
-    }
 }
+
