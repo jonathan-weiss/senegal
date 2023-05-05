@@ -12,35 +12,27 @@ import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
+class TestRegistrar: Registrar(ProjectName.of("TestProject")) {
     companion object {
         val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
         val xmlFilename = "definition-file.xml"
     }
 
-    private val testConceptName = ConceptName.of("TestConcept")
-    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
-    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
-    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRefManual", targetTestConceptName)
-    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
-    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
-    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
+    private val testEntityConceptName = ConceptName.of("TestEntity")
+    private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
+    private val testEntityNameInputFacet = MandatoryTextInputFacet.of("TestEntityName")
+    private val testEntityAttributeNameInputFacet = MandatoryTextInputFacet.of("TestEntityAttributeName")
 
 
     override fun configure(registrationApi: RegistrationApi) {
         registrationApi.configureSchema {
-            newRootConcept(testConceptName) {
+            newRootConcept(testEntityConceptName) {
 
-                addFacet(testTextInputFacet)
-                addFacet(testRefInputAndTemplateFacet)
-                addFacet(testCalculatedIntTemplateFacet) {
-                        it.conceptModelNode.templateFacetValues.facetValue(testRefInputAndTemplateFacet)?.conceptIdentifier.hashCode() // completely stupid
+                addFacet(testEntityNameInputFacet)
+
+                newChildConcept(testEntityAttributeConceptName) {
+                    addFacet(testEntityAttributeNameInputFacet)
                 }
-                addFacet(testCalculatedStringTemplateFacet) {
-                    val testCalculatedIntValue = it.conceptModelNode.templateFacetValues.facetValue(testCalculatedIntTemplateFacet)
-                    return@addFacet "# is $testCalculatedIntValue"
-                }
-                addFacet(testTextComposedFacet)
             }
         }
 
@@ -66,7 +58,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             newTemplate { templateNodesProvider ->
 
                 val templateNodes = templateNodesProvider
-                    .conceptModelNodesByConceptName(ConceptName.of("TestConcept"))
+                    .conceptModelNodesByConceptName(testEntityConceptName)
 
                 return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
@@ -81,13 +73,13 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             val dataCollector = receiveDataCollector()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
                 .attach()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
                 .attach()
 
             XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
