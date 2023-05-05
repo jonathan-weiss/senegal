@@ -4,13 +4,10 @@ import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.EngineProcessHelpers
 import ch.cassiamon.engine.parameters.ParameterSource
 import ch.cassiamon.engine.parameters.StaticParameterSource
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.pathString
 
 class EngineProcessTest {
 
@@ -87,8 +84,8 @@ class EngineProcessTest {
             java.util.logging.SimpleFormatter.format=%5${'$'}s%n
     """.trimIndent()
 
-    private val definitionDirectory = ExampleRegistrar.xmlDefinitionDirectory
-    private val xmlFilename = ExampleRegistrar.xmlFilename
+    private val definitionDirectory = TestRegistrar.xmlDefinitionDirectory
+    private val xmlFilename = TestRegistrar.xmlFilename
     private val defaultOutputDirectory = Paths.get("default/output/directory")
     private val definitionXmlFile = definitionDirectory.resolve(xmlFilename)
 
@@ -99,17 +96,13 @@ class EngineProcessTest {
         definitionXmlFile to testXmlDefinitionFileContent
     )
 
-    private val parameterMap: Map<String, String> = mapOf(
-        "DefinitionDirectory" to definitionDirectory.pathString,
-        "DefaultOutputDirectory" to defaultOutputDirectory.pathString,
-        "XmlDefinitionFile" to definitionXmlFile.pathString,
-    )
+    private val parameterMap: Map<String, String> = emptyMap()
 
 
 
     @Test
-    //@Disabled
     fun `run example registrar`() {
+
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
         val engineProcessHelpers = EngineProcessHelpers(
@@ -117,7 +110,6 @@ class EngineProcessTest {
             parameterSources = parameterSources
         )
         val registrars = listOf(TestRegistrar())
-        println("Registrars: [${registrars.joinToString { it.projectName.name }}]")
 
         val process = EngineProcess(registrars, engineProcessHelpers)
 
