@@ -74,6 +74,10 @@ class StringBasedFileSystemAccess(private val classpathResources: Map<String, St
         return writtenFilesMap()[path] ?: throw IllegalStateException("No entry with key '$path'.")
     }
 
+    fun fileExists(path: Path): Boolean {
+        return writtenFilesMap()[path] != null
+    }
+
     private fun writtenFilesMap(): Map<Path, String> {
         val resultMap: MutableMap<Path, String> = mutableMapOf()
         resultMap.putAll(writtenFiles)

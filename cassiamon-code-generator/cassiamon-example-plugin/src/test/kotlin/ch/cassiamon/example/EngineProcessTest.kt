@@ -44,46 +44,25 @@ class EngineProcessTest {
     """.trimIndent()
 
     private val expectedTemplateOutput = """
-            Properties:
-                TestEntityName: Person
-                TestKotlinModelClassname: Person
-                TestKotlinModelPackage: ch.senegal.entities
-            direct access: Person
-
-            SubNodes:
-
-                Properties:
-                    TestEntityAttributeName: firstname
-                    TestEntityAttributeType: TEXT
-                    TestKotlinFieldType: kotlin.String
-
-                Properties:
-                    TestEntityAttributeName: lastname
-                    TestEntityAttributeType: NUMBER
-                    TestKotlinFieldType: kotlin.Int
-
-                Properties:
-                    TestEntityAttributeName: nickname
-                    TestEntityAttributeType: BOOLEAN
-                    TestKotlinFieldType: kotlin.Boolean
-
-            Properties:
-                TestEntityName: Address
-                TestKotlinModelClassname: Address
-                TestKotlinModelPackage: ch.senegal.entities
-            direct access: Address
-
-            SubNodes:
-
-                Properties:
-                    TestEntityAttributeName: street
-                    TestEntityAttributeType: TEXT
-
-                Properties:
-                    TestEntityAttributeName: zip
-                    TestEntityAttributeType: TEXT
-
-
+        
+        Properties:
+            - TestEntityName: MeinTestkonzeptName
+        Properties:
+            - TestEntityName: MeinZweitesTestkonzeptName
+        Properties:
+            - TestEntityName: Person
+        SubNode-Properties:
+            - TestEntityAttributeName: firstname
+        SubNode-Properties:
+            - TestEntityAttributeName: lastname
+        SubNode-Properties:
+            - TestEntityAttributeName: nickname
+        Properties:
+            - TestEntityName: Address
+        SubNode-Properties:
+            - TestEntityAttributeName: street
+        SubNode-Properties:
+            - TestEntityAttributeName: zip
     """.trimIndent()
 
 
@@ -113,7 +92,7 @@ class EngineProcessTest {
 
 
     @Test
-    fun `run example registrar`() {
+    fun `run test registrar`() {
 
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
@@ -127,23 +106,15 @@ class EngineProcessTest {
 
         process.runProcess()
 
-        Assertions.assertTrue(
-            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("index.json")).isNotBlank()
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("index.txt")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("Person.txt")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("Address.txt")))
+
+
+        Assertions.assertEquals(
+            expectedTemplateOutput,
+            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("index.txt"))
         )
-
-        Assertions.assertTrue(
-            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("Person.json")).isNotBlank()
-        )
-
-        Assertions.assertTrue(
-            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("Address.json")).isNotBlank()
-        )
-
-
-//        Assertions.assertEquals(
-//            expectedTemplateOutput,
-//            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("index.json"))
-//        )
 
     }
 
@@ -158,8 +129,29 @@ class EngineProcessTest {
         private val testEntityConceptName = ConceptName.of("TestEntity")
         private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
         private val testEntityNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
-        private val testEntityAttributeNameInputFacet = MandatoryTextInputFacet.of("TestEntityAttributeName")
+        private val testEntityAttributeNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
 
+        private fun modelDescriptionContent(targetGeneratedFileWithModel: TargetGeneratedFileWithModel): String {
+            var content = ""
+
+            targetGeneratedFileWithModel.model.forEach {model ->
+                content += """
+                    
+                    Properties:
+                        - TestEntityName: ${model.templateFacetValues.facetValue(testEntityNameInputFacet)}
+                    """.trimIndent()
+
+                    model.children(testEntityAttributeConceptName).forEach { childModel ->
+                        content += """
+                        
+                        SubNode-Properties:
+                            - TestEntityAttributeName: ${childModel.templateFacetValues.facetValue(testEntityAttributeNameInputFacet)}
+                    """.trimIndent()
+                    }
+            }
+
+            return content
+        }
 
         override fun configure(registrationApi: RegistrationApi) {
             registrationApi.configureSchema {
@@ -181,14 +173,12 @@ class EngineProcessTest {
                         .conceptModelNodesByConceptName(testEntityConceptName)
                         .map { templateNode ->
                             val entityName = templateNode.templateFacetValues.facetValue(testEntityNameInputFacet)
-                            return@map TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("$entityName.json"), listOf(templateNode))
+                            return@map TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("$entityName.txt"), listOf(templateNode))
                         }.toSet()
 
 
                     return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
-                        return@TemplateRenderer StringContentByteIterator(
-                            "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
-                        )
+                        return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
                     }
                 }
 
@@ -198,10 +188,8 @@ class EngineProcessTest {
                     val templateNodes = templateNodesProvider
                         .conceptModelNodesByConceptName(testEntityConceptName)
 
-                    return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
-                        return@TemplateRenderer StringContentByteIterator(
-                            "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
-                        )
+                    return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("index.txt"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                        return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
                     }
                 }
 
