@@ -3,6 +3,7 @@ package ch.cassiamon.engine.filesystem
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import java.io.InputStream
 import java.io.Writer
+import java.nio.charset.Charset
 import java.nio.file.Path
 
 class PhysicalFilesFileSystemAccess: FileSystemAccess {
@@ -22,7 +23,12 @@ class PhysicalFilesFileSystemAccess: FileSystemAccess {
     }
 
     override fun writeFile(filePath: Path, fileContent: String) {
+        createDirectory(filePath.parent)
         filePath.toFile().writeText(fileContent)
+    }
+
+    override fun writeFile(filePath: Path, fileContent: ByteIterator) {
+        writeFile(filePath, byteIteratorAsString(fileContent))
     }
 
     override fun getFileWriter(filePath: Path): Writer {
@@ -32,4 +38,11 @@ class PhysicalFilesFileSystemAccess: FileSystemAccess {
     override fun close() {
         // nothing to do
     }
+
+    private fun byteIteratorAsString(byteIterator: ByteIterator): String {
+        val byteList : MutableList<Byte> = mutableListOf()
+        byteIterator.forEach { byte: Byte -> byteList.add(byte) }
+        return byteList.toByteArray().toString(Charset.defaultCharset())
+    }
+
 }

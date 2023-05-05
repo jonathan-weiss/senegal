@@ -8,6 +8,7 @@ tmp
 
 
 cassiamon-code-generator/cassiamon-example-plugin/input-data/schema/*
+cassiamon-code-generator/cassiamon-example-plugin/output-data/*
 
 senegal-code-generator/senegal-example-plugins/definitions/schema/*
 senegal-example-app/customized-code-generator/definitions/schema/*

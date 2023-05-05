@@ -15,6 +15,7 @@ import java.nio.file.Paths
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
     companion object {
         val xmlDefinitionDirectory: Path = Paths.get("input-data")
+        val outputDirectory: Path = Paths.get("output-data")
         val xmlFilename = "test-concept-input-data.xml"
     }
 
@@ -72,10 +73,9 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             // test a single node file generation
             newTemplate { templateNodesProvider ->
 
-                val templateNodes = templateNodesProvider
-                    .conceptModelNodesByConceptName(ConceptName.of("TestConcept"))
+                val templateNodes = templateNodesProvider.conceptModelNodesByConceptName(testEntityConceptName)
 
-                return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )
@@ -94,7 +94,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testEntityAttributeNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
+                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
                 .attach()
 
             XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())

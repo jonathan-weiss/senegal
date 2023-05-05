@@ -1,11 +1,14 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.model.ConceptModelGraphCalculator
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.Registrar
+import ch.cassiamon.pluginapi.template.TemplateRenderer
+import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val registrars: List<Registrar>, private val engineProcessHelpers: EngineProcessHelpers) {
 
@@ -25,25 +28,20 @@ class EngineProcess(private val registrars: List<Registrar>, private val engineP
         println("Templates: $templates")
         println("InputData: $modelInputData")
 
-        // val b = modelInputData.entries[0].inputFacetValueAccess.facetValue(MandatoryTextTemplateFacet.of("TableSize"))
+        // traverse whole model and transform (adapt/calculate/transform) the missing model values
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(schema, modelInputData)
+        println("conceptModelGraph: $conceptModelGraph")
 
+        val templateRenderers = templates.map { template -> template.invoke(conceptModelGraph) }.toSet()
+        println("templateRenderers: $templateRenderers")
 
-//        // traverse whole model and transform (adapt/calculate/transform) the missing model values
-//        val modelGraph = ModelCalculator.calculateModel(schema, modelInputData)
-//
-//        val templateNodesProvider = ConceptModelGraphDefaultImpl(modelGraph)
-//
-//        // TODO transform to TemplateNodes (by implementing interface
-//
-//        // TODO write Templates
-//        val templateRenderers = templates.map { template -> template.invoke(templateNodesProvider) }.toSet()
-//
-//        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
-//            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
-//                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
-//                // TODO write file
-//            }
-//        }
+        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
+            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
+                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+                println("File to write: ${targetGeneratedFileWithModel.targetFile} (${targetGeneratedFileWithModel.targetFile.absolutePathString()})")
+                engineProcessHelpers.fileSystemAccess.writeFile(targetGeneratedFileWithModel.targetFile, byteIterator)
+            }
+        }
 
 
     }

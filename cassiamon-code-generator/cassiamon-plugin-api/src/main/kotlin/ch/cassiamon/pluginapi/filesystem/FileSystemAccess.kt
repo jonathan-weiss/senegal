@@ -12,4 +12,5 @@ interface FileSystemAccess {
     fun writeFile(filePath: Path, fileContent: String)
     fun getFileWriter(filePath: Path): Writer
     fun close()
+    fun writeFile(filePath: Path, fileContent: ByteIterator)
 }

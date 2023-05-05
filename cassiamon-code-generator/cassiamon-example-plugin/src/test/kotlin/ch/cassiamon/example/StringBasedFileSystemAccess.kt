@@ -5,6 +5,7 @@ import java.io.Closeable
 import java.io.InputStream
 import java.io.StringWriter
 import java.io.Writer
+import java.nio.charset.Charset
 import java.nio.file.Path
 import kotlin.io.path.pathString
 
@@ -50,6 +51,10 @@ class StringBasedFileSystemAccess(private val classpathResources: Map<String, St
         writtenFiles[normalizedFilePath] = fileContent
     }
 
+    override fun writeFile(filePath: Path, fileContent: ByteIterator) {
+        writeFile(filePath, byteIteratorAsString(fileContent))
+    }
+
     override fun getFileWriter(filePath: Path): Writer {
         val normalizedFilePath = filePath.normalize()
         if(writtenFileWriter.containsKey(normalizedFilePath)) {
@@ -75,4 +80,11 @@ class StringBasedFileSystemAccess(private val classpathResources: Map<String, St
         resultMap.putAll(writtenFileWriter.mapValues { it.value.toString() })
         return resultMap
     }
+
+    private fun byteIteratorAsString(byteIterator: ByteIterator): String {
+        val byteList : MutableList<Byte> = mutableListOf()
+        byteIterator.forEach { byte: Byte -> byteList.add(byte) }
+        return byteList.toByteArray().toString(Charset.defaultCharset())
+    }
+
 }
