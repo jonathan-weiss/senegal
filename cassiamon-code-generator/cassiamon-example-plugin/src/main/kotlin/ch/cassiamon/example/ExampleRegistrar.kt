@@ -8,6 +8,7 @@ import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.templates.freemarker.FreemarkerTemplateFactory
 import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -54,7 +55,7 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
 
         registrationApi.configureTemplates {
             // test a file generation for all nodes
-            newTemplate { templateNodesProvider ->
+            newTemplate { conceptModelGraph ->
 
 //                val targetFiles = templateNodesProvider
 //                    .targetGeneratedFileForEachTemplateNode(ConceptName.of("TestConcept")) { templateNode ->
@@ -71,15 +72,21 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             }
 
             // test a single node file generation
-            newTemplate { templateNodesProvider ->
+            newTemplate { conceptModelGraph ->
 
-                val templateNodes = templateNodesProvider.conceptModelNodesByConceptName(testEntityConceptName)
+                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(testEntityConceptName)
 
                 return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
                     return@TemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )
                 }
+            }
+
+            newTemplate { conceptModelGraph ->
+                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(testEntityConceptName)
+                val files = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.txt"), templateNodes))
+                return@newTemplate FreemarkerTemplateFactory.createTemplateRenderer(files, "/ch/cassiamon/example/templates/freemarker/example-template.ftl", receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
             }
 
         }

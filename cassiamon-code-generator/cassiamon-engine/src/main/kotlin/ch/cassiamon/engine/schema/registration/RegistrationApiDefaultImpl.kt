@@ -10,14 +10,19 @@ import ch.cassiamon.pluginapi.registration.*
 class RegistrationApiDefaultImpl(engineProcessHelpers: EngineProcessHelpers): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
     private val modelInputDataCollector = ModelInputDataCollector()
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
-    private val templateRegistrationImpl = TemplateRegistrationDefaultImpl()
+    private val templateRegistrationImpl = TemplateRegistrationDefaultImpl(
+        schemaProvider = schemaRegistrationImpl,
+        loggerFacade = engineProcessHelpers.loggerFacade,
+        fileSystemAccess = engineProcessHelpers.fileSystemAccess,
+        parameterAccess = engineProcessHelpers.parameterAccess,
+    )
     private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(
         modelInputDataCollector= modelInputDataCollector,
         schemaProvider = schemaRegistrationImpl,
         loggerFacade = engineProcessHelpers.loggerFacade,
         fileSystemAccess = engineProcessHelpers.fileSystemAccess,
         parameterAccess = engineProcessHelpers.parameterAccess,
-        )
+    )
 
 
 

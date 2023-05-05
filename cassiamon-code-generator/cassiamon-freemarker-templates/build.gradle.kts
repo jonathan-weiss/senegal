@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    application
 }
 
 allprojects {
@@ -10,13 +9,9 @@ allprojects {
 }
 
 dependencies {
-    runtimeOnly(project(":cassiamon-code-generator:cassiamon-engine"))
     implementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
-    implementation(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
-    implementation(project(":cassiamon-code-generator:cassiamon-freemarker-templates"))
+    implementation("org.freemarker:freemarker:2.3.31")
 
-
-    // to run an end-to-end test in junit, we need access to the engine directly to bypass calling the main function
     testImplementation(project(":cassiamon-code-generator:cassiamon-engine"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
     testImplementation("org.mockito:mockito-core:4.8.0")
@@ -29,12 +24,4 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-}
-
-tasks.named("run") {
-    enabled = true
-}
-
-application {
-    mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
 }

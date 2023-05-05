@@ -9,6 +9,7 @@ include("cassiamon-code-generator")
 include("cassiamon-code-generator:cassiamon-plugin-api")
 include("cassiamon-code-generator:cassiamon-engine")
 include("cassiamon-code-generator:cassiamon-xml-schemagic")
+include("cassiamon-code-generator:cassiamon-freemarker-templates")
 include("cassiamon-code-generator:cassiamon-example-plugin")
 
 // example project
