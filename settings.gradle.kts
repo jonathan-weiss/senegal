@@ -3,7 +3,7 @@ rootProject.name = "cassiamon"
 include("senegal-code-generator")
 include("senegal-code-generator:senegal-engine")
 include("senegal-code-generator:senegal-plugin-api")
-include("senegal-code-generator:senegal-example-plugins")
+//include("senegal-code-generator:senegal-example-plugins")
 
 include("cassiamon-code-generator")
 include("cassiamon-code-generator:cassiamon-plugin-api")

@@ -14,33 +14,40 @@ import java.nio.file.Paths
 
 class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
     companion object {
-        val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
-        val xmlFilename = "definition-file.xml"
+        val xmlDefinitionDirectory: Path = Paths.get("input-data")
+        val xmlFilename = "test-concept-input-data.xml"
     }
 
-    private val testConceptName = ConceptName.of("TestConcept")
-    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
-    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
-    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRefManual", targetTestConceptName)
-    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
-    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
-    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
+    private val testEntityConceptName = ConceptName.of("TestEntity")
+    private val testEntityNameTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
+    private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
+    private val testEntityAttributeNameTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
+//    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
+//    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
+//    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRefManual", targetTestConceptName)
+//    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
+//    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
+//    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
 
 
     override fun configure(registrationApi: RegistrationApi) {
         registrationApi.configureSchema {
-            newRootConcept(testConceptName) {
+            newRootConcept(testEntityConceptName) {
 
-                addFacet(testTextInputFacet)
-                addFacet(testRefInputAndTemplateFacet)
-                addFacet(testCalculatedIntTemplateFacet) {
-                        it.conceptModelNode.templateFacetValues.facetValue(testRefInputAndTemplateFacet)?.conceptIdentifier.hashCode() // completely stupid
+                addFacet(testEntityNameTextComposedFacet)
+
+                newChildConcept(testEntityAttributeConceptName) {
+                    addFacet(testEntityAttributeNameTextComposedFacet)
                 }
-                addFacet(testCalculatedStringTemplateFacet) {
-                    val testCalculatedIntValue = it.conceptModelNode.templateFacetValues.facetValue(testCalculatedIntTemplateFacet)
-                    return@addFacet "# is $testCalculatedIntValue"
-                }
-                addFacet(testTextComposedFacet)
+//                addFacet(testRefInputAndTemplateFacet)
+//                addFacet(testCalculatedIntTemplateFacet) {
+//                        it.conceptModelNode.templateFacetValues.facetValue(testRefInputAndTemplateFacet)?.conceptIdentifier.hashCode() // completely stupid
+//                }
+//                addFacet(testCalculatedStringTemplateFacet) {
+//                    val testCalculatedIntValue = it.conceptModelNode.templateFacetValues.facetValue(testCalculatedIntTemplateFacet)
+//                    return@addFacet "# is $testCalculatedIntValue"
+//                }
+//                addFacet(testTextComposedFacet)
             }
         }
 
@@ -81,13 +88,13 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             val dataCollector = receiveDataCollector()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinTestkonzept-Name"))
                 .attach()
 
             dataCollector
-                .newConceptData(testConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testTextInputFacet.facetValue( "UUID"))
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                .addFacetValue(testEntityAttributeNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
                 .attach()
 
             XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
