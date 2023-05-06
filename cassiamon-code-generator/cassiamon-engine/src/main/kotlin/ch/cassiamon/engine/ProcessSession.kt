@@ -11,7 +11,7 @@ import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.parameter.ParameterAccess
 import ch.cassiamon.pluginapi.registration.Registrar
 
-class EngineProcessHelpers(
+class ProcessSession(
     val registrars: List<Registrar> = emptyList(),
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),

@@ -2,18 +2,17 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.template.TemplateRenderer
 import kotlin.io.path.absolutePathString
 
-class EngineProcess(private val engineProcessHelpers: EngineProcessHelpers) {
+class EngineProcess(private val processSession: ProcessSession) {
 
 
 
     fun runProcess() {
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
-        val registrationApi = RegistrationApiDefaultImpl(engineProcessHelpers)
-        engineProcessHelpers.registrars.forEach { it.configure(registrationApi) }
+        val registrationApi = RegistrationApiDefaultImpl(processSession)
+        processSession.registrars.forEach { it.configure(registrationApi) }
 
         // resolve the raw concepts and facets to a resolved schema
         val schema = registrationApi.provideSchema()
@@ -35,7 +34,7 @@ class EngineProcess(private val engineProcessHelpers: EngineProcessHelpers) {
             templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
                 val byteIterator = templateRenderer.templateRendererFunction(targetGeneratedFileWithModel)
                 println("File to write: ${targetGeneratedFileWithModel.targetFile} (${targetGeneratedFileWithModel.targetFile.absolutePathString()})")
-                engineProcessHelpers.fileSystemAccess.writeFile(targetGeneratedFileWithModel.targetFile, byteIterator)
+                processSession.fileSystemAccess.writeFile(targetGeneratedFileWithModel.targetFile, byteIterator)
             }
         }
 

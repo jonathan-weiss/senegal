@@ -1,25 +1,25 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.EngineProcessHelpers
+import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.inputsource.InputSourceDataProvider
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.registration.*
 
-class RegistrationApiDefaultImpl(engineProcessHelpers: EngineProcessHelpers): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
+class RegistrationApiDefaultImpl(processSession: ProcessSession): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
     private val templateRegistrationImpl = TemplateRegistrationDefaultImpl(
-        extensionAccess = engineProcessHelpers.extensionAccess,
+        extensionAccess = processSession.extensionAccess,
     )
-    private val modelInputDataCollector: ModelInputDataCollector = engineProcessHelpers.modelInputDataCollector
+    private val modelInputDataCollector: ModelInputDataCollector = processSession.modelInputDataCollector
 
     private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(
         modelInputDataCollector= modelInputDataCollector,
         schemaProvider = schemaRegistrationImpl,
-        loggerFacade = engineProcessHelpers.loggerFacade,
-        fileSystemAccess = engineProcessHelpers.fileSystemAccess,
-        parameterAccess = engineProcessHelpers.parameterAccess,
+        loggerFacade = processSession.loggerFacade,
+        fileSystemAccess = processSession.fileSystemAccess,
+        parameterAccess = processSession.parameterAccess,
     )
 
     override fun configureSchema(schemaRegistration: SchemaRegistration.() -> Unit) {

@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.schema.registration
 
-import ch.cassiamon.engine.EngineProcessHelpers
+import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.engine.schema.Schema
@@ -248,7 +248,7 @@ class SchemaRegistrationApiTest {
     }
 
     private fun getRegistrationApi(): RegistrationApiDefaultImpl {
-        return RegistrationApiDefaultImpl(EngineProcessHelpers())
+        return RegistrationApiDefaultImpl(ProcessSession())
     }
 
 }

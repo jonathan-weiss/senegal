@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.EngineProcessHelpers
+import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
@@ -127,7 +127,7 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     }
 
     private fun <T> createTestFixtureSchema(calculatedFunction: (ConceptModelNodeCalculationData) -> T): Schema {
-        val registrationApi = RegistrationApiDefaultImpl(EngineProcessHelpers())
+        val registrationApi = RegistrationApiDefaultImpl(ProcessSession())
         registrationApi.configureSchema {
             newRootConcept(conceptName = myConceptName) {
                 addFacet(calculatedTemplateFacet, calculatedFunction)
@@ -140,7 +140,7 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     }
 
     private fun <T> createTestFixtureSchemaForOptionalTemplateFacet(calculatedFunction: (ConceptModelNodeCalculationData) -> T?): Schema {
-        val registrationApi = RegistrationApiDefaultImpl(EngineProcessHelpers())
+        val registrationApi = RegistrationApiDefaultImpl(ProcessSession())
         registrationApi.configureSchema {
             newRootConcept(conceptName = myConceptName) {
                 addFacet(optionalCalculatedTemplateFacet, calculatedFunction)

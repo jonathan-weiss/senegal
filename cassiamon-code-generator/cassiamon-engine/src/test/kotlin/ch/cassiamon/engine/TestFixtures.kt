@@ -31,7 +31,7 @@ object TestFixtures {
                 "." +
                 data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
 
-    fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(EngineProcessHelpers())): Schema {
+    fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): Schema {
 
         registrationApi.configureSchema {
             newRootConcept(conceptName = databaseTableConceptName) {
@@ -56,7 +56,7 @@ object TestFixtures {
         return registrationApi.provideSchema()
     }
 
-    fun createTestTemplates(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(EngineProcessHelpers())): List<TemplateFunction> {
+    fun createTestTemplates(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): List<TemplateFunction> {
         registrationApi.configureTemplates {
             // test a file generation for all nodes
             newTemplate { templateNodesProvider ->

@@ -1,7 +1,7 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.engine.EngineProcess
-import ch.cassiamon.engine.EngineProcessHelpers
+import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
 import ch.cassiamon.engine.parameters.StaticParameterSource
 import ch.cassiamon.pluginapi.ConceptName
@@ -96,13 +96,13 @@ class EngineProcessTest {
         val registrars = listOf(TestRegistrar())
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
-        val engineProcessHelpers = EngineProcessHelpers(
+        val processSession = ProcessSession(
             registrars = registrars,
             fileSystemAccess = fileSystemAccess,
             parameterSources = parameterSources
         )
 
-        val process = EngineProcess(engineProcessHelpers)
+        val process = EngineProcess(processSession)
 
         process.runProcess()
 
