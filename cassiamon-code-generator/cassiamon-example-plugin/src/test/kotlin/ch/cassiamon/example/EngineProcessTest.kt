@@ -9,7 +9,6 @@ import ch.cassiamon.pluginapi.ProjectName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputFacet
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
@@ -94,15 +93,16 @@ class EngineProcessTest {
     @Test
     fun `run test registrar`() {
 
+        val registrars = listOf(TestRegistrar())
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
         val engineProcessHelpers = EngineProcessHelpers(
+            registrars = registrars,
             fileSystemAccess = fileSystemAccess,
             parameterSources = parameterSources
         )
-        val registrars = listOf(TestRegistrar())
 
-        val process = EngineProcess(registrars, engineProcessHelpers)
+        val process = EngineProcess(engineProcessHelpers)
 
         process.runProcess()
 

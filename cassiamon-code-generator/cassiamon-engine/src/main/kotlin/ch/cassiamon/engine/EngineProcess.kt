@@ -6,14 +6,14 @@ import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.template.TemplateRenderer
 import kotlin.io.path.absolutePathString
 
-class EngineProcess(private val registrars: List<Registrar>, private val engineProcessHelpers: EngineProcessHelpers) {
+class EngineProcess(private val engineProcessHelpers: EngineProcessHelpers) {
 
 
 
     fun runProcess() {
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrationApi = RegistrationApiDefaultImpl(engineProcessHelpers)
-        registrars.forEach { it.configure(registrationApi) }
+        engineProcessHelpers.registrars.forEach { it.configure(registrationApi) }
 
         // resolve the raw concepts and facets to a resolved schema
         val schema = registrationApi.provideSchema()

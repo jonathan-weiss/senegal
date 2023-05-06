@@ -9,8 +9,10 @@ import ch.cassiamon.engine.parameters.*
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.parameter.ParameterAccess
+import ch.cassiamon.pluginapi.registration.Registrar
 
 class EngineProcessHelpers(
+    val registrars: List<Registrar> = emptyList(),
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),
     private val parameterSources: List<ParameterSource> = listOf(
