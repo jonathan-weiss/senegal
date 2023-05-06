@@ -1,6 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.DomainUnitName
 import ch.cassiamon.pluginapi.registration.DomainUnit
 import ch.cassiamon.pluginapi.registration.RegistrationApi

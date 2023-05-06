@@ -3,7 +3,7 @@ package ch.cassiamon.xml.schemagic.parser
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
-import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputFacet

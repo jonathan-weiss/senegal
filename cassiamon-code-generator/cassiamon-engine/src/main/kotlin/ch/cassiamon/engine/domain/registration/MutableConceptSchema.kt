@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.schema.registration
+package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.pluginapi.schema.ConceptSchema
 import ch.cassiamon.pluginapi.schema.InputFacetSchema

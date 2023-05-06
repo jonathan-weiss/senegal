@@ -1,7 +1,7 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
-import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.pluginapi.template.TemplateRenderer
 import kotlin.io.path.absolutePathString
 

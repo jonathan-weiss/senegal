@@ -1,6 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.schema.finder.DomainUnitFinder
+import ch.cassiamon.engine.domain.finder.DomainUnitFinder
 
 
 fun main() {

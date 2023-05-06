@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.model.ConceptModelNode
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 import ch.cassiamon.pluginapi.model.ConceptModelNodePool

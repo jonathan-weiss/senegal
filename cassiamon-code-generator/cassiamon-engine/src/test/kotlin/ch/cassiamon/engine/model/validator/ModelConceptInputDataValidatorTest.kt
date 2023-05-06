@@ -3,7 +3,7 @@ package ch.cassiamon.engine.model.validator
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException

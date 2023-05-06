@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.schema
+package ch.cassiamon.engine.domain
 
 import ch.cassiamon.pluginapi.ConceptName
 import ch.cassiamon.pluginapi.schema.ConceptSchema

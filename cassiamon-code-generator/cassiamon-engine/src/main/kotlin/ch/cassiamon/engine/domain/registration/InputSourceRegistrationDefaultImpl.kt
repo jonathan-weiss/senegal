@@ -1,8 +1,7 @@
-package ch.cassiamon.engine.schema.registration
+package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.extension.ExtensionAccess
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.extensions.ExtensionName
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade

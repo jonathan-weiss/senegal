@@ -2,8 +2,8 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData

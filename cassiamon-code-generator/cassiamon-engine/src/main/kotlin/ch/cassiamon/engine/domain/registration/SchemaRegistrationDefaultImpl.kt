@@ -1,6 +1,6 @@
-package ch.cassiamon.engine.schema.registration
+package ch.cassiamon.engine.domain.registration
 
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
 import ch.cassiamon.pluginapi.model.facets.InputAndTemplateFacet

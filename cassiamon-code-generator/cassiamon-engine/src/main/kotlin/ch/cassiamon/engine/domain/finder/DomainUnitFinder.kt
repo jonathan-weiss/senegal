@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.schema.finder
+package ch.cassiamon.engine.domain.finder
 
 import ch.cassiamon.pluginapi.registration.DomainUnit
 import java.util.*

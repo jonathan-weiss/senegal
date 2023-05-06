@@ -5,7 +5,7 @@ import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
 import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.FacetName
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.ConceptModelNode

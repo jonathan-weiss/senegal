@@ -1,10 +1,10 @@
-package ch.cassiamon.engine.schema.registration
+package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.inputsource.InputSourceDataProvider
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.registration.*
 
 class RegistrationApiDefaultImpl(processSession: ProcessSession): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {

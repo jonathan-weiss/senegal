@@ -1,9 +1,9 @@
-package ch.cassiamon.engine.schema.registration
+package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.engine.schema.Schema
+import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.pluginapi.schema.InputFacetSchema
 import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
 import ch.cassiamon.pluginapi.ConceptName
