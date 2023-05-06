@@ -20,6 +20,7 @@ class RegistrationApiDefaultImpl(processSession: ProcessSession): RegistrationAp
         loggerFacade = processSession.loggerFacade,
         fileSystemAccess = processSession.fileSystemAccess,
         parameterAccess = processSession.parameterAccess,
+        extensionAccess = processSession.extensionAccess
     )
 
     override fun configureSchema(schemaRegistration: SchemaRegistration.() -> Unit) {

@@ -1,6 +1,5 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.extension.ExtensionAccess
 import ch.cassiamon.engine.extension.ExtensionAccessHolder
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
@@ -22,5 +21,5 @@ class ProcessSession(
     ),
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
     val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
-    val extensionAccess: ExtensionAccess = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector)
+    val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector)
 )

@@ -13,9 +13,12 @@ class EngineProcess(private val processSession: ProcessSession) {
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrationApi = RegistrationApiDefaultImpl(processSession)
         processSession.registrars.forEach { it.configure(registrationApi) }
+        // TODO call the 3 phases separately, inject schema access as soon as the schema is final
+
+        val schema = registrationApi.provideSchema()
+        processSession.extensionAccess.initializeSchema(schema)
 
         // resolve the raw concepts and facets to a resolved schema
-        val schema = registrationApi.provideSchema()
         val templates = registrationApi.provideTemplates()
         val modelInputData = registrationApi.provideModelInputData()
 

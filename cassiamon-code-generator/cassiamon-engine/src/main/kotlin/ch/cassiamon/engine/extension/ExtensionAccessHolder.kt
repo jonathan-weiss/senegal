@@ -9,6 +9,7 @@ import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.parameter.ParameterAccess
+import ch.cassiamon.pluginapi.schema.SchemaAccess
 
 class ExtensionAccessHolder(
     private val fileSystemAccess: FileSystemAccess,
@@ -41,6 +42,10 @@ class ExtensionAccessHolder(
             inputSourceDataCollector = modelInputDataCollector,
             fileSystemAccess = fileSystemAccess,
         )
+    }
+
+    fun initializeSchema(schemaAccess: SchemaAccess) {
+        filesInputSourceExtensions.values.forEach { it.initializeSchema(schemaAccess) }
     }
     override fun getClasspathTemplateExtension(extensionName: ExtensionName): ClasspathTemplateExtension {
         return classpathTemplateExtensions[extensionName] ?: throwExtensionNotFound(extensionName)
