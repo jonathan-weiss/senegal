@@ -7,6 +7,7 @@ import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.schema.SchemaAccess
 import java.nio.file.Path
 
+typealias InputSourceRegistrationApi = (InputSourceRegistration.() -> Unit) -> Unit
 interface InputSourceRegistration {
 
     fun receiveDataCollector(): InputSourceDataCollector

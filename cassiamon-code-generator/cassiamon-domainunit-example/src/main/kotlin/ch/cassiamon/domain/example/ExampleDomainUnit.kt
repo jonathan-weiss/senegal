@@ -4,8 +4,7 @@ import ch.cassiamon.api.*
 import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.facets.*
-import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.api.registration.RegistrationApi
+import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
@@ -31,9 +30,8 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
 //    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
 //    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
 
-
-    override fun configure(registrationApi: RegistrationApi) {
-        registrationApi.configureSchema {
+    override fun configureSchema(registration: SchemaRegistrationApi) {
+        registration {
             newRootConcept(testEntityConceptName) {
 
                 addFacet(testEntityNameTextComposedFacet)
@@ -52,9 +50,31 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
 //                addFacet(testTextComposedFacet)
             }
         }
+    }
 
-        registrationApi.configureTemplates {
-            // test a file generation for all nodes
+
+    override fun configureDataCollector(registration: InputSourceRegistrationApi) {
+        registration {
+            val dataCollector = receiveDataCollector()
+
+            dataCollector
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinTestkonzept-Name"))
+                .attach()
+
+            dataCollector
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
+                .attach()
+
+            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename,
+                receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
+        }
+
+    }
+
+    override fun configureTemplates(registration: TemplatesRegistrationApi) {
+        registration {
             newTemplate { conceptModelGraph ->
 
 //                val targetFiles = templateNodesProvider
@@ -73,7 +93,6 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
 
             // test a single node file generation
             newTemplate { conceptModelGraph ->
-
                 val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(testEntityConceptName)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
@@ -95,23 +114,6 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
                     templateClasspath = ClasspathLocation.of("/ch/cassiamon/domain/example/templates/freemarker/example-template.ftl")
                 )
             }
-        }
-
-        registrationApi.configureDataCollector {
-            val dataCollector = receiveDataCollector()
-
-            dataCollector
-                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinTestkonzept-Name"))
-                .attach()
-
-            dataCollector
-                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
-                .attach()
-
-            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
-
         }
     }
 }

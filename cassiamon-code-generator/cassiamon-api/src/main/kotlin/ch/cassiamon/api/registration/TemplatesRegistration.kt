@@ -5,7 +5,7 @@ import ch.cassiamon.api.extensions.ExtensionName
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
 
-
+typealias TemplatesRegistrationApi = (TemplatesRegistration.() -> Unit) -> Unit
 interface TemplatesRegistration {
 
     fun newTemplate(templateFunction: TemplateFunction)

@@ -9,8 +9,7 @@ import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.facets.MandatoryTextInputAndTemplateFacet
-import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.api.registration.RegistrationApi
+import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
 import ch.cassiamon.api.template.helper.StringContentByteIterator
@@ -153,8 +152,27 @@ class EngineProcessTest {
             return content
         }
 
-        override fun configure(registrationApi: RegistrationApi) {
-            registrationApi.configureSchema {
+        override fun configureDataCollector(registration: InputSourceRegistrationApi) {
+            registration {
+                val dataCollector = receiveDataCollector()
+
+                dataCollector
+                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
+                    .attach()
+
+                dataCollector
+                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
+                    .attach()
+
+                XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
+
+            }
+        }
+
+        override fun configureSchema(registration: SchemaRegistrationApi) {
+            registration {
                 newRootConcept(testEntityConceptName) {
 
                     addFacet(testEntityNameInputFacet)
@@ -164,9 +182,10 @@ class EngineProcessTest {
                     }
                 }
             }
+        }
 
-            registrationApi.configureTemplates {
-
+        override fun configureTemplates(registration: TemplatesRegistrationApi) {
+            registration {
                 // test a file generation per node
                 newTemplate { conceptModelGraph: ConceptModelGraph ->
                     val targetFiles: Set<TargetGeneratedFileWithModel> = conceptModelGraph
@@ -192,26 +211,10 @@ class EngineProcessTest {
                         return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
                     }
                 }
-
-            }
-
-            registrationApi.configureDataCollector {
-                val dataCollector = receiveDataCollector()
-
-                dataCollector
-                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
-                    .attach()
-
-                dataCollector
-                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
-                    .attach()
-
-                XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
-
             }
         }
+
+
     }
 
 
