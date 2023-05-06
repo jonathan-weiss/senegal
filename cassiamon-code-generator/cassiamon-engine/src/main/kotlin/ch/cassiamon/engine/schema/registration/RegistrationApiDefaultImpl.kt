@@ -8,14 +8,12 @@ import ch.cassiamon.engine.schema.Schema
 import ch.cassiamon.pluginapi.registration.*
 
 class RegistrationApiDefaultImpl(engineProcessHelpers: EngineProcessHelpers): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
-    private val modelInputDataCollector = ModelInputDataCollector()
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()
     private val templateRegistrationImpl = TemplateRegistrationDefaultImpl(
-        schemaProvider = schemaRegistrationImpl,
-        loggerFacade = engineProcessHelpers.loggerFacade,
-        fileSystemAccess = engineProcessHelpers.fileSystemAccess,
-        parameterAccess = engineProcessHelpers.parameterAccess,
+        extensionAccess = engineProcessHelpers.extensionAccess,
     )
+    private val modelInputDataCollector: ModelInputDataCollector = engineProcessHelpers.modelInputDataCollector
+
     private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(
         modelInputDataCollector= modelInputDataCollector,
         schemaProvider = schemaRegistrationImpl,
@@ -23,8 +21,6 @@ class RegistrationApiDefaultImpl(engineProcessHelpers: EngineProcessHelpers): Re
         fileSystemAccess = engineProcessHelpers.fileSystemAccess,
         parameterAccess = engineProcessHelpers.parameterAccess,
     )
-
-
 
     override fun configureSchema(schemaRegistration: SchemaRegistration.() -> Unit) {
         schemaRegistration(schemaRegistrationImpl)

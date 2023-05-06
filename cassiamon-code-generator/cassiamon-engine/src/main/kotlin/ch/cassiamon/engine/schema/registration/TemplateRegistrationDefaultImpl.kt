@@ -1,16 +1,18 @@
 package ch.cassiamon.engine.schema.registration
 
+import ch.cassiamon.engine.extension.ExtensionAccess
+import ch.cassiamon.pluginapi.extensions.ClasspathLocation
+import ch.cassiamon.pluginapi.extensions.ExtensionName
+import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.parameter.ParameterAccess
 import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
+import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 class TemplateRegistrationDefaultImpl(
-    private val schemaProvider: SchemaProvider,
-    private val loggerFacade: LoggerFacade,
-    private val fileSystemAccess: FileSystemAccess,
-    private val parameterAccess: ParameterAccess,
+    private val extensionAccess: ExtensionAccess
     ): TemplatesRegistration, TemplateProvider {
     private val templateFunctions: MutableList<TemplateFunction> = mutableListOf()
 
@@ -18,24 +20,22 @@ class TemplateRegistrationDefaultImpl(
         templateFunctions.add(templateFunction)
     }
 
+    override fun newTemplateRendererWithClasspathTemplateExtension(
+        extensionName: ExtensionName,
+        targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
+        templateClasspath: ClasspathLocation
+    ): TemplateRenderer {
+        return extensionAccess.getClasspathTemplateExtension(extensionName).fillTemplate(targetFilesWithModel, templateClasspath)
+    }
+
+    override fun newTemplateRenderer(
+        targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
+        templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator
+    ): TemplateRenderer {
+        return TemplateRenderer(targetFilesWithModel, templateRendererFunction)
+    }
+
     override fun provideTemplates(): List<TemplateFunction> {
         return templateFunctions
     }
-
-    override fun receiveSchema(): SchemaAccess {
-        return schemaProvider.provideSchema()
-    }
-
-    override fun receiveLoggerFacade(): LoggerFacade {
-        return loggerFacade
-    }
-
-    override fun receiveFileSystemAccess(): FileSystemAccess {
-        return fileSystemAccess
-    }
-
-    override fun receiveParameterAccess(): ParameterAccess {
-        return parameterAccess
-    }
-
 }

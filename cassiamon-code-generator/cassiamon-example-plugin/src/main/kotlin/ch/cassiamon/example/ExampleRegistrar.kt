@@ -1,6 +1,8 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.pluginapi.*
+import ch.cassiamon.pluginapi.extensions.ClasspathLocation
+import ch.cassiamon.pluginapi.extensions.ExtensionName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.Registrar
@@ -8,7 +10,6 @@ import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
-import ch.cassiamon.templates.freemarker.FreemarkerTemplateFactory
 import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -75,20 +76,26 @@ class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
             newTemplate { conceptModelGraph ->
 
                 val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(testEntityConceptName)
+                val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
-                return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
-                    return@TemplateRenderer StringContentByteIterator(
+                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                    return@newTemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )
                 }
+
             }
 
             newTemplate { conceptModelGraph ->
                 val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(testEntityConceptName)
                 val files = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.txt"), templateNodes))
-                return@newTemplate FreemarkerTemplateFactory.createTemplateRenderer(files, "/ch/cassiamon/example/templates/freemarker/example-template.ftl", receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
-            }
 
+                return@newTemplate newTemplateRendererWithClasspathTemplateExtension(
+                    extensionName = ExampleExtensions.freemarkerTemplateExtensionName,
+                    targetFilesWithModel = files,
+                    templateClasspath = ClasspathLocation.of("/ch/cassiamon/example/templates/freemarker/example-template.ftl")
+                )
+            }
         }
 
         registrationApi.configureDataCollector {

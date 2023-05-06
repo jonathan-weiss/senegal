@@ -16,5 +16,5 @@ data class TemplateRenderer(
      * where binary files or file not in UTF encoding
      * should be written.
      */
-    val templateRenderer: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator,
+    val templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator,
 )

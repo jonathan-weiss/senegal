@@ -1,11 +1,7 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.engine.schema.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.facets.*
 import ch.cassiamon.pluginapi.registration.Registrar
 import ch.cassiamon.pluginapi.template.TemplateRenderer
 import kotlin.io.path.absolutePathString
@@ -37,7 +33,7 @@ class EngineProcess(private val registrars: List<Registrar>, private val engineP
 
         templateRenderers.forEach { templateRenderer: TemplateRenderer ->
             templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
-                val byteIterator = templateRenderer.templateRenderer(targetGeneratedFileWithModel)
+                val byteIterator = templateRenderer.templateRendererFunction(targetGeneratedFileWithModel)
                 println("File to write: ${targetGeneratedFileWithModel.targetFile} (${targetGeneratedFileWithModel.targetFile.absolutePathString()})")
                 engineProcessHelpers.fileSystemAccess.writeFile(targetGeneratedFileWithModel.targetFile, byteIterator)
             }

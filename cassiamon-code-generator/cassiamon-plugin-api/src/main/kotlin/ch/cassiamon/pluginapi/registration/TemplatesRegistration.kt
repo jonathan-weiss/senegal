@@ -1,21 +1,17 @@
 package ch.cassiamon.pluginapi.registration
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.logger.LoggerFacade
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.pluginapi.extensions.ClasspathLocation
+import ch.cassiamon.pluginapi.extensions.ExtensionName
+import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
+import ch.cassiamon.pluginapi.template.TemplateRenderer
 
 
 interface TemplatesRegistration {
 
     fun newTemplate(templateFunction: TemplateFunction)
 
-    fun receiveSchema(): SchemaAccess
+    fun newTemplateRendererWithClasspathTemplateExtension(extensionName: ExtensionName, targetFilesWithModel: Set<TargetGeneratedFileWithModel>, templateClasspath: ClasspathLocation): TemplateRenderer
 
-    fun receiveLoggerFacade(): LoggerFacade
-
-    fun receiveFileSystemAccess(): FileSystemAccess
-    fun receiveParameterAccess(): ParameterAccess
-
+    fun newTemplateRenderer(targetFilesWithModel: Set<TargetGeneratedFileWithModel>, templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator): TemplateRenderer
 
 }

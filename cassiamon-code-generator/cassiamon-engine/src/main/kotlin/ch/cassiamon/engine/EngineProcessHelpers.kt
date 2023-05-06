@@ -1,6 +1,9 @@
 package ch.cassiamon.engine
 
+import ch.cassiamon.engine.extension.ExtensionAccess
+import ch.cassiamon.engine.extension.ExtensionAccessHolder
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
+import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.parameters.*
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
@@ -16,4 +19,6 @@ class EngineProcessHelpers(
         DefaultPropertyFileParameterSource(fileSystemAccess),
     ),
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
+    val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
+    val extensionAccess: ExtensionAccess = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector)
 )
