@@ -7,5 +7,5 @@ import ch.cassiamon.api.schema.SchemaAccess
 interface InputSourceExtensionInitialization {
 
     fun initializeInputSourceExtension(inputSourceDataCollector: InputSourceDataCollector, fileSystemAccess: FileSystemAccess)
-    fun initializeSchema(schema: SchemaAccess)
+    fun initializeSchema(schemaAccess: SchemaAccess)
 }

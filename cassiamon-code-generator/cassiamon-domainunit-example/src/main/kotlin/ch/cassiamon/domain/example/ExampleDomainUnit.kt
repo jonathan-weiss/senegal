@@ -8,7 +8,6 @@ import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
-import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -70,8 +69,11 @@ class ExampleDomainUnit: DomainUnit {
                 .addFacetValue(testEntityNameTextComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
                 .attach()
 
-            XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename,
-                receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
+            val inputFiles = setOf<Path>(xmlDefinitionDirectory.resolve(xmlFilename))
+            dataCollectionWithFilesInputSourceExtension(
+                extensionName = ExampleExtensions.freemarkerTemplateExtensionName,
+                inputFiles = inputFiles,
+            )
         }
 
     }

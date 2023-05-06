@@ -1,19 +1,22 @@
 package ch.cassiamon.example
 
-import ch.cassiamon.engine.EngineProcess
-import ch.cassiamon.engine.ProcessSession
-import ch.cassiamon.engine.parameters.ParameterSource
-import ch.cassiamon.engine.parameters.StaticParameterSource
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.facets.MandatoryTextInputAndTemplateFacet
-import ch.cassiamon.api.registration.*
+import ch.cassiamon.api.registration.DomainUnit
+import ch.cassiamon.api.registration.InputSourceRegistrationApi
+import ch.cassiamon.api.registration.SchemaRegistrationApi
+import ch.cassiamon.api.registration.TemplatesRegistrationApi
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
 import ch.cassiamon.api.template.helper.StringContentByteIterator
-import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
+import ch.cassiamon.domain.example.ExampleExtensions
+import ch.cassiamon.engine.EngineProcess
+import ch.cassiamon.engine.ProcessSession
+import ch.cassiamon.engine.parameters.ParameterSource
+import ch.cassiamon.engine.parameters.StaticParameterSource
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
@@ -169,8 +172,11 @@ class EngineProcessTest {
                     .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
                     .attach()
 
-                XmlSchemagicFactory.parseXml(receiveSchema(), dataCollector, xmlDefinitionDirectory, xmlFilename, receiveFileSystemAccess(), receiveLoggerFacade(), receiveParameterAccess())
-
+                val inputFiles = setOf<Path>(xmlDefinitionDirectory.resolve(xmlFilename))
+                dataCollectionWithFilesInputSourceExtension(
+                    extensionName = ExampleExtensions.freemarkerTemplateExtensionName,
+                    inputFiles = inputFiles,
+                )
             }
         }
 

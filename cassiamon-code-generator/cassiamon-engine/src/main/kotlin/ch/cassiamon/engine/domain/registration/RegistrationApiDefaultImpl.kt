@@ -16,10 +16,6 @@ class RegistrationApiDefaultImpl(processSession: ProcessSession): SchemaProvider
 
     private val inputSourceRegistrationImpl = InputSourceRegistrationDefaultImpl(
         modelInputDataCollector= modelInputDataCollector,
-        schemaProvider = schemaRegistrationImpl,
-        loggerFacade = processSession.loggerFacade,
-        fileSystemAccess = processSession.fileSystemAccess,
-        parameterAccess = processSession.parameterAccess,
         extensionAccess = processSession.extensionAccess
     )
 

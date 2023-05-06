@@ -10,9 +10,9 @@ allprojects {
 }
 
 dependencies {
-    runtimeOnly(project(":cassiamon-code-generator:cassiamon-engine"))
     implementation(project(":cassiamon-code-generator:cassiamon-api"))
-    implementation(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
+    runtimeOnly(project(":cassiamon-code-generator:cassiamon-engine"))
+    runtimeOnly(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
     runtimeOnly(project(":cassiamon-code-generator:cassiamon-freemarker-templates"))
 
 
