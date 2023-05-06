@@ -1,9 +1,9 @@
 package ch.cassiamon.pluginapi.registration
 
-import ch.cassiamon.pluginapi.ProjectName
+import ch.cassiamon.pluginapi.DomainUnitName
 
 
-abstract class Registrar(val projectName: ProjectName) {
+abstract class DomainUnit(val domainUnitName: DomainUnitName) {
     abstract fun configure(registrationApi: RegistrationApi)
 
 }

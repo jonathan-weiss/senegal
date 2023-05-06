@@ -8,10 +8,10 @@ import ch.cassiamon.engine.parameters.*
 import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
 import ch.cassiamon.pluginapi.logger.LoggerFacade
 import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.registration.Registrar
+import ch.cassiamon.pluginapi.registration.DomainUnit
 
 class ProcessSession(
-    val registrars: List<Registrar> = emptyList(),
+    val domainUnits: List<DomainUnit> = emptyList(),
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),
     private val parameterSources: List<ParameterSource> = listOf(

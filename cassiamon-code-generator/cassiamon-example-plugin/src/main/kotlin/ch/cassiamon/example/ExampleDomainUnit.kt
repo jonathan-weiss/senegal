@@ -2,10 +2,9 @@ package ch.cassiamon.example
 
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.extensions.ClasspathLocation
-import ch.cassiamon.pluginapi.extensions.ExtensionName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.facets.*
-import ch.cassiamon.pluginapi.registration.Registrar
+import ch.cassiamon.pluginapi.registration.DomainUnit
 import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
@@ -14,7 +13,7 @@ import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class ExampleRegistrar: Registrar(ProjectName.of("ExampleProject")) {
+class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
     companion object {
         val xmlDefinitionDirectory: Path = Paths.get("input-data")
         val outputDirectory: Path = Paths.get("output-data")

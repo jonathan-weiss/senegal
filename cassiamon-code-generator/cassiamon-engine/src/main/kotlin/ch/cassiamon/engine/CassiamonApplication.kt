@@ -1,12 +1,12 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.schema.finder.RegistrarFinder
+import ch.cassiamon.engine.schema.finder.DomainUnitFinder
 
 
 fun main() {
-    val registrars = RegistrarFinder.findAllRegistrars()
-    val processSession = ProcessSession(registrars = registrars)
-    println("Registrars: [${registrars.joinToString { it.projectName.name }}]")
+    val domainUnits = DomainUnitFinder.findAllDomainUnits()
+    val processSession = ProcessSession(domainUnits = domainUnits)
+    println("DomainUnits: [${domainUnits.joinToString { it.domainUnitName.name }}]")
 
 
     val process = EngineProcess(processSession)

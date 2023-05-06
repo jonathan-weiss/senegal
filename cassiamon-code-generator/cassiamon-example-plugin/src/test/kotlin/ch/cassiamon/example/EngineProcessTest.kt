@@ -5,11 +5,11 @@ import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
 import ch.cassiamon.engine.parameters.StaticParameterSource
 import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.ProjectName
+import ch.cassiamon.pluginapi.DomainUnitName
 import ch.cassiamon.pluginapi.model.ConceptIdentifier
 import ch.cassiamon.pluginapi.model.ConceptModelGraph
 import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputAndTemplateFacet
-import ch.cassiamon.pluginapi.registration.Registrar
+import ch.cassiamon.pluginapi.registration.DomainUnit
 import ch.cassiamon.pluginapi.registration.RegistrationApi
 import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
 import ch.cassiamon.pluginapi.template.TemplateRenderer
@@ -74,9 +74,9 @@ class EngineProcessTest {
             java.util.logging.SimpleFormatter.format=%5${'$'}s%n
     """.trimIndent()
 
-    private val definitionDirectory = TestRegistrar.xmlDefinitionDirectory
-    private val xmlFilename = TestRegistrar.xmlFilename
-    private val defaultOutputDirectory = TestRegistrar.defaultOutputDirectory
+    private val definitionDirectory = TestDomainUnit.xmlDefinitionDirectory
+    private val xmlFilename = TestDomainUnit.xmlFilename
+    private val defaultOutputDirectory = TestDomainUnit.defaultOutputDirectory
     private val definitionXmlFile = definitionDirectory.resolve(xmlFilename)
 
     private val classpathResourcesWithContent: Map<String, String> = mapOf(
@@ -91,13 +91,13 @@ class EngineProcessTest {
 
 
     @Test
-    fun `run test registrar`() {
+    fun `run test domainUnit`() {
 
-        val registrars = listOf(TestRegistrar())
+        val domainUnits = listOf(TestDomainUnit())
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
         val processSession = ProcessSession(
-            registrars = registrars,
+            domainUnits = domainUnits,
             fileSystemAccess = fileSystemAccess,
             parameterSources = parameterSources
         )
@@ -118,7 +118,7 @@ class EngineProcessTest {
 
     }
 
-    class TestRegistrar: Registrar(ProjectName.of("TestProject")) {
+    class TestDomainUnit: DomainUnit(DomainUnitName.of("TestProject")) {
         companion object {
             val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
             const val xmlFilename = "definition-file.xml"
