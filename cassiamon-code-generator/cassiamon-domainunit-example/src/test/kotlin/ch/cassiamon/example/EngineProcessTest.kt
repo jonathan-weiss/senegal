@@ -117,7 +117,7 @@ class EngineProcessTest {
 
     }
 
-    class TestDomainUnit: DomainUnit(DomainUnitName.of("TestProject")) {
+    class TestDomainUnit: DomainUnit {
         companion object {
             val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
             const val xmlFilename = "definition-file.xml"
@@ -129,6 +129,9 @@ class EngineProcessTest {
         private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
         private val testEntityNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
         private val testEntityAttributeNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
+
+        override val domainUnitName: DomainUnitName
+            get() = DomainUnitName.of("TestProject")
 
         private fun modelDescriptionContent(targetGeneratedFileWithModel: TargetGeneratedFileWithModel): String {
             var content = ""

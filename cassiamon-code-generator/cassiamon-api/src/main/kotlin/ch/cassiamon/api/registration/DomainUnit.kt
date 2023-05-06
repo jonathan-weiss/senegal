@@ -3,9 +3,10 @@ package ch.cassiamon.api.registration
 import ch.cassiamon.api.DomainUnitName
 
 
-abstract class DomainUnit(val domainUnitName: DomainUnitName) {
-    abstract fun configureDataCollector(inputSourceRegistration: InputSourceRegistrationApi)
-    abstract fun configureSchema(registration: SchemaRegistrationApi)
-    abstract fun configureTemplates(configureTemplatesRegistration: TemplatesRegistrationApi)
+interface DomainUnit {
+    val domainUnitName: DomainUnitName
+    fun configureDataCollector(inputSourceRegistration: InputSourceRegistrationApi)
+    fun configureSchema(registration: SchemaRegistrationApi)
+    fun configureTemplates(configureTemplatesRegistration: TemplatesRegistrationApi)
 
 }

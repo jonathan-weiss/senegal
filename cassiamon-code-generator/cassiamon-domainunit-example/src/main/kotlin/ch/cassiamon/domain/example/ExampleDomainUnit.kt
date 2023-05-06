@@ -12,7 +12,7 @@ import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
+class ExampleDomainUnit: DomainUnit {
     companion object {
         val xmlDefinitionDirectory: Path = Paths.get("input-data")
         val outputDirectory: Path = Paths.get("output-data")
@@ -23,12 +23,15 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
     private val testEntityNameTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
     private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
     private val testEntityAttributeNameTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
-//    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
+
+    //    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
 //    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
 //    private val testRefInputAndTemplateFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("TestRefManual", targetTestConceptName)
 //    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
 //    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
 //    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
+    override val domainUnitName: DomainUnitName
+        get() = DomainUnitName.of("ExampleProject")
 
     override fun configureSchema(registration: SchemaRegistrationApi) {
         registration {
