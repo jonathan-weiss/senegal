@@ -5,8 +5,8 @@ import ch.cassiamon.api.DomainUnitName
 
 interface DomainUnit {
     val domainUnitName: DomainUnitName
-    fun configureDataCollector(inputSourceRegistration: InputSourceRegistrationApi)
+    fun configureDataCollector(registration: InputSourceRegistrationApi)
     fun configureSchema(registration: SchemaRegistrationApi)
-    fun configureTemplates(configureTemplatesRegistration: TemplatesRegistrationApi)
+    fun configureTemplates(registration: TemplatesRegistrationApi)
 
 }
