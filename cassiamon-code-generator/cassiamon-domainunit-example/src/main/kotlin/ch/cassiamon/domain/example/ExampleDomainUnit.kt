@@ -1,4 +1,4 @@
-package ch.cassiamon.example
+package ch.cassiamon.domain.example
 
 import ch.cassiamon.pluginapi.*
 import ch.cassiamon.pluginapi.extensions.ClasspathLocation
@@ -92,7 +92,7 @@ class ExampleDomainUnit: DomainUnit(DomainUnitName.of("ExampleProject")) {
                 return@newTemplate newTemplateRendererWithClasspathTemplateExtension(
                     extensionName = ExampleExtensions.freemarkerTemplateExtensionName,
                     targetFilesWithModel = files,
-                    templateClasspath = ClasspathLocation.of("/ch/cassiamon/example/templates/freemarker/example-template.ftl")
+                    templateClasspath = ClasspathLocation.of("/ch/cassiamon/domain/example/templates/freemarker/example-template.ftl")
                 )
             }
         }

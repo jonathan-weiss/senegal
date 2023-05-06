@@ -7,8 +7,8 @@ db/**
 tmp
 
 
-cassiamon-code-generator/cassiamon-example-plugin/input-data/schema/*
-cassiamon-code-generator/cassiamon-example-plugin/output-data/*
+cassiamon-code-generator/cassiamon-domainunit-example/input-data/schema/*
+cassiamon-code-generator/cassiamon-domainunit-example/output-data/*
 
 senegal-code-generator/senegal-example-plugins/definitions/schema/*
 senegal-example-app/customized-code-generator/definitions/schema/*

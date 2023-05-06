@@ -1,4 +1,4 @@
-package ch.cassiamon.example
+package ch.cassiamon.domain.example
 
 import ch.cassiamon.pluginapi.extensions.ExtensionName
 
