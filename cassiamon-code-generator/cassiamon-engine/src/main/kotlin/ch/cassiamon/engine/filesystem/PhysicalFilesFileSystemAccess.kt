@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.filesystem
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
+import ch.cassiamon.api.filesystem.FileSystemAccess
 import java.io.InputStream
 import java.io.Writer
 import java.nio.charset.Charset

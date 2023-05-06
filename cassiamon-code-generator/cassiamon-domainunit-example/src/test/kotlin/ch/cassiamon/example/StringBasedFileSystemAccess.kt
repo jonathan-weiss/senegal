@@ -1,6 +1,6 @@
 package ch.cassiamon.example
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
+import ch.cassiamon.api.filesystem.FileSystemAccess
 import java.io.Closeable
 import java.io.InputStream
 import java.io.StringWriter

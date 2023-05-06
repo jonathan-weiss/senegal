@@ -1,12 +1,12 @@
 package ch.cassiamon.templates.freemarker.writer
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
-import ch.cassiamon.pluginapi.model.facets.TemplateFacet
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.api.model.ConceptModelNodeTemplateFacetValues
+import ch.cassiamon.api.model.facets.TemplateFacet
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

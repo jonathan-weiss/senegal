@@ -1,10 +1,10 @@
 package ch.cassiamon.engine.inputsource
 
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.facets.InputFacetValue
-import ch.cassiamon.pluginapi.registration.InputSourceConceptFacetValueBuilder
-import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.*
+import ch.cassiamon.api.model.facets.InputFacetValue
+import ch.cassiamon.api.registration.InputSourceConceptFacetValueBuilder
+import ch.cassiamon.api.registration.InputSourceDataCollector
 
 class ModelInputDataCollector: InputSourceDataCollector {
     private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()

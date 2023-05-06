@@ -1,9 +1,9 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.facets.*
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.model.facets.*
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.CaseUtil
 import org.w3c.dom.Document
 import org.w3c.dom.Element

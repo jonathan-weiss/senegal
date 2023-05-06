@@ -2,13 +2,13 @@ package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.extension.ExtensionAccess
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.pluginapi.extensions.ExtensionName
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.logger.LoggerFacade
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
-import ch.cassiamon.pluginapi.registration.InputSourceRegistration
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.filesystem.FileSystemAccess
+import ch.cassiamon.api.logger.LoggerFacade
+import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.registration.InputSourceDataCollector
+import ch.cassiamon.api.registration.InputSourceRegistration
+import ch.cassiamon.api.schema.SchemaAccess
 import java.nio.file.Path
 
 class InputSourceRegistrationDefaultImpl(

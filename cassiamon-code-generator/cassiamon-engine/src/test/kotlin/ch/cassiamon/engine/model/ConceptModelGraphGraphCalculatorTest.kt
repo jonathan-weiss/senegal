@@ -2,7 +2,7 @@ package ch.cassiamon.engine.model
 
 import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptIdentifier
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

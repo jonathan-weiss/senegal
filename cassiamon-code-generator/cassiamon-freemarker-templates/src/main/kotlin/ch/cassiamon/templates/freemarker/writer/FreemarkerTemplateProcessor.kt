@@ -1,6 +1,6 @@
 package ch.cassiamon.templates.freemarker.writer
 
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import freemarker.template.Configuration
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler

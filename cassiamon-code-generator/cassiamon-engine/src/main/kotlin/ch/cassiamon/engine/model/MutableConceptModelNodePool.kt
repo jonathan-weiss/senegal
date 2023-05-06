@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.pluginapi.model.*
-import ch.cassiamon.pluginapi.model.exceptions.ConceptNotFoundModelException
+import ch.cassiamon.api.model.*
+import ch.cassiamon.api.model.exceptions.ConceptNotFoundModelException
 
 class MutableConceptModelNodePool: ConceptModelNodePool {
     private val nodePool: MutableMap<ConceptIdentifier, ConceptModelNode> = mutableMapOf()

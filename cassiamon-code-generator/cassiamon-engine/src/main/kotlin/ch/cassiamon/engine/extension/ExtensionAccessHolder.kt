@@ -1,15 +1,15 @@
 package ch.cassiamon.engine.extension
 
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.pluginapi.extensions.ExtensionInitialization
-import ch.cassiamon.pluginapi.extensions.ExtensionName
-import ch.cassiamon.pluginapi.extensions.inputsource.InputSourceExtensionInitialization
-import ch.cassiamon.pluginapi.extensions.inputsource.files.FilesInputSourceExtension
-import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.logger.LoggerFacade
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.extensions.ExtensionInitialization
+import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.extensions.inputsource.InputSourceExtensionInitialization
+import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
+import ch.cassiamon.api.filesystem.FileSystemAccess
+import ch.cassiamon.api.logger.LoggerFacade
+import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.schema.SchemaAccess
 
 class ExtensionAccessHolder(
     private val fileSystemAccess: FileSystemAccess,

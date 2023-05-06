@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.pluginapi.extensions.ExtensionName
-import ch.cassiamon.pluginapi.extensions.inputsource.files.FilesInputSourceExtension
-import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
+import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
 
 interface ExtensionAccess {
 

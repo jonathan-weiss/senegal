@@ -2,15 +2,15 @@ package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.pluginapi.schema.ConceptSchema
+import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.registration.exceptions.CircularConceptHierarchieFoundSchemaException
-import ch.cassiamon.pluginapi.registration.exceptions.DuplicateConceptNameFoundSchemaException
-import ch.cassiamon.pluginapi.registration.exceptions.DuplicateFacetNameFoundSchemaException
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.TemplateFacetSchema
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.registration.exceptions.CircularConceptHierarchieFoundSchemaException
+import ch.cassiamon.api.registration.exceptions.DuplicateConceptNameFoundSchemaException
+import ch.cassiamon.api.registration.exceptions.DuplicateFacetNameFoundSchemaException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

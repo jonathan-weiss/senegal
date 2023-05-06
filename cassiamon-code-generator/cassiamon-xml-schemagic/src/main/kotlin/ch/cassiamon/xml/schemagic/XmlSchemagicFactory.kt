@@ -1,10 +1,10 @@
 package ch.cassiamon.xml.schemagic
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.logger.LoggerFacade
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.registration.InputSourceDataCollector
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.filesystem.FileSystemAccess
+import ch.cassiamon.api.logger.LoggerFacade
+import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.registration.InputSourceDataCollector
+import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.SaxParserHandler
 import ch.cassiamon.xml.schemagic.schemacreator.XmlSchemaInitializer
 import java.nio.file.Path

@@ -4,12 +4,12 @@ import ch.cassiamon.engine.TestFixtures
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
-import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
-import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
-import ch.cassiamon.pluginapi.model.facets.InputFacetValue
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
+import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
+import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
+import ch.cassiamon.api.model.facets.InputFacetValue
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

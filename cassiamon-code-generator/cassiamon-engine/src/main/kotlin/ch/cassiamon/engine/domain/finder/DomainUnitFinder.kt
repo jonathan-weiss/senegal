@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.domain.finder
 
-import ch.cassiamon.pluginapi.registration.DomainUnit
+import ch.cassiamon.api.registration.DomainUnit
 import java.util.*
 
 object DomainUnitFinder {

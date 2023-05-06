@@ -1,10 +1,10 @@
 package ch.cassiamon.engine.model.validator
 
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.exceptions.InvalidTemplateFacetConfigurationModelException
-import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.TemplateFacetSchema
+import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.api.model.exceptions.InvalidTemplateFacetConfigurationModelException
+import ch.cassiamon.api.model.facets.*
 
 object ConceptModelNodeValidator {
 

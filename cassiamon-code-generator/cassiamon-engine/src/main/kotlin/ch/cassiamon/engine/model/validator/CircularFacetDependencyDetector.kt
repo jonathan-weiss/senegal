@@ -1,9 +1,9 @@
 package ch.cassiamon.engine.model.validator
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.exceptions.CircularDependencyOnTemplateFacetModelException
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.exceptions.CircularDependencyOnTemplateFacetModelException
 
 class CircularFacetDependencyDetector {
 

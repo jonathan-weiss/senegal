@@ -2,7 +2,7 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.api.template.TemplateRenderer
 import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val processSession: ProcessSession) {

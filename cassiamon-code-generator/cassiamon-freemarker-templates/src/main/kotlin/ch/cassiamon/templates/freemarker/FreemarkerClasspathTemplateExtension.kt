@@ -1,12 +1,12 @@
 package ch.cassiamon.templates.freemarker
 
-import ch.cassiamon.pluginapi.extensions.ClasspathLocation
-import ch.cassiamon.pluginapi.extensions.ExtensionName
-import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
-import ch.cassiamon.pluginapi.logger.LoggerFacade
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
-import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.api.extensions.ClasspathLocation
+import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
+import ch.cassiamon.api.logger.LoggerFacade
+import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.template.TemplateRenderer
 import ch.cassiamon.templates.freemarker.writer.FreemarkerTemplateProcessor
 
 class FreemarkerClasspathTemplateExtension: ClasspathTemplateExtension {

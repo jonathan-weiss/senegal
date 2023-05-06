@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodeTemplateFacetValues
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.api.model.ConceptModelNodeTemplateFacetValues
 
 class MaterializingConceptModelNode(
     private val conceptModelNode: ConceptModelNode

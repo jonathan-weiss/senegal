@@ -5,7 +5,7 @@ import ch.cassiamon.engine.inputsource.InputSourceDataProvider
 import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.registration.*
+import ch.cassiamon.api.registration.*
 
 class RegistrationApiDefaultImpl(processSession: ProcessSession): RegistrationApi, SchemaProvider, TemplateProvider, InputSourceDataProvider {
     private val schemaRegistrationImpl = SchemaRegistrationDefaultImpl()

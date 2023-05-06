@@ -1,14 +1,14 @@
 package ch.cassiamon.domain.example
 
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.extensions.ClasspathLocation
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.facets.*
-import ch.cassiamon.pluginapi.registration.DomainUnit
-import ch.cassiamon.pluginapi.registration.RegistrationApi
-import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
-import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.api.*
+import ch.cassiamon.api.extensions.ClasspathLocation
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.facets.*
+import ch.cassiamon.api.registration.DomainUnit
+import ch.cassiamon.api.registration.RegistrationApi
+import ch.cassiamon.api.template.helper.StringContentByteIterator
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.template.TemplateRenderer
 import ch.cassiamon.xml.schemagic.XmlSchemagicFactory
 import java.nio.file.Path
 import java.nio.file.Paths

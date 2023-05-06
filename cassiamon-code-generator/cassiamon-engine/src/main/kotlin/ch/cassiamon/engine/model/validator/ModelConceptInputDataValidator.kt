@@ -1,13 +1,13 @@
 package ch.cassiamon.engine.model.validator
 
 import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
-import ch.cassiamon.pluginapi.schema.ConceptSchema
+import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.model.exceptions.ConceptNotKnownModelException
-import ch.cassiamon.pluginapi.model.exceptions.ConceptParentInvalidModelException
-import ch.cassiamon.pluginapi.model.exceptions.InvalidFacetConfigurationModelException
-import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
+import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
+import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
+import ch.cassiamon.api.model.facets.*
 
 object ModelConceptInputDataValidator {
 

@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.parameters
 
-import ch.cassiamon.pluginapi.parameter.ParameterAccess
+import ch.cassiamon.api.parameter.ParameterAccess
 
 class MultipleSourcesParameterAccess(private val parameterSources: List<ParameterSource>): ParameterAccess {
 

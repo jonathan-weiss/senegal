@@ -1,10 +1,10 @@
 package ch.cassiamon.engine.domain.registration
 
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.TemplateFacetSchema
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.facets.*
 
 
 class MutableConceptSchema(override val conceptName: ConceptName,

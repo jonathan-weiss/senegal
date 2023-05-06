@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.domain
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.SchemaAccess
 
 data class Schema(
     private val concepts: Map<ConceptName, ConceptSchema>

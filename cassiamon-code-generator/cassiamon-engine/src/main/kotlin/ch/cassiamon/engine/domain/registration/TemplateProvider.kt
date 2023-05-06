@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.domain.registration
 
-import ch.cassiamon.pluginapi.registration.TemplateFunction
+import ch.cassiamon.api.registration.TemplateFunction
 
 
 interface TemplateProvider {

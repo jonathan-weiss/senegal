@@ -1,8 +1,8 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.SchemaAccess
 
 class SimpleSchema(conceptList: List<ConceptSchema>): SchemaAccess {
 

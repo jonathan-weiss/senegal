@@ -9,7 +9,7 @@ allprojects {
 }
 
 dependencies {
-    implementation(project(":cassiamon-code-generator:cassiamon-plugin-api"))
+    implementation(project(":cassiamon-code-generator:cassiamon-api"))
     implementation("org.freemarker:freemarker:2.3.31")
 
     testImplementation(project(":cassiamon-code-generator:cassiamon-engine"))

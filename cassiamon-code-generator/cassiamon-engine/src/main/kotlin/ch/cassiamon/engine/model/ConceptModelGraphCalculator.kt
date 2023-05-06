@@ -6,12 +6,12 @@ import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
 import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.ConceptModelGraph
-import ch.cassiamon.pluginapi.model.ConceptModelNode
-import ch.cassiamon.pluginapi.model.ConceptModelNodePool
-import ch.cassiamon.pluginapi.model.exceptions.DuplicateConceptIdentifierFoundModelException
-import ch.cassiamon.pluginapi.model.exceptions.DuplicateFacetNameFoundModelException
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.model.ConceptModelGraph
+import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.api.model.ConceptModelNodePool
+import ch.cassiamon.api.model.exceptions.DuplicateConceptIdentifierFoundModelException
+import ch.cassiamon.api.model.exceptions.DuplicateFacetNameFoundModelException
 
 object ConceptModelGraphCalculator {
 

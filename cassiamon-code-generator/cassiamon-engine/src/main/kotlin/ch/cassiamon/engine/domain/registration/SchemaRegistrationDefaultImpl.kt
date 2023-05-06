@@ -1,15 +1,15 @@
 package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
-import ch.cassiamon.pluginapi.model.facets.InputAndTemplateFacet
-import ch.cassiamon.pluginapi.model.facets.InputFacet
-import ch.cassiamon.pluginapi.model.facets.TemplateFacet
-import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.registration.exceptions.*
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
+import ch.cassiamon.api.*
+import ch.cassiamon.api.model.ConceptModelNodeCalculationData
+import ch.cassiamon.api.model.facets.InputAndTemplateFacet
+import ch.cassiamon.api.model.facets.InputFacet
+import ch.cassiamon.api.model.facets.TemplateFacet
+import ch.cassiamon.api.registration.*
+import ch.cassiamon.api.registration.exceptions.*
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.TemplateFacetSchema
 
 class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, SchemaProvider {
     private val committedConcepts: MutableSet<MutableConceptSchema> = mutableSetOf()

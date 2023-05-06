@@ -5,9 +5,9 @@ import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputFacet
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.facets.MandatoryTextInputFacet
+import ch.cassiamon.api.schema.SchemaAccess
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths

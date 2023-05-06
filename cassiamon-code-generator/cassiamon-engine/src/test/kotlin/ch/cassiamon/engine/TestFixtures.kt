@@ -4,14 +4,14 @@ import ch.cassiamon.engine.inputsource.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.domain.Schema
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.ConceptModelNodeCalculationData
-import ch.cassiamon.pluginapi.model.facets.*
-import ch.cassiamon.pluginapi.registration.TemplateFunction
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
-import ch.cassiamon.pluginapi.template.TemplateRenderer
-import ch.cassiamon.pluginapi.template.helper.StringContentByteIterator
+import ch.cassiamon.api.*
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptModelNodeCalculationData
+import ch.cassiamon.api.model.facets.*
+import ch.cassiamon.api.registration.TemplateFunction
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.template.TemplateRenderer
+import ch.cassiamon.api.template.helper.StringContentByteIterator
 import java.nio.file.Paths
 
 object TestFixtures {

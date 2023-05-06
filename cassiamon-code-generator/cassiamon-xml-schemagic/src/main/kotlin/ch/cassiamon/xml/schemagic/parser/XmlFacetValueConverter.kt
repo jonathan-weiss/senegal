@@ -1,7 +1,7 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.model.facets.*
 
 object XmlFacetValueConverter {
     fun convertString(inputFacetSchema: InputFacetSchema<*>, attributeValue: String): InputFacetValue<*> {

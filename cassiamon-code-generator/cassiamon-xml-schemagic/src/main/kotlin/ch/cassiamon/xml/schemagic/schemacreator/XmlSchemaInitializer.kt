@@ -1,7 +1,7 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.filesystem.FileSystemAccess
+import ch.cassiamon.api.schema.SchemaAccess
 import java.nio.file.Path
 
 object XmlSchemaInitializer {

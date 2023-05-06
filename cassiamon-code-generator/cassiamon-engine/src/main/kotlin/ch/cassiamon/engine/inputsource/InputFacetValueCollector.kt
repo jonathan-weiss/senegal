@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.inputsource
 
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.InputFacetValueAccess
-import ch.cassiamon.pluginapi.model.facets.*
+import ch.cassiamon.api.*
+import ch.cassiamon.api.model.InputFacetValueAccess
+import ch.cassiamon.api.model.facets.*
 
 class InputFacetValueCollector: InputFacetValueAccess {
 

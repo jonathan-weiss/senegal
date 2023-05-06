@@ -1,10 +1,10 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.facets.MandatoryTextInputFacet
-import ch.cassiamon.pluginapi.schema.ConceptSchema
-import ch.cassiamon.pluginapi.schema.InputFacetSchema
-import ch.cassiamon.pluginapi.schema.SchemaAccess
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.facets.MandatoryTextInputFacet
+import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.SchemaAccess
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -1,9 +1,9 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.pluginapi.ConceptName
-import ch.cassiamon.pluginapi.model.ConceptIdentifier
-import ch.cassiamon.pluginapi.model.ConceptModelGraph
-import ch.cassiamon.pluginapi.model.ConceptModelNode
+import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptModelGraph
+import ch.cassiamon.api.model.ConceptModelNode
 
 class ConceptModelGraphDefaultImpl(private val allConceptModelNodesList: List<ConceptModelNode>) : ConceptModelGraph {
 

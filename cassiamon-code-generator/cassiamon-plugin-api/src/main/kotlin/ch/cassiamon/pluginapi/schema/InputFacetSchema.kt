@@ -1,9 +1,0 @@
-package ch.cassiamon.pluginapi.schema
-
-import ch.cassiamon.pluginapi.*
-import ch.cassiamon.pluginapi.model.facets.InputFacet
-
-class InputFacetSchema<T>(
-    val conceptName: ConceptName,
-    val inputFacet: InputFacet<T>,
-    )

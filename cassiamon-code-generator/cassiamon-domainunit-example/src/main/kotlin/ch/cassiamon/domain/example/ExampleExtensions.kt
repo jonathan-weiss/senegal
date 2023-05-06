@@ -1,6 +1,6 @@
 package ch.cassiamon.domain.example
 
-import ch.cassiamon.pluginapi.extensions.ExtensionName
+import ch.cassiamon.api.extensions.ExtensionName
 
 object ExampleExtensions {
 

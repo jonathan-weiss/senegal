@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.logger
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
-import ch.cassiamon.pluginapi.logger.LoggerFacade
+import ch.cassiamon.api.filesystem.FileSystemAccess
+import ch.cassiamon.api.logger.LoggerFacade
 import java.util.logging.Level
 import java.util.logging.LogManager
 import java.util.logging.Logger

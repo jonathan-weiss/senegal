@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.parameters
 
-import ch.cassiamon.pluginapi.filesystem.FileSystemAccess
+import ch.cassiamon.api.filesystem.FileSystemAccess
 import java.util.*
 
 class DefaultPropertyFileParameterSource(private val fileSystemAccess: FileSystemAccess) : ParameterSource {

@@ -1,11 +1,11 @@
 package ch.cassiamon.engine.domain.registration
 
 import ch.cassiamon.engine.extension.ExtensionAccess
-import ch.cassiamon.pluginapi.extensions.ClasspathLocation
-import ch.cassiamon.pluginapi.extensions.ExtensionName
-import ch.cassiamon.pluginapi.registration.*
-import ch.cassiamon.pluginapi.template.TargetGeneratedFileWithModel
-import ch.cassiamon.pluginapi.template.TemplateRenderer
+import ch.cassiamon.api.extensions.ClasspathLocation
+import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.registration.*
+import ch.cassiamon.api.template.TargetGeneratedFileWithModel
+import ch.cassiamon.api.template.TemplateRenderer
 
 class TemplateRegistrationDefaultImpl(
     private val extensionAccess: ExtensionAccess

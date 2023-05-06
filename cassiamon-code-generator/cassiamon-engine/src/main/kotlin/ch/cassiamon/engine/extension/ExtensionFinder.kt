@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.pluginapi.extensions.inputsource.files.FilesInputSourceExtension
-import ch.cassiamon.pluginapi.extensions.template.ClasspathTemplateExtension
+import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
 import java.util.*
 
 object ExtensionFinder {

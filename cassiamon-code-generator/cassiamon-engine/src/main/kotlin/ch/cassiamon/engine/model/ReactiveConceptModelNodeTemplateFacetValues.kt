@@ -1,12 +1,12 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.pluginapi.schema.TemplateFacetSchema
-import ch.cassiamon.pluginapi.FacetName
-import ch.cassiamon.pluginapi.model.*
-import ch.cassiamon.pluginapi.model.exceptions.MissingFacetValueModelException
-import ch.cassiamon.pluginapi.model.exceptions.ExceptionDuringTemplateFacetCalculationModelException
-import ch.cassiamon.pluginapi.model.exceptions.ModelException
-import ch.cassiamon.pluginapi.model.facets.TemplateFacet
+import ch.cassiamon.api.schema.TemplateFacetSchema
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.model.*
+import ch.cassiamon.api.model.exceptions.MissingFacetValueModelException
+import ch.cassiamon.api.model.exceptions.ExceptionDuringTemplateFacetCalculationModelException
+import ch.cassiamon.api.model.exceptions.ModelException
+import ch.cassiamon.api.model.facets.TemplateFacet
 
 class ReactiveConceptModelNodeTemplateFacetValues(
     private val calculationAndValidationData: CalculationAndValidationData,
