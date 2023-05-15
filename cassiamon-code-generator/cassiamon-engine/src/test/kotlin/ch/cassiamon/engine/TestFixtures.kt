@@ -23,13 +23,13 @@ object TestFixtures {
     val tableFieldTypeFacet = MandatoryTextInputAndTemplateFacet.of("FieldType")
     val tableFieldLengthFacet = MandatoryNumberInputAndTemplateFacet.of("FieldLength")
     val tableFieldForeignKeyConceptIdFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("FieldForeignKey", databaseTableConceptName)
-    val tableNameAndFieldNameFacet = MandatoryTextTemplateFacet.of("TableNameAndFieldName")
     val tableIndexNameFacet = MandatoryTextInputAndTemplateFacet.of("TableIndexName")
 
-    val tableNameAndFieldNameFunction: (ConceptModelNodeCalculationData) -> TextFacetKotlinType = { data ->
+    private val tableNameAndFieldNameFunction: (ConceptModelNodeCalculationData) -> TextFacetKotlinType = { data ->
         requireNotNull(data.conceptModelNode.parent()).templateFacetValues.facetValue(tableNameFacet) +
                 "." +
                 data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
+    val tableNameAndFieldNameFacet = MandatoryTextTemplateFacet.of("TableNameAndFieldName", tableNameAndFieldNameFunction)
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): Schema {
 
@@ -41,7 +41,7 @@ object TestFixtures {
                     addFacet(tableFieldNameFacet)
                     addFacet(tableFieldTypeFacet) // TODO use enumeration as soon as available
                     addFacet(tableFieldLengthFacet)
-                    addFacet(tableNameAndFieldNameFacet, tableNameAndFieldNameFunction)
+                    addFacet(tableNameAndFieldNameFacet)
 
                     addFacet(tableFieldForeignKeyConceptIdFacet)
                     newChildConcept(conceptName = databaseTableFieldIndexConceptName) {

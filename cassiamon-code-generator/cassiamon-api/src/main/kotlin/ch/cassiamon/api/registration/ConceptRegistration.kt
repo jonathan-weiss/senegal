@@ -10,8 +10,7 @@ interface ConceptRegistration {
     fun newChildConcept(conceptName: ConceptName, conceptRegistration: (ConceptRegistration.() -> Unit))
 
     fun <I> addFacet(facet: InputFacet<I>)
-    fun <O> addFacet(facet: TemplateFacet<O>,
-                     facetCalculationFunction: (ConceptModelNodeCalculationData) -> O)
+    fun <O> addFacet(facet: TemplateFacet<O>)
     fun <I, O> addFacet(facet: InputAndTemplateFacet<I, O>)
 
 }

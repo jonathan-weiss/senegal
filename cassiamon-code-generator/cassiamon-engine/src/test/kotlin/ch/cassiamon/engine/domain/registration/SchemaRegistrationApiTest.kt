@@ -27,8 +27,6 @@ class SchemaRegistrationApiTest {
     private val tableNameAndFieldNameFacet = TestFixtures.tableNameAndFieldNameFacet
     private val tableIndexNameFacet = TestFixtures.tableIndexNameFacet
 
-    private val tableNameAndFieldNameFunction = TestFixtures.tableNameAndFieldNameFunction
-
 
     @Test
     fun `test with single concept`() {
@@ -71,7 +69,7 @@ class SchemaRegistrationApiTest {
                     addFacet(facet = tableFieldNameFacet)
                     addFacet(facet = tableFieldTypeFacet) // TODO use enumeration as soon as available
                     addFacet(facet = tableFieldLengthFacet)
-                    addFacet(facet = tableNameAndFieldNameFacet, facetCalculationFunction = tableNameAndFieldNameFunction)
+                    addFacet(facet = tableNameAndFieldNameFacet)
 
                 }
             }

@@ -47,13 +47,12 @@ class SchemaRegistrationDefaultImpl: SchemaRegistration, ConceptRegistration, Sc
         validateAndAttachInputFacet(concept, inputFacetSchema)
     }
 
-    override fun <T> addFacet(facet: TemplateFacet<T>,
-                              facetCalculationFunction: (ConceptModelNodeCalculationData) -> T) {
+    override fun <T> addFacet(facet: TemplateFacet<T>) {
         val concept = currentConceptInCreation()
         val templateFacetSchema = TemplateFacetSchema(
             conceptName = concept.conceptName,
             templateFacet = facet,
-            facetCalculationFunction = facetCalculationFunction,
+            facetCalculationFunction = facet.facetCalculationFunction,
         )
         validateAndAttachTemplateFacet(concept, templateFacetSchema)
     }
