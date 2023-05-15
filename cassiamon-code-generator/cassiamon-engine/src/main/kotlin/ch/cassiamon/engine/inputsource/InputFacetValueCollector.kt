@@ -10,13 +10,13 @@ class InputFacetValueCollector: InputFacetValueAccess {
 
     override fun <T> facetValue(facet: InputFacet<T>): T {
         return when(facet) {
-            is MandatoryTextInputFacet -> facetValueInternal(facet)
-            is MandatoryNumberInputFacet -> facetValueInternal(facet)
-            is OptionalNumberInputFacet -> facetValueInternal(facet)
-            is MandatoryNumberInputAndTemplateFacet -> facetValueInternal(facet)
-            is MandatoryTextInputAndTemplateFacet -> facetValueInternal(facet)
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
+            is TextFacets.MandatoryTextInputFacet -> facetValueInternal(facet)
+            is NumberFacets.MandatoryNumberInputFacet -> facetValueInternal(facet)
+            is NumberFacets.OptionalNumberInputFacet -> facetValueInternal(facet)
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> facetValueInternal(facet)
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> facetValueInternal(facet)
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(facet)
         }
     }
 

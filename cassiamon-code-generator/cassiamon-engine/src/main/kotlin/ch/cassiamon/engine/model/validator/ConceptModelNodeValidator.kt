@@ -29,12 +29,12 @@ object ConceptModelNodeValidator {
 
     private fun validateValueAgainstTemplateFacetSchema(templateFacetSchema: TemplateFacetSchema<*>, facetValue: Any?, conceptModelNode: ConceptModelNode) {
         when(val templateFacet = templateFacetSchema.templateFacet) {
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
-            is MandatoryNumberInputAndTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
-            is MandatoryTextInputAndTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
-            is MandatoryTextTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
-            is OptionalNumberTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is TextFacets.MandatoryTextTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
+            is NumberFacets.OptionalNumberTemplateFacet -> validateValueAgainstTemplateFacet(templateFacet, facetValue, conceptModelNode)
         }
     }
 

@@ -61,13 +61,13 @@ object ModelConceptInputDataValidator {
 
     private fun validateValueAgainstInputFacetSchema(inputFacetSchema: InputFacetSchema<*>, facetValue: Any?, entry: ModelConceptInputDataEntry) {
         when(val inputFacet = inputFacetSchema.inputFacet) {
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is MandatoryNumberInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is MandatoryTextInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is MandatoryNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is MandatoryTextInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
-            is OptionalNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is NumberFacets.MandatoryNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is TextFacets.MandatoryTextInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
+            is NumberFacets.OptionalNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, entry)
         }
     }
 

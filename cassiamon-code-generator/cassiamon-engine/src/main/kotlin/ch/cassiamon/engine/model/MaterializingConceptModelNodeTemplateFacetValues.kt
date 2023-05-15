@@ -27,15 +27,14 @@ class MaterializingConceptModelNodeTemplateFacetValues(
 
     override fun <T> facetValue(templateFacet: TemplateFacet<T>): T {
         materializeFacetIfNecessary(templateFacet)
-        // TODO add a facet value collector
 
         return when(templateFacet) {
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
-            is MandatoryNumberInputAndTemplateFacet -> facetValueInternal(templateFacet)
-            is MandatoryTextInputAndTemplateFacet -> facetValueInternal(templateFacet)
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
-            is MandatoryTextTemplateFacet -> facetValueInternal(templateFacet)
-            is OptionalNumberTemplateFacet -> facetValueInternal(templateFacet)
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> facetValueInternal(templateFacet)
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> facetValueInternal(templateFacet)
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> facetValueInternal(templateFacet)
+            is TextFacets.MandatoryTextTemplateFacet -> facetValueInternal(templateFacet)
+            is NumberFacets.OptionalNumberTemplateFacet -> facetValueInternal(templateFacet)
         }
     }
 

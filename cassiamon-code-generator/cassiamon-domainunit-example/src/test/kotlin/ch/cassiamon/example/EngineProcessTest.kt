@@ -4,7 +4,7 @@ import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
-import ch.cassiamon.api.model.facets.MandatoryTextInputAndTemplateFacet
+import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.registration.DomainUnit
 import ch.cassiamon.api.registration.InputSourceRegistrationApi
 import ch.cassiamon.api.registration.SchemaRegistrationApi
@@ -130,8 +130,8 @@ class EngineProcessTest {
 
         private val testEntityConceptName = ConceptName.of("TestEntity")
         private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
-        private val testEntityNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
-        private val testEntityAttributeNameInputFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
+        private val testEntityNameInputFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityName")
+        private val testEntityAttributeNameInputFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityAttributeName")
 
         override val domainUnitName: DomainUnitName
             get() = DomainUnitName.of("TestProject")

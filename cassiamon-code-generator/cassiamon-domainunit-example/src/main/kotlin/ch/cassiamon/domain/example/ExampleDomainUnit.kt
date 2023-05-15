@@ -21,16 +21,16 @@ class ExampleDomainUnit: DomainUnit {
     private object TestEntityConcept {
         val conceptName = ConceptName.of("TestEntity")
 
-        val nameComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityName")
-        val numberComposedFacet = MandatoryNumberInputAndTemplateFacet.of("TestEntityNumberName")
-        val nameTextOutputFacet = MandatoryTextTemplateFacet.of("TestEntityName") {
-            return@of it.inputFacetValues.facetValue(nameComposedFacet)
+        val nameComposedFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityName")
+        val numberComposedFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityNumberName")
+        val nameTextOutputFacet = TextFacets.ofMandatoryTemplate("TestEntityName") {
+            return@ofMandatoryTemplate it.inputFacetValues.facetValue(nameComposedFacet)
         }
     }
 
     private object TestEntityAttributeConcept {
         val conceptName = ConceptName.of("TestEntityAttribute")
-        val nameFacet = MandatoryTextInputAndTemplateFacet.of("TestEntityAttributeName")
+        val nameFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityAttributeName")
     }
 
 

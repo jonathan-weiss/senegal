@@ -6,7 +6,7 @@ import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.model.facets.MandatoryTextInputFacet
+import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.schema.SchemaAccess
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -17,14 +17,14 @@ import javax.xml.parsers.SAXParserFactory
 internal class SaxParserHandlerTest {
 
     private val testEntityConceptName = ConceptName.of("TestEntity")
-    private val testEntityNameFacet = MandatoryTextInputFacet.of("TestEntityName")
-    private val testEntityKotlinModelClassnameFacet = MandatoryTextInputFacet.of("TestKotlinModelClassname")
-    private val testEntityKotlinModelPackageFacet = MandatoryTextInputFacet.of("TestKotlinModelPackage")
+    private val testEntityNameFacet = TextFacets.ofMandatoryInput("TestEntityName")
+    private val testEntityKotlinModelClassnameFacet = TextFacets.ofMandatoryInput("TestKotlinModelClassname")
+    private val testEntityKotlinModelPackageFacet = TextFacets.ofMandatoryInput("TestKotlinModelPackage")
 
     private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
-    private val testEntityAttributeNameFacet = MandatoryTextInputFacet.of("TestEntityAttributeName")
-    private val testEntityAttributeTypeFacet = MandatoryTextInputFacet.of("TestEntityAttributeType")
-    private val testKotlinFieldTypeFacet = MandatoryTextInputFacet.of("TestKotlinFieldType")
+    private val testEntityAttributeNameFacet = TextFacets.ofMandatoryInput("TestEntityAttributeName")
+    private val testEntityAttributeTypeFacet = TextFacets.ofMandatoryInput("TestEntityAttributeType")
+    private val testKotlinFieldTypeFacet = TextFacets.ofMandatoryInput("TestKotlinFieldType")
 
     private val testXml = """
         <?xml version="1.0" encoding="utf-8" ?>

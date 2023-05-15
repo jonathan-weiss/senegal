@@ -137,13 +137,13 @@ object XmlDomSchemaCreator {
 //                    setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
 //                }
 //            }
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is MandatoryNumberInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
-            is MandatoryTextInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is MandatoryNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
-            is MandatoryTextInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is OptionalNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is NumberFacets.MandatoryNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            is TextFacets.MandatoryTextInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            is NumberFacets.OptionalNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
         }
 
         attributeGroupElement.appendChild(attributeElement)

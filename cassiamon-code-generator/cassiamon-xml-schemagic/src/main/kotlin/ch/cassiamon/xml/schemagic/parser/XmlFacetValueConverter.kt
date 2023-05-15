@@ -7,13 +7,13 @@ object XmlFacetValueConverter {
     fun convertString(inputFacetSchema: InputFacetSchema<*>, attributeValue: String): InputFacetValue<*> {
 
         return when(inputFacetSchema.inputFacet) {
-            is MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
-            is MandatoryNumberInputAndTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
-            is MandatoryTextInputAndTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
-            is OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
-            is MandatoryNumberInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
-            is MandatoryTextInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
-            is OptionalNumberInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
+            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
+            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
+            is TextFacets.MandatoryTextInputAndTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
+            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
+            is NumberFacets.MandatoryNumberInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
+            is TextFacets.MandatoryTextInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue)
+            is NumberFacets.OptionalNumberInputFacet -> createInputFacetValue(inputFacetSchema.inputFacet, attributeValue.toLong())
         }
     }
 

@@ -8,9 +8,6 @@ import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelNode
-import ch.cassiamon.api.model.exceptions.CircularDependencyOnTemplateFacetModelException
-import ch.cassiamon.api.model.exceptions.InvalidTemplateFacetConfigurationModelException
-import ch.cassiamon.api.model.exceptions.MissingFacetValueModelException
 import ch.cassiamon.api.model.exceptions.ExceptionDuringTemplateFacetCalculationModelException
 import ch.cassiamon.api.model.facets.*
 import org.junit.jupiter.api.Assertions
@@ -28,8 +25,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     fun `test simple successful calculated facet`() {
 
         // arrange
-        val calculatedTemplateFacet = MandatoryTextTemplateFacet.of(calculationFacetName.name) { "testString" }
-        val referencingTemplateFacet = MandatoryTextTemplateFacet.of(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
+        val calculatedTemplateFacet = TextFacets.ofMandatoryTemplate(calculationFacetName.name) { "testString" }
+        val referencingTemplateFacet = TextFacets.ofMandatoryTemplate(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
 
         // act
         val schema = createTestFixtureSchema(calculatedTemplateFacet, referencingTemplateFacet)
@@ -44,8 +41,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     fun `test simple successful calculated optional facet`() {
 
         // arrange
-        val calculatedTemplateFacet = OptionalNumberTemplateFacet.of(calculationFacetName.name) { 42.toLong() }
-        val referencingTemplateFacet = OptionalNumberTemplateFacet.of(referencingFacetName.name) { data -> data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet)?.let { it + 42 } }
+        val calculatedTemplateFacet = NumberFacets.ofOptionalTemplate(calculationFacetName.name) { 42.toLong() }
+        val referencingTemplateFacet = NumberFacets.ofOptionalTemplate(referencingFacetName.name) { data -> data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet)?.let { it + 42 } }
 
         // act
         val schema = createTestFixtureSchemaForOptionalTemplateFacet(calculatedTemplateFacet, referencingTemplateFacet)
@@ -60,8 +57,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     fun `test successful calculated optional facet with null value`() {
 
         // arrange
-        val calculatedTemplateFacet = OptionalNumberTemplateFacet.of(calculationFacetName.name) { null }
-        val referencingTemplateFacet = OptionalNumberTemplateFacet.of(referencingFacetName.name) { data -> data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet)?.let { it + 42 } }
+        val calculatedTemplateFacet = NumberFacets.ofOptionalTemplate(calculationFacetName.name) { null }
+        val referencingTemplateFacet = NumberFacets.ofOptionalTemplate(referencingFacetName.name) { data -> data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet)?.let { it + 42 } }
 
         // act
         val schema = createTestFixtureSchemaForOptionalTemplateFacet(calculatedTemplateFacet, referencingTemplateFacet)
@@ -75,8 +72,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     @Test
     fun `test calculated facet returning null for mandatory field`() {
         // arrange
-        val calculatedTemplateFacet = MandatoryTextTemplateFacet.of(calculationFacetName.name) { null as String }
-        val referencingTemplateFacet = MandatoryTextTemplateFacet.of(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
+        val calculatedTemplateFacet = TextFacets.ofMandatoryTemplate(calculationFacetName.name) { null as String }
+        val referencingTemplateFacet = TextFacets.ofMandatoryTemplate(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
 
         // assert
         Assertions.assertThrows(ExceptionDuringTemplateFacetCalculationModelException::class.java) {
@@ -90,8 +87,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     @Test
     fun `test calculated facet returning wrong type`() {
         // arrange
-        val calculatedTemplateFacet = MandatoryTextTemplateFacet.of(calculationFacetName.name) { 42 as String }
-        val referencingTemplateFacet = MandatoryTextTemplateFacet.of(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
+        val calculatedTemplateFacet = TextFacets.ofMandatoryTemplate(calculationFacetName.name) { 42 as String }
+        val referencingTemplateFacet = TextFacets.ofMandatoryTemplate(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
 
         // assert
         Assertions.assertThrows(ExceptionDuringTemplateFacetCalculationModelException::class.java) {
@@ -105,8 +102,8 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
     @Test
     fun `test calculated facet throwing an exception`() {
         // arrange
-        val calculatedTemplateFacet = MandatoryTextTemplateFacet.of(calculationFacetName.name) { throw RuntimeException("something went wrong") }
-        val referencingTemplateFacet = MandatoryTextTemplateFacet.of(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
+        val calculatedTemplateFacet = TextFacets.ofMandatoryTemplate(calculationFacetName.name) { throw RuntimeException("something went wrong") }
+        val referencingTemplateFacet = TextFacets.ofMandatoryTemplate(referencingFacetName.name) { data -> "Ref:" + data.conceptModelNode.templateFacetValues.facetValue(calculatedTemplateFacet) }
 
         // assert
         Assertions.assertThrows(ExceptionDuringTemplateFacetCalculationModelException::class.java) {
@@ -140,7 +137,7 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
         return conceptModelGraph.conceptModelNodeByConceptIdentifier(myConceptIdentifier)
     }
 
-    private fun createTestFixtureSchema(calculatedTemplateFacet: MandatoryTextTemplateFacet, referencingTemplateFacet: MandatoryTextTemplateFacet): Schema {
+    private fun createTestFixtureSchema(calculatedTemplateFacet: MandatoryTemplateFacet<TextFacetKotlinType>, referencingTemplateFacet: MandatoryTemplateFacet<TextFacetKotlinType>): Schema {
         val registrationApi = RegistrationApiDefaultImpl(ProcessSession())
         registrationApi.configureSchema {
             newRootConcept(conceptName = myConceptName) {
@@ -152,7 +149,7 @@ class ConceptModelGraphGraphCalculatorTemplateFacetTest {
         return registrationApi.provideSchema()
     }
 
-    private fun createTestFixtureSchemaForOptionalTemplateFacet(calculatedTemplateFacet: OptionalNumberTemplateFacet, referencingTemplateFacet: OptionalNumberTemplateFacet): Schema {
+    private fun createTestFixtureSchemaForOptionalTemplateFacet(calculatedTemplateFacet: OptionalTemplateFacet<NumberFacetKotlinType?>, referencingTemplateFacet: OptionalTemplateFacet<NumberFacetKotlinType?>): Schema {
         val registrationApi = RegistrationApiDefaultImpl(ProcessSession())
         registrationApi.configureSchema {
             newRootConcept(conceptName = myConceptName) {

@@ -1,7 +1,7 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.model.facets.MandatoryTextInputFacet
+import ch.cassiamon.api.model.facets.*
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.InputFacetSchema
 import ch.cassiamon.api.schema.SchemaAccess
@@ -66,10 +66,10 @@ internal class XmlDomSchemaCreatorTest {
     }
 
     private val testEntityConceptName: ConceptName = ConceptName.of("TestEntity")
-    private val testEntityNameInputFacet: MandatoryTextInputFacet = MandatoryTextInputFacet.of("TestEntityName")
+    private val testEntityNameInputFacet: MandatoryInputFacet<TextFacetKotlinType> = TextFacets.ofMandatoryInput("TestEntityName")
 
     private val testEntityAttributeConceptName: ConceptName = ConceptName.of("TestEntityAttribute")
-    private val testEntityAttributeNameInputFacet: MandatoryTextInputFacet = MandatoryTextInputFacet.of("TestEntityAttributeName")
+    private val testEntityAttributeNameInputFacet: MandatoryInputFacet<TextFacetKotlinType> = TextFacets.ofMandatoryInput("TestEntityAttributeName")
 
     private fun createSchema(): SchemaAccess {
         val testEntityConcept: ConceptSchema = SimpleConceptSchema(

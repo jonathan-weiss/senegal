@@ -18,18 +18,18 @@ object TestFixtures {
     val databaseTableConceptName = ConceptName.of("DatabaseTable")
     val databaseTableFieldConceptName = ConceptName.of("DatabaseField")
     val databaseTableFieldIndexConceptName = ConceptName.of("DatabaseFieldIndex")
-    val tableNameFacet = MandatoryTextInputAndTemplateFacet.of("TableName")
-    val tableFieldNameFacet = MandatoryTextInputAndTemplateFacet.of("FieldName")
-    val tableFieldTypeFacet = MandatoryTextInputAndTemplateFacet.of("FieldType")
-    val tableFieldLengthFacet = MandatoryNumberInputAndTemplateFacet.of("FieldLength")
-    val tableFieldForeignKeyConceptIdFacet = OptionalConceptIdentifierInputAndConceptNodeTemplateFacet.of("FieldForeignKey", databaseTableConceptName)
-    val tableIndexNameFacet = MandatoryTextInputAndTemplateFacet.of("TableIndexName")
+    val tableNameFacet = TextFacets.ofMandatoryInputAndTemplate("TableName")
+    val tableFieldNameFacet = TextFacets.ofMandatoryInputAndTemplate("FieldName")
+    val tableFieldTypeFacet = TextFacets.ofMandatoryInputAndTemplate("FieldType")
+    val tableFieldLengthFacet = NumberFacets.ofMandatoryInputAndTemplate("FieldLength")
+    val tableFieldForeignKeyConceptIdFacet = ConceptFacets.ofOptionalConceptIdentifier("FieldForeignKey", databaseTableConceptName)
+    val tableIndexNameFacet = TextFacets.ofMandatoryInputAndTemplate("TableIndexName")
 
     private val tableNameAndFieldNameFunction: (ConceptModelNodeCalculationData) -> TextFacetKotlinType = { data ->
         requireNotNull(data.conceptModelNode.parent()).templateFacetValues.facetValue(tableNameFacet) +
                 "." +
                 data.conceptModelNode.templateFacetValues.facetValue(tableFieldNameFacet) }
-    val tableNameAndFieldNameFacet = MandatoryTextTemplateFacet.of("TableNameAndFieldName", tableNameAndFieldNameFunction)
+    val tableNameAndFieldNameFacet = TextFacets.ofMandatoryTemplate("TableNameAndFieldName", tableNameAndFieldNameFunction)
 
     fun createTestFixtureSchema(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): Schema {
 
