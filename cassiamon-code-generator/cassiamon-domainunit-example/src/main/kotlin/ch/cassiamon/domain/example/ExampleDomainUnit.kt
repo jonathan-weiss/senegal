@@ -66,7 +66,7 @@ class ExampleDomainUnit: DomainUnit {
 
             val inputFiles = setOf<Path>(xmlDefinitionDirectory.resolve(xmlFilename))
             dataCollectionWithFilesInputSourceExtension(
-                extensionName = ExampleExtensions.freemarkerTemplateExtensionName,
+                extensionName = ExampleExtensions.xmlSchemagicInputExtensionName,
                 inputFiles = inputFiles,
             )
         }

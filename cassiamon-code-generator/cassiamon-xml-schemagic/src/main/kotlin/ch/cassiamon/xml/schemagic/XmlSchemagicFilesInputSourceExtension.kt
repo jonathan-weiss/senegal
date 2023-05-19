@@ -26,7 +26,7 @@ class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
     private lateinit var parameterAccess: ParameterAccess;
 
     companion object {
-        private val extensionName = ExtensionName.of("FreemarkerTemplates")
+        private val extensionName = ExtensionName.of("XmlSchemagicInputExtension")
         private const val schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI
         private const val schemaFeature = "http://apache.org/xml/features/validation/schema"
     }
