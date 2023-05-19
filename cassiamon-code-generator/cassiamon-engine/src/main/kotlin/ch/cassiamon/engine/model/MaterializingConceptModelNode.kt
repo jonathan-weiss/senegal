@@ -49,9 +49,4 @@ class MaterializingConceptModelNode(
     override val templateFacetValues: ConceptModelNodeTemplateFacetValues
         get() = materializingConceptModelNodeFacetValues
 
-    override fun get(key: String): Any? {
-        return key // TODO implement that properly
-    }
-
-
 }

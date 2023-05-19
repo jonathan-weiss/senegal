@@ -6,6 +6,7 @@ import ch.cassiamon.api.model.*
 import ch.cassiamon.api.model.exceptions.MissingFacetValueModelException
 import ch.cassiamon.api.model.exceptions.ExceptionDuringTemplateFacetCalculationModelException
 import ch.cassiamon.api.model.exceptions.ModelException
+import ch.cassiamon.api.model.exceptions.UnknownFacetNameFoundModelException
 import ch.cassiamon.api.model.facets.TemplateFacet
 
 class ReactiveConceptModelNodeTemplateFacetValues(
@@ -62,10 +63,17 @@ class ReactiveConceptModelNodeTemplateFacetValues(
         return facetValue
     }
 
-    override fun get(key: String): Any? {
+    override fun facetValue(key: String): Any? {
+        val templateFacetName = FacetName.of(key)
+        val conceptSchema = calculationAndValidationData
+            .schema.conceptByConceptName(conceptModelNode.conceptName)
+        if(!conceptSchema.hasTemplateFacet(templateFacetName)) {
+            throw UnknownFacetNameFoundModelException(conceptModelNode.conceptName, conceptModelNode.conceptIdentifier, templateFacetName)
+        }
 
+        val templateFacetSchema: TemplateFacetSchema<*> = conceptSchema.templateFacets
+            .first { it.templateFacet.facetName == templateFacetName }
 
-        TODO("Not yet implemented")
+        return calculateFacetValue(templateFacetSchema)
     }
-
 }

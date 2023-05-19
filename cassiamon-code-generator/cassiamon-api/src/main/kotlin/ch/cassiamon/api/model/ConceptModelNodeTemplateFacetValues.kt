@@ -9,11 +9,13 @@ interface ConceptModelNodeTemplateFacetValues {
 
     fun allTemplateFacetNames(): Set<FacetName>
 
-    /**
-    Support for template engines
-    TODO document which keys are allowed
-     */
-    operator fun get(key: String): Any?;
+    operator fun get(key: String): Any? {
+        return when(key) {
+            "allFacetNames" -> allTemplateFacetNames().map { it.name }.toSet()
+            else -> facetValue(key)
+        }
+    }
+    fun facetValue(key: String): Any?
 
 
 }

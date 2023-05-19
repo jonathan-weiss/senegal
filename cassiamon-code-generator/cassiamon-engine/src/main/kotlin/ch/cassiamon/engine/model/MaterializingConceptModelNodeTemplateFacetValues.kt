@@ -14,6 +14,7 @@ class MaterializingConceptModelNodeTemplateFacetValues(
 
     private val materializedTemplateFacetValues: MutableMap<TemplateFacet<*>, TemplateFacetValue<*>> = mutableMapOf()
     private val materializedTemplateFacetNames: MutableSet<FacetName> = mutableSetOf() // separate set to support optional values with null
+    private val materializedStringAccessValues: MutableMap<String, Any?> = mutableMapOf()
 
     data class TemplateFacetValue<T>(
         val templateFacet: TemplateFacet<T>,
@@ -50,11 +51,13 @@ class MaterializingConceptModelNodeTemplateFacetValues(
 
     }
 
+    override fun facetValue(key: String): Any? {
+        if(!materializedStringAccessValues.containsKey(key)) {
+            materializedStringAccessValues[key] = conceptModelNode[key]
+        }
 
-    override fun get(key: String): Any? {
-        TODO("Not yet implemented")
+        return materializedStringAccessValues[key]
     }
-
 
     private fun materializeFacetNamesIfNecessary() {
         if(!isFacetNamesMaterialized) {

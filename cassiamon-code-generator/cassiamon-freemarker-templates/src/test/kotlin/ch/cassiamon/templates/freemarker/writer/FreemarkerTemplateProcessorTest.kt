@@ -22,7 +22,17 @@ internal class FreemarkerTemplateProcessorTest {
               conceptName: TestConcept
               conceptIdentifier: MyTestConceptIdentifier
               className: MyPerson
-              packageName: ch.senegal.engine.freemarker
+              className (direct access): MyPerson
+              packageName: ch.cassiamon.engine.freemarker
+              packageName (direct access): ch.cassiamon.engine.freemarker
+              Facets:
+                FacetName: PackageName: ch.cassiamon.engine.freemarker
+                FacetName: ClassName: MyPerson
+              Children:
+                conceptName: TestChildConcept
+                conceptIdentifier: MyChild1TestConceptIdentifier
+                conceptName: TestChildConcept
+                conceptIdentifier: MyChild2TestConceptIdentifier
 
     """.trimIndent()
 
@@ -30,15 +40,30 @@ internal class FreemarkerTemplateProcessorTest {
     fun processFileContentWithFreemarker() {
         val templateProcessor = FreemarkerTemplateProcessor("")
         val testConceptName = ConceptName.of("TestConcept")
+        val testChildConceptName = ConceptName.of("TestChildConcept")
+
+        val testChildNode1 = SimpleConceptModelNode(
+            conceptName = testChildConceptName,
+            conceptIdentifier = ConceptIdentifier.of("MyChild1TestConceptIdentifier"),
+            templateFacetValues = MapConceptModelNodeTemplateFacetValues(emptyMap())
+        )
+
+        val testChildNode2 = SimpleConceptModelNode(
+            conceptName = testChildConceptName,
+            conceptIdentifier = ConceptIdentifier.of("MyChild2TestConceptIdentifier"),
+            templateFacetValues = MapConceptModelNodeTemplateFacetValues(emptyMap())
+        )
 
         val testConceptModelNode = SimpleConceptModelNode(
             conceptName = testConceptName,
             conceptIdentifier = ConceptIdentifier.of("MyTestConceptIdentifier"),
             templateFacetValues = MapConceptModelNodeTemplateFacetValues(mapOf<String, Any>(
-                "packageName" to "ch.senegal.engine.freemarker",
-                "className" to "MyPerson",
-            ))
+                "PackageName" to "ch.cassiamon.engine.freemarker",
+                "ClassName" to "MyPerson",
+            )),
+            children = listOf(testChildNode1, testChildNode2)
         )
+
 
         val targetGeneratedFileWithModel = TargetGeneratedFileWithModel(
             targetFile = Paths.get("dummy-file.txt"),
@@ -59,10 +84,10 @@ internal class FreemarkerTemplateProcessorTest {
         }
 
         override fun allTemplateFacetNames(): Set<FacetName> {
-            return emptySet()
+            return valueMap.keys.map { FacetName.of(it) }.toSet()
         }
 
-        override fun get(key: String): Any? {
+        override fun facetValue(key: String): Any? {
             return valueMap[key]
         }
 
@@ -70,27 +95,19 @@ internal class FreemarkerTemplateProcessorTest {
     class SimpleConceptModelNode(
         override val conceptName: ConceptName,
         override val conceptIdentifier: ConceptIdentifier,
-        override val templateFacetValues: ConceptModelNodeTemplateFacetValues
+        override val templateFacetValues: ConceptModelNodeTemplateFacetValues,
+        private val children: List<ConceptModelNode> = emptyList()
     ) : ConceptModelNode {
         override fun parent(): ConceptModelNode? {
             return null
         }
 
         override fun allChildren(): List<ConceptModelNode> {
-            return emptyList()
+            return children
         }
 
         override fun children(conceptName: ConceptName): List<ConceptModelNode> {
             return emptyList()
-        }
-
-        override fun get(key: String): Any? {
-            return when(key) {
-                "conceptName" -> conceptName.name
-                "conceptIdentifier" -> conceptIdentifier.code
-                "templateFacetValues" -> templateFacetValues
-                else -> null
-            }
         }
     }
 

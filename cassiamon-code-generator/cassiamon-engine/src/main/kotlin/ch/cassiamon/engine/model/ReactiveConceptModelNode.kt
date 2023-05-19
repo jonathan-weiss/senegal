@@ -1,9 +1,11 @@
 package ch.cassiamon.engine.model
 
 import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.model.InputFacetValueAccess
+import ch.cassiamon.api.model.facets.TemplateFacet
 
 class ReactiveConceptModelNode(
     private val calculationAndValidationData: CalculationAndValidationData,
@@ -29,11 +31,4 @@ class ReactiveConceptModelNode(
     override fun children(conceptName: ConceptName): List<ConceptModelNode> {
         return allChildren().filter { it.conceptName == conceptName }
     }
-
-
-    override fun get(key: String): Any? {
-        TODO("Not yet implemented")
-    }
-
-
 }

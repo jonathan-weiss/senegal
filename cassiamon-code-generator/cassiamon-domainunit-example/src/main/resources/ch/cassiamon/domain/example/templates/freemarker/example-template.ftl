@@ -1,19 +1,17 @@
 Example template:
+
 <#list rootTemplateModels as topLevelNode>
 
-    Properties: ${topLevelNode.conceptName}
-<#--    <#list topLevelNode.properties as propertyKey, propertyValue>-->
-<#--        ${propertyKey}: ${propertyValue}-->
-<#--    </#list>-->
-
-<#--    SubNodes:-->
-<#--    <#list topLevelNode.childNodes as childNode>-->
-
-<#--        Properties:-->
-<#--        <#list childNode.properties as childPropertyKey, childPropertyValue>-->
-<#--            ${childPropertyKey}: ${childPropertyValue}-->
-<#--        </#list>-->
-<#--    </#list>-->
-
-
+    Properties:
+    conceptName: ${topLevelNode.conceptName}
+    conceptIdentifier: ${topLevelNode.conceptIdentifier}
+    Facets:
+    <#list topLevelNode.templateFacetValues.allFacetNames as facetName>
+        FacetName: ${facetName}: ${topLevelNode[facetName]}
+    </#list>
+    Children:
+    <#list topLevelNode.allChildrenNodes as childNode>
+        conceptName: ${childNode.conceptName}
+        conceptIdentifier: ${childNode.conceptIdentifier}
+    </#list>
 </#list>

@@ -3,7 +3,6 @@ package ch.cassiamon.domain.example
 import ch.cassiamon.api.*
 import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.model.ConceptIdentifier
-import ch.cassiamon.api.model.facets.*
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
@@ -18,21 +17,6 @@ class ExampleDomainUnit: DomainUnit {
         val xmlFilename = "test-concept-input-data.xml"
     }
 
-    private object TestEntityConcept {
-        val conceptName = ConceptName.of("TestEntity")
-
-        val nameComposedFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityName")
-        val numberComposedFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityNumberName")
-        val nameTextOutputFacet = TextFacets.ofMandatoryTemplate("TestEntityName") {
-            return@ofMandatoryTemplate it.inputFacetValues.facetValue(nameComposedFacet)
-        }
-    }
-
-    private object TestEntityAttributeConcept {
-        val conceptName = ConceptName.of("TestEntityAttribute")
-        val nameFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityAttributeName")
-    }
-
 
     //    private val targetTestConceptName = ConceptName.of("TargetTestConcept")
 //    private val testTextInputFacet = MandatoryTextInputFacet.of("TestRef")
@@ -40,18 +24,17 @@ class ExampleDomainUnit: DomainUnit {
 //    private val testTextComposedFacet = MandatoryTextInputAndTemplateFacet.of("TestText")
 //    private val testCalculatedIntTemplateFacet = OptionalNumberTemplateFacet.of("TestInt")
 //    private val testCalculatedStringTemplateFacet = MandatoryTextTemplateFacet.of("TestCalcString")
-    override val domainUnitName: DomainUnitName
-        get() = DomainUnitName.of("ExampleProject")
+    override val domainUnitName: DomainUnitName = DomainUnitName.of("ExampleProject")
 
     override fun configureSchema(registration: SchemaRegistrationApi) {
         registration {
-            newRootConcept(TestEntityConcept.conceptName) {
+            newRootConcept(ExampleEntityConcept.conceptName) {
 
-                addFacet(TestEntityConcept.nameComposedFacet)
-                addFacet(TestEntityConcept.nameTextOutputFacet)
+                addFacet(ExampleEntityConcept.nameFacet)
+                addFacet(ExampleEntityConcept.alternativeNameFacet)
 
-                newChildConcept(TestEntityAttributeConcept.conceptName) {
-                    addFacet(TestEntityAttributeConcept.nameFacet)
+                newChildConcept(ExampleEntityAttributeConcept.conceptName) {
+                    addFacet(ExampleEntityAttributeConcept.nameFacet)
                 }
 //                addFacet(testRefInputAndTemplateFacet)
 //                addFacet(testCalculatedIntTemplateFacet) {
@@ -72,13 +55,13 @@ class ExampleDomainUnit: DomainUnit {
             val dataCollector = receiveDataCollector()
 
             dataCollector
-                .newConceptData(TestEntityConcept.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(TestEntityConcept.nameComposedFacet.facetValue( "MeinTestkonzept-Name"))
+                .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .addFacetValue(ExampleEntityConcept.nameFacet.facetValue( "MeinTestkonzept-Name"))
                 .attach()
 
             dataCollector
-                .newConceptData(TestEntityConcept.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(TestEntityConcept.nameComposedFacet.facetValue( "MeinZweitesTestkonzept-Name"))
+                .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                .addFacetValue(ExampleEntityConcept.nameFacet.facetValue( "MeinZweitesTestkonzept-Name"))
                 .attach()
 
             val inputFiles = setOf<Path>(xmlDefinitionDirectory.resolve(xmlFilename))
@@ -92,6 +75,22 @@ class ExampleDomainUnit: DomainUnit {
 
     override fun configureTemplates(registration: TemplatesRegistrationApi) {
         registration {
+            newTemplate { conceptModelGraph ->
+
+                val basePath = outputDirectory
+                val targetFiles = conceptModelGraph
+                    .conceptModelNodesByConceptName(ExampleEntityConcept.conceptName)
+                    .map { entity -> TargetGeneratedFileWithModel(basePath.resolve("${entity[ExampleEntityConcept.nameFacet]}.example.txt"), listOf(entity)) }
+                    .toSet()
+
+
+                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                    return@TemplateRenderer StringContentByteIterator(ExampleTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
+                }
+            }
+
+
+
             newTemplate { conceptModelGraph ->
 
 //                val targetFiles = templateNodesProvider
@@ -110,7 +109,7 @@ class ExampleDomainUnit: DomainUnit {
 
             // test a single node file generation
             newTemplate { conceptModelGraph ->
-                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(TestEntityConcept.conceptName)
+                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(ExampleEntityConcept.conceptName)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
                 return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
@@ -122,7 +121,7 @@ class ExampleDomainUnit: DomainUnit {
             }
 
             newTemplate { conceptModelGraph ->
-                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(TestEntityConcept.conceptName)
+                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(ExampleEntityConcept.conceptName)
                 val files = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.txt"), templateNodes))
 
                 return@newTemplate newTemplateRendererWithClasspathTemplateExtension(
