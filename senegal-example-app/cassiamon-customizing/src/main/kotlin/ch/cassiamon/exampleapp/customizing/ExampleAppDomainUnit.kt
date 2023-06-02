@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing
 
 import ch.cassiamon.api.*
-import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
@@ -56,17 +56,20 @@ class ExampleAppDomainUnit: DomainUnit {
 
     }
 
+    private fun entities(conceptModelGraph: ConceptModelGraph): List<EntityConcept> {
+        return conceptModelGraph
+            .conceptModelNodesByConceptName(EntitiesConceptDescription.conceptName)
+            .map { EntitiesConcept(it) }
+            .map { it.entities() }
+            .flatten()
+    }
+
     override fun configureTemplates(registration: TemplatesRegistrationApi) {
         val outputDirectory = ExampleAppParameters.outputDirectory(parameterAccess)
         registration {
             newTemplate { conceptModelGraph ->
-                val entities = conceptModelGraph
-                    .conceptModelNodesByConceptName(EntitiesConceptDescription.conceptName)
-                    .map { EntitiesConcept(it) }
-                    .map { it.entities() }
-                    .flatten()
+                val entities = entities(conceptModelGraph)
 
-                //val entities = EntitiesConcept(con)
                 val targetFiles = entities
                     .map { entity -> TargetGeneratedFileWithModel(
                         outputDirectory.resolve("${entity.name}.description.txt"),
@@ -76,36 +79,18 @@ class ExampleAppDomainUnit: DomainUnit {
 
 
                 return@newTemplate TemplateRenderer<EntityConcept>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<EntityConcept> ->
-                    return@TemplateRenderer StringContentByteIterator(EntityDescriptionTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
-                }
-            }
-
-
-
-            newTemplate { conceptModelGraph ->
-
-//                val targetFiles = templateNodesProvider
-//                    .targetGeneratedFileForEachTemplateNode(ConceptName.of("TestConcept")) { templateNode ->
-//                    Paths.get("$templateNode.conceptIdentifier.code-xyz.json")
-//                }
-
-                val targetFiles = emptySet<TargetGeneratedFileWithModel<ConceptModelNode>>()
-
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
-                    return@TemplateRenderer StringContentByteIterator(
-                        "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
-                    )
+                    return@TemplateRenderer StringContentByteIterator(EntityDescriptionTemplate.createEntityDescriptionTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
                 }
             }
 
             // test a single node file generation
             newTemplate { conceptModelGraph ->
-                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(EntityConceptDescription.conceptName)
-                val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
+                val entities = entities(conceptModelGraph)
+                val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("_index.description.txt"), entities))
 
-                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
+                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<EntityConcept> ->
                     return@newTemplateRenderer StringContentByteIterator(
-                        "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
+                        EntityDescriptionTemplate.createEntitiesDescriptionTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model)
                     )
                 }
 
