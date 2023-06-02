@@ -11,6 +11,7 @@ include("cassiamon-code-generator:cassiamon-engine")
 include("cassiamon-code-generator:cassiamon-xml-schemagic")
 include("cassiamon-code-generator:cassiamon-freemarker-templates")
 include("cassiamon-code-generator:cassiamon-domainunit-example")
+include("cassiamon-code-generator:cassiamon-tools")
 
 // example project
 include("senegal-example-app")

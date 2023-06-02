@@ -1,6 +1,5 @@
-package ch.cassiamon.domain.example
+package ch.cassiamon.tools
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

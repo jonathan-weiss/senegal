@@ -1,4 +1,4 @@
-package ch.cassiamon.domain.example
+package ch.cassiamon.tools
 
 object StringIdentHelper {
 

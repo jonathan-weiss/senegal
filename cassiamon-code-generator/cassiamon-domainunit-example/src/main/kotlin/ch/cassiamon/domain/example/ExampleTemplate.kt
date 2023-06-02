@@ -1,6 +1,7 @@
 package ch.cassiamon.domain.example
 
 import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.tools.StringIdentHelper
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
