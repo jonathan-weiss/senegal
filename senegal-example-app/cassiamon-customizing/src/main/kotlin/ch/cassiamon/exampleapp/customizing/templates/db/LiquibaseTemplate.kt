@@ -1,19 +1,9 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
-import ch.cassiamon.tools.StringIdentHelper
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
+import ch.cassiamon.tools.StringTemplateHelper.forEach
 
 object LiquibaseTemplate {
-
-    private const val ident = "  "
-
-    private fun <T> forEach(iterator: Iterable<T>, out: (v:T)->String): String {
-        val sb = StringBuilder()
-        iterator.forEach {
-            sb.append(out(it))
-        }
-        return sb.toString()
-    }
 
     fun createLiquibaseXmlIndexFileTemplate(dbTables: List<DbTable>): String {
         return """
