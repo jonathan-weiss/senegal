@@ -13,7 +13,7 @@ class StringIdentHelperTest {
             There are multiple lines.
         """.trimIndent()
 
-        assertEquals(text, StringIdentHelper.identForMarker(text))
+        assertEquals(text, StringIdentHelper.insertIdentForMarker(text))
 
     }
 
@@ -29,7 +29,7 @@ class StringIdentHelperTest {
             There are no multiple lines.
         """.trimIndent()
 
-        assertEquals(expectedText, StringIdentHelper.identForMarker(text))
+        assertEquals(expectedText, StringIdentHelper.insertIdentForMarker(text))
 
     }
 
@@ -52,7 +52,7 @@ class StringIdentHelperTest {
             after adding ident.
         """.trimIndent()
 
-        assertEquals(expectedText, StringIdentHelper.identForMarker(text))
+        assertEquals(expectedText, StringIdentHelper.insertIdentForMarker(text))
 
     }
 

@@ -1,6 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
 import ch.cassiamon.tools.StringIdentHelper
+import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
@@ -12,13 +13,13 @@ object EntityDescriptionTemplate {
 
         val entityDescription = createEntityDescriptionContent(entity)
 
-        return StringIdentHelper.identForMarker("""
+        return """
             Filename: ${targetFile.absolutePathString()}
             ---------
             
             {nestedIdent}$entityDescription{nestedIdent}
             
-        """)
+        """.identForMarker()
     }
 
     private fun createEntityDescriptionContent(entity: EntityConcept): String {
@@ -26,13 +27,13 @@ object EntityDescriptionTemplate {
         val entityAttributes = entity.entityAttributes()
             .joinToString("\n") { createEntityAttributeSubTemplate(it) }
 
-        return StringIdentHelper.identForMarker("""
+        return """
             Entity name: ${entity.name}
             
             Entity attributes:
             {nestedIdent}$entityAttributes{nestedIdent} 
             
-        """)
+        """.identForMarker()
     }
 
     private fun createEntityAttributeSubTemplate(entityAttribute: EntityAttributeConcept): String {
@@ -45,12 +46,12 @@ object EntityDescriptionTemplate {
         val content = entities
             .map { createEntityDescriptionContent(it) }
             .joinToString("\n-------------------------\n")
-        return StringIdentHelper.identForMarker("""
+        return """
             Filename: ${targetFile.absolutePathString()}
             ---------
             
             {nestedIdent}$content{nestedIdent}
             
-        """)
+        """.identForMarker()
     }
 }

@@ -3,7 +3,11 @@ package ch.cassiamon.tools
 object StringIdentHelper {
 
     const val marker = "{nestedIdent}"
-    fun identForMarker(text: String): String {
+
+    fun String.identForMarker(): String {
+        return insertIdentForMarker(this)
+    }
+    fun insertIdentForMarker(text: String): String {
         val linesWithIdent = mutableListOf<String>()
 
         var isInNestedIdentBlock = false

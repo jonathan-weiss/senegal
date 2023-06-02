@@ -16,7 +16,7 @@ object LiquibaseTemplate {
     }
 
     fun createLiquibaseXmlIndexFileTemplate(dbTables: List<DbTable>): String {
-        return StringIdentHelper.identForMarker("""
+        return """
             <?xml version="1.0" encoding="UTF-8"?>
             <databaseChangeLog
                     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -26,11 +26,11 @@ object LiquibaseTemplate {
                 {nestedIdent}${forEach(dbTables) { "<include file=\"${it.liquibaseFileName}\" relativeToChangelogFile=\"true\"/>\n" } }{nestedIdent}
             
             </databaseChangeLog>
-        """)
+        """.identForMarker()
     }
 
     fun createLiquibaseXmlFileTemplate(dbTable: DbTable): String {
-        return StringIdentHelper.identForMarker("""
+        return """
             <?xml version="1.0" encoding="UTF-8"?>
             <databaseChangeLog
                     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -54,6 +54,6 @@ object LiquibaseTemplate {
                     </createTable>
                 </changeSet>
             </databaseChangeLog>
-        """)
+        """.identForMarker()
     }
 }

@@ -2,6 +2,7 @@ package ch.cassiamon.domain.example
 
 import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.tools.StringIdentHelper
+import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
@@ -14,7 +15,7 @@ object ExampleTemplate {
         val entityAttributes = model.children(ExampleEntityAttributeConcept.conceptName)
             .joinToString("\n") { createEntityAttributeSubTemplate(it) }
 
-        return StringIdentHelper.identForMarker("""
+        return """
             Filename: ${targetFile.absolutePathString()}
             ---------
             
@@ -24,7 +25,7 @@ object ExampleTemplate {
             Entity attributes:
             {nestedIdent}$entityAttributes{nestedIdent} 
             
-        """)
+        """.identForMarker()
     }
 
     private fun createEntityAttributeSubTemplate(entityAttribute: ConceptModelNode): String {
