@@ -1,4 +1,4 @@
-package ch.cassiamon.exampleapp.customizing.wrapper
+package ch.cassiamon.exampleapp.customizing.templates
 
 import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.exampleapp.customizing.concepts.EntityAttributeConceptDescription

@@ -11,8 +11,10 @@ import ch.cassiamon.exampleapp.customizing.concepts.EntitiesConceptDescription
 import ch.cassiamon.exampleapp.customizing.concepts.EntityAttributeConceptDescription
 import ch.cassiamon.exampleapp.customizing.concepts.EntityConceptDescription
 import ch.cassiamon.exampleapp.customizing.templates.EntityDescriptionTemplate
-import ch.cassiamon.exampleapp.customizing.wrapper.EntitiesConcept
-import ch.cassiamon.exampleapp.customizing.wrapper.EntityConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntitiesConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
+import ch.cassiamon.exampleapp.customizing.templates.db.DbTable
+import ch.cassiamon.exampleapp.customizing.templates.db.LiquibaseTemplate
 
 class ExampleAppDomainUnit: DomainUnit {
     private lateinit var parameterAccess: ParameterAccess
@@ -66,6 +68,7 @@ class ExampleAppDomainUnit: DomainUnit {
 
     override fun configureTemplates(registration: TemplatesRegistrationApi) {
         val outputDirectory = ExampleAppParameters.outputDirectory(parameterAccess)
+        val liquibaseResourceDirectory = outputDirectory // db/changelog/
         registration {
             newTemplate { conceptModelGraph ->
                 val entities = entities(conceptModelGraph)
@@ -95,6 +98,36 @@ class ExampleAppDomainUnit: DomainUnit {
                 }
 
             }
+
+            newTemplate { conceptModelGraph ->
+                val entities = entities(conceptModelGraph)
+
+                val targetFiles = entities
+                    .map { DbTable(it) }
+                    .map { dbTable -> TargetGeneratedFileWithModel(
+                        liquibaseResourceDirectory.resolve(dbTable.liquibaseFileName),
+                        listOf(dbTable)
+                    ) }
+                    .toSet()
+
+
+                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
+                    return@TemplateRenderer StringContentByteIterator(LiquibaseTemplate.createLiquibaseXmlFileTemplate(targetGeneratedFileWithModel.model.first()))
+                }
+            }
+
+            // test a single node file generation
+            newTemplate { conceptModelGraph ->
+                val dbTables = entities(conceptModelGraph).map { DbTable(it) }
+
+                val targetFiles = setOf(TargetGeneratedFileWithModel(liquibaseResourceDirectory.resolve(DbTable.liquibaseIndexFileName), dbTables))
+
+                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
+                    return@TemplateRenderer StringContentByteIterator(LiquibaseTemplate.createLiquibaseXmlIndexFileTemplate(targetGeneratedFileWithModel.model))
+                }
+
+            }
+
         }
     }
 }

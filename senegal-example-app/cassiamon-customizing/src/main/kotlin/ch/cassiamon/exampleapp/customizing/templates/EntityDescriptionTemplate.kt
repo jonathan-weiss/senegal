@@ -1,7 +1,5 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
-import ch.cassiamon.exampleapp.customizing.wrapper.EntityAttributeConcept
-import ch.cassiamon.exampleapp.customizing.wrapper.EntityConcept
 import ch.cassiamon.tools.StringIdentHelper
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
