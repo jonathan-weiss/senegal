@@ -58,4 +58,6 @@ application {
 
 tasks.named("run") {
     dependsOn("clearGeneratedSource")
+    mustRunAfter(":senegal-example-app:customized-code-generator:run")
+    mustRunAfter(":senegal-example-app:customized-code-generator:clearGeneratedSource")
 }

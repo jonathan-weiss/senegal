@@ -13,8 +13,8 @@ import ch.cassiamon.exampleapp.customizing.concepts.EntityConceptDescription
 import ch.cassiamon.exampleapp.customizing.templates.EntityDescriptionTemplate
 import ch.cassiamon.exampleapp.customizing.templates.EntitiesConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
-import ch.cassiamon.exampleapp.customizing.templates.db.DbTable
-import ch.cassiamon.exampleapp.customizing.templates.db.LiquibaseTemplate
+import ch.cassiamon.exampleapp.customizing.templates.db.*
+import java.nio.file.Path
 
 class ExampleAppDomainUnit: DomainUnit {
     private lateinit var parameterAccess: ParameterAccess
@@ -58,18 +58,13 @@ class ExampleAppDomainUnit: DomainUnit {
 
     }
 
-    private fun entities(conceptModelGraph: ConceptModelGraph): List<EntityConcept> {
-        return conceptModelGraph
-            .conceptModelNodesByConceptName(EntitiesConceptDescription.conceptName)
-            .map { EntitiesConcept(it) }
-            .map { it.entities() }
-            .flatten()
-    }
-
     override fun configureTemplates(registration: TemplatesRegistrationApi) {
         val outputDirectory = ExampleAppParameters.outputDirectory(parameterAccess)
         val liquibaseResourceDirectory = ExampleAppParameters.persistenceResourcePath(parameterAccess).resolve("db/changelog/")
+        val persistenceSourceDirectory = ExampleAppParameters.persistencePath(parameterAccess)
         registration {
+
+            // create description file index
             newTemplate { conceptModelGraph ->
                 val entities = entities(conceptModelGraph)
 
@@ -86,7 +81,7 @@ class ExampleAppDomainUnit: DomainUnit {
                 }
             }
 
-            // test a single node file generation
+            // create description file per entity
             newTemplate { conceptModelGraph ->
                 val entities = entities(conceptModelGraph)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("_index.description.txt"), entities))
@@ -99,24 +94,18 @@ class ExampleAppDomainUnit: DomainUnit {
 
             }
 
+            // create liquibase file per DB table
             newTemplate { conceptModelGraph ->
-                val entities = entities(conceptModelGraph)
-
-                val targetFiles = entities
-                    .map { DbTable(it) }
-                    .map { dbTable -> TargetGeneratedFileWithModel(
-                        liquibaseResourceDirectory.resolve(dbTable.liquibaseFileName),
-                        listOf(dbTable)
-                    ) }
-                    .toSet()
-
+                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
+                    liquibaseResourceDirectory.resolve(it.liquibaseFileName)
+                }
 
                 return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
                     return@TemplateRenderer StringContentByteIterator(LiquibaseTemplate.createLiquibaseXmlFileTemplate(targetGeneratedFileWithModel.model.first()))
                 }
             }
 
-            // test a single node file generation
+            // create liquibase index
             newTemplate { conceptModelGraph ->
                 val dbTables = entities(conceptModelGraph).map { DbTable(it) }
 
@@ -128,6 +117,59 @@ class ExampleAppDomainUnit: DomainUnit {
 
             }
 
+            // create jpa entity file per DB table
+            newTemplate { conceptModelGraph ->
+                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
+                    persistenceSourceDirectory.resolve(it.jpaEntityPackage.replacePackageByDirectory()).resolve(it.jpaEntityFileName)
+                }
+                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
+                    return@TemplateRenderer StringContentByteIterator(JpaEntityTemplate.createJpaEntityTemplate(targetGeneratedFileWithModel.model.first()))
+                }
+            }
+
+            // create jpa repository file per DB table
+            newTemplate { conceptModelGraph ->
+                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
+                    persistenceSourceDirectory.resolve(it.jpaRepositoryPackage.replacePackageByDirectory()).resolve(it.jpaRepositoryFileName)
+                }
+                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
+                    return@TemplateRenderer StringContentByteIterator(JpaRepositoryTemplate.createJpaRepositoryTemplate(targetGeneratedFileWithModel.model.first()))
+                }
+            }
+
+            // create repository file per DB table
+            newTemplate { conceptModelGraph ->
+                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
+                    persistenceSourceDirectory.resolve(it.repositoryImplementationPackage.replacePackageByDirectory()).resolve(it.repositoryImplementationFileName)
+                }
+                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
+                    return@TemplateRenderer StringContentByteIterator(RepositoryImplTemplate.createRepositoryImplementationTemplate(targetGeneratedFileWithModel.model.first()))
+                }
+            }
+
         }
     }
+
+    private fun String.replacePackageByDirectory(): String {
+        return this.replace(".", "/")
+    }
+
+    private fun entities(conceptModelGraph: ConceptModelGraph): List<EntityConcept> {
+        return conceptModelGraph
+            .conceptModelNodesByConceptName(EntitiesConceptDescription.conceptName)
+            .map { EntitiesConcept(it) }
+            .map { it.entities() }
+            .flatten()
+    }
+
+    private fun targetFilesPerDbTable(conceptModelGraph: ConceptModelGraph, pathResolver: (dbTable: DbTable) -> Path): Set<TargetGeneratedFileWithModel<DbTable>> {
+        return entities(conceptModelGraph)
+            .map { DbTable(it) }
+            .map { dbTable -> TargetGeneratedFileWithModel(
+                pathResolver(dbTable),
+                listOf(dbTable)
+            ) }
+            .toSet()
+    }
+
 }
