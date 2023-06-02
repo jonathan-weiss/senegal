@@ -68,7 +68,7 @@ class ExampleAppDomainUnit: DomainUnit {
 
     override fun configureTemplates(registration: TemplatesRegistrationApi) {
         val outputDirectory = ExampleAppParameters.outputDirectory(parameterAccess)
-        val liquibaseResourceDirectory = outputDirectory // db/changelog/
+        val liquibaseResourceDirectory = ExampleAppParameters.persistenceResourcePath(parameterAccess).resolve("db/changelog/")
         registration {
             newTemplate { conceptModelGraph ->
                 val entities = entities(conceptModelGraph)

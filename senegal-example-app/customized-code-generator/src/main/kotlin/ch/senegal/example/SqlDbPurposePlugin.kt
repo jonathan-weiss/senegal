@@ -146,7 +146,7 @@ object SqlDbPurposePlugin : Purpose {
     override fun createTemplateTargets(modelNode: ModelNode, defaultOutputPath: Path): Set<TemplateTarget> {
 
         return when(modelNode.concept().conceptName) {
-            EntitiesConceptPlugin.conceptName -> createEntitiesTemplates(modelNode)
+            // EntitiesConceptPlugin.conceptName -> createEntitiesTemplates(modelNode)
             EntityConceptPlugin.conceptName -> createEntityTemplates(modelNode)
             else -> emptySet()
         }
@@ -178,8 +178,7 @@ object SqlDbPurposePlugin : Purpose {
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-jpa-entity.ftl")))
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${jpaEntityName}Repository.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-jpa-repository.ftl")))
             targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-repository-impl.ftl")))
-            targets.add(TemplateTarget(targetBasePath.resolve("$directory/${kotlinModelClassName}RepositoryImpl.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-repository-impl.ftl")))
-            targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/${tableName}.structure.xml"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-liquibase-xml.ftl")))
+            // targets.add(TemplateTarget(targetBaseResourcesPath.resolve("db/changelog/${tableName}.structure.xml"), TemplateForFreemarker("/ch/senegal/pluginexample/sql-db-liquibase-xml.ftl")))
         }
 
         return targets
