@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<cassiamon xmlns="https://cassiamon.ch/cassiamon-schemagic"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
+    <configuration />
+    <definitions>
+        <entities infoDescription="Entities used on the whole stack.">
+            <entity entityName="Person">
+                <entityAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="nickname" entityAttributeType="Text"/>
+            </entity>
+            <entity entityName="Address">
+                <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="zip" entityAttributeType="IntegerNumber"/>
+            </entity>
+            <entity entityName="Department">
+                <entityAttribute entityAttributeName="title" entityAttributeType="Text"/>
+            </entity>
+            <entity entityName="DepartmentAddress">
+                <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
+                <entityAttribute entityAttributeName="phone" entityAttributeType="IntegerNumber"/>
+            </entity>
+        </entities>
+    </definitions>
+
+</cassiamon>

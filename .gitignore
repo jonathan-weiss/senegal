@@ -9,6 +9,8 @@ tmp
 
 cassiamon-code-generator/cassiamon-domainunit-example/input-data/schema/*
 cassiamon-code-generator/cassiamon-domainunit-example/output-data/*
+senegal-example-app/cassiamon-customizing/definitions/schema/*
+senegal-example-app/cassiamon-customizing/output-data/*
 
 senegal-code-generator/senegal-example-plugins/definitions/schema/*
 senegal-example-app/customized-code-generator/definitions/schema/*
@@ -17,3 +19,4 @@ senegal-example-app/persistence/src/main/kotlin-generated/*
 senegal-example-app/persistence/src/main/resources/generated/*
 senegal-example-app/frontend-api/src/main/kotlin-generated/*
 senegal-example-app/shared-domain/src/main/kotlin-generated/*
+

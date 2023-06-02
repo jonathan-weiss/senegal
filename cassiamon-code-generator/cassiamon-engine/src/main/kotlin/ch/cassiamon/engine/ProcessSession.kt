@@ -15,9 +15,9 @@ class ProcessSession(
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),
     private val parameterSources: List<ParameterSource> = listOf(
+        DefaultPropertyFileParameterSource(fileSystemAccess),
         EnvironmentVariablesParameterSource,
         SystemPropertyParameterSource,
-        DefaultPropertyFileParameterSource(fileSystemAccess),
     ),
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
     val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),

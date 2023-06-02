@@ -15,8 +15,9 @@ class EngineProcess(private val processSession: ProcessSession) {
         // gather all concepts, facets, transformer and templateX by the plugin mechanism
         val registrationApi = RegistrationApiDefaultImpl(processSession)
 
+        processSession.domainUnits.forEach { domainUnit ->  domainUnit.provideParameters(processSession.parameterAccess) }
         processSession.domainUnits.forEach { domainUnit ->  domainUnit.configureSchema(registrationApi::configureSchema) }
-        processSession.domainUnits.forEach { it.configureTemplates(registrationApi::configureTemplates) }
+        processSession.domainUnits.forEach { domainUnit -> domainUnit.configureTemplates(registrationApi::configureTemplates) }
         val schema = registrationApi.provideSchema()
         processSession.extensionAccess.initializeSchema(schema)
         processSession.domainUnits.forEach { it.configureDataCollector(registrationApi::configureDataCollector) }
