@@ -9,6 +9,7 @@ import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.registration.InputSourceConceptFacetValueBuilder
 import ch.cassiamon.api.registration.InputSourceDataCollector
 import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.tools.CaseUtil
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.SAXException

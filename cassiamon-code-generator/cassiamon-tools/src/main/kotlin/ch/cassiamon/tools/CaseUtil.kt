@@ -1,4 +1,4 @@
-package ch.cassiamon.xml.schemagic.parser
+package ch.cassiamon.tools
 
 object CaseUtil {
     private val camelRegex = "(?<=[a-zA-Z])[A-Z]".toRegex()

@@ -4,7 +4,7 @@ import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.facets.*
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.xml.schemagic.parser.CaseUtil
+import ch.cassiamon.tools.CaseUtil
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.StringWriter

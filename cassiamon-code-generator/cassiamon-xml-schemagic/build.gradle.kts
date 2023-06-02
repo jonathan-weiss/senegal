@@ -10,6 +10,7 @@ allprojects {
 
 dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-api"))
+    implementation(project(":cassiamon-code-generator:cassiamon-tools"))
 
 
     testImplementation(project(":cassiamon-code-generator:cassiamon-engine"))

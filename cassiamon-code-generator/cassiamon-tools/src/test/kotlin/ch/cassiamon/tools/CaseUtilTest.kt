@@ -1,5 +1,6 @@
-package ch.cassiamon.xml.schemagic.parser
+package ch.cassiamon.tools
 
+import ch.cassiamon.tools.CaseUtil
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
