@@ -39,7 +39,7 @@ class RegistrationApiDefaultImpl(processSession: ProcessSession): SchemaProvider
         return schemaRegistrationImpl.provideSchema()
     }
 
-    override fun provideTemplates(): List<TemplateFunction> {
+    override fun provideTemplates(): List<TemplateFunction<*>> {
         return templateRegistrationImpl.provideTemplates()
     }
 }

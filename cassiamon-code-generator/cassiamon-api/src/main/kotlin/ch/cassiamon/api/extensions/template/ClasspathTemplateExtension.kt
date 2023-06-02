@@ -3,10 +3,11 @@ package ch.cassiamon.api.extensions.template
 import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.extensions.Extension
 import ch.cassiamon.api.extensions.ExtensionInitialization
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
 
 interface ClasspathTemplateExtension: Extension, ExtensionInitialization {
 
-    fun fillTemplate(targetFilesWithModel: Set<TargetGeneratedFileWithModel>, templateClasspathLocation: ClasspathLocation): TemplateRenderer
+    fun fillTemplate(targetFilesWithModel: Set<TargetGeneratedFileWithModel<ConceptModelNode>>, templateClasspathLocation: ClasspathLocation): TemplateRenderer<ConceptModelNode>
 }

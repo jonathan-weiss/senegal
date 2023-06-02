@@ -6,6 +6,7 @@ import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.api.*
 import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.model.ConceptModelNodeCalculationData
 import ch.cassiamon.api.model.facets.*
 import ch.cassiamon.api.registration.TemplateFunction
@@ -56,7 +57,7 @@ object TestFixtures {
         return registrationApi.provideSchema()
     }
 
-    fun createTestTemplates(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): List<TemplateFunction> {
+    fun createTestTemplates(registrationApi: RegistrationApiDefaultImpl = RegistrationApiDefaultImpl(ProcessSession())): List<TemplateFunction<*>> {
         registrationApi.configureTemplates {
             // test a file generation for all nodes
             newTemplate { templateNodesProvider ->
@@ -69,7 +70,7 @@ object TestFixtures {
                     .toSet()
 
 
-                return@newTemplate TemplateRenderer(tagetGeneratedFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(tagetGeneratedFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}
@@ -86,7 +87,7 @@ object TestFixtures {
                 val templateNodes = templateNodesProvider
                     .conceptModelNodesByConceptName(databaseTableConceptName)
 
-                return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.sql"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(Paths.get("index.sql"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@TemplateRenderer StringContentByteIterator(
                         """
                            -- content of ${targetGeneratedFileWithModel.targetFile}

@@ -1,10 +1,8 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.api.registration.DomainUnit
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.api.template.TemplateRenderer
-import ch.cassiamon.engine.domain.registration.SchemaRegistrationDefaultImpl
 import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val processSession: ProcessSession) {
@@ -38,11 +36,11 @@ class EngineProcess(private val processSession: ProcessSession) {
         val templateRenderers = templates.map { template -> template.invoke(conceptModelGraph) }.toSet()
         println("templateRenderers: $templateRenderers")
 
-        templateRenderers.forEach { templateRenderer: TemplateRenderer ->
-            templateRenderer.targetFilesWithModel.forEach { targetGeneratedFileWithModel ->
-                val byteIterator = templateRenderer.templateRendererFunction(targetGeneratedFileWithModel)
-                println("File to write: ${targetGeneratedFileWithModel.targetFile} (${targetGeneratedFileWithModel.targetFile.absolutePathString()})")
-                processSession.fileSystemAccess.writeFile(targetGeneratedFileWithModel.targetFile, byteIterator)
+        templateRenderers.forEach { templateRenderer: TemplateRenderer<*> ->
+            val renderingResults = templateRenderer.renderAll()
+            renderingResults.forEach { renderingResult ->
+                println("File to write: ${renderingResult.targetFile} (${renderingResult.targetFile.absolutePathString()})")
+                processSession.fileSystemAccess.writeFile(renderingResult.targetFile, renderingResult.byteIterator)
             }
         }
 

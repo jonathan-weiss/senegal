@@ -3,6 +3,7 @@ package ch.cassiamon.domain.example
 import ch.cassiamon.api.*
 import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
@@ -84,7 +85,7 @@ class ExampleDomainUnit: DomainUnit {
                     .toSet()
 
 
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@TemplateRenderer StringContentByteIterator(ExampleTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
                 }
             }
@@ -98,9 +99,9 @@ class ExampleDomainUnit: DomainUnit {
 //                    Paths.get("$templateNode.conceptIdentifier.code-xyz.json")
 //                }
 
-                val targetFiles = emptySet<TargetGeneratedFileWithModel>()
+                val targetFiles = emptySet<TargetGeneratedFileWithModel<ConceptModelNode>>()
 
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@TemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )
@@ -112,7 +113,7 @@ class ExampleDomainUnit: DomainUnit {
                 val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(ExampleEntityConcept.conceptName)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
-                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@newTemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )

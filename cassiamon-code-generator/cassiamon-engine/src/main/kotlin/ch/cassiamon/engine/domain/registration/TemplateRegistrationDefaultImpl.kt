@@ -3,6 +3,7 @@ package ch.cassiamon.engine.domain.registration
 import ch.cassiamon.engine.extension.ExtensionAccess
 import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
@@ -10,28 +11,28 @@ import ch.cassiamon.api.template.TemplateRenderer
 class TemplateRegistrationDefaultImpl(
     private val extensionAccess: ExtensionAccess
     ): TemplatesRegistration, TemplateProvider {
-    private val templateFunctions: MutableList<TemplateFunction> = mutableListOf()
+    private val templateFunctions: MutableList<TemplateFunction<*>> = mutableListOf()
 
-    override fun newTemplate(templateFunction: TemplateFunction) {
+    override fun <T> newTemplate(templateFunction: TemplateFunction<T>) {
         templateFunctions.add(templateFunction)
     }
 
     override fun newTemplateRendererWithClasspathTemplateExtension(
         extensionName: ExtensionName,
-        targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
+        targetFilesWithModel: Set<TargetGeneratedFileWithModel<ConceptModelNode>>,
         templateClasspath: ClasspathLocation
-    ): TemplateRenderer {
+    ): TemplateRenderer<ConceptModelNode> {
         return extensionAccess.getClasspathTemplateExtension(extensionName).fillTemplate(targetFilesWithModel, templateClasspath)
     }
 
-    override fun newTemplateRenderer(
-        targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
-        templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator
-    ): TemplateRenderer {
+    override fun <T> newTemplateRenderer(
+        targetFilesWithModel: Set<TargetGeneratedFileWithModel<T>>,
+        templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel<T>) -> ByteIterator
+    ): TemplateRenderer<T> {
         return TemplateRenderer(targetFilesWithModel, templateRendererFunction)
     }
 
-    override fun provideTemplates(): List<TemplateFunction> {
+    override fun provideTemplates(): List<TemplateFunction<*>> {
         return templateFunctions
     }
 }

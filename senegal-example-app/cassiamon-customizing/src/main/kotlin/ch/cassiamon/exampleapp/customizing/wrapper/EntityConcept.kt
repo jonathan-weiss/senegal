@@ -7,8 +7,6 @@ import ch.cassiamon.exampleapp.customizing.concepts.EntityConceptDescription
 data class EntityConcept(private val model: ConceptModelNode) {
     val name = model.templateFacetValues.facetValue(EntityConceptDescription.nameFacet)
 
-    // TODO Remove that as soon that TargetGeneratedFileWithModel is generic
-    val internalModelForTarget = model
     fun entityAttributes(): List<EntityAttributeConcept> {
         return model
             .children(EntityAttributeConceptDescription.conceptName)

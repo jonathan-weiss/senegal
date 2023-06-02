@@ -4,6 +4,7 @@ import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.registration.DomainUnit
 import ch.cassiamon.api.registration.InputSourceRegistrationApi
@@ -136,7 +137,7 @@ class EngineProcessTest {
         override val domainUnitName: DomainUnitName
             get() = DomainUnitName.of("TestProject")
 
-        private fun modelDescriptionContent(targetGeneratedFileWithModel: TargetGeneratedFileWithModel): String {
+        private fun modelDescriptionContent(targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode>): String {
             var content = ""
 
             targetGeneratedFileWithModel.model.forEach {model ->
@@ -197,7 +198,7 @@ class EngineProcessTest {
             registration {
                 // test a file generation per node
                 newTemplate { conceptModelGraph: ConceptModelGraph ->
-                    val targetFiles: Set<TargetGeneratedFileWithModel> = conceptModelGraph
+                    val targetFiles: Set<TargetGeneratedFileWithModel<ConceptModelNode>> = conceptModelGraph
                         .conceptModelNodesByConceptName(testEntityConceptName)
                         .map { templateNode ->
                             val entityName = templateNode.templateFacetValues.facetValue(testEntityNameInputFacet)
@@ -205,7 +206,7 @@ class EngineProcessTest {
                         }.toSet()
 
 
-                    return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                    return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                         return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
                     }
                 }
@@ -216,7 +217,7 @@ class EngineProcessTest {
                     val templateNodes = templateNodesProvider
                         .conceptModelNodesByConceptName(testEntityConceptName)
 
-                    return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("index.txt"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                    return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("index.txt"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                         return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
                     }
                 }

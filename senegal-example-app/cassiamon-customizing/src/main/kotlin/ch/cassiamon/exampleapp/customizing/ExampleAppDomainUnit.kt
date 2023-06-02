@@ -1,6 +1,7 @@
 package ch.cassiamon.exampleapp.customizing
 
 import ch.cassiamon.api.*
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
@@ -69,13 +70,13 @@ class ExampleAppDomainUnit: DomainUnit {
                 val targetFiles = entities
                     .map { entity -> TargetGeneratedFileWithModel(
                         outputDirectory.resolve("${entity.name}.description.txt"),
-                        listOf(entity.internalModelForTarget)
+                        listOf(entity)
                     ) }
                     .toSet()
 
 
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
-                    return@TemplateRenderer StringContentByteIterator(EntityDescriptionTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, EntityConcept(targetGeneratedFileWithModel.model.first())))
+                return@newTemplate TemplateRenderer<EntityConcept>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<EntityConcept> ->
+                    return@TemplateRenderer StringContentByteIterator(EntityDescriptionTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
                 }
             }
 
@@ -88,9 +89,9 @@ class ExampleAppDomainUnit: DomainUnit {
 //                    Paths.get("$templateNode.conceptIdentifier.code-xyz.json")
 //                }
 
-                val targetFiles = emptySet<TargetGeneratedFileWithModel>()
+                val targetFiles = emptySet<TargetGeneratedFileWithModel<ConceptModelNode>>()
 
-                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@TemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )
@@ -102,7 +103,7 @@ class ExampleAppDomainUnit: DomainUnit {
                 val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(EntityConceptDescription.conceptName)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
-                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+                return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
                     return@newTemplateRenderer StringContentByteIterator(
                         "content of ${targetGeneratedFileWithModel.targetFile} is ${targetGeneratedFileWithModel.model}"
                     )

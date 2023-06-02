@@ -1,7 +1,7 @@
 package ch.cassiamon.api.template
 
-data class TemplateRenderer(
-    val targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
+data class TemplateRenderer<T>(
+    val targetFilesWithModel: Set<TargetGeneratedFileWithModel<T>>,
 
     /*
      * Implemented as function, as the rendering of
@@ -16,5 +16,12 @@ data class TemplateRenderer(
      * where binary files or file not in UTF encoding
      * should be written.
      */
-    val templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel) -> ByteIterator,
-)
+    val templateRendererFunction: (targetGeneratedFileWithModel: TargetGeneratedFileWithModel<T>) -> ByteIterator,
+) {
+    fun renderAll(): Set<TemplateRenderingResult> {
+        return targetFilesWithModel
+            .map { TemplateRenderingResult(it.targetFile, templateRendererFunction(it)) }
+            .toSet()
+    }
+
+}

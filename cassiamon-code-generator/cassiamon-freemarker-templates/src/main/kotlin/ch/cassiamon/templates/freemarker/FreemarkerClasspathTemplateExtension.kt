@@ -4,6 +4,7 @@ import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.extensions.ExtensionName
 import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
 import ch.cassiamon.api.logger.LoggerFacade
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
@@ -25,11 +26,11 @@ class FreemarkerClasspathTemplateExtension: ClasspathTemplateExtension {
 
     private val templateEngine: FreemarkerTemplateProcessor = FreemarkerTemplateProcessor("")
     override fun fillTemplate(
-        targetFilesWithModel: Set<TargetGeneratedFileWithModel>,
+        targetFilesWithModel: Set<TargetGeneratedFileWithModel<ConceptModelNode>>,
         templateClasspathLocation: ClasspathLocation
-    ): TemplateRenderer {
+    ): TemplateRenderer<ConceptModelNode> {
 
-        return TemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
+        return TemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
             return@TemplateRenderer templateEngine.processWithFreemarker(targetGeneratedFileWithModel, templateClasspathLocation.classpath)
         }
 

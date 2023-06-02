@@ -2,7 +2,7 @@ package ch.cassiamon.api.template
 
 import java.nio.file.Path
 
-data class TargetGeneratedFileWithModel<out T>(
+data class TemplateRenderingResult(
     val targetFile: Path,
-    val model: List<T>
+    val byteIterator: ByteIterator,
 )

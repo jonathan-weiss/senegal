@@ -1,5 +1,6 @@
 package ch.cassiamon.templates.freemarker.writer
 
+import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import freemarker.template.Configuration
 import freemarker.template.Template
@@ -17,7 +18,7 @@ class FreemarkerTemplateProcessor(private val templatesClasspathResourceBasePath
 
     private val cfg: Configuration = createClasspathBasedFreemarkerConfiguration(templatesClasspathResourceBasePath)
 
-    fun processWithFreemarker(targetGeneratedFileWithModel: TargetGeneratedFileWithModel, templateClasspathLocation: String): ByteIterator {
+    fun processWithFreemarker(targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode>, templateClasspathLocation: String): ByteIterator {
         val model: Map<String, Any?> = mapOf(rootNodeKey to targetGeneratedFileWithModel.model)
         try {
             val template: Template = cfg.getTemplate(templateClasspathLocation)
