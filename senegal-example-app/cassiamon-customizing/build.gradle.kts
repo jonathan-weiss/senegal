@@ -40,7 +40,7 @@ tasks.named("run") {
 application {
     mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
 
-    val defaultGeneratedSourcePath = buildDir
+    val defaultGeneratedSourcePath = projectDir.resolve("output-data")
     val definitionsDirectory = projectDir.resolve("definitions")
 
     applicationDefaultJvmArgs = listOf(

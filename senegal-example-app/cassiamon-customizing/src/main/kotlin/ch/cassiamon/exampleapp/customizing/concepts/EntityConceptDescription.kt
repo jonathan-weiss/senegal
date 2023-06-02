@@ -3,7 +3,7 @@ package ch.cassiamon.exampleapp.customizing.concepts
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.model.facets.TextFacets
 
-object EntityConcept {
+object EntityConceptDescription {
     val conceptName = ConceptName.of("Entity")
 
     val nameFacet = TextFacets.ofMandatoryInputAndTemplate("EntityName")

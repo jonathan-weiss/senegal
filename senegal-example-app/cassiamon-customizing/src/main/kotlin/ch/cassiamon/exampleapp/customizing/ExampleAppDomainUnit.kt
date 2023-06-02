@@ -6,10 +6,12 @@ import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
-import ch.cassiamon.exampleapp.customizing.concepts.EntitiesConcept
-import ch.cassiamon.exampleapp.customizing.concepts.EntityAttributeConcept
-import ch.cassiamon.exampleapp.customizing.concepts.EntityConcept
-import ch.cassiamon.exampleapp.customizing.templates.ExampleAppTemplate
+import ch.cassiamon.exampleapp.customizing.concepts.EntitiesConceptDescription
+import ch.cassiamon.exampleapp.customizing.concepts.EntityAttributeConceptDescription
+import ch.cassiamon.exampleapp.customizing.concepts.EntityConceptDescription
+import ch.cassiamon.exampleapp.customizing.templates.EntityDescriptionTemplate
+import ch.cassiamon.exampleapp.customizing.wrapper.EntitiesConcept
+import ch.cassiamon.exampleapp.customizing.wrapper.EntityConcept
 
 class ExampleAppDomainUnit: DomainUnit {
     private lateinit var parameterAccess: ParameterAccess
@@ -22,17 +24,17 @@ class ExampleAppDomainUnit: DomainUnit {
 
     override fun configureSchema(registration: SchemaRegistrationApi) {
         registration {
-            newRootConcept(EntitiesConcept.conceptName) {
-                addFacet(EntitiesConcept.infoDescriptionFacet)
+            newRootConcept(EntitiesConceptDescription.conceptName) {
+                addFacet(EntitiesConceptDescription.infoDescriptionFacet)
 
-                newChildConcept(EntityConcept.conceptName) {
+                newChildConcept(EntityConceptDescription.conceptName) {
 
-                    addFacet(EntityConcept.nameFacet)
-                    addFacet(EntityConcept.alternativeNameFacet)
+                    addFacet(EntityConceptDescription.nameFacet)
+                    addFacet(EntityConceptDescription.alternativeNameFacet)
 
-                    newChildConcept(EntityAttributeConcept.conceptName) {
-                        addFacet(EntityAttributeConcept.nameFacet)
-                        addFacet(EntityAttributeConcept.typeFacet)
+                    newChildConcept(EntityAttributeConceptDescription.conceptName) {
+                        addFacet(EntityAttributeConceptDescription.nameFacet)
+                        addFacet(EntityAttributeConceptDescription.typeFacet)
                     }
                 }
             }
@@ -57,18 +59,23 @@ class ExampleAppDomainUnit: DomainUnit {
         val outputDirectory = ExampleAppParameters.outputDirectory(parameterAccess)
         registration {
             newTemplate { conceptModelGraph ->
+                val entities = conceptModelGraph
+                    .conceptModelNodesByConceptName(EntitiesConceptDescription.conceptName)
+                    .map { EntitiesConcept(it) }
+                    .map { it.entities() }
+                    .flatten()
 
-                val targetFiles = conceptModelGraph
-                    .conceptModelNodesByConceptName(EntityConcept.conceptName)
+                //val entities = EntitiesConcept(con)
+                val targetFiles = entities
                     .map { entity -> TargetGeneratedFileWithModel(
-                        outputDirectory.resolve("${entity[EntityConcept.nameFacet]}.example.txt"),
-                        listOf(entity)
+                        outputDirectory.resolve("${entity.name}.description.txt"),
+                        listOf(entity.internalModelForTarget)
                     ) }
                     .toSet()
 
 
                 return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
-                    return@TemplateRenderer StringContentByteIterator(ExampleAppTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, targetGeneratedFileWithModel.model.first()))
+                    return@TemplateRenderer StringContentByteIterator(EntityDescriptionTemplate.createExampleTemplate(targetGeneratedFileWithModel.targetFile, EntityConcept(targetGeneratedFileWithModel.model.first())))
                 }
             }
 
@@ -92,7 +99,7 @@ class ExampleAppDomainUnit: DomainUnit {
 
             // test a single node file generation
             newTemplate { conceptModelGraph ->
-                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(EntityConcept.conceptName)
+                val templateNodes = conceptModelGraph.conceptModelNodesByConceptName(EntityConceptDescription.conceptName)
                 val targetFilesWithModel = setOf(TargetGeneratedFileWithModel(outputDirectory.resolve("index.json"), templateNodes))
 
                 return@newTemplate newTemplateRenderer(targetFilesWithModel) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel ->
