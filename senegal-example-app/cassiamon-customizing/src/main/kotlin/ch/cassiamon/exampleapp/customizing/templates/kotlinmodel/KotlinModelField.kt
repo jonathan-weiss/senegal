@@ -13,8 +13,8 @@ data class KotlinModelField(private val model: EntityAttributeConcept, private v
 
     val kotlinFieldName = CaseUtil.decapitalize(entityAttributeName)
     val kotlinFieldType = when(entityAttributeType) {
-        "IntegerNumber" -> kotlinStringType
-        "Text" -> kotlinIntType
+        "Text" -> kotlinStringType
+        "IntegerNumber" -> kotlinIntType
         "Boolean" -> kotlinBooleanType
         else -> throw RuntimeException("Unknown Kotlin Type for $entityAttributeType")
     }

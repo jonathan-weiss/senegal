@@ -29,6 +29,15 @@ object ExampleAppParameters {
         return Paths.get(parameterAccess.getParameter(outputDirectoryParam))
     }
 
+    fun domainPath(parameterAccess: ParameterAccess): Path {
+        return Paths.get(parameterAccess.getParameter(domainPath))
+    }
+
+    fun sharedDomainPath(parameterAccess: ParameterAccess): Path {
+        return Paths.get(parameterAccess.getParameter(sharedDomainPath))
+    }
+
+
     fun persistencePath(parameterAccess: ParameterAccess): Path {
         return Paths.get(parameterAccess.getParameter(persistencePath))
     }
