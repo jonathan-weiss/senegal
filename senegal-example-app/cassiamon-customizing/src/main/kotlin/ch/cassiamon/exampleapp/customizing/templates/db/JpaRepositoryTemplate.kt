@@ -1,11 +1,10 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper.forEach
 
 object JpaRepositoryTemplate {
 
-    fun createJpaRepositoryTemplate(dbTable: DbTable): String {
+    fun fillTemplate(dbTable: DbTable): String {
         return """
             package ${dbTable.jpaRepositoryPackage}
             

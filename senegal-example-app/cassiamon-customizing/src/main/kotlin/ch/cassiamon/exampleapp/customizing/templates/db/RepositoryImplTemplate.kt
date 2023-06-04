@@ -4,7 +4,7 @@ import ch.cassiamon.tools.StringIdentHelper.identForMarker
 
 object RepositoryImplTemplate {
 
-    fun createRepositoryImplementationTemplate(dbTable: DbTable): String {
+    fun fillTemplate(dbTable: DbTable): String {
         return """
             package ${dbTable.repositoryImplementationPackage}
             

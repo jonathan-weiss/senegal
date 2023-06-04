@@ -99,103 +99,140 @@ class ExampleAppDomainUnit: DomainUnit {
 
             // create liquibase file per DB table
             newTemplate { conceptModelGraph ->
-                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
-                    liquibaseResourceDirectory.resolve(it.liquibaseFileName)
-                }
-
-                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
-                    return@TemplateRenderer StringContentByteIterator(LiquibaseTemplate.createLiquibaseXmlFileTemplate(targetGeneratedFileWithModel.model.first()))
-                }
+                val pathResolver = createPathResolver<DbTable>(liquibaseResourceDirectory,  filePrefix = "", fileSuffix = "", packageNameResolver = { "" }, fileNameResolver = { it.liquibaseFileName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::DbTable,
+                    pathResolver = pathResolver,
+                    templateFunction = LiquibaseTemplate::createLiquibaseXmlFileTemplate
+                )
             }
 
             // create liquibase index
             newTemplate { conceptModelGraph ->
                 val dbTables = entities(conceptModelGraph).map { DbTable(it) }
-
                 val targetFiles = setOf(TargetGeneratedFileWithModel(liquibaseResourceDirectory.resolve(DbTable.liquibaseIndexFileName), dbTables))
 
                 return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
                     return@TemplateRenderer StringContentByteIterator(LiquibaseTemplate.createLiquibaseXmlIndexFileTemplate(targetGeneratedFileWithModel.model))
                 }
-
             }
 
             // create jpa entity file per DB table
             newTemplate { conceptModelGraph ->
-                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
-                    persistenceSourceDirectory.resolve(it.jpaEntityPackage.replacePackageByDirectory()).resolve(it.jpaEntityFileName)
-                }
-                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
-                    return@TemplateRenderer StringContentByteIterator(JpaEntityTemplate.createJpaEntityTemplate(targetGeneratedFileWithModel.model.first()))
-                }
+                val pathResolver = createPathResolver<DbTable>(persistenceSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.jpaEntityPackage}, fileNameResolver = { it.jpaEntityName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::DbTable,
+                    pathResolver = pathResolver,
+                    templateFunction = JpaEntityTemplate::fillTemplate
+                )
             }
 
             // create jpa repository file per DB table
             newTemplate { conceptModelGraph ->
-                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
-                    persistenceSourceDirectory.resolve(it.jpaRepositoryPackage.replacePackageByDirectory()).resolve(it.jpaRepositoryFileName)
-                }
-                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
-                    return@TemplateRenderer StringContentByteIterator(JpaRepositoryTemplate.createJpaRepositoryTemplate(targetGeneratedFileWithModel.model.first()))
-                }
+                val pathResolver = createPathResolver<DbTable>(persistenceSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.jpaRepositoryPackage}, fileNameResolver = { it.jpaRepositoryName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::DbTable,
+                    pathResolver = pathResolver,
+                    templateFunction = JpaRepositoryTemplate::fillTemplate
+                )
             }
 
             // create repository file per DB table
             newTemplate { conceptModelGraph ->
-                val targetFiles = targetFilesPerDbTable(conceptModelGraph) {
-                    persistenceSourceDirectory.resolve(it.repositoryImplementationPackage.replacePackageByDirectory()).resolve(it.repositoryImplementationFileName)
-                }
-                return@newTemplate TemplateRenderer<DbTable>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<DbTable> ->
-                    return@TemplateRenderer StringContentByteIterator(RepositoryImplTemplate.createRepositoryImplementationTemplate(targetGeneratedFileWithModel.model.first()))
-                }
+                val pathResolver = createPathResolver<DbTable>(persistenceSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.repositoryImplementationPackage}, fileNameResolver = { it.repositoryImplementationName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::DbTable,
+                    pathResolver = pathResolver,
+                    templateFunction = RepositoryImplTemplate::fillTemplate
+                )
             }
 
 
             // create kotlin model class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "", kotlinFileSuffix = ".kt", KotlinModelClassTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelClassTemplate::fillTemplate
+                )
             }
 
             // create kotlin model id class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "", kotlinFileSuffix = "Id.kt", KotlinModelIdClassTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "", fileSuffix = "Id.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelIdClassTemplate::fillTemplate
+                )
             }
 
             // create kotlin model repository class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "", kotlinFileSuffix = "Repository.kt", KotlinModelRepositoryTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "", fileSuffix = "Repository.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelRepositoryTemplate::fillTemplate
+                )
             }
 
             // create kotlin model create instruction class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "Create", kotlinFileSuffix = "Instruction.kt", KotlinModelCreateInstructionTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "Create", fileSuffix = "Instruction.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelCreateInstructionTemplate::fillTemplate
+                )
             }
 
             // create kotlin model update instruction class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "Update", kotlinFileSuffix = "Instruction.kt", KotlinModelUpdateInstructionTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "Update", fileSuffix = "Instruction.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelUpdateInstructionTemplate::fillTemplate
+                )
             }
 
             // create kotlin model create delete instruction class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "Delete", kotlinFileSuffix = "Instruction.kt", KotlinModelDeleteInstructionTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "Delete", fileSuffix = "Instruction.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelDeleteInstructionTemplate::fillTemplate
+                )
             }
+
 
             // create kotlin model service class
             newTemplate { conceptModelGraph ->
-                return@newTemplate useKotlinModelTemplate(conceptModelGraph, domainSourceDirectory, kotlinFilePrefix = "", kotlinFileSuffix = "Service.kt", KotlinModelServiceTemplate::fillTemplate)
+                val pathResolver = createPathResolver<KotlinModelClass>(domainSourceDirectory,  filePrefix = "", fileSuffix = "Service.kt", packageNameResolver = { it.kotlinPackage}, fileNameResolver = { it.kotlinClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::KotlinModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = KotlinModelServiceTemplate::fillTemplate
+                )
             }
 
         }
     }
 
-    private fun useKotlinModelTemplate(conceptModelGraph: ConceptModelGraph, domainSourceDirectory: Path, kotlinFilePrefix: String, kotlinFileSuffix: String, templateFunction: (kotlinModelClass: KotlinModelClass) -> String): TemplateRenderer<KotlinModelClass> {
-            val targetFiles = targetFilesPerKotlinModel(conceptModelGraph) {
-                domainSourceDirectory.resolve(it.kotlinPackage.replacePackageByDirectory()).resolve("${kotlinFilePrefix}${it.kotlinClassName}${kotlinFileSuffix}")
-            }
-            return TemplateRenderer<KotlinModelClass>(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<KotlinModelClass> ->
-                return@TemplateRenderer StringContentByteIterator(templateFunction(targetGeneratedFileWithModel.model.first()))
-            }
+    private fun <T> createPathResolver(sourceDirectory: Path, packageNameResolver: (T) -> String, filePrefix: String, fileSuffix: String, fileNameResolver: (T) -> String): (T)-> Path {
+        return { model: T ->
+            sourceDirectory.resolve(packageNameResolver(model).replacePackageByDirectory()).resolve("${filePrefix}${fileNameResolver(model)}${fileSuffix}")
+        }
+    }
+
+    private fun <T> useModelTemplate(conceptModelGraph: ConceptModelGraph, createModelInstance: (EntityConcept) -> T, pathResolver: (T)-> Path, templateFunction: (model: T) -> String): TemplateRenderer<T> {
+        val targetFiles = targetFilesPerEntity(conceptModelGraph, createModelInstance, pathResolver)
+        return TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<T> ->
+            return@TemplateRenderer StringContentByteIterator(templateFunction(targetGeneratedFileWithModel.model.first()))
+        }
     }
 
     private fun String.replacePackageByDirectory(): String {
@@ -210,24 +247,15 @@ class ExampleAppDomainUnit: DomainUnit {
             .flatten()
     }
 
-    private fun targetFilesPerDbTable(conceptModelGraph: ConceptModelGraph, pathResolver: (dbTable: DbTable) -> Path): Set<TargetGeneratedFileWithModel<DbTable>> {
+    private fun <T> targetFilesPerEntity(conceptModelGraph: ConceptModelGraph, createModelInstance: (EntityConcept) -> T, pathResolver: (T) -> Path): Set<TargetGeneratedFileWithModel<T>> {
         return entities(conceptModelGraph)
-            .map { DbTable(it) }
-            .map { dbTable -> TargetGeneratedFileWithModel(
-                pathResolver(dbTable),
-                listOf(dbTable)
+            .map { createModelInstance(it) }
+            .map { model -> TargetGeneratedFileWithModel(
+                pathResolver(model),
+                listOf(model)
             ) }
             .toSet()
     }
 
-    private fun targetFilesPerKotlinModel(conceptModelGraph: ConceptModelGraph, pathResolver: (kotlinModel: KotlinModelClass) -> Path): Set<TargetGeneratedFileWithModel<KotlinModelClass>> {
-        return entities(conceptModelGraph)
-            .map { KotlinModelClass(it) }
-            .map { dbTable -> TargetGeneratedFileWithModel(
-                pathResolver(dbTable),
-                listOf(dbTable)
-            ) }
-            .toSet()
-    }
 
 }

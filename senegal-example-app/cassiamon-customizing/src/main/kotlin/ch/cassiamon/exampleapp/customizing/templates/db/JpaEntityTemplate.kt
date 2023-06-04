@@ -5,7 +5,7 @@ import ch.cassiamon.tools.StringTemplateHelper.forEach
 
 object JpaEntityTemplate {
 
-    fun createJpaEntityTemplate(dbTable: DbTable): String {
+    fun fillTemplate(dbTable: DbTable): String {
         return """
             package ${dbTable.jpaEntityPackage}
             
