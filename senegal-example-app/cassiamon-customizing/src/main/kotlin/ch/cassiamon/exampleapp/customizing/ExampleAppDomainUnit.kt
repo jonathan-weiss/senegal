@@ -13,6 +13,20 @@ import ch.cassiamon.exampleapp.customizing.concepts.EntityConceptDescription
 import ch.cassiamon.exampleapp.customizing.templates.EntityDescriptionTemplate
 import ch.cassiamon.exampleapp.customizing.templates.EntitiesConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
+import ch.cassiamon.exampleapp.customizing.templates.angular.*
+import ch.cassiamon.exampleapp.customizing.templates.angular.addview.AngularFrontendAddViewHtmlTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.addview.AngularFrontendAddViewScssTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.addview.AngularFrontendAddViewTypescriptTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.editview.AngularFrontendEditViewHtmlTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.editview.AngularFrontendEditViewScssTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.editview.AngularFrontendEditViewTypescriptTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.api.*
+import ch.cassiamon.exampleapp.customizing.templates.angular.panelview.AngularFrontendPanelViewHtmlTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.panelview.AngularFrontendPanelViewScssTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.panelview.AngularFrontendPanelViewTypescriptTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewHtmlTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewScssTemplate
+import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewTypescriptTemplate
 import ch.cassiamon.exampleapp.customizing.templates.db.*
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.*
 import ch.cassiamon.exampleapp.customizing.templates.restapi.*
@@ -284,8 +298,194 @@ class ExampleAppDomainUnit: DomainUnit {
                 )
             }
 
+            // create angular modules file
+            newTemplate { conceptModelGraph ->
+                val path = frontendSourceDirectory.resolve("generated-entities.module.ts")
+                val targetFile = targetFileWithAllEntities(conceptModelGraph, ::AngularModelClass, path)
+
+                return@newTemplate TemplateRenderer(setOf(targetFile)) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<AngularModelClass> ->
+                    return@TemplateRenderer StringContentByteIterator(AngularFrontendModulesTemplate.fillTemplate(targetGeneratedFileWithModel.model))
+                }
+            }
+
+            // create angular routing file
+            newTemplate { conceptModelGraph ->
+                val path = frontendSourceDirectory.resolve("generated-entities-routing.module.ts")
+                val targetFile = targetFileWithAllEntities(conceptModelGraph, ::AngularModelClass, path)
+
+                return@newTemplate TemplateRenderer(setOf(targetFile)) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<AngularModelClass> ->
+                    return@TemplateRenderer StringContentByteIterator(AngularFrontendRoutingTemplate.fillTemplate(targetGeneratedFileWithModel.model))
+                }
+            }
+
+            val angularToModelPathResolver = createAngularPathResolver<AngularModelClass>(frontendSourceDirectory,  pathResolver = { "${it.entityFileName}/api/${it.entityFileName}-to.model" }, filenameSuffix = ".ts")
+            val angularServicePathResolver = createAngularPathResolver<AngularModelClass>(frontendSourceDirectory,  pathResolver = { "${it.entityFileName}/api/${it.entityFileName}-api.service" }, filenameSuffix = ".ts")
+
+            val angularCreateInstructionPathResolver = createAngularPathResolver<AngularModelClass>(frontendSourceDirectory,  pathResolver = { "${it.entityFileName}/api/create-${it.entityFileName}-instruction-to.model" }, filenameSuffix = ".ts")
+            val angularUpdateInstructionPathResolver = createAngularPathResolver<AngularModelClass>(frontendSourceDirectory,  pathResolver = { "${it.entityFileName}/api/update-${it.entityFileName}-instruction-to.model" }, filenameSuffix = ".ts")
+            val angularDeleteInstructionPathResolver = createAngularPathResolver<AngularModelClass>(frontendSourceDirectory,  pathResolver = { "${it.entityFileName}/api/delete-${it.entityFileName}-instruction-to.model" }, filenameSuffix = ".ts")
+
+            val angularPanelViewComponentPathResolver = { it:AngularModelClass -> "${it.entityFileName}/component/${it.entityFileName}-panel-view/${it.entityFileName}-panel-view.component" }
+            val angularPanelViewComponentTsPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularPanelViewComponentPathResolver, filenameSuffix = ".ts")
+            val angularPanelViewComponentScssPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularPanelViewComponentPathResolver, filenameSuffix = ".scss")
+            val angularPanelViewComponentHtmlPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularPanelViewComponentPathResolver, filenameSuffix = ".html")
+
+            val angularTableViewComponentPathResolver = { it:AngularModelClass -> "${it.entityFileName}/component/${it.entityFileName}-table-view/${it.entityFileName}-table-view.component" }
+            val angularTableViewComponentTsPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularTableViewComponentPathResolver, filenameSuffix = ".ts")
+            val angularTableViewComponentScssPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularTableViewComponentPathResolver, filenameSuffix = ".scss")
+            val angularTableViewComponentHtmlPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularTableViewComponentPathResolver, filenameSuffix = ".html")
+
+            val angularEditViewComponentPathResolver = { it:AngularModelClass -> "${it.entityFileName}/component/${it.entityFileName}-edit-view/${it.entityFileName}-edit-view.component" }
+            val angularEditViewComponentTsPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularEditViewComponentPathResolver, filenameSuffix = ".ts")
+            val angularEditViewComponentScssPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularEditViewComponentPathResolver, filenameSuffix = ".scss")
+            val angularEditViewComponentHtmlPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularEditViewComponentPathResolver, filenameSuffix = ".html")
+
+            val angularAddViewComponentPathResolver = { it:AngularModelClass -> "${it.entityFileName}/component/${it.entityFileName}-add-view/${it.entityFileName}-add-view.component" }
+            val angularAddViewComponentTsPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularAddViewComponentPathResolver, filenameSuffix = ".ts")
+            val angularAddViewComponentScssPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularAddViewComponentPathResolver, filenameSuffix = ".scss")
+            val angularAddViewComponentHtmlPathResolver = createAngularPathResolver(frontendSourceDirectory,  pathResolver = angularAddViewComponentPathResolver, filenameSuffix = ".html")
+
+            // create angular model
+            newTemplate { conceptModelGraph ->
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularToModelPathResolver,
+                    templateFunction = AngularFrontendModelToTemplate::fillTemplate
+                )
+            }
+
+            // create angular service
+            newTemplate { conceptModelGraph ->
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularServicePathResolver,
+                    templateFunction = AngularFrontendServiceToTemplate::fillTemplate
+                )
+            }
+
+            // create angular create instruction
+            newTemplate { conceptModelGraph ->
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularCreateInstructionPathResolver,
+                    templateFunction = AngularFrontendCreateInstructionToTemplate::fillTemplate
+                )
+            }
+
+            // create angular update instruction
+            newTemplate { conceptModelGraph ->
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularUpdateInstructionPathResolver,
+                    templateFunction = AngularFrontendUpdateInstructionToTemplate::fillTemplate
+                )
+            }
+
+            // create angular delete instruction
+            newTemplate { conceptModelGraph ->
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularDeleteInstructionPathResolver,
+                    templateFunction = AngularFrontendDeleteInstructionToTemplate::fillTemplate
+                )
+            }
+
+            // create angular panel view
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularPanelViewComponentHtmlPathResolver,
+                templateFunction = AngularFrontendPanelViewHtmlTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularPanelViewComponentScssPathResolver,
+                    templateFunction = AngularFrontendPanelViewScssTemplate::fillTemplate
+                )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::AngularModelClass,
+                    pathResolver = angularPanelViewComponentTsPathResolver,
+                    templateFunction = AngularFrontendPanelViewTypescriptTemplate::fillTemplate
+                )
+            }
+
+            // create angular table view
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularTableViewComponentHtmlPathResolver,
+                templateFunction = AngularFrontendTableViewHtmlTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularTableViewComponentScssPathResolver,
+                templateFunction = AngularFrontendTableViewScssTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularTableViewComponentTsPathResolver,
+                templateFunction = AngularFrontendTableViewTypescriptTemplate::fillTemplate
+            )
+            }
+            
+            // create angular edit view
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularEditViewComponentHtmlPathResolver,
+                templateFunction = AngularFrontendEditViewHtmlTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularEditViewComponentScssPathResolver,
+                templateFunction = AngularFrontendEditViewScssTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularEditViewComponentTsPathResolver,
+                templateFunction = AngularFrontendEditViewTypescriptTemplate::fillTemplate
+            )
+            }
+            
+            // create angular add view
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularAddViewComponentHtmlPathResolver,
+                templateFunction = AngularFrontendAddViewHtmlTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularAddViewComponentScssPathResolver,
+                templateFunction = AngularFrontendAddViewScssTemplate::fillTemplate
+            )
+            }
+            newTemplate { conceptModelGraph -> useModelTemplate(conceptModelGraph,
+                createModelInstance = ::AngularModelClass,
+                pathResolver = angularAddViewComponentTsPathResolver,
+                templateFunction = AngularFrontendAddViewTypescriptTemplate::fillTemplate
+            )
+            }
+            
         }
     }
+
+    private fun <T> targetFileWithAllEntities(conceptModelGraph: ConceptModelGraph, createModelInstance: (EntityConcept) -> T, targetFile: Path): TargetGeneratedFileWithModel<T> {
+        val models = entities(conceptModelGraph)
+            .map { createModelInstance(it) }
+        return TargetGeneratedFileWithModel(targetFile, models)
+    }
+
+
+    private fun <T> createAngularPathResolver(sourceDirectory: Path, pathResolver: (T) -> String, filenameSuffix: String): (T)-> Path {
+        return { model: T ->
+            sourceDirectory.resolve(pathResolver(model) + filenameSuffix)
+        }
+    }
+
 
     private fun <T> createPathResolver(sourceDirectory: Path, packageNameResolver: (T) -> String, filePrefix: String, fileSuffix: String, fileNameResolver: (T) -> String): (T)-> Path {
         return { model: T ->

@@ -22,7 +22,6 @@ val pathToFrontendApiSource = projectDir.resolve("../frontend-api/src/main/kotli
 val pathToFrontendSource = projectDir.resolve("../frontend/src/generated")
 
 tasks.register<Delete>("clearGeneratedSource") {
-    // TODO enable deletion as soon as cassiamon is generating the template
 //    delete(fileTree(pathToDomainSource).include("**/*"))
 //    delete(fileTree(pathToPersistenceSource).include("**/*"))
 //    delete(fileTree(pathToPersistenceResource).include("**/*"))
