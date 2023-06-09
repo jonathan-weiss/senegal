@@ -37,6 +37,13 @@ object ExampleAppParameters {
         return Paths.get(parameterAccess.getParameter(sharedDomainPath))
     }
 
+    fun frontendApiPath(parameterAccess: ParameterAccess): Path {
+        return Paths.get(parameterAccess.getParameter(frontendApiPath))
+    }
+
+    fun frontendPath(parameterAccess: ParameterAccess): Path {
+        return Paths.get(parameterAccess.getParameter(frontendPath))
+    }
 
     fun persistencePath(parameterAccess: ParameterAccess): Path {
         return Paths.get(parameterAccess.getParameter(persistencePath))

@@ -15,6 +15,7 @@ import ch.cassiamon.exampleapp.customizing.templates.EntitiesConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
 import ch.cassiamon.exampleapp.customizing.templates.db.*
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.*
+import ch.cassiamon.exampleapp.customizing.templates.restapi.*
 import java.nio.file.Path
 
 class ExampleAppDomainUnit: DomainUnit {
@@ -65,6 +66,8 @@ class ExampleAppDomainUnit: DomainUnit {
         val persistenceSourceDirectory = ExampleAppParameters.persistencePath(parameterAccess)
         val domainSourceDirectory = ExampleAppParameters.domainPath(parameterAccess)
         val sharedDomainSourceDirectory = ExampleAppParameters.sharedDomainPath(parameterAccess)
+        val frontendApiSourceDirectory = ExampleAppParameters.frontendApiPath(parameterAccess)
+        val frontendSourceDirectory = ExampleAppParameters.frontendPath(parameterAccess)
         registration {
 
             // create description file index
@@ -216,6 +219,68 @@ class ExampleAppDomainUnit: DomainUnit {
                     createModelInstance = ::KotlinModelClass,
                     pathResolver = pathResolver,
                     templateFunction = KotlinModelServiceTemplate::fillTemplate
+                )
+            }
+
+
+            // create REST api facade class
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.facadePackageName}, fileNameResolver = { it.facadeClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiFacadeTemplate::fillTemplate
+                )
+            }
+
+            // create REST api transfer object
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "", fileSuffix = "TO.kt", packageNameResolver = { it.transferObjectPackageName}, fileNameResolver = { it.transferObjectBaseName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiTransferObjectTemplate::fillTemplate
+                )
+            }
+
+            // create REST api transfer object create instruction
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "Create", fileSuffix = "InstructionTO.kt", packageNameResolver = { it.transferObjectPackageName}, fileNameResolver = { it.transferObjectBaseName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiTransferObjectCreateInstructionTemplate::fillTemplate
+                )
+            }
+
+            // create REST api transfer object update instruction
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "Update", fileSuffix = "InstructionTO.kt", packageNameResolver = { it.transferObjectPackageName}, fileNameResolver = { it.transferObjectBaseName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiTransferObjectUpdateInstructionTemplate::fillTemplate
+                )
+            }
+
+            // create REST api transfer object delete instruction
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "Delete", fileSuffix = "InstructionTO.kt", packageNameResolver = { it.transferObjectPackageName}, fileNameResolver = { it.transferObjectBaseName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiTransferObjectDeleteInstructionTemplate::fillTemplate
+                )
+            }
+
+
+            // create REST api controller
+            newTemplate { conceptModelGraph ->
+                val pathResolver = createPathResolver<RestModelClass>(frontendApiSourceDirectory,  filePrefix = "", fileSuffix = ".kt", packageNameResolver = { it.controllerPackageName}, fileNameResolver = { it.controllerClassName })
+                return@newTemplate useModelTemplate(conceptModelGraph,
+                    createModelInstance = ::RestModelClass,
+                    pathResolver = pathResolver,
+                    templateFunction = RestApiControllerTemplate::fillTemplate
                 )
             }
 

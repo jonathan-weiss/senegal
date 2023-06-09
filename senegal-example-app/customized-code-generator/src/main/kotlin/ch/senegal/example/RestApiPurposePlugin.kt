@@ -144,12 +144,12 @@ object RestApiPurposePlugin : Purpose {
             val facadeDirectory = facadePackageName.replace(".", "/")
             val controllerDirectory = controllerPackageName.replace(".", "/")
 
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${kotlinModelClassName}Facade.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-facade.ftl")))
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${transferObjectClassName}TO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object.ftl")))
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Create${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-create-instruction.ftl")))
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Update${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-update-instruction.ftl")))
-            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Delete${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-delete-instruction.ftl")))
-            targets.add(TemplateTarget(controllerBasePath.resolve("$controllerDirectory/${kotlinModelClassName}Controller.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-controller.ftl")))
+//            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${kotlinModelClassName}Facade.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-facade.ftl")))
+//            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/${transferObjectClassName}TO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object.ftl")))
+//            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Create${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-create-instruction.ftl")))
+//            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Update${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-update-instruction.ftl")))
+//            targets.add(TemplateTarget(facadeBasePath.resolve("$facadeDirectory/Delete${transferObjectClassName}InstructionTO.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-transfer-object-delete-instruction.ftl")))
+//            targets.add(TemplateTarget(controllerBasePath.resolve("$controllerDirectory/${kotlinModelClassName}Controller.kt"), TemplateForFreemarker("/ch/senegal/pluginexample/rest-api-controller.ftl")))
         }
 
         return targets
