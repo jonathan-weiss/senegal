@@ -15,12 +15,12 @@ val bootJar: BootJar by tasks
 bootJar.enabled = false
 jar.enabled = true
 
-
 allprojects {
     repositories {
         mavenCentral()
     }
 }
+
 subprojects {
     apply(plugin = "io.spring.dependency-management")
     dependencyManagement {

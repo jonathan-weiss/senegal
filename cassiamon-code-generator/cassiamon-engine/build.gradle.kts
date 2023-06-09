@@ -2,11 +2,10 @@ plugins {
     kotlin("jvm")
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
+
 
 dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-api"))

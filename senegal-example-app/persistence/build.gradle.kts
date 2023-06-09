@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
-    id("org.liquibase.gradle")  version "2.1.1"
+    id("org.liquibase.gradle")  version "2.2.0"
 }
 
 
