@@ -16,20 +16,10 @@ dependencies {
 
 val pathToDomainSource = projectDir.resolve("../domain/src/main/kotlin-generated")
 val pathToPersistenceSource = projectDir.resolve("../persistence/src/main/kotlin-generated")
-val pathToPersistenceResource = projectDir.resolve("../persistence/src/main/resources/generated")
+val pathToPersistenceResource = projectDir.resolve("../persistence/src/main/resources-generated")
 val pathToSharedDomainSource = projectDir.resolve("../shared-domain/src/main/kotlin-generated")
 val pathToFrontendApiSource = projectDir.resolve("../frontend-api/src/main/kotlin-generated")
 val pathToFrontendSource = projectDir.resolve("../frontend/src/generated")
-
-tasks.register<Delete>("clearGeneratedSource") {
-//    delete(fileTree(pathToDomainSource).include("**/*"))
-//    delete(fileTree(pathToPersistenceSource).include("**/*"))
-//    delete(fileTree(pathToPersistenceResource).include("**/*"))
-//    delete(fileTree(pathToSharedDomainSource).include("**/*"))
-//    delete(fileTree(pathToFrontendApiSource).include("**/*"))
-//    delete(fileTree(pathToFrontendSource).include("**/*"))
-}
-
 
 
 tasks.named("run") {
@@ -56,7 +46,13 @@ application {
 }
 
 tasks.named("run") {
-    dependsOn("clearGeneratedSource")
-    mustRunAfter(":senegal-example-app:customized-code-generator:run")
-    mustRunAfter(":senegal-example-app:customized-code-generator:clearGeneratedSource")
+    dependsOn(":senegal-example-app:domain:clearGeneratedSource")
+    dependsOn(":senegal-example-app:frontend:clearGeneratedSource")
+    dependsOn(":senegal-example-app:frontend-api:clearGeneratedSource")
+    dependsOn(":senegal-example-app:persistence:clearGeneratedSource")
+    dependsOn(":senegal-example-app:domain:clearGeneratedSource")
+}
+
+tasks.register("generate") {
+    dependsOn("run")
 }

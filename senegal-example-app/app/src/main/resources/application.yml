@@ -1,12 +1,21 @@
 spring:
   jpa:
+    database-platform: org.hibernate.dialect.HSQLDialect
     show-sql: false
     properties:
       hibernate:
+        connection:
+          provider_disables_autocommit: true
         format_sql: true
     hibernate:
       ddl-auto: validate
-
+  datasource:
+    url: jdbc:hsqldb:hsql://localhost:9005/standaloneDb;sql.syntax_ora=true
+    username: sa
+    password: password
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    embedded:
+      auto-commit: false
 server:
   error:
     include-message: ALWAYS

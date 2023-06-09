@@ -45,11 +45,6 @@ node {
 
 val angularFrontendDirectory = project.projectDir
 
-tasks.named<com.github.gradle.node.npm.task.NpmSetupTask>("npmSetup") {
-  args.addAll(listOf("--registry", "http://odyssey.rowini.net/artifactory/api/npm/npm-release"))
-}
-
-
 tasks.named<com.github.gradle.node.npm.task.NpmInstallTask>("npmInstall") {
   mustRunAfter("clearNodeModules")
 
@@ -59,7 +54,7 @@ tasks.named<com.github.gradle.node.npm.task.NpmInstallTask>("npmInstall") {
 }
 
 tasks.register<com.github.gradle.node.npm.task.NpmTask>("buildAngular") {
-  description = "Build the Senegal angular frontend (into the dist directory)"
+  description = "Build the angular frontend (into the dist directory)"
 
   mustRunAfter("npmInstall")
   mustRunAfter("clearAngularDist")
@@ -72,15 +67,6 @@ tasks.register<com.github.gradle.node.npm.task.NpmTask>("buildAngular") {
 
   npmCommand.set(listOf("run", "build"))
 }
-
-tasks.register<com.github.gradle.node.npm.task.NpmTask>("testAngular") {
-  description = "Run the tests of the Senegal angular frontend"
-
-  mustRunAfter("npmInstall")
-
-  npmCommand.set(listOf("run", "test"))
-}
-
 
 val openApiSpec = projectDir.resolve("../open-api/build/senegal-frontend-api.yaml")
 val openApiOutputDir = buildDir.resolve("generated-openapi-files")
@@ -115,14 +101,6 @@ tasks.named<Task>("openApiGenerate") {
   dependsOn(":senegal-example-app:open-api:generateOpenApiDocs")
 }
 
-tasks.register<com.github.gradle.node.npm.task.NpmTask>("lintAngular") {
-  description = "Run the linter of the Senegal angular frontend"
-
-  mustRunAfter("npmInstall")
-
-  npmCommand.set(listOf("run", "lint"))
-}
-
 tasks.register<Delete>("clearNodeModules") {
   delete(angularFrontendDirectory.resolve("node_modules"))
 }
@@ -132,26 +110,18 @@ tasks.register<Delete>("clearAngularDist") {
 }
 
 
-tasks.named("clearFrontend") {
+tasks.register("clearFrontend") {
   // we do not call the task clearNodeModules, as npmInstall does clear unused modules itself.
   // (analogous to the backend where we do not clear the gradle cache with all dependencies either)
   dependsOn("openApiCleanGeneratedFiles")
   dependsOn("clearAngularDist")
 }
 
-tasks.named("generateFrontend") {
+tasks.register("generate") {
   dependsOn("openApiCopyGeneratedFiles")
 }
 
-tasks.named("produceFrontend") {
-  dependsOn("npmInstall")
-  dependsOn("buildAngular")
-}
-
-tasks.named("verifyFrontend") {
-  dependsOn("testAngular")
-}
-
-tasks.named("auditFrontend") {
-  dependsOn("lintAngular")
+tasks.register<Delete>("clearGeneratedSource") {
+  delete(project.fileTree(projectDir.resolve("src/generated")).include("**/*"))
+  delete(project.fileTree(projectDir.resolve("src/generated-openapi")).include("**/*"))
 }

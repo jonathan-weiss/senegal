@@ -19,3 +19,6 @@ java.sourceSets["main"].java {
     srcDir("src/main/kotlin-generated")
 }
 
+tasks.register<Delete>("clearGeneratedSource") {
+    delete(project.fileTree(projectDir.resolve("src/main/kotlin-generated")).include("**/*"))
+}

@@ -53,6 +53,6 @@ project.afterEvaluate {
     }
 }
 
-tasks.named("generateBackend") {
+tasks.register("generate") {
     dependsOn("generateOpenApiDocs")
 }

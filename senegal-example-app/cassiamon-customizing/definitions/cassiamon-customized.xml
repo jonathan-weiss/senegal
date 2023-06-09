@@ -21,6 +21,9 @@
                 <entityAttribute entityAttributeName="street" entityAttributeType="Text"/>
                 <entityAttribute entityAttributeName="phone" entityAttributeType="IntegerNumber"/>
             </entity>
+            <entity entityName="OfficeBrackets">
+                <entityAttribute entityAttributeName="stupidLevel" entityAttributeType="Text"/>
+            </entity>
         </entities>
     </definitions>
 

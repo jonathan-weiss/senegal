@@ -1,7 +1,0 @@
-spring:
-  config:
-    import: application-devlocal-defaults.yml,application-with-hsql.yml
-  datasource:
-    url: jdbc:hsqldb:file:./db/db;sql.syntax_ora=true
-    username: sa
-    password: password

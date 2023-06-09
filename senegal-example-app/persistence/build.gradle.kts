@@ -37,6 +37,9 @@ java.sourceSets["main"].java {
     srcDir("src/main/kotlin-generated")
 }
 
+java.sourceSets["main"].resources {
+    srcDir("src/main/resources-generated")
+}
 
 val liquibaseChangelogFiles = buildDir.resolve("liquibase-changelog-files")
 
@@ -56,4 +59,9 @@ liquibase {
         )
     }
     runList = "senegal"
+}
+
+tasks.register<Delete>("clearGeneratedSource") {
+    delete(project.fileTree(projectDir.resolve("src/main/kotlin-generated")).include("**/*"))
+    delete(project.fileTree(projectDir.resolve("src/main/resources-generated")).include("**/*"))
 }
