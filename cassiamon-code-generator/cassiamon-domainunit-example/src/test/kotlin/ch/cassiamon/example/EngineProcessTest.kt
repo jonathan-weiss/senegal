@@ -6,14 +6,13 @@ import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.model.facets.TextFacets
-import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.api.registration.InputSourceRegistrationApi
-import ch.cassiamon.api.registration.SchemaRegistrationApi
-import ch.cassiamon.api.registration.TemplatesRegistrationApi
+import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.template.TargetGeneratedFileWithModel
 import ch.cassiamon.api.template.TemplateRenderer
 import ch.cassiamon.api.template.helper.StringContentByteIterator
 import ch.cassiamon.domain.example.ExampleExtensions
+import ch.cassiamon.domain.example.ExampleTemplate
 import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
@@ -121,7 +120,25 @@ class EngineProcessTest {
 
     }
 
-    class TestDomainUnit: DomainUnit {
+    interface TestSchema {
+        fun getEntities(): List<TestEntityConcept>
+    }
+
+    interface TestEntityConcept {
+        fun getEntityName(): String
+        fun getAttributes(): List<TestEntityAttributeConcept>
+
+    }
+
+    interface TestEntityAttributeConcept {
+        fun getAttributeName(): String
+
+    }
+
+    class TestDomainUnit: DefaultDomainUnit<TestSchema>(
+        domainUnitName = DomainUnitName.of("TestProject"),
+        schemaDefinitionClass = TestSchema::class.java
+    ) {
         companion object {
             val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
             const val xmlFilename = "definition-file.xml"
@@ -129,103 +146,67 @@ class EngineProcessTest {
 
         }
 
+        override val defaultXmlPaths: Set<Path> = setOf(xmlDefinitionDirectory.resolve(xmlFilename))
+
         private val testEntityConceptName = ConceptName.of("TestEntity")
-        private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
         private val testEntityNameInputFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityName")
-        private val testEntityAttributeNameInputFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityAttributeName")
 
-        override val domainUnitName: DomainUnitName
-            get() = DomainUnitName.of("TestProject")
+        override fun collectInputData(
+            parameterAccess: ParameterAccess,
+            extensionAccess: InputSourceExtensionAccess,
+            dataCollector: InputSourceDataCollector
+        ) {
 
-        private fun modelDescriptionContent(targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode>): String {
+            dataCollector
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
+                .attach()
+
+            dataCollector
+                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
+                .attach()
+
+            super.collectInputData(parameterAccess, extensionAccess, dataCollector)
+
+
+        }
+
+        override fun collectTargetFiles(
+            parameterAccess: ParameterAccess,
+            schemaInstance: TestSchema,
+            targetFilesCollector: TargetFilesCollector
+        ) {
+            schemaInstance
+                .getEntities()
+                .forEach { entity ->
+                    val targetFile = defaultOutputDirectory.resolve("${entity.getEntityName()}.txt")
+                    targetFilesCollector.addFile(targetFile, entityContent(listOf(entity)))
+                }
+
+            targetFilesCollector.addFile(defaultOutputDirectory.resolve("index.txt"), entityContent(schemaInstance.getEntities()))
+        }
+
+        private fun entityContent(entities: List<TestEntityConcept>): String {
             var content = ""
 
-            targetGeneratedFileWithModel.model.forEach {model ->
+            entities.forEach { entity ->
                 content += """
                     
                     Properties:
-                        - TestEntityName: ${model.templateFacetValues.facetValue(testEntityNameInputFacet)}
+                        - TestEntityName: ${entity.getEntityName()}
                     """.trimIndent()
 
-                    model.children(testEntityAttributeConceptName).forEach { childModel ->
-                        content += """
+                entity.getAttributes().forEach { childModel ->
+                    content += """
                         
                         SubNode-Properties:
-                            - TestEntityAttributeName: ${childModel.templateFacetValues.facetValue(testEntityAttributeNameInputFacet)}
+                            - TestEntityAttributeName: ${childModel.getAttributeName()}
                     """.trimIndent()
-                    }
+                }
             }
 
             return content
         }
-
-        override fun configureDataCollector(registration: InputSourceRegistrationApi) {
-            registration {
-                val dataCollector = receiveDataCollector()
-
-                dataCollector
-                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
-                    .attach()
-
-                dataCollector
-                    .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                    .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
-                    .attach()
-
-                val inputFiles = setOf<Path>(xmlDefinitionDirectory.resolve(xmlFilename))
-                dataCollectionWithFilesInputSourceExtension(
-                    extensionName = ExampleExtensions.xmlSchemagicInputExtensionName,
-                    inputFiles = inputFiles,
-                )
-            }
-        }
-
-        override fun configureSchema(registration: SchemaRegistrationApi) {
-            registration {
-                newRootConcept(testEntityConceptName) {
-
-                    addFacet(testEntityNameInputFacet)
-
-                    newChildConcept(testEntityAttributeConceptName) {
-                        addFacet(testEntityAttributeNameInputFacet)
-                    }
-                }
-            }
-        }
-
-        override fun configureTemplates(registration: TemplatesRegistrationApi) {
-            registration {
-                // test a file generation per node
-                newTemplate { conceptModelGraph: ConceptModelGraph ->
-                    val targetFiles: Set<TargetGeneratedFileWithModel<ConceptModelNode>> = conceptModelGraph
-                        .conceptModelNodesByConceptName(testEntityConceptName)
-                        .map { templateNode ->
-                            val entityName = templateNode.templateFacetValues.facetValue(testEntityNameInputFacet)
-                            return@map TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("$entityName.txt"), listOf(templateNode))
-                        }.toSet()
-
-
-                    return@newTemplate TemplateRenderer(targetFiles) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
-                        return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
-                    }
-                }
-
-                // test a single node file generation
-                newTemplate { templateNodesProvider ->
-
-                    val templateNodes = templateNodesProvider
-                        .conceptModelNodesByConceptName(testEntityConceptName)
-
-                    return@newTemplate TemplateRenderer(setOf(TargetGeneratedFileWithModel(defaultOutputDirectory.resolve("index.txt"), templateNodes))) { targetGeneratedFileWithModel: TargetGeneratedFileWithModel<ConceptModelNode> ->
-                        return@TemplateRenderer StringContentByteIterator(modelDescriptionContent(targetGeneratedFileWithModel))
-                    }
-                }
-            }
-        }
-
-
     }
-
-
 }

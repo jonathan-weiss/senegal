@@ -9,9 +9,11 @@ import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.DomainUnit
+import ch.cassiamon.api.registration.TargetFilesCollector
+import ch.cassiamon.engine.domain.process.ListTargetFilesCollectorImpl
 
 class ProcessSession(
-    val domainUnits: List<DomainUnit> = emptyList(),
+    val domainUnits: List<DomainUnit<*>> = emptyList(),
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),
     private val parameterSources: List<ParameterSource> = listOf(
@@ -20,6 +22,7 @@ class ProcessSession(
         SystemPropertyParameterSource,
     ),
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
-    val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
-    val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector)
+    @Deprecated("Moved to DomainUnitSession") val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
+    @Deprecated("Moved to DomainUnitSession") val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector),
+    @Deprecated("Moved to DomainUnitSession") val targetFilesCollector: TargetFilesCollector = ListTargetFilesCollectorImpl()
 )
