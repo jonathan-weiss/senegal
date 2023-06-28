@@ -1,10 +1,8 @@
 package ch.cassiamon.api.registration
 
-interface DomainUnitProcessSession<S: Any> {
+
+interface DomainUnitProcessInputData {
     fun getDataCollector(): InputSourceDataCollector
 
     fun getInputDataExtensionAccess(): InputSourceExtensionAccess
-
-    fun getTargetFilesCollector(): TargetFilesCollector
-    fun getSchemaInstance(): S
 }

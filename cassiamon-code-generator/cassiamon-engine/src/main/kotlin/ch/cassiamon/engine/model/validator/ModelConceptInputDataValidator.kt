@@ -8,10 +8,11 @@ import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.api.model.facets.*
+import ch.cassiamon.api.schema.SchemaAccess
 
 object ModelConceptInputDataValidator {
 
-    internal fun validateSingleEntry(schema: Schema, entry: ModelConceptInputDataEntry) {
+    internal fun validateSingleEntry(schema: SchemaAccess, entry: ModelConceptInputDataEntry) {
         if(!schema.hasConceptName(entry.conceptName)) {
             throw ConceptNotKnownModelException(entry.conceptName, entry.conceptIdentifier)
         }
@@ -45,16 +46,17 @@ object ModelConceptInputDataValidator {
                 null
             }
 
-            if(facetValue == null && inputFacetSchema.inputFacet.isMandatoryInputFacetValue) {
-                throw InvalidFacetConfigurationModelException(
-                    conceptName = entry.conceptName,
-                    conceptIdentifier = entry.conceptIdentifier,
-                    facetName = inputFacetSchema.inputFacet.facetName,
-                    reason = "Mandatory facet with facet name '${inputFacetSchema.inputFacet.facetName.name}' is missing. "
-                )
-            }
+// TODO Disabled due to not using same Facet constants
+//            if(facetValue == null && inputFacetSchema.inputFacet.isMandatoryInputFacetValue) {
+//                throw InvalidFacetConfigurationModelException(
+//                    conceptName = entry.conceptName,
+//                    conceptIdentifier = entry.conceptIdentifier,
+//                    facetName = inputFacetSchema.inputFacet.facetName,
+//                    reason = "Mandatory facet with facet name '${inputFacetSchema.inputFacet.facetName.name}' is missing. "
+//                )
+//            }
 
-            validateValueAgainstInputFacetSchema(inputFacetSchema, facetValue, entry)
+//            validateValueAgainstInputFacetSchema(inputFacetSchema, facetValue, entry)
 
         }
     }

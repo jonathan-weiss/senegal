@@ -1,7 +1,11 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.engine.domain.process.DomainUnitProcessHelperImpl
+import ch.cassiamon.engine.domain.process.DomainUnitProcessInputDataHelperImpl
+import ch.cassiamon.engine.domain.process.DomainUnitProcessTargetFilesDataHelperImpl
+import ch.cassiamon.engine.domain.registration.SchemaProvider
+import ch.cassiamon.engine.inputsource.InputSourceDataProvider
+import ch.cassiamon.engine.model.ConceptModelGraphCalculator
 
 class EngineProcess(private val processSession: ProcessSession) {
 
@@ -13,11 +17,6 @@ class EngineProcess(private val processSession: ProcessSession) {
 
         processSession.domainUnits.forEach { domainUnit -> processDomainUnit(domainUnit) }
 
-//        // TODO What is with this...?
-//        val schema = registrationApi.provideSchema()
-//        processSession.extensionAccess.initializeSchema(schema)
-//
-//
 //        // resolve the raw concepts and facets to a resolved schema
 //        val templates = registrationApi.provideTemplates()
 //        val modelInputData = registrationApi.provideModelInputData()
@@ -43,10 +42,22 @@ class EngineProcess(private val processSession: ProcessSession) {
     }
 
     private fun processDomainUnit(domainUnit: DomainUnit<*>) {
-        val domainUnitProcessHelper = DomainUnitProcessHelperImpl(processSession)
+        val domainUnitInputData = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitProcessInputDataHelperImpl(processSession))
+        // TODO here, we can create the ConceptModelGraph
+
+        // resolve the raw concepts and facets to a resolved schema
+        val schema = (domainUnitInputData as SchemaProvider).provideSchema()
+        val modelInputData = (domainUnitInputData as InputSourceDataProvider).provideModelInputData()
+
+        println("Schema: $schema")
+        println("InputData: $modelInputData")
+
+        // traverse whole model and transform (adapt/calculate/transform) the missing model values
+        val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(schema, modelInputData)
+        println("conceptModelGraph: $conceptModelGraph")
 
 
-        domainUnit.processDomainUnit(domainUnitProcessHelper)
+        domainUnit.processDomainUnitTargetFiles(processSession.parameterAccess, DomainUnitProcessTargetFilesDataHelperImpl(processSession, schema, conceptModelGraph))
 
         println(processSession.targetFilesCollector)
 

@@ -12,10 +12,11 @@ import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.model.ConceptModelNodePool
 import ch.cassiamon.api.model.exceptions.DuplicateConceptIdentifierFoundModelException
 import ch.cassiamon.api.model.exceptions.DuplicateFacetNameFoundModelException
+import ch.cassiamon.api.schema.SchemaAccess
 
 object ConceptModelGraphCalculator {
 
-    fun calculateConceptModelGraph(schema: Schema, modelInputData: ModelInputData): ConceptModelGraph {
+    fun calculateConceptModelGraph(schema: SchemaAccess, modelInputData: ModelInputData): ConceptModelGraph {
         val nodePool = MutableConceptModelNodePool()
 
         val calculationAndValidationData = CalculationAndValidationData(

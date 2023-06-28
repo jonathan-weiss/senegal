@@ -4,17 +4,22 @@ import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.parameter.ParameterAccess
 
 abstract class DomainUnit<S: Any>(val domainUnitName: DomainUnitName, private val schemaDefinitionClass: Class<S>) {
-    fun processDomainUnit(domainUnitProcessHelper: DomainUnitProcessHelper) {
-        val domainUnitProcessData = domainUnitProcessHelper.createDomainUnitProcessData(schemaDefinitionClass)
+    fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitProcessInputDataHelper: DomainUnitProcessInputDataHelper): DomainUnitProcessInputData {
+        val domainUnitProcessInputData = domainUnitProcessInputDataHelper.createDomainUnitProcessInputData(schemaDefinitionClass)
         collectInputData(
-            parameterAccess = domainUnitProcessHelper.getParameterAccess(),
-            extensionAccess = domainUnitProcessData.getInputDataExtensionAccess(),
-            dataCollector = domainUnitProcessData.getDataCollector()
+            parameterAccess = parameterAccess,
+            extensionAccess = domainUnitProcessInputData.getInputDataExtensionAccess(),
+            dataCollector = domainUnitProcessInputData.getDataCollector()
         )
+        return domainUnitProcessInputData
+    }
+
+    fun processDomainUnitTargetFiles(parameterAccess: ParameterAccess, domainUnitProcessTargetFilesHelper: DomainUnitProcessTargetFilesHelper) {
+        val domainUnitProcessTargetFilesData = domainUnitProcessTargetFilesHelper.createDomainUnitProcessTargetFilesData(schemaDefinitionClass)
         collectTargetFiles(
-            parameterAccess = domainUnitProcessHelper.getParameterAccess(),
-            schemaInstance = domainUnitProcessData.getSchemaInstance(),
-            targetFilesCollector = domainUnitProcessData.getTargetFilesCollector()
+            parameterAccess = parameterAccess,
+            schemaInstance = domainUnitProcessTargetFilesData.getSchemaInstance(),
+            targetFilesCollector = domainUnitProcessTargetFilesData.getTargetFilesCollector()
         )
     }
 

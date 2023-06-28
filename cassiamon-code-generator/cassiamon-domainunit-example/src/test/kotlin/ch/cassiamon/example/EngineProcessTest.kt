@@ -2,6 +2,10 @@ package ch.cassiamon.example
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.DomainUnitName
+import ch.cassiamon.api.annotations.ChildConcepts
+import ch.cassiamon.api.annotations.Concept
+import ch.cassiamon.api.annotations.InputFacet
+import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.ConceptModelNode
@@ -120,17 +124,24 @@ class EngineProcessTest {
 
     }
 
+    @Schema
     interface TestSchema {
+        @ChildConcepts(TestEntityConcept::class)
         fun getEntities(): List<TestEntityConcept>
     }
 
+    @Concept("TestEntity")
     interface TestEntityConcept {
+        @InputFacet("TestEntityName")
         fun getEntityName(): String
+        @ChildConcepts(TestEntityAttributeConcept::class)
         fun getAttributes(): List<TestEntityAttributeConcept>
 
     }
 
+    @Concept("TestEntityAttribute")
     interface TestEntityAttributeConcept {
+        @InputFacet("TestEntityAttributeName")
         fun getAttributeName(): String
 
     }
@@ -149,7 +160,7 @@ class EngineProcessTest {
         override val defaultXmlPaths: Set<Path> = setOf(xmlDefinitionDirectory.resolve(xmlFilename))
 
         private val testEntityConceptName = ConceptName.of("TestEntity")
-        private val testEntityNameInputFacet = TextFacets.ofMandatoryInputAndTemplate("TestEntityName")
+        private val testEntityNameInputFacet = TextFacets.ofMandatoryInput("TestEntityName")
 
         override fun collectInputData(
             parameterAccess: ParameterAccess,
@@ -169,7 +180,7 @@ class EngineProcessTest {
 
             super.collectInputData(parameterAccess, extensionAccess, dataCollector)
 
-
+            println("Datacollector: $dataCollector")
         }
 
         override fun collectTargetFiles(

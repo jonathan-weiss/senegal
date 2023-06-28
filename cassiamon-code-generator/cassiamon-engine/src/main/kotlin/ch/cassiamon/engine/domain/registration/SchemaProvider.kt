@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.domain.registration
 
-import ch.cassiamon.engine.domain.Schema
+import ch.cassiamon.api.schema.SchemaAccess
 
 interface SchemaProvider {
 
-    fun provideSchema(): Schema
+    fun provideSchema(): SchemaAccess
 }
