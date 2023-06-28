@@ -24,5 +24,4 @@ class ProcessSession(
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
     @Deprecated("Moved to DomainUnitSession") val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
     @Deprecated("Moved to DomainUnitSession") val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector),
-    @Deprecated("Moved to DomainUnitSession") val targetFilesCollector: TargetFilesCollector = ListTargetFilesCollectorImpl()
 )

@@ -8,6 +8,7 @@ import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.TemplateFacetSchema
 import ch.cassiamon.engine.domain.registration.MutableConceptSchema
 import java.lang.reflect.Method
 
@@ -68,18 +69,21 @@ object SchemaCreator {
 
     private fun createConceptSchema(conceptName: ConceptName, conceptClass: Class<*>, parentConcept: ConceptName?): ConceptSchema {
         val inputFacets = mutableListOf<InputFacetSchema<*>>()
+        val templateFacets = mutableListOf<TemplateFacetSchema<*>>()
         conceptClass.methods.forEach { method ->
             if(hasMethodAnnotation(InputFacet::class.java, method)) {
                 val inputFacetName = FacetName.of(method.getAnnotation(InputFacet::class.java).inputFacetName)
                 // TODO add other facets
                 val inputFacet = TextFacets.MandatoryTextInputFacet.of(inputFacetName)
+                val templateFacet = TextFacets.MandatoryTextTemplateFacet.of(inputFacetName) { it.inputFacetValues.facetValue(inputFacet) }
                 inputFacets.add(InputFacetSchema(conceptName, inputFacet))
+                templateFacets.add(TemplateFacetSchema(conceptName, templateFacet, templateFacet.facetCalculationFunction))
             }
         }
 
 
 
-        return MutableConceptSchema(conceptName, parentConcept, inputFacets)
+        return MutableConceptSchema(conceptName, parentConcept, inputFacets, templateFacets)
     }
 
     private fun validateTypeAnnotation(annotation: Class<out Annotation>, classToInspect: Class<*>) {

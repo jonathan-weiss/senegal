@@ -3,9 +3,11 @@ package ch.cassiamon.engine
 import ch.cassiamon.api.registration.DomainUnit
 import ch.cassiamon.engine.domain.process.DomainUnitProcessInputDataHelperImpl
 import ch.cassiamon.engine.domain.process.DomainUnitProcessTargetFilesDataHelperImpl
+import ch.cassiamon.engine.domain.process.TargetFileCollectionProvider
 import ch.cassiamon.engine.domain.registration.SchemaProvider
 import ch.cassiamon.engine.inputsource.InputSourceDataProvider
 import ch.cassiamon.engine.model.ConceptModelGraphCalculator
+import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val processSession: ProcessSession) {
 
@@ -43,9 +45,9 @@ class EngineProcess(private val processSession: ProcessSession) {
 
     private fun processDomainUnit(domainUnit: DomainUnit<*>) {
         val domainUnitInputData = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitProcessInputDataHelperImpl(processSession))
-        // TODO here, we can create the ConceptModelGraph
 
         // resolve the raw concepts and facets to a resolved schema
+        // TODO These casts are not really a good solution. Move this into the domain unit?
         val schema = (domainUnitInputData as SchemaProvider).provideSchema()
         val modelInputData = (domainUnitInputData as InputSourceDataProvider).provideModelInputData()
 
@@ -57,9 +59,23 @@ class EngineProcess(private val processSession: ProcessSession) {
         println("conceptModelGraph: $conceptModelGraph")
 
 
-        domainUnit.processDomainUnitTargetFiles(processSession.parameterAccess, DomainUnitProcessTargetFilesDataHelperImpl(processSession, schema, conceptModelGraph))
+        val targetFilesCollector = domainUnit.processDomainUnitTargetFiles(
+            processSession.parameterAccess,
+            DomainUnitProcessTargetFilesDataHelperImpl(processSession, schema, conceptModelGraph)
+        )
 
-        println(processSession.targetFilesCollector)
+        // TODO This casts are not really a good solution. Move this into the domain unit?
+        val targetFilesWithContent = (targetFilesCollector as TargetFileCollectionProvider).getTargetFiles()
+
+
+        println("targetFiles: $targetFilesWithContent")
+
+
+        targetFilesWithContent.forEach { targetFileWithContent ->
+            println("File to write: ${targetFileWithContent.targetFile} (${targetFileWithContent.targetFile.absolutePathString()})")
+            processSession.fileSystemAccess.writeFile(targetFileWithContent.targetFile, targetFileWithContent.fileContent)
+        }
+
 
     }
 }

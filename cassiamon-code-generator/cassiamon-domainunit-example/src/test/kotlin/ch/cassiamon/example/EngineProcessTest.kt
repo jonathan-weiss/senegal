@@ -179,8 +179,6 @@ class EngineProcessTest {
                 .attach()
 
             super.collectInputData(parameterAccess, extensionAccess, dataCollector)
-
-            println("Datacollector: $dataCollector")
         }
 
         override fun collectTargetFiles(

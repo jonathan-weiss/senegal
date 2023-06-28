@@ -9,7 +9,7 @@ import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
 class ConceptInstanceInvocationHandler(private val conceptModelNode: ConceptModelNode) : InvocationHandler {
-    override fun invoke(proxy: Any?, method: Method?, args: Array<out Any>?): Any {
+    override fun invoke(proxy: Any?, method: Method?, args: Array<out Any>?): Any? {
         if(InvocationHandlerHelper.isChildConceptAnnotated(method)) {
             val conceptClass = InvocationHandlerHelper.getChildConceptsClazz(method)
             val conceptName = InvocationHandlerHelper.getChildConceptsName(method)
@@ -20,8 +20,7 @@ class ConceptInstanceInvocationHandler(private val conceptModelNode: ConceptMode
 
         if(InvocationHandlerHelper.isInputFacetAnnotated(method)) {
             val facetName = InvocationHandlerHelper.getInputFacetName(method)
-            return "Value of ${facetName.name}"
-
+            return conceptModelNode.templateFacetValues.facetValue(facetName.name)
         }
 
         throw IllegalStateException("Method $method not annotated.")
