@@ -5,8 +5,8 @@ import java.util.*
 
 object DomainUnitFinder {
 
-    fun findAllDomainUnits(): List<DomainUnit<*>> {
-        val domainUnitServiceLoader: ServiceLoader<DomainUnit<*>> = ServiceLoader.load(DomainUnit::class.java)
+    fun findAllDomainUnits(): List<DomainUnit<*, *>> {
+        val domainUnitServiceLoader: ServiceLoader<DomainUnit<*, *>> = ServiceLoader.load(DomainUnit::class.java)
 
         return domainUnitServiceLoader.toList()
     }

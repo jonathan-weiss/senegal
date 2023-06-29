@@ -6,7 +6,7 @@ import ch.cassiamon.api.parameter.ParameterAccess
 import java.nio.file.Paths
 
 abstract class DefaultDomainUnit<S: Any>(domainUnitName: DomainUnitName, schemaDefinitionClass: Class<S>)
-    : DomainUnit<S>(domainUnitName, schemaDefinitionClass) {
+    : DomainUnit<S, InputSourceDataCollector>(domainUnitName, schemaDefinitionClass, InputSourceDataCollector::class.java) {
     private val defaultInputExtensionName = ExtensionName.of("XmlSchemagicInputExtension")
     open val defaultXmlPaths = setOf(Paths.get("input-data").resolve("input-data.xml"))
 

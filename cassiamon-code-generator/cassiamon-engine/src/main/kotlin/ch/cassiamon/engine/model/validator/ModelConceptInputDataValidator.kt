@@ -1,8 +1,7 @@
 package ch.cassiamon.engine.model.validator
 
-import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
+import ch.cassiamon.api.registration.ModelConceptInputDataEntry
 import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.api.schema.InputFacetSchema
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
@@ -46,17 +45,16 @@ object ModelConceptInputDataValidator {
                 null
             }
 
-// TODO Disabled due to not using same Facet constants
-//            if(facetValue == null && inputFacetSchema.inputFacet.isMandatoryInputFacetValue) {
-//                throw InvalidFacetConfigurationModelException(
-//                    conceptName = entry.conceptName,
-//                    conceptIdentifier = entry.conceptIdentifier,
-//                    facetName = inputFacetSchema.inputFacet.facetName,
-//                    reason = "Mandatory facet with facet name '${inputFacetSchema.inputFacet.facetName.name}' is missing. "
-//                )
-//            }
+            if(facetValue == null && inputFacetSchema.inputFacet.isMandatoryInputFacetValue) {
+                throw InvalidFacetConfigurationModelException(
+                    conceptName = entry.conceptName,
+                    conceptIdentifier = entry.conceptIdentifier,
+                    facetName = inputFacetSchema.inputFacet.facetName,
+                    reason = "Mandatory facet with facet name '${inputFacetSchema.inputFacet.facetName.name}' is missing. "
+                )
+            }
 
-//            validateValueAgainstInputFacetSchema(inputFacetSchema, facetValue, entry)
+            validateValueAgainstInputFacetSchema(inputFacetSchema, facetValue, entry)
 
         }
     }

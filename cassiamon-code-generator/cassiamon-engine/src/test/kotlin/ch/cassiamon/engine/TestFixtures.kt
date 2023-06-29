@@ -1,6 +1,6 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.inputsource.ModelInputData
+import ch.cassiamon.api.registration.ModelInputData
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
 import ch.cassiamon.engine.domain.Schema

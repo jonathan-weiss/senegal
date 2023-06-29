@@ -3,14 +3,19 @@ package ch.cassiamon.engine.inputsource
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.*
 import ch.cassiamon.api.model.facets.InputFacetValue
-import ch.cassiamon.api.registration.InputSourceConceptFacetValueBuilder
-import ch.cassiamon.api.registration.InputSourceDataCollector
+import ch.cassiamon.api.registration.*
 
 class ModelInputDataCollector: InputSourceDataCollector {
-    private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()
+    @Deprecated("Old input facets") private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()
+    private val conceptEntryList: MutableList<ConceptEntry> = mutableListOf()
 
+    @Deprecated("Old input facets")
     fun provideModelInputData(): ModelInputData {
         return ModelInputData(entries.toList())
+    }
+
+    fun provideConceptEntries(): ConceptEntries {
+        return ConceptEntries(conceptEntryList.toList())
     }
 
     override fun newConceptData(conceptName: ConceptName, conceptIdentifier: ConceptIdentifier, parentConceptIdentifier: ConceptIdentifier?): ModelConceptInputDataEntryBuilder {
@@ -23,11 +28,19 @@ class ModelInputDataCollector: InputSourceDataCollector {
         private val parentConceptIdentifier: ConceptIdentifier?,
         
     ): InputSourceConceptFacetValueBuilder {
-        private val facetValueCollector: InputFacetValueCollector = InputFacetValueCollector()
+        @Deprecated("Old input facets") private val deprecatedFacetValueCollector: InputFacetValueCollector = InputFacetValueCollector()
+        private val facetValueCollector: FacetValueCollector = FacetValueCollector()
+
         private var isAttached: Boolean = false
 
         override fun <T> addFacetValue(facetValue: InputFacetValue<T>): ModelConceptInputDataEntryBuilder {
-            facetValueCollector.addFacetValue(facetValue)
+            deprecatedFacetValueCollector.addFacetValue(facetValue)
+            addFacetValue(facetValue.inputFacet.facetName, facetValue.facetValue) // backup
+            return this
+        }
+
+        override fun addFacetValue(facetName: FacetName, facetValue: Any?): InputSourceConceptFacetValueBuilder {
+            facetValueCollector.addFacetValue(facetName, facetValue)
             return this
         }
 
@@ -35,14 +48,30 @@ class ModelInputDataCollector: InputSourceDataCollector {
             if(isAttached) {
                 throw IllegalStateException("Can not attach this ModelConceptInputDataEntry to collection, as already attached.")
             }
-            isAttached = true;
+            isAttached = true
+
+            val entry =  ConceptEntry(
+                conceptName = conceptName,
+                conceptIdentifier = conceptIdentifier,
+                parentConceptIdentifier = parentConceptIdentifier,
+                facetValues = facetValueCollector.getFacetValues(),
+            )
+            this@ModelInputDataCollector.conceptEntryList.add(entry)
+
+            attachAsModelConceptInputDataEntry()
+
+        }
+
+        @Deprecated("old facet style")
+        private fun attachAsModelConceptInputDataEntry() {
             val entry =  ModelConceptInputDataEntry(
                 conceptName = conceptName,
                 conceptIdentifier = conceptIdentifier,
                 parentConceptIdentifier = parentConceptIdentifier,
-                inputFacetValueAccess = facetValueCollector
+                inputFacetValueAccess = deprecatedFacetValueCollector
             )
             this@ModelInputDataCollector.entries.add(entry)
+
         }
 
     }

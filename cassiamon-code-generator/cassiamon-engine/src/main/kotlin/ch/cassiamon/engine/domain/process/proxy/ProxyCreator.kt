@@ -1,18 +1,17 @@
 package ch.cassiamon.engine.domain.process.proxy
 
-import ch.cassiamon.api.model.ConceptModelGraph
-import ch.cassiamon.api.model.ConceptModelNode
+import ch.cassiamon.engine.domain.process.Concepts
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 
 object ProxyCreator {
 
-    fun <S:Any> createSchemaProxy(schemaDefinitionClass: Class<S>, conceptModelGraph: ConceptModelGraph): S {
-        return createProxy(schemaDefinitionClass, SchemaInstanceInvocationHandler(conceptModelGraph))
+    fun <S:Any> createSchemaProxy(schemaDefinitionClass: Class<S>, conceptEntries: Concepts): S {
+        return createProxy(schemaDefinitionClass, SchemaInstanceInvocationHandler(conceptEntries))
     }
 
-    fun <C:Any> createConceptProxy(conceptDefinitionClass: Class<C>, conceptModelNode: ConceptModelNode): C {
-        return createProxy(conceptDefinitionClass, ConceptInstanceInvocationHandler(conceptModelNode))
+    fun <C:Any> createConceptProxy(conceptDefinitionClass: Class<C>, conceptEntry: Concepts.ConceptEntry): C {
+        return createProxy(conceptDefinitionClass, ConceptInstanceInvocationHandler(conceptEntry))
     }
 
     private fun <X:Any> createProxy(definitionClass: Class<X>, invocationHandler: InvocationHandler): X {

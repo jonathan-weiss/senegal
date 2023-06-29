@@ -1,11 +1,10 @@
 package ch.cassiamon.engine.model
 
-import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
-import ch.cassiamon.engine.inputsource.ModelInputData
+import ch.cassiamon.api.registration.ModelConceptInputDataEntry
+import ch.cassiamon.api.registration.ModelInputData
 import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
 import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
-import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.ConceptModelNode

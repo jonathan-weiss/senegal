@@ -13,7 +13,7 @@ import ch.cassiamon.api.registration.TargetFilesCollector
 import ch.cassiamon.engine.domain.process.ListTargetFilesCollectorImpl
 
 class ProcessSession(
-    val domainUnits: List<DomainUnit<*>> = emptyList(),
+    val domainUnits: List<DomainUnit<*, *>> = emptyList(),
     val fileSystemAccess: FileSystemAccess = PhysicalFilesFileSystemAccess(),
     val loggerFacade: LoggerFacade = JavaUtilLoggerFacade(fileSystemAccess),
     private val parameterSources: List<ParameterSource> = listOf(

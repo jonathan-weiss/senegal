@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.model.validator
 
 import ch.cassiamon.engine.TestFixtures
-import ch.cassiamon.engine.inputsource.ModelConceptInputDataEntry
+import ch.cassiamon.api.registration.ModelConceptInputDataEntry
 import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.engine.domain.Schema
 import ch.cassiamon.api.ConceptName

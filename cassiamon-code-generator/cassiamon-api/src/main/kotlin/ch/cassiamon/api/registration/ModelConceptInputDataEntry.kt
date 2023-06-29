@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.inputsource
+package ch.cassiamon.api.registration
 
 import ch.cassiamon.api.model.InputFacetValueAccess
 import ch.cassiamon.api.model.ConceptIdentifier

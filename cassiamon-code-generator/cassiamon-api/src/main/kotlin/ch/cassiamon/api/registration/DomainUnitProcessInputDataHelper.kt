@@ -1,5 +1,5 @@
 package ch.cassiamon.api.registration
 
 interface DomainUnitProcessInputDataHelper {
-    fun <S: Any> createDomainUnitProcessInputData(schemaDefinitionClass: Class<S>): DomainUnitProcessInputData
+    fun <I: Any> createDomainUnitProcessInputData(inputDefinitionClass: Class<I>): DomainUnitProcessInputData<I>
 }

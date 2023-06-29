@@ -22,6 +22,7 @@ import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
 import ch.cassiamon.engine.parameters.StaticParameterSource
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 import java.nio.file.Paths
