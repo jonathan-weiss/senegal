@@ -1,10 +1,11 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.model.facets.*
+import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.FacetTypeEnum
 import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.engine.domain.schema.FacetSchemaImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -65,26 +66,26 @@ internal class XmlDomSchemaCreatorTest {
         assertEquals(expectedXml, schemaContent)
     }
 
-    private val testEntityConceptName: ConceptName = ConceptName.of("TestEntity")
-    private val testEntityNameInputFacet: MandatoryInputFacet<TextFacetKotlinType> = TextFacets.ofMandatoryInput("TestEntityName")
+    private val testEntityConceptName = ConceptName.of("TestEntity")
+    private val testEntityNameFacetName = FacetName.of("TestEntityName")
 
-    private val testEntityAttributeConceptName: ConceptName = ConceptName.of("TestEntityAttribute")
-    private val testEntityAttributeNameInputFacet: MandatoryInputFacet<TextFacetKotlinType> = TextFacets.ofMandatoryInput("TestEntityAttributeName")
+    private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
+    private val testEntityAttributeNameFacetName = FacetName.of("TestEntityAttributeName")
 
     private fun createSchema(): SchemaAccess {
         val testEntityConcept: ConceptSchema = SimpleConceptSchema(
             conceptName = testEntityConceptName,
             parentConceptName = null,
-            inputFacets = listOf(
-                InputFacetSchema(testEntityConceptName, testEntityNameInputFacet),
+            facets = listOf(
+                FacetSchemaImpl(testEntityNameFacetName, FacetTypeEnum.TEXT, mandatory = true),
             )
         )
 
         val testEntityAttributeConcept: ConceptSchema = SimpleConceptSchema(
             conceptName = testEntityAttributeConceptName,
             parentConceptName = testEntityConceptName,
-            inputFacets = listOf(
-                InputFacetSchema(testEntityAttributeConceptName, testEntityAttributeNameInputFacet),
+            facets = listOf(
+                FacetSchemaImpl(testEntityAttributeNameFacetName, FacetTypeEnum.TEXT, mandatory = true),
             )
         )
 

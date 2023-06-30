@@ -2,27 +2,19 @@ package ch.cassiamon.example
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.DomainUnitName
+import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.model.ConceptIdentifier
-import ch.cassiamon.api.model.ConceptModelGraph
-import ch.cassiamon.api.model.ConceptModelNode
-import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.*
-import ch.cassiamon.api.template.TargetGeneratedFileWithModel
-import ch.cassiamon.api.template.TemplateRenderer
-import ch.cassiamon.api.template.helper.StringContentByteIterator
-import ch.cassiamon.domain.example.ExampleExtensions
-import ch.cassiamon.domain.example.ExampleTemplate
 import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
 import ch.cassiamon.engine.parameters.StaticParameterSource
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -161,22 +153,22 @@ class EngineProcessTest {
         override val defaultXmlPaths: Set<Path> = setOf(xmlDefinitionDirectory.resolve(xmlFilename))
 
         private val testEntityConceptName = ConceptName.of("TestEntity")
-        private val testEntityNameInputFacet = TextFacets.ofMandatoryInput("TestEntityName")
+        private val testEntityNameFacetName = FacetName.of("TestEntityName")
 
         override fun collectInputData(
             parameterAccess: ParameterAccess,
             extensionAccess: InputSourceExtensionAccess,
-            dataCollector: InputSourceDataCollector
+            dataCollector: DefaultConceptDataCollector
         ) {
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(testEntityNameInputFacet.facetName,  "MeinTestkonzeptName")
+                .addFacetValue(testEntityNameFacetName,  "MeinTestkonzeptName")
                 .attach()
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testEntityNameInputFacet.facetName,  "MeinZweitesTestkonzeptName")
+                .addFacetValue(testEntityNameFacetName,  "MeinZweitesTestkonzeptName")
                 .attach()
 
             super.collectInputData(parameterAccess, extensionAccess, dataCollector)

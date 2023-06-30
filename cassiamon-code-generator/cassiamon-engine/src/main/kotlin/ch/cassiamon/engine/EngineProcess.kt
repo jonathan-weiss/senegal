@@ -2,6 +2,7 @@ package ch.cassiamon.engine
 
 import ch.cassiamon.api.registration.DomainUnit
 import ch.cassiamon.engine.domain.process.*
+import ch.cassiamon.engine.domain.process.conceptresolver.ConceptResolver
 import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val processSession: ProcessSession) {
@@ -19,7 +20,7 @@ class EngineProcess(private val processSession: ProcessSession) {
         println("Schema: $schema")
         println("InputData: $conceptEntries")
 
-        val concepts = ConceptsValidator.validateAndResolveConcepts(conceptEntries)
+        val concepts = ConceptResolver.validateAndResolveConcepts(conceptEntries)
 
         // traverse whole model and transform (adapt/calculate/transform) the missing model values
         // val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(schema, conceptEntries)
@@ -29,7 +30,7 @@ class EngineProcess(private val processSession: ProcessSession) {
 
         val targetFilesCollector = domainUnit.processDomainUnitTargetFiles(
             processSession.parameterAccess,
-            DomainUnitProcessTargetFilesDataHelperImpl(processSession, schema, concepts)
+            DomainUnitProcessTargetFilesDataHelperImpl(concepts)
         )
 
         // TODO This casts are not really a good solution. Move this into the domain unit?

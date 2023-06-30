@@ -5,7 +5,6 @@ import ch.cassiamon.api.extensions.ExtensionName
 import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
 import ch.cassiamon.api.extensions.inputsource.InputSourceExtensionInitialization
 import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
-import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
@@ -17,11 +16,6 @@ class ExtensionAccessHolder(
     private val parameterAccess: ParameterAccess,
     private val conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
 ): ExtensionAccess {
-
-    private val classpathTemplateExtensions: Map<ExtensionName, ClasspathTemplateExtension> =
-        ExtensionFinder.findAllClasspathTemplateExtensions()
-            .onEach { initializeExtension(it) }
-            .associateBy { it.getExtensionName() }
 
     private val filesInputSourceExtensions: Map<ExtensionName, FilesInputSourceExtension> =
         ExtensionFinder.findAllFilesInputSourceExtensions()
@@ -47,10 +41,6 @@ class ExtensionAccessHolder(
     fun initializeSchema(schemaAccess: SchemaAccess) {
         filesInputSourceExtensions.values.forEach { it.initializeSchema(schemaAccess) }
     }
-    override fun getClasspathTemplateExtension(extensionName: ExtensionName): ClasspathTemplateExtension {
-        return classpathTemplateExtensions[extensionName] ?: throwExtensionNotFound(extensionName)
-    }
-
     override fun getFilesInputSourceExtension(extensionName: ExtensionName): FilesInputSourceExtension {
         return filesInputSourceExtensions[extensionName] ?: throwExtensionNotFound(extensionName)
     }

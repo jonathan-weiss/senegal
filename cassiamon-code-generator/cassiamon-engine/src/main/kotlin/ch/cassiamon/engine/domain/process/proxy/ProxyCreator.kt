@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.domain.process.proxy
 
 import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
-import ch.cassiamon.engine.domain.process.Concepts
+import ch.cassiamon.engine.domain.process.conceptresolver.ResolvedConcepts
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 
@@ -15,12 +15,12 @@ object ProxyCreator {
         return createProxy(dataCollectorBuildDefinitionClass, DataCollectorConceptBuilderInvocationHandler(conceptDataBuilder))
     }
 
-    fun <S:Any> createSchemaProxy(schemaDefinitionClass: Class<S>, conceptEntries: Concepts): S {
+    fun <S:Any> createSchemaProxy(schemaDefinitionClass: Class<S>, conceptEntries: ResolvedConcepts): S {
         return createProxy(schemaDefinitionClass, SchemaInstanceInvocationHandler(conceptEntries))
     }
 
-    fun <C:Any> createSchemaConceptProxy(conceptDefinitionClass: Class<C>, conceptEntry: Concepts.ConceptEntry): C {
-        return createProxy(conceptDefinitionClass, SchemaConceptInstanceInvocationHandler(conceptEntry))
+    fun <C:Any> createSchemaConceptProxy(conceptDefinitionClass: Class<C>, resolvedConcept: ResolvedConcepts.ResolvedConcept): C {
+        return createProxy(conceptDefinitionClass, SchemaConceptInstanceInvocationHandler(resolvedConcept))
     }
 
     private fun <X:Any> createProxy(definitionClass: Class<X>, invocationHandler: InvocationHandler): X {

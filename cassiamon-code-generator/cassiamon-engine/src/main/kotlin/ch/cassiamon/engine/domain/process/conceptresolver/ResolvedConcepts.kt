@@ -1,31 +1,31 @@
-package ch.cassiamon.engine.domain.process
+package ch.cassiamon.engine.domain.process.conceptresolver
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.ConceptIdentifier
 
-class Concepts(
+class ResolvedConcepts(
     conceptData: List<ConceptEntryData>
 ) {
-    private val concepts: List<ConceptEntry> = conceptData.map { ConceptEntry(it) }
-    fun conceptsByConceptName(conceptName: ConceptName): List<ConceptEntry> {
+    private val concepts: List<ResolvedConcept> = conceptData.map { ResolvedConcept(it) }
+    fun conceptsByConceptName(conceptName: ConceptName): List<ResolvedConcept> {
         return concepts
             .filter { it.conceptName == conceptName }
     }
 
-    private fun childConceptsByConceptName(conceptName: ConceptName, parentConceptIdentifier: ConceptIdentifier,): List<ConceptEntry> {
+    private fun childConceptsByConceptName(conceptName: ConceptName, parentConceptIdentifier: ConceptIdentifier,): List<ResolvedConcept> {
         return conceptsByConceptName(conceptName)
             .filter { it.parentConceptIdentifier != null && it.parentConceptIdentifier == parentConceptIdentifier }
     }
 
-    inner class ConceptEntry(conceptData: ConceptEntryData, ) {
+    inner class ResolvedConcept(conceptData: ConceptEntryData, ) {
         val conceptName: ConceptName = conceptData.conceptName
         val conceptIdentifier: ConceptIdentifier = conceptData.conceptIdentifier
         val parentConceptIdentifier: ConceptIdentifier? = conceptData.parentConceptIdentifier
         val facetValues: Map<FacetName, Any?> = conceptData.facetValues
 
 
-        fun children(conceptName: ConceptName): List<ConceptEntry> {
+        fun children(conceptName: ConceptName): List<ResolvedConcept> {
             return childConceptsByConceptName(conceptName, conceptIdentifier)
         }
     }

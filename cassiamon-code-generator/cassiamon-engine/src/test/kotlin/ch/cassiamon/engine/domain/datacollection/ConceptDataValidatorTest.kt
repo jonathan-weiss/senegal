@@ -12,7 +12,7 @@ import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.api.registration.ConceptData
 import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.engine.domain.SchemaCreator
+import ch.cassiamon.engine.domain.schema.SchemaCreator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.reflect.KClass

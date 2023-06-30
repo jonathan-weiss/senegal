@@ -6,6 +6,8 @@ import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
+import ch.cassiamon.engine.domain.schema.MalformedSchemaException
+import ch.cassiamon.engine.domain.schema.SchemaCreator
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

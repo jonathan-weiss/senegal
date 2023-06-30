@@ -1,21 +1,20 @@
-package ch.cassiamon.engine.domain
+package ch.cassiamon.engine.domain.schema
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
-import ch.cassiamon.api.model.facets.TextFacets
+import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.InputFacetSchema
-import ch.cassiamon.api.schema.TemplateFacetSchema
-import ch.cassiamon.engine.domain.registration.MutableConceptSchema
+import ch.cassiamon.api.schema.FacetSchema
+import ch.cassiamon.api.schema.FacetTypeEnum
 import java.lang.reflect.Method
 
 object SchemaCreator {
 
-    fun createSchemaFromSchemaDefinitionClass(schemaDefinitionClass: Class<*>): Schema {
-        validateTypeAnnotation(annotation = ch.cassiamon.api.annotations.Schema::class.java, classToInspect = schemaDefinitionClass)
+    fun createSchemaFromSchemaDefinitionClass(schemaDefinitionClass: Class<*>): SchemaImpl {
+        validateTypeAnnotation(annotation = Schema::class.java, classToInspect = schemaDefinitionClass)
 
         val concepts: MutableMap<ConceptName, ConceptSchema> = mutableMapOf()
 
@@ -30,7 +29,7 @@ object SchemaCreator {
             }
         }
 
-        return Schema(concepts)
+        return SchemaImpl(concepts)
     }
 
     private fun validateChildConceptMethod(definitionClass: Class<*>, method: Method) {
@@ -68,23 +67,23 @@ object SchemaCreator {
     }
 
     private fun createConceptSchema(conceptName: ConceptName, conceptClass: Class<*>, parentConcept: ConceptName?): ConceptSchema {
-        val inputFacets = mutableListOf<InputFacetSchema<*>>()
-        val templateFacets = mutableListOf<TemplateFacetSchema<*>>()
+        val facets = mutableListOf<FacetSchema>()
         conceptClass.methods.forEach { method ->
             if(hasMethodAnnotation(InputFacet::class.java, method)) {
                 val inputFacetName = FacetName.of(method.getAnnotation(InputFacet::class.java).inputFacetName)
+
+
                 // TODO add other facets
                 // TODO check if already has this facet name
-                val inputFacet = TextFacets.MandatoryTextInputFacet.of(inputFacetName)
-                val templateFacet = TextFacets.MandatoryTextTemplateFacet.of(inputFacetName) { it.inputFacetValues.facetValue(inputFacet) }
-                inputFacets.add(InputFacetSchema(conceptName, inputFacet))
-                templateFacets.add(TemplateFacetSchema(conceptName, templateFacet, templateFacet.facetCalculationFunction))
+
+                val facet = FacetSchemaImpl(inputFacetName, FacetTypeEnum.TEXT, mandatory = true)
+                facets.add(facet)
             }
         }
 
 
 
-        return MutableConceptSchema(conceptName, parentConcept, inputFacets, templateFacets)
+        return ConceptSchemaImpl(conceptName, parentConcept, facets)
     }
 
     private fun validateTypeAnnotation(annotation: Class<out Annotation>, classToInspect: Class<*>) {

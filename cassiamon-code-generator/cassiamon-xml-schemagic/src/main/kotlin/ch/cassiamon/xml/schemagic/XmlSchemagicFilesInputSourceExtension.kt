@@ -6,7 +6,6 @@ import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.registration.InputSourceDataCollector
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.SaxParserHandler
 import ch.cassiamon.xml.schemagic.schemacreator.XmlSchemaInitializer

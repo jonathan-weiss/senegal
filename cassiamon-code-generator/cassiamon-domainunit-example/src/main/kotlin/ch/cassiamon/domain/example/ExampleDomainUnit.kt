@@ -1,14 +1,9 @@
 package ch.cassiamon.domain.example
 
 import ch.cassiamon.api.*
-import ch.cassiamon.api.extensions.ClasspathLocation
 import ch.cassiamon.api.model.ConceptIdentifier
-import ch.cassiamon.api.model.ConceptModelNode
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.*
-import ch.cassiamon.api.template.helper.StringContentByteIterator
-import ch.cassiamon.api.template.TargetGeneratedFileWithModel
-import ch.cassiamon.api.template.TemplateRenderer
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -43,18 +38,18 @@ class ExampleDomainUnit: DefaultDomainUnit<ExampleDomainSchema>(
     override fun collectInputData(
         parameterAccess: ParameterAccess,
         extensionAccess: InputSourceExtensionAccess,
-        dataCollector: InputSourceDataCollector
+        dataCollector: DefaultConceptDataCollector
     ) {
         super.collectInputData(parameterAccess, extensionAccess, dataCollector)
 
         dataCollector
-            .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
-            .addFacetValue(ExampleEntityConcept.nameFacet.facetName,  "MeinTestkonzept-Name")
+            .newConceptData(ExampleEntitySchemaConstants.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
+            .addFacetValue(ExampleEntitySchemaConstants.exampleEntityNameFacetName,  "MeinTestkonzept-Name")
             .attach()
 
         dataCollector
-            .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-            .addFacetValue(ExampleEntityConcept.nameFacet.facetName,  "MeinZweitesTestkonzept-Name")
+            .newConceptData(ExampleEntitySchemaConstants.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
+            .addFacetValue(ExampleEntitySchemaConstants.exampleEntityNameFacetName,  "MeinZweitesTestkonzept-Name")
             .attach()
 
     }

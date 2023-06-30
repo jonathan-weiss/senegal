@@ -7,7 +7,7 @@ import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.engine.domain.SchemaCreator
+import ch.cassiamon.engine.domain.schema.SchemaCreator
 import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade

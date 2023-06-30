@@ -1,8 +1,9 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.model.facets.*
 import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.schema.FacetSchema
+import ch.cassiamon.api.schema.FacetTypeEnum
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
 import org.w3c.dom.Document
@@ -53,8 +54,8 @@ object XmlDomSchemaCreator {
         val complexType = createAndAttachXsdElement(document, schemaElement, "complexType")
         setElementXsdAttribute(complexType, "name", "configurationType")
         schema.allConcepts().forEach { conceptNode ->
-            conceptNode.inputFacets.forEach { inputFacetSchema ->
-                    complexType.appendChild(createFacetAttributeReference(document, inputFacetSchema.inputFacet.facetName))
+            conceptNode.facets.forEach { facetSchema ->
+                    complexType.appendChild(createFacetAttributeReference(document, facetSchema.facetName))
                 }
         }
     }
@@ -101,8 +102,8 @@ object XmlDomSchemaCreator {
                 setElementXsdAttribute(elementRef, "name", enclosedConceptXmlSchemaName)
                 setElementXsdAttribute(elementRef, "type", "${enclosedConceptXmlSchemaName}Type")
             }
-            conceptSchema.inputFacets.forEach { inputFacetSchema ->
-                    complexType.appendChild(createFacetAttributeReference(document, inputFacetSchema.inputFacet.facetName))
+            conceptSchema.facets.forEach { facetSchema ->
+                    complexType.appendChild(createFacetAttributeReference(document, facetSchema.facetName))
                 }
         }
     }
@@ -110,21 +111,21 @@ object XmlDomSchemaCreator {
     private fun attachAllConceptAttributes(document: Document, schemaElement: Element, schema: SchemaAccess) {
         attachComment(document, schemaElement, " ALL ATTRIBUTES ")
         schema.allConcepts().forEach { conceptNode ->
-            conceptNode.inputFacets
-                .forEach { inputFacetSchema ->
-                    schemaElement.appendChild(createFacetAttributeElement(document, inputFacetSchema.inputFacet.facetName, inputFacetSchema.inputFacet))
+            conceptNode.facets
+                .forEach { facetSchema ->
+                    schemaElement.appendChild(createFacetAttributeElement(document, facetSchema.facetName, facetSchema))
                 }
         }
     }
 
-    private fun createFacetAttributeElement(document: Document, inputFacetName: FacetName, facet: InputFacet<*>): Element {
+    private fun createFacetAttributeElement(document: Document, facetName: FacetName, facetSchema: FacetSchema): Element {
         val attributeGroupElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeGroupElement, "name", inputFacetName.toXmlAttributeName())
+        setElementXsdAttribute(attributeGroupElement, "name", facetName.toXmlAttributeName())
 
         val attributeElement = createXsdElement(document, "attribute")
-        setElementXsdAttribute(attributeElement, "name", inputFacetName.toXmlAttributeName())
+        setElementXsdAttribute(attributeElement, "name", facetName.toXmlAttributeName())
 
-        when(facet) {
+        when(facetSchema.facetType) {
 
 
 
@@ -137,22 +138,17 @@ object XmlDomSchemaCreator {
 //                    setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
 //                }
 //            }
-            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
-            is TextFacets.MandatoryTextInputAndTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is NumberFacets.MandatoryNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
-            is TextFacets.MandatoryTextInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
-            is NumberFacets.OptionalNumberInputFacet -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            FacetTypeEnum.TEXT -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
+            FacetTypeEnum.NUMBER -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
         }
 
         attributeGroupElement.appendChild(attributeElement)
         return attributeGroupElement
     }
 
-    private fun createFacetAttributeReference(document: Document, inputFacetName: FacetName): Element {
+    private fun createFacetAttributeReference(document: Document, facetName: FacetName): Element {
         val attributeElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeElement, "ref", inputFacetName.toXmlAttributeName())
+        setElementXsdAttribute(attributeElement, "ref", facetName.toXmlAttributeName())
         return attributeElement
     }
 

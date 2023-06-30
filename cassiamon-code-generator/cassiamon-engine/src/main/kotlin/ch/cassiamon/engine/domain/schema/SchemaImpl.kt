@@ -1,10 +1,10 @@
-package ch.cassiamon.engine.domain
+package ch.cassiamon.engine.domain.schema
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.SchemaAccess
 
-data class Schema(
+data class SchemaImpl(
     private val concepts: Map<ConceptName, ConceptSchema>
 ): SchemaAccess {
     override fun conceptByConceptName(conceptName: ConceptName): ConceptSchema {

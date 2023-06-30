@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.domain.registration
+package ch.cassiamon.engine.domain.schema
 
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.schema.FacetSchema

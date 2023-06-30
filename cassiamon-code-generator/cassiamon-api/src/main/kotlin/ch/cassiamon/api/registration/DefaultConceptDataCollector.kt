@@ -5,12 +5,12 @@ import ch.cassiamon.api.annotations.datacollector.*
 import ch.cassiamon.api.model.ConceptIdentifier
 
 @DataCollector
-interface InputSourceDataCollector {
+interface DefaultConceptDataCollector {
 
-    @AddConcept(clazz = InputSourceConceptFacetValueBuilder::class)
+    @AddConcept(clazz = DefaultConceptDataCollectorFacetValueBuilder::class)
     fun newConceptData(
         @ConceptNameValue conceptName: ConceptName,
         @ConceptIdentifierValue conceptIdentifier: ConceptIdentifier,
-        @ParentConceptIdentifierValue parentConceptIdentifier: ConceptIdentifier? = null): InputSourceConceptFacetValueBuilder
+        @ParentConceptIdentifierValue parentConceptIdentifier: ConceptIdentifier? = null): DefaultConceptDataCollectorFacetValueBuilder
 
 }

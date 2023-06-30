@@ -2,15 +2,12 @@ package ch.cassiamon.engine.domain.process
 
 import ch.cassiamon.api.registration.DomainUnitProcessTargetFilesData
 import ch.cassiamon.api.registration.TargetFilesCollector
-import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.engine.ProcessSession
+import ch.cassiamon.engine.domain.process.conceptresolver.ResolvedConcepts
 import ch.cassiamon.engine.domain.process.proxy.ProxyCreator
 
 class DomainUnitProcessTargetFilesDataImpl<S: Any>(
-    processSession: ProcessSession,
-    private val schemaDefinitionClass: Class<S>,
-    schema: SchemaAccess,
-    conceptEntries: Concepts
+    schemaDefinitionClass: Class<S>,
+    conceptEntries: ResolvedConcepts
 ): DomainUnitProcessTargetFilesData<S> {
 
 
