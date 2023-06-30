@@ -3,9 +3,8 @@ package ch.cassiamon.xml.schemagic.schemacreator
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.facets.TemplateFacet
-import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.InputFacetSchema
-import ch.cassiamon.api.schema.TemplateFacetSchema
+import ch.cassiamon.api.schema.*
+import ch.cassiamon.engine.domain.registration.FacetSchemaImpl
 
 class SimpleConceptSchema(
     override val conceptName: ConceptName,
@@ -19,4 +18,15 @@ class SimpleConceptSchema(
 
     override val facetNames: List<FacetName>
         get() = inputFacets.map { it.inputFacet.facetName }
+
+    override val facets: List<FacetSchema>
+        get() = inputFacets.map {
+            FacetSchemaImpl(
+                facetName = it.inputFacet.facetName,
+                facetType = FacetTypeEnum.TEXT,
+                mandatory = it.inputFacet.isMandatoryInputFacetValue
+            )
+        }
+
+
 }

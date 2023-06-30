@@ -8,7 +8,7 @@ import ch.cassiamon.api.model.facets.InputFacet
 import ch.cassiamon.api.model.facets.NumberFacets
 import ch.cassiamon.api.model.facets.TextFacets
 import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.InputFacetSchema
+import ch.cassiamon.api.schema.FacetSchema
 import ch.cassiamon.api.schema.SchemaAccess
 
 object ConceptDataValidator {
@@ -34,49 +34,37 @@ object ConceptDataValidator {
                     conceptIdentifier = conceptData.conceptIdentifier,
                     facetName = facetName,
                     reason = "Facet with facet name '${facetName.name}' is not known by the schema. " +
-                            "Known facets are: [${schemaConcept.inputFacets.joinToString { it.inputFacet.facetName.name }}]"
+                            "Known facets are: [${schemaConcept.facetNames.joinToString { it.name }}]"
                 )
             }
         }
 
         // iterate through all schema facets to find missing ones/invalid ones
-        schemaConcept.inputFacets.forEach { inputFacetSchema ->
-            val facetValue = conceptData.facets[inputFacetSchema.inputFacet.facetName]
+        schemaConcept.facets.forEach { facetSchema ->
+            val facetValue = conceptData.facets[facetSchema.facetName]
 
             // TODO This seems to be a duplication in method #validateValueAgainstInputFacet
-            if(facetValue == null && inputFacetSchema.inputFacet.isMandatoryInputFacetValue) {
+            if(facetValue == null && facetSchema.mandatory) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = conceptData.conceptName,
                     conceptIdentifier = conceptData.conceptIdentifier,
-                    facetName = inputFacetSchema.inputFacet.facetName,
-                    reason = "Mandatory facet with facet name '${inputFacetSchema.inputFacet.facetName.name}' is missing. "
+                    facetName = facetSchema.facetName,
+                    reason = "Mandatory facet with facet name '${facetSchema.facetName.name}' is missing. "
                 )
             }
 
-            validateValueAgainstInputFacetSchema(inputFacetSchema, facetValue, conceptData)
+            validateValueAgainstInputFacetSchema(facetSchema, facetValue, conceptData)
 
         }
     }
 
-    private fun validateValueAgainstInputFacetSchema(inputFacetSchema: InputFacetSchema<*>, facetValue: Any?, conceptData: ConceptData) {
-        when(val inputFacet = inputFacetSchema.inputFacet) {
-            is ConceptFacets.MandatoryConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is NumberFacets.MandatoryNumberInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is TextFacets.MandatoryTextInputAndTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is ConceptFacets.OptionalConceptIdentifierInputAndConceptNodeTemplateFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is NumberFacets.MandatoryNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is TextFacets.MandatoryTextInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-            is NumberFacets.OptionalNumberInputFacet -> validateValueAgainstInputFacet(inputFacet, facetValue, conceptData)
-        }
-    }
-
-    private inline fun <reified T> validateValueAgainstInputFacet(inputFacet: InputFacet<T>, facetValue: Any?, conceptData: ConceptData) {
-        if(facetValue == null && inputFacet.isMandatoryInputFacetValue) {
+    private fun validateValueAgainstInputFacetSchema(facetSchema: FacetSchema, facetValue: Any?, conceptData: ConceptData) {
+        if(facetValue == null && facetSchema.mandatory) {
             throw InvalidFacetConfigurationModelException(
                 conceptName = conceptData.conceptName,
                 conceptIdentifier = conceptData.conceptIdentifier,
-                facetName = inputFacet.facetName,
-                reason = "No data found for mandatory facet '${inputFacet.facetName.name}'. "
+                facetName = facetSchema.facetName,
+                reason = "No data found for mandatory facet '${facetSchema.facetName.name}'. "
             )
         }
 
@@ -84,23 +72,19 @@ object ConceptDataValidator {
             return
         }
 
-        if(facetValue !is T) {
-            val expectedClass = T::class
+        if(!facetSchema.facetType.isCompatibleType(facetValue)) {
+            val expectedClass = facetSchema.facetType.typeClass
             val actualClass = facetValue::class
 
             throw InvalidFacetConfigurationModelException(
                 conceptName = conceptData.conceptName,
                 conceptIdentifier = conceptData.conceptIdentifier,
-                facetName = inputFacet.facetName,
-                reason = "Facet value has wrong type for facet '${inputFacet.facetName.name}': " +
+                facetName = facetSchema.facetName,
+                reason = "Facet value has wrong type for facet '${facetSchema.facetName.name}': " +
                         "Expected was '$expectedClass' but was '$actualClass'"
             )
-
         }
-
     }
-
-
 
     private fun isValidParentConcept(schemaConcept: ConceptSchema, conceptData: ConceptData): Boolean {
         if(schemaConcept.parentConceptName != null && conceptData.parentConceptIdentifier == null) {

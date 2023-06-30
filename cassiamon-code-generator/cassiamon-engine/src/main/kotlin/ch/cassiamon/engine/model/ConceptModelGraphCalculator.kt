@@ -4,7 +4,6 @@ import ch.cassiamon.api.registration.ModelConceptInputDataEntry
 import ch.cassiamon.api.registration.ModelInputData
 import ch.cassiamon.engine.model.validator.CircularFacetDependencyDetector
 import ch.cassiamon.engine.model.validator.ConceptModelNodeValidator
-import ch.cassiamon.engine.model.validator.ModelConceptInputDataValidator
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.ConceptModelGraph
 import ch.cassiamon.api.model.ConceptModelNode
@@ -28,7 +27,7 @@ object ConceptModelGraphCalculator {
 
             checkForDuplicateConceptIdentifier(inputDataEntry, nodePool)
             checkForDuplicateFacetNames(inputDataEntry)
-            ModelConceptInputDataValidator.validateSingleEntry(schema, inputDataEntry)
+            // ModelConceptInputDataValidator.validateSingleEntry(schema, inputDataEntry) // TODO this step has been skipped as deprecated
 
             val conceptModelNode = createConceptModelNode(inputDataEntry, calculationAndValidationData)
             nodePool.addConceptModelNode(conceptModelNode)

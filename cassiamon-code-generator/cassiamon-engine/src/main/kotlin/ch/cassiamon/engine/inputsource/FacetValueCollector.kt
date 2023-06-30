@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.domain.datacollection
+package ch.cassiamon.engine.inputsource
 
 import ch.cassiamon.api.FacetName
 
