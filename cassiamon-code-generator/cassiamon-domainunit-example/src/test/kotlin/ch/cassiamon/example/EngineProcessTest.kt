@@ -171,12 +171,12 @@ class EngineProcessTest {
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
-                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinTestkonzeptName"))
+                .addFacetValue(testEntityNameInputFacet.facetName,  "MeinTestkonzeptName")
                 .attach()
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testEntityNameInputFacet.facetValue( "MeinZweitesTestkonzeptName"))
+                .addFacetValue(testEntityNameInputFacet.facetName,  "MeinZweitesTestkonzeptName")
                 .attach()
 
             super.collectInputData(parameterAccess, extensionAccess, dataCollector)

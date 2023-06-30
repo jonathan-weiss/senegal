@@ -49,12 +49,12 @@ class ExampleDomainUnit: DefaultDomainUnit<ExampleDomainSchema>(
 
         dataCollector
             .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
-            .addFacetValue(ExampleEntityConcept.nameFacet.facetValue( "MeinTestkonzept-Name"))
+            .addFacetValue(ExampleEntityConcept.nameFacet.facetName,  "MeinTestkonzept-Name")
             .attach()
 
         dataCollector
             .newConceptData(ExampleEntityConcept.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-            .addFacetValue(ExampleEntityConcept.nameFacet.facetValue( "MeinZweitesTestkonzept-Name"))
+            .addFacetValue(ExampleEntityConcept.nameFacet.facetName,  "MeinZweitesTestkonzept-Name")
             .attach()
 
     }
