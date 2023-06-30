@@ -92,7 +92,7 @@ object SchemaCreator {
             throw MalformedSchemaException("Definition class '${classToInspect.name}' must be an interface.")
         }
         if(!hasClassAnnotation(annotation, classToInspect)) {
-            throw MalformedSchemaException("Definition class '${classToInspect.name}' must have an annotation of type '${annotation::class.qualifiedName}'")
+            throw MalformedSchemaException("Definition class '${classToInspect.name}' must have an annotation of type '${annotation.name}'")
         }
     }
 

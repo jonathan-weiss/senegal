@@ -4,6 +4,7 @@ import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.*
 import ch.cassiamon.api.model.facets.InputFacetValue
 import ch.cassiamon.api.registration.*
+import ch.cassiamon.engine.domain.datacollection.FacetValueCollector
 
 class ModelInputDataCollector: InputSourceDataCollector {
     @Deprecated("Old input facets") private val entries: MutableList<ModelConceptInputDataEntry> = mutableListOf()
