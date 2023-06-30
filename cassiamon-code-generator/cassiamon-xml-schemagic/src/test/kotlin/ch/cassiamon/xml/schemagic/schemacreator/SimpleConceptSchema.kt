@@ -1,6 +1,7 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.facets.TemplateFacet
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.InputFacetSchema
@@ -15,4 +16,7 @@ class SimpleConceptSchema(
     override fun <T> templateFacetSchemaOf(templateFacet: TemplateFacet<T>): TemplateFacetSchema<T> {
         throw IllegalStateException("Template facets are not supported.")
     }
+
+    override val facetNames: List<FacetName>
+        get() = inputFacets.map { it.inputFacet.facetName }
 }

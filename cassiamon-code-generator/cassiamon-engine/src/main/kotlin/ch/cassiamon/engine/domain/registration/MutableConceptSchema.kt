@@ -4,6 +4,7 @@ import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.InputFacetSchema
 import ch.cassiamon.api.schema.TemplateFacetSchema
 import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.model.facets.*
 
 
@@ -14,6 +15,8 @@ class MutableConceptSchema(override val conceptName: ConceptName,
     ): ConceptSchema
 {
 
+    override val facetNames: List<FacetName>
+        get() = mutableInputFacets.map { it.inputFacet.facetName }
     override val inputFacets: List<InputFacetSchema<*>>
         get() = mutableInputFacets.toList()
     override val templateFacets: List<TemplateFacetSchema<*>>

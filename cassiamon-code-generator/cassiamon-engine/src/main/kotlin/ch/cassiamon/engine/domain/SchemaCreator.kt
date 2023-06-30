@@ -74,6 +74,7 @@ object SchemaCreator {
             if(hasMethodAnnotation(InputFacet::class.java, method)) {
                 val inputFacetName = FacetName.of(method.getAnnotation(InputFacet::class.java).inputFacetName)
                 // TODO add other facets
+                // TODO check if already has this facet name
                 val inputFacet = TextFacets.MandatoryTextInputFacet.of(inputFacetName)
                 val templateFacet = TextFacets.MandatoryTextTemplateFacet.of(inputFacetName) { it.inputFacetValues.facetValue(inputFacet) }
                 inputFacets.add(InputFacetSchema(conceptName, inputFacet))

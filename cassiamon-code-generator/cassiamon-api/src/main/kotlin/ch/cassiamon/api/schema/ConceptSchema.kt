@@ -8,6 +8,7 @@ import ch.cassiamon.api.model.facets.*
 interface ConceptSchema {
     val conceptName: ConceptName
     val parentConceptName: ConceptName?
+    val facetNames: List<FacetName>
     val inputFacets: List<InputFacetSchema<*>>
     val templateFacets: List<TemplateFacetSchema<*>>
     fun hasInputFacet(facetName: FacetName): Boolean {
