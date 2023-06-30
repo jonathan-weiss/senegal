@@ -13,7 +13,6 @@ dependencies {
     implementation(project(":cassiamon-code-generator:cassiamon-tools"))
     runtimeOnly(project(":cassiamon-code-generator:cassiamon-engine"))
     runtimeOnly(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
-    runtimeOnly(project(":cassiamon-code-generator:cassiamon-freemarker-templates"))
 
 
     // to run an end-to-end test in junit, we need access to the engine directly to bypass calling the main function
