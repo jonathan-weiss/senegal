@@ -1,17 +1,26 @@
 package ch.cassiamon.engine.domain.process.proxy
 
+import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
 import ch.cassiamon.engine.domain.process.Concepts
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 
 object ProxyCreator {
 
+    fun <I:Any> createDataCollectorProxy(dataCollectorDefinitionClass: Class<I>, conceptDataCollector: ConceptDataCollector): I {
+        return createProxy(dataCollectorDefinitionClass, DataCollectorInvocationHandler(conceptDataCollector))
+    }
+
+    fun <I:Any> createDataCollectorConceptBuilderProxy(dataCollectorBuildDefinitionClass: Class<I>, conceptDataBuilder: ConceptDataCollector.MutableConceptData): I {
+        return createProxy(dataCollectorBuildDefinitionClass, DataCollectorConceptBuilderInvocationHandler(conceptDataBuilder))
+    }
+
     fun <S:Any> createSchemaProxy(schemaDefinitionClass: Class<S>, conceptEntries: Concepts): S {
         return createProxy(schemaDefinitionClass, SchemaInstanceInvocationHandler(conceptEntries))
     }
 
-    fun <C:Any> createConceptProxy(conceptDefinitionClass: Class<C>, conceptEntry: Concepts.ConceptEntry): C {
-        return createProxy(conceptDefinitionClass, ConceptInstanceInvocationHandler(conceptEntry))
+    fun <C:Any> createSchemaConceptProxy(conceptDefinitionClass: Class<C>, conceptEntry: Concepts.ConceptEntry): C {
+        return createProxy(conceptDefinitionClass, SchemaConceptInstanceInvocationHandler(conceptEntry))
     }
 
     private fun <X:Any> createProxy(definitionClass: Class<X>, invocationHandler: InvocationHandler): X {

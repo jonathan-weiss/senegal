@@ -1,13 +1,9 @@
 package ch.cassiamon.api
 
-import ch.cassiamon.api.rules.NameEnforcer
-
-@JvmInline
-value class FacetName private constructor(val name: String) {
+class FacetName private constructor(name: String): NamedId(name) {
 
     companion object {
         fun of(name: String): FacetName {
-            NameEnforcer.isValidNameOrThrow(name)
             return FacetName(name)
         }
     }

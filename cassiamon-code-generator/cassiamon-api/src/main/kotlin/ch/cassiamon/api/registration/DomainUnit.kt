@@ -9,7 +9,7 @@ abstract class DomainUnit<S: Any, I: Any>(val domainUnitName: DomainUnitName, pr
         return domainUnitSchemaHelper.createDomainUnitSchema(schemaDefinitionClass = schemaDefinitionClass)
     }
 
-    fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitProcessInputDataHelper: DomainUnitProcessInputDataHelper): ConceptEntries {
+    fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitProcessInputDataHelper: DomainUnitProcessInputDataHelper): List<ConceptData> {
         val domainUnitProcessInputData = domainUnitProcessInputDataHelper.createDomainUnitProcessInputData(inputDefinitionClass = inputDefinitionClass)
 
         collectInputData(

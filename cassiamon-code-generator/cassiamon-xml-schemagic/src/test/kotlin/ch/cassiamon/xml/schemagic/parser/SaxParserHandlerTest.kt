@@ -1,30 +1,41 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.engine.ProcessSession
-import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
-import ch.cassiamon.engine.domain.registration.RegistrationApiDefaultImpl
-import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.model.facets.TextFacets
+import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.annotations.ChildConcepts
+import ch.cassiamon.api.annotations.Concept
+import ch.cassiamon.api.annotations.InputFacet
+import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.schema.SchemaAccess
-import org.junit.jupiter.api.Assertions.*
+import ch.cassiamon.engine.domain.SchemaCreator
+import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
+import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
+import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import javax.xml.parsers.SAXParser
 import javax.xml.parsers.SAXParserFactory
 
+private const val testEntityConceptNameConst = "TestEntity"
+private const val testEntityNameFacetNameConst = "TestEntityName"
+private const val testEntityKotlinModelClassnameFacetNameConst = "TestKotlinModelClassname"
+private const val testEntityKotlinModelPackageFacetNameConst = "TestKotlinModelPackage"
+private const val testEntityAttributeConceptNameConst = "TestEntityAttribute"
+private const val testEntityAttributeNameFacetNameConst = "TestEntityAttributeName"
+private const val testEntityAttributeTypeFacetNameConst = "TestEntityAttributeType"
+private const val testKotlinFieldTypeFacetNameConst = "TestKotlinFieldType"
+
 internal class SaxParserHandlerTest {
 
-    private val testEntityConceptName = ConceptName.of("TestEntity")
-    private val testEntityNameFacet = TextFacets.ofMandatoryInput("TestEntityName")
-    private val testEntityKotlinModelClassnameFacet = TextFacets.ofMandatoryInput("TestKotlinModelClassname")
-    private val testEntityKotlinModelPackageFacet = TextFacets.ofMandatoryInput("TestKotlinModelPackage")
-
-    private val testEntityAttributeConceptName = ConceptName.of("TestEntityAttribute")
-    private val testEntityAttributeNameFacet = TextFacets.ofMandatoryInput("TestEntityAttributeName")
-    private val testEntityAttributeTypeFacet = TextFacets.ofMandatoryInput("TestEntityAttributeType")
-    private val testKotlinFieldTypeFacet = TextFacets.ofMandatoryInput("TestKotlinFieldType")
+    private val testEntityConceptName = ConceptName.of(testEntityConceptNameConst)
+    private val testEntityNameFacetName = FacetName.of(testEntityNameFacetNameConst)
+    private val testEntityKotlinModelClassnameFacetName = FacetName.of(testEntityKotlinModelClassnameFacetNameConst)
+    private val testEntityKotlinModelPackageFacetName = FacetName.of(testEntityKotlinModelPackageFacetNameConst)
+    private val testEntityAttributeConceptName = ConceptName.of(testEntityAttributeConceptNameConst)
+    private val testEntityAttributeNameFacetName = FacetName.of(testEntityAttributeNameFacetNameConst)
+    private val testEntityAttributeTypeFacetName = FacetName.of(testEntityAttributeTypeFacetNameConst)
+    private val testKotlinFieldTypeFacetName = FacetName.of(testKotlinFieldTypeFacetNameConst)
 
     private val testXml = """
         <?xml version="1.0" encoding="utf-8" ?>
@@ -55,7 +66,7 @@ internal class SaxParserHandlerTest {
         factory.isValidating = false // turn of validation as schema is not found
         val saxParser: SAXParser = factory.newSAXParser()
         val schema = createSchema()
-        val dataCollector = ModelInputDataCollector()
+        val dataCollector = ConceptDataCollector(schema, validateConcept = false)
 
         val saxParserHandler = SaxParserHandler(schema, dataCollector, emptyMap(), Paths.get("."), virtualFileSystem, logger)
 
@@ -63,44 +74,60 @@ internal class SaxParserHandlerTest {
             saxParser.parse(it, saxParserHandler)
         }
 
-        val modelInputData = dataCollector.provideModelInputData()
+        val conceptDataList = dataCollector.provideConceptData()
 
-        assertEquals(7, modelInputData.entries.size)
+        assertEquals(7, conceptDataList.size)
 
-        val personRootNode = modelInputData.entries[0]
+        val personRootNode = conceptDataList[0]
         assertEquals(testEntityConceptName, personRootNode.conceptName)
-        assertEquals("Person", personRootNode.inputFacetValueAccess.facetValue(testEntityNameFacet))
-        assertEquals("Person", personRootNode.inputFacetValueAccess.facetValue(testEntityKotlinModelClassnameFacet))
-        assertEquals("ch.senegal.entities", personRootNode.inputFacetValueAccess.facetValue(testEntityKotlinModelPackageFacet))
-        val firstnameNode = modelInputData.entries[1]
+        assertEquals("Person", personRootNode.facets[testEntityNameFacetName])
+        assertEquals("Person", personRootNode.facets[testEntityKotlinModelClassnameFacetName])
+        assertEquals("ch.senegal.entities", personRootNode.facets[testEntityKotlinModelPackageFacetName])
+        val firstnameNode = conceptDataList[1]
         assertEquals(testEntityAttributeConceptName, firstnameNode.conceptName)
-        assertEquals("firstname", firstnameNode.inputFacetValueAccess.facetValue(testEntityAttributeNameFacet))
-        assertEquals("TEXT", firstnameNode.inputFacetValueAccess.facetValue(testEntityAttributeTypeFacet))
-        assertEquals("kotlin.String", firstnameNode.inputFacetValueAccess.facetValue(testKotlinFieldTypeFacet))
-        val addressRootNode = modelInputData.entries[4]
+        assertEquals("firstname", firstnameNode.facets[testEntityAttributeNameFacetName])
+        assertEquals("TEXT", firstnameNode.facets[testEntityAttributeTypeFacetName])
+        assertEquals("kotlin.String", firstnameNode.facets[testKotlinFieldTypeFacetName])
+        val addressRootNode = conceptDataList[4]
         assertEquals(testEntityConceptName, addressRootNode.conceptName)
-        assertEquals("Address", addressRootNode.inputFacetValueAccess.facetValue(testEntityNameFacet))
-        assertEquals("ch.senegal.entities", addressRootNode.inputFacetValueAccess.facetValue(testEntityKotlinModelPackageFacet))
+        assertEquals("Address", addressRootNode.facets[testEntityNameFacetName])
+        assertEquals("ch.senegal.entities", addressRootNode.facets[testEntityKotlinModelPackageFacetName])
     }
 
+
+    @Schema
+    private interface SaxParserTestSchema {
+        @ChildConcepts(TestEntityConcept::class)
+        fun getTestEntityChildren(): List<TestEntityConcept>
+    }
+
+    @Concept(testEntityConceptNameConst)
+    private interface TestEntityConcept {
+        @ChildConcepts(TestEntityAttributeConcept::class)
+        fun getTestEntityAttributeChildren(): List<TestEntityAttributeConcept>
+
+        @InputFacet(testEntityNameFacetNameConst)
+        fun getName(): String
+        @InputFacet(testEntityKotlinModelClassnameFacetNameConst)
+        fun getKotlinModelClassname(): String
+        @InputFacet(testEntityKotlinModelPackageFacetNameConst)
+        fun getKotlinModelPackage(): String
+
+    }
+    @Concept(testEntityAttributeConceptNameConst)
+    private interface TestEntityAttributeConcept {
+
+        @InputFacet(testEntityAttributeNameFacetNameConst)
+        fun getName(): String
+        @InputFacet(testEntityAttributeTypeFacetNameConst) // TODO use enumeration as soon as available
+        fun getType(): String
+        @InputFacet(testKotlinFieldTypeFacetNameConst)
+        fun getKotlinType(): String
+
+
+    }
     private fun createSchema(): SchemaAccess {
-        val registrationApi = RegistrationApiDefaultImpl(ProcessSession())
-
-        registrationApi.configureSchema {
-            newRootConcept(conceptName = testEntityConceptName) {
-                addFacet(testEntityNameFacet)
-                addFacet(testEntityKotlinModelClassnameFacet)
-                addFacet(testEntityKotlinModelPackageFacet)
-
-                newChildConcept(conceptName = testEntityAttributeConceptName) {
-                    addFacet(testEntityAttributeNameFacet)
-                    addFacet(testEntityAttributeTypeFacet) // TODO use enumeration as soon as available
-                    addFacet(testKotlinFieldTypeFacet)
-                }
-            }
-        }
-
-        return registrationApi.provideSchema()
+        return SchemaCreator.createSchemaFromSchemaDefinitionClass(SaxParserTestSchema::class.java)
     }
 }
 

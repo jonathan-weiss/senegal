@@ -4,10 +4,9 @@ import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.model.ConceptIdentifier
-import ch.cassiamon.api.registration.InputSourceConceptFacetValueBuilder
-import ch.cassiamon.api.registration.InputSourceDataCollector
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
 import org.xml.sax.Attributes
@@ -21,7 +20,7 @@ import java.util.*
 
 class SaxParserHandler(
     private val schema: SchemaAccess,
-    private val dataCollector: InputSourceDataCollector,
+    private val dataCollector: ConceptAndFacetDataCollector,
     private val placeholders: Map<String, String>,
     private val schemaFileDirectory: Path,
     private val fileSystemAccess: FileSystemAccess,
@@ -41,10 +40,14 @@ class SaxParserHandler(
             val conceptSchema = getConceptByXmlLocalName(localName) ?: return
             val conceptIdentifier = ConceptIdentifier.random() // TODO implement
             val parentConceptIdentifier = conceptIdentifierStack.lastOrNull()
-            val currentConceptBuilder = dataCollector.newConceptData(conceptSchema.conceptName, conceptIdentifier, parentConceptIdentifier)
-            addAttributes(conceptSchema, currentConceptBuilder, xmlAttributes)
-            currentConceptBuilder.attach()
-            this.conceptIdentifierStack.add(conceptIdentifier)
+            val facetValues: Map<FacetName, Any?> = facetValuesFromAttributes(conceptSchema, xmlAttributes)
+            try {
+                dataCollector
+                    .newConceptData(conceptSchema.conceptName, conceptIdentifier, parentConceptIdentifier, facetValues)
+                this.conceptIdentifierStack.add(conceptIdentifier)
+            } catch (ex: Exception) {
+                throw SAXException(ex)
+            }
             return
         }
 
@@ -54,22 +57,27 @@ class SaxParserHandler(
         }
     }
 
-    private fun addAttributes(conceptSchema: ConceptSchema, conceptBuilder: InputSourceConceptFacetValueBuilder, xmlAttributes: List<XmlAttribute>) {
+    private fun facetValuesFromAttributes(
+        conceptSchema: ConceptSchema,
+        xmlAttributes: List<XmlAttribute>
+    ): Map<FacetName, Any?> {
         val attributeMap: Map<FacetName, XmlAttribute> = xmlAttributes
             .associateBy { FacetName.of(CaseUtil.capitalize(it.localName)) }
 
-        conceptSchema.inputFacets.forEach { inputFacetSchema ->
-            val schemaFacetName = inputFacetSchema.inputFacet.facetName
+        val facetValuesMap: MutableMap<FacetName, Any?> = mutableMapOf()
+        conceptSchema.facets.forEach { facetSchema ->
+            val schemaFacetName = facetSchema.facetName
             val rawAttributeValue = attributeMap[schemaFacetName]?.value
                 ?: configurations[schemaFacetName]
                 ?: return@forEach
 
             val attributeValue = PlaceholderUtil.replacePlaceholders(rawAttributeValue, placeholders)
-            val facetValue = XmlFacetValueConverter.convertString(inputFacetSchema, attributeValue)
+            val facetValue = XmlFacetValueConverter.convertString(facetSchema, attributeValue)
 
-            conceptBuilder.addFacetValue(facetValue)
-
+            facetValuesMap[schemaFacetName] = facetValue
         }
+
+        return facetValuesMap
     }
 
     private fun addConfigurationAttribute(attribute: XmlAttribute) {

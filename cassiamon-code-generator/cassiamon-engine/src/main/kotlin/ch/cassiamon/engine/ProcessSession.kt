@@ -1,16 +1,12 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.extension.ExtensionAccessHolder
-import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
-import ch.cassiamon.engine.inputsource.ModelInputDataCollector
-import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
-import ch.cassiamon.engine.parameters.*
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.api.registration.TargetFilesCollector
-import ch.cassiamon.engine.domain.process.ListTargetFilesCollectorImpl
+import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
+import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
+import ch.cassiamon.engine.parameters.*
 
 class ProcessSession(
     val domainUnits: List<DomainUnit<*, *>> = emptyList(),
@@ -22,6 +18,4 @@ class ProcessSession(
         SystemPropertyParameterSource,
     ),
     val parameterAccess: ParameterAccess = MultipleSourcesParameterAccess(parameterSources),
-    @Deprecated("Moved to DomainUnitSession") val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector(),
-    @Deprecated("Moved to DomainUnitSession") val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(fileSystemAccess, loggerFacade, parameterAccess, modelInputDataCollector),
 )

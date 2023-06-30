@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.domain.datacollection
+package ch.cassiamon.api.registration
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName

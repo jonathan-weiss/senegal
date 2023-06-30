@@ -10,19 +10,20 @@ import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
+import ch.cassiamon.api.registration.ConceptData
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.engine.domain.SchemaCreator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.reflect.KClass
 
-const val databaseTableConceptConst = "DatabaseTable"
-const val databaseFieldConceptConst = "DatabaseField"
+private const val databaseTableConceptConst = "DatabaseTable"
+private const val databaseFieldConceptConst = "DatabaseField"
 
-const val tableNameFacetConst = "TableName"
-const val fieldNameFacetConst = "FieldName"
-const val fieldTypeFacetConst = "FieldType"
-const val fieldLengthFacetConst = "FieldLength"
+private const val tableNameFacetConst = "TableName"
+private const val fieldNameFacetConst = "FieldName"
+private const val fieldTypeFacetConst = "FieldType"
+private const val fieldLengthFacetConst = "FieldLength"
 class ConceptDataValidatorTest {
 
     private val databaseTableConceptName = ConceptName.of(databaseTableConceptConst)

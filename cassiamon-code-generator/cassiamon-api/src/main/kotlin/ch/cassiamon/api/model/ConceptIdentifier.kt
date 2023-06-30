@@ -4,8 +4,7 @@ import ch.cassiamon.api.rules.NameEnforcer
 import java.util.*
 
 
-@JvmInline
-value class ConceptIdentifier private constructor(val code: String) {
+class ConceptIdentifier private constructor(val code: String) {
 
     companion object {
         fun of(name: String): ConceptIdentifier {

@@ -3,10 +3,7 @@ package ch.cassiamon.engine.domain.datacollection
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
-import ch.cassiamon.api.model.facets.ConceptFacets
-import ch.cassiamon.api.model.facets.InputFacet
-import ch.cassiamon.api.model.facets.NumberFacets
-import ch.cassiamon.api.model.facets.TextFacets
+import ch.cassiamon.api.registration.ConceptData
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.FacetSchema
 import ch.cassiamon.api.schema.SchemaAccess
@@ -28,7 +25,7 @@ object ConceptDataValidator {
 
         // iterate through all entry facet values to find obsolet ones
         conceptData.facets.keys.forEach { facetName ->
-            if(!schemaConcept.hasInputFacet(facetName)) {
+            if(!schemaConcept.hasFacet(facetName)) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = conceptData.conceptName,
                     conceptIdentifier = conceptData.conceptIdentifier,

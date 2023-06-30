@@ -6,5 +6,5 @@ interface DomainUnitProcessInputData<I: Any> {
 
     fun getInputDataExtensionAccess(): InputSourceExtensionAccess
 
-    fun provideConceptEntries(): ConceptEntries
+    fun provideConceptEntries(): List<ConceptData>
 }

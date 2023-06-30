@@ -3,9 +3,10 @@ package ch.cassiamon.engine.domain.process
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.engine.ProcessSession
+import ch.cassiamon.api.registration.ConceptData
 import ch.cassiamon.engine.extension.ExtensionAccessHolder
-import ch.cassiamon.api.registration.ModelInputData
-import ch.cassiamon.engine.inputsource.ModelInputDataCollector
+import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
+import ch.cassiamon.engine.domain.process.proxy.ProxyCreator
 
 class DomainUnitProcessInputDataImpl<I: Any>(
     processSession: ProcessSession,
@@ -13,8 +14,9 @@ class DomainUnitProcessInputDataImpl<I: Any>(
     inputDefinitionClass: Class<I>
 ): DomainUnitProcessInputData<I> {
 
-    private val modelInputDataCollector: ModelInputDataCollector = ModelInputDataCollector()
-    private val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(processSession.fileSystemAccess, processSession.loggerFacade, processSession.parameterAccess, modelInputDataCollector)
+    private val conceptDataCollector: ConceptDataCollector = ConceptDataCollector(schemaAccess, validateConcept = true)
+    private val dataCollectorInterface: I = ProxyCreator.createDataCollectorProxy(inputDefinitionClass, conceptDataCollector)
+    private val extensionAccess: ExtensionAccessHolder = ExtensionAccessHolder(processSession.fileSystemAccess, processSession.loggerFacade, processSession.parameterAccess, conceptDataCollector)
     private val inputSourceExtensionAccess = InputSourceExtensionAccessImpl(extensionAccess)
 
 
@@ -23,15 +25,15 @@ class DomainUnitProcessInputDataImpl<I: Any>(
     }
 
     override fun getDataCollector(): I {
-        return modelInputDataCollector as I // TODO current workaround as we only use ModelInputDataCollector, later will be based on param inputDefinitionClass
+        return dataCollectorInterface
     }
 
     override fun getInputDataExtensionAccess(): InputSourceExtensionAccess {
         return inputSourceExtensionAccess
     }
 
-    override fun provideConceptEntries(): ConceptEntries {
-        return modelInputDataCollector.provideConceptEntries()
+    override fun provideConceptEntries(): List<ConceptData> {
+        return conceptDataCollector.provideConceptData()
     }
 
 }

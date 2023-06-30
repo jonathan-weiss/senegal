@@ -1,6 +1,7 @@
 package ch.cassiamon.xml.schemagic
 
 import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
 import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
@@ -20,7 +21,7 @@ import kotlin.io.path.name
 class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
 
     private lateinit var schemaAccess: SchemaAccess;
-    private lateinit var inputSourceDataCollector: InputSourceDataCollector;
+    private lateinit var conceptAndFacetDataCollector: ConceptAndFacetDataCollector;
     private lateinit var fileSystemAccess: FileSystemAccess;
     private lateinit var loggerFacade: LoggerFacade;
     private lateinit var parameterAccess: ParameterAccess;
@@ -41,11 +42,11 @@ class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
     }
 
     override fun initializeInputSourceExtension(
-        inputSourceDataCollector: InputSourceDataCollector,
+        conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
         fileSystemAccess: FileSystemAccess
     ) {
         this.fileSystemAccess = fileSystemAccess
-        this.inputSourceDataCollector = inputSourceDataCollector
+        this.conceptAndFacetDataCollector = conceptAndFacetDataCollector
     }
 
     override fun initializeSchema(schemaAccess: SchemaAccess) {
@@ -84,7 +85,7 @@ class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
 
         val saxParser: SAXParser = factory.newSAXParser()
 
-        val saxParserHandler = SaxParserHandler(schemaAccess, inputSourceDataCollector, placeholders, xmlDefinitionDirectory, fileSystemAccess, loggerFacade)
+        val saxParserHandler = SaxParserHandler(schemaAccess, conceptAndFacetDataCollector, placeholders, xmlDefinitionDirectory, fileSystemAccess, loggerFacade)
 
         fileSystemAccess.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, saxParserHandler)

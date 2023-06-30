@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.engine.inputsource.ModelInputDataCollector
 import ch.cassiamon.api.extensions.ExtensionInitialization
 import ch.cassiamon.api.extensions.ExtensionName
+import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
 import ch.cassiamon.api.extensions.inputsource.InputSourceExtensionInitialization
 import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
 import ch.cassiamon.api.extensions.template.ClasspathTemplateExtension
@@ -15,7 +15,7 @@ class ExtensionAccessHolder(
     private val fileSystemAccess: FileSystemAccess,
     private val loggerFacade: LoggerFacade,
     private val parameterAccess: ParameterAccess,
-    private val modelInputDataCollector: ModelInputDataCollector,
+    private val conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
 ): ExtensionAccess {
 
     private val classpathTemplateExtensions: Map<ExtensionName, ClasspathTemplateExtension> =
@@ -39,7 +39,7 @@ class ExtensionAccessHolder(
 
     private fun initializeInputSourceExtension(extension: InputSourceExtensionInitialization) {
         extension.initializeInputSourceExtension(
-            inputSourceDataCollector = modelInputDataCollector,
+            conceptAndFacetDataCollector = conceptAndFacetDataCollector,
             fileSystemAccess = fileSystemAccess,
         )
     }

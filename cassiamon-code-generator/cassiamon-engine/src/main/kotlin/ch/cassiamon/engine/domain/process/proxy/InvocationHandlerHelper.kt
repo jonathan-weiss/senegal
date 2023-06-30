@@ -1,41 +1,33 @@
 package ch.cassiamon.engine.domain.process.proxy
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.annotations.ChildConcepts
-import ch.cassiamon.api.annotations.Concept
-import ch.cassiamon.api.annotations.InputFacet
+import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
-import kotlin.reflect.KClass
 
 object InvocationHandlerHelper {
 
-    fun isChildConceptAnnotated(method: Method?): Boolean {
-        return validatedMethod(method).getAnnotation(ChildConcepts::class.java) != null
-    }
-
-    fun getChildConceptsClazz(method: Method?): KClass<*> {
-        return validatedMethod(method).getAnnotation(ChildConcepts::class.java).clazz
-    }
-
-    fun getChildConceptsName(method: Method?): ConceptName {
-        return ConceptName.of(getChildConceptsClazz(method).java.getAnnotation(Concept::class.java).conceptName)
-    }
-
-    fun isInputFacetAnnotated(method: Method?): Boolean {
-        return validatedMethod(method).getAnnotation(InputFacet::class.java) != null
-    }
-
-    fun getInputFacetName(method: Method?): FacetName {
-        return FacetName.of(validatedMethod(method).getAnnotation(InputFacet::class.java).inputFacetName)
-    }
-
-    private fun validatedMethod(method: Method?): Method {
-        if(method == null) {
-            throw IllegalStateException("Proxy $this can only handle methods, not field invocations.")
+    fun handleObjectMethodsOrThrow(invocationHandler: InvocationHandler, method: Method?): Any {
+        if(method != null) {
+            if(method.name == "toString") {
+                return invocationHandler.toString()
+            }
+            if(method.name == "hashCode") {
+                return invocationHandler.hashCode()
+            }
         }
-
-        return method
-
+        throw IllegalStateException("Method $method not annotated.")
     }
+
+    fun throwIfProxyIsNull(proxy: Any?) {
+        if(proxy == null) {
+            throw IllegalStateException("No proxy defined.")
+        }
+    }
+
+    fun requiredProxy(proxy: Any?, method: Method?): Any {
+        if(proxy != null) {
+            return proxy
+        }
+        throw IllegalStateException("Method $method has no proxy defined.")
+    }
+
 }
