@@ -120,7 +120,7 @@ class ConceptDataValidatorTest {
         )
             .addFacetValue(tableFieldNameFacetName, "firstname")
             .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
+            .addFacetValue(tableFieldLengthFacetName, "255") // TODO Add field as soon as data type is supported
             .attach()
 
 

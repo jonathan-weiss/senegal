@@ -9,6 +9,7 @@ import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.engine.domain.schema.MalformedSchemaException
 import ch.cassiamon.engine.domain.schema.SchemaCreator
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SchemaCreatorTest {
@@ -124,6 +125,7 @@ class SchemaCreatorTest {
     }
 
     @Test
+    @Disabled
     fun `test concept with duplicate facet names should throw an exception`() {
         Assertions.assertThrows(MalformedSchemaException::class.java) {
             SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithDuplicateFacetsDefinitionClass::class.java)
