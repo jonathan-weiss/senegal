@@ -1,6 +1,8 @@
 package ch.cassiamon.engine
 
-import ch.cassiamon.engine.domain.finder.DomainUnitFinder
+import ch.cassiamon.engine.process.EngineProcess
+import ch.cassiamon.engine.process.ProcessSession
+import ch.cassiamon.engine.process.finder.DomainUnitFinder
 
 
 fun main() {

@@ -1,10 +1,10 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.FacetSchema
-import ch.cassiamon.api.schema.FacetTypeEnum
-import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.api.process.schema.ConceptSchema
+import ch.cassiamon.api.process.schema.FacetSchema
+import ch.cassiamon.api.process.schema.FacetTypeEnum
+import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
 import org.w3c.dom.Document
 import org.w3c.dom.Element

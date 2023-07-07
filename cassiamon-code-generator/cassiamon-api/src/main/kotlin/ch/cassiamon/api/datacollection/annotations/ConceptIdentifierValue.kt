@@ -1,6 +1,0 @@
-package ch.cassiamon.api.datacollection.annotations
-
-
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-annotation class ConceptIdentifierValue()

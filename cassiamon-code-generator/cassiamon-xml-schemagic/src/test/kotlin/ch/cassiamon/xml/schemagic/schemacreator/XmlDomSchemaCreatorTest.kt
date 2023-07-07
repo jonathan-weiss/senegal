@@ -2,10 +2,10 @@ package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.FacetTypeEnum
-import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.engine.domain.schema.FacetSchemaImpl
+import ch.cassiamon.api.process.schema.ConceptSchema
+import ch.cassiamon.api.process.schema.FacetTypeEnum
+import ch.cassiamon.api.process.schema.SchemaAccess
+import ch.cassiamon.engine.process.schema.FacetSchemaImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

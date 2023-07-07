@@ -1,8 +1,8 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.schema.ConceptSchema
-import ch.cassiamon.api.schema.FacetSchema
+import ch.cassiamon.api.process.schema.ConceptSchema
+import ch.cassiamon.api.process.schema.FacetSchema
 
 class SimpleConceptSchema(
     override val conceptName: ConceptName,

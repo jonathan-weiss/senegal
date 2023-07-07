@@ -1,11 +1,11 @@
 package ch.cassiamon.domain.example
 
-import ch.cassiamon.api.datacollection.defaults.DefaultConceptDataCollector
+import ch.cassiamon.api.process.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.ConceptIdentifier
-import ch.cassiamon.api.datacollection.extensions.DataCollectionExtensionAccess
+import ch.cassiamon.api.process.datacollection.extensions.DataCollectionExtensionAccess
 import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.registration.*
-import ch.cassiamon.api.templating.TargetFilesCollector
+import ch.cassiamon.api.process.DefaultDomainUnit
+import ch.cassiamon.api.process.templating.TargetFilesCollector
 import java.nio.file.Path
 import java.nio.file.Paths
 

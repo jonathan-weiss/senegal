@@ -1,12 +1,12 @@
 package ch.cassiamon.xml.schemagic
 
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
-import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
+import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.process.datacollection.extensions.DataCollectionFromFilesExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.xml.schemagic.parser.SaxParserHandler
 import ch.cassiamon.xml.schemagic.schemacreator.XmlSchemaInitializer
 import java.nio.file.Path

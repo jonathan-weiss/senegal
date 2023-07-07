@@ -2,13 +2,13 @@ package ch.cassiamon.xml.schemagic.parser
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.schema.annotations.ChildConcepts
-import ch.cassiamon.api.schema.annotations.Concept
-import ch.cassiamon.api.schema.annotations.InputFacet
-import ch.cassiamon.api.schema.annotations.Schema
-import ch.cassiamon.api.schema.SchemaAccess
-import ch.cassiamon.engine.domain.schema.SchemaCreator
-import ch.cassiamon.engine.domain.datacollection.ConceptDataCollector
+import ch.cassiamon.api.process.schema.annotations.ChildConcepts
+import ch.cassiamon.api.process.schema.annotations.Concept
+import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Schema
+import ch.cassiamon.api.process.schema.SchemaAccess
+import ch.cassiamon.engine.process.schema.SchemaCreator
+import ch.cassiamon.engine.process.datacollection.ConceptDataCollector
 import ch.cassiamon.engine.filesystem.PhysicalFilesFileSystemAccess
 import ch.cassiamon.engine.logger.JavaUtilLoggerFacade
 import org.junit.jupiter.api.Assertions.assertEquals

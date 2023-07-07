@@ -1,13 +1,13 @@
 package ch.cassiamon.xml.schemagic.parser
 
-import ch.cassiamon.api.schema.ConceptSchema
+import ch.cassiamon.api.process.schema.ConceptSchema
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.ConceptIdentifier
-import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource

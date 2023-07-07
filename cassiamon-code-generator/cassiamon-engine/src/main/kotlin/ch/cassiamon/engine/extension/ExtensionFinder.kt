@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
+import ch.cassiamon.api.process.datacollection.extensions.DataCollectionFromFilesExtension
 import java.util.*
 
 object ExtensionFinder {
