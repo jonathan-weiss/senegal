@@ -1,12 +1,13 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
 import java.util.*
 
 object ExtensionFinder {
 
-    fun findAllFilesInputSourceExtensions(): List<FilesInputSourceExtension> {
-        val extensionServiceLoader: ServiceLoader<FilesInputSourceExtension> = ServiceLoader.load(FilesInputSourceExtension::class.java)
+    fun findAllDataCollectionFromFilesExtensions(): List<DataCollectionFromFilesExtension> {
+        val extensionServiceLoader: ServiceLoader<DataCollectionFromFilesExtension> = ServiceLoader.load(
+            DataCollectionFromFilesExtension::class.java)
 
         return extensionServiceLoader.toList()
     }

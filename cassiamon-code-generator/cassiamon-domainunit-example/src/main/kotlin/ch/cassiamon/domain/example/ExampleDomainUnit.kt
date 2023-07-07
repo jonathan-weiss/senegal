@@ -2,6 +2,7 @@ package ch.cassiamon.domain.example
 
 import ch.cassiamon.api.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.datacollection.extensions.DataCollectionExtensionAccess
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.registration.*
 import ch.cassiamon.api.templating.TargetFilesCollector
@@ -37,7 +38,7 @@ class ExampleDomainUnit: DefaultDomainUnit<ExampleDomainSchema>(
 
     override fun collectInputData(
         parameterAccess: ParameterAccess,
-        extensionAccess: InputSourceExtensionAccess,
+        extensionAccess: DataCollectionExtensionAccess,
         dataCollector: DefaultConceptDataCollector
     ) {
         super.collectInputData(parameterAccess, extensionAccess, dataCollector)

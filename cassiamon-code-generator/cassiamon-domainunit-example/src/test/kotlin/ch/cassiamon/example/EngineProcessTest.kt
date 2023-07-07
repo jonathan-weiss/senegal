@@ -10,7 +10,7 @@ import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.registration.DefaultDomainUnit
-import ch.cassiamon.api.registration.InputSourceExtensionAccess
+import ch.cassiamon.api.datacollection.extensions.DataCollectionExtensionAccess
 import ch.cassiamon.api.templating.TargetFilesCollector
 import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.ProcessSession
@@ -158,7 +158,7 @@ class EngineProcessTest {
 
         override fun collectInputData(
             parameterAccess: ParameterAccess,
-            extensionAccess: InputSourceExtensionAccess,
+            extensionAccess: DataCollectionExtensionAccess,
             dataCollector: DefaultConceptDataCollector
         ) {
 

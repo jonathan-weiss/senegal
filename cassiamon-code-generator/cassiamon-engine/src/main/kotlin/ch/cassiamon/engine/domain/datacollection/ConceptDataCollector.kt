@@ -2,7 +2,7 @@ package ch.cassiamon.engine.domain.datacollection
 
 import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.*
-import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
+import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
 import ch.cassiamon.api.datacollection.ConceptData
 import ch.cassiamon.api.schema.SchemaAccess
 

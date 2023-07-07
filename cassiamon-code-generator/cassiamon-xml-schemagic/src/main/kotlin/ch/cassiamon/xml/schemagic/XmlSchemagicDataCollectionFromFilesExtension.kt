@@ -1,8 +1,8 @@
 package ch.cassiamon.xml.schemagic
 
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
-import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
@@ -17,7 +17,7 @@ import javax.xml.transform.stream.StreamSource
 import javax.xml.validation.SchemaFactory
 import kotlin.io.path.name
 
-class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
+class XmlSchemagicDataCollectionFromFilesExtension: DataCollectionFromFilesExtension {
 
     private lateinit var schemaAccess: SchemaAccess;
     private lateinit var conceptAndFacetDataCollector: ConceptAndFacetDataCollector;
@@ -35,20 +35,17 @@ class XmlSchemagicFilesInputSourceExtension: FilesInputSourceExtension {
         return extensionName
     }
 
-    override fun initializeExtension(loggerFacade: LoggerFacade, parameterAccess: ParameterAccess) {
+    override fun initializeDataCollectionExtension(
+        loggerFacade: LoggerFacade,
+        parameterAccess: ParameterAccess,
+        fileSystemAccess: FileSystemAccess,
+        schemaAccess: SchemaAccess,
+        conceptAndFacetDataCollector: ConceptAndFacetDataCollector
+    ) {
         this.loggerFacade = loggerFacade
         this.parameterAccess = parameterAccess
-    }
-
-    override fun initializeInputSourceExtension(
-        conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
-        fileSystemAccess: FileSystemAccess
-    ) {
         this.fileSystemAccess = fileSystemAccess
         this.conceptAndFacetDataCollector = conceptAndFacetDataCollector
-    }
-
-    override fun initializeSchema(schemaAccess: SchemaAccess) {
         this.schemaAccess = schemaAccess
     }
 

@@ -1,9 +1,9 @@
 package ch.cassiamon.engine.extension
 
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
 
 interface ExtensionAccess {
 
-    fun getFilesInputSourceExtension(extensionName: ExtensionName):FilesInputSourceExtension
+    fun getDataCollectionFromFilesExtension(extensionName: ExtensionName): DataCollectionFromFilesExtension
 }

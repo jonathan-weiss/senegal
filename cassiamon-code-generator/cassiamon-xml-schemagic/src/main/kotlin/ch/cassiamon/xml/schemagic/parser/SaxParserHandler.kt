@@ -4,7 +4,7 @@ import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
+import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.schema.SchemaAccess

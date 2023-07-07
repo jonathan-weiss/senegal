@@ -1,4 +1,4 @@
-package ch.cassiamon.api.extensions.inputsource
+package ch.cassiamon.api.datacollection.extensions
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName

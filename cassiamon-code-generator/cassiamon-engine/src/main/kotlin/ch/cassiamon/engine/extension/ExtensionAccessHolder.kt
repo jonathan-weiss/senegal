@@ -1,10 +1,8 @@
 package ch.cassiamon.engine.extension
 
-import ch.cassiamon.api.extensions.ExtensionInitialization
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
-import ch.cassiamon.api.extensions.inputsource.InputSourceExtensionInitialization
-import ch.cassiamon.api.extensions.inputsource.files.FilesInputSourceExtension
+import ch.cassiamon.api.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.datacollection.extensions.DataCollectionFromFilesExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.parameter.ParameterAccess
@@ -14,35 +12,28 @@ class ExtensionAccessHolder(
     private val fileSystemAccess: FileSystemAccess,
     private val loggerFacade: LoggerFacade,
     private val parameterAccess: ParameterAccess,
+    private val schemaAccess: SchemaAccess,
     private val conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
 ): ExtensionAccess {
 
-    private val filesInputSourceExtensions: Map<ExtensionName, FilesInputSourceExtension> =
-        ExtensionFinder.findAllFilesInputSourceExtensions()
-            .onEach { initializeExtension(it) }
-            .onEach { initializeInputSourceExtension(it) }
+    private val dataCollectionFromFilesExtensions: Map<ExtensionName, DataCollectionFromFilesExtension> =
+        ExtensionFinder.findAllDataCollectionFromFilesExtensions()
+            .onEach { initializeDataCollectionExtension(it) }
             .associateBy { it.getExtensionName() }
 
 
-    private fun initializeExtension(extension: ExtensionInitialization) {
-        extension.initializeExtension(
+    private fun initializeDataCollectionExtension(extension: DataCollectionFromFilesExtension) {
+        extension.initializeDataCollectionExtension(
             loggerFacade = loggerFacade,
             parameterAccess = parameterAccess,
-        )
-    }
-
-    private fun initializeInputSourceExtension(extension: InputSourceExtensionInitialization) {
-        extension.initializeInputSourceExtension(
             conceptAndFacetDataCollector = conceptAndFacetDataCollector,
             fileSystemAccess = fileSystemAccess,
+            schemaAccess = schemaAccess,
         )
     }
 
-    fun initializeSchema(schemaAccess: SchemaAccess) {
-        filesInputSourceExtensions.values.forEach { it.initializeSchema(schemaAccess) }
-    }
-    override fun getFilesInputSourceExtension(extensionName: ExtensionName): FilesInputSourceExtension {
-        return filesInputSourceExtensions[extensionName] ?: throwExtensionNotFound(extensionName)
+    override fun getDataCollectionFromFilesExtension(extensionName: ExtensionName): DataCollectionFromFilesExtension {
+        return dataCollectionFromFilesExtensions[extensionName] ?: throwExtensionNotFound(extensionName)
     }
 
     private fun throwExtensionNotFound(extensionName: ExtensionName): Nothing {

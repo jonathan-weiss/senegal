@@ -2,6 +2,7 @@ package ch.cassiamon.api.registration
 
 import ch.cassiamon.api.datacollection.ConceptData
 import ch.cassiamon.api.datacollection.DomainUnitDataCollectionHelper
+import ch.cassiamon.api.datacollection.extensions.DataCollectionExtensionAccess
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.schema.DomainUnitSchemaHelper
 import ch.cassiamon.api.schema.SchemaAccess
@@ -34,7 +35,7 @@ abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Cla
         return domainUnitProcessTargetFilesData.getTargetFilesCollector()
     }
 
-    abstract fun collectInputData(parameterAccess: ParameterAccess, extensionAccess: InputSourceExtensionAccess, dataCollector: I)
+    abstract fun collectInputData(parameterAccess: ParameterAccess, extensionAccess: DataCollectionExtensionAccess, dataCollector: I)
 
     abstract fun collectTargetFiles(parameterAccess: ParameterAccess, schemaInstance: S, targetFilesCollector: TargetFilesCollector)
 }
