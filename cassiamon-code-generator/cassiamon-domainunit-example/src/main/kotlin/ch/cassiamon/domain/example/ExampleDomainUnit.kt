@@ -8,7 +8,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 class ExampleDomainUnit: DefaultDomainUnit<ExampleDomainSchema>(
-    domainUnitName = DomainUnitName.of("ExampleProject"),
     schemaDefinitionClass = ExampleDomainSchema::class.java
 ) {
 

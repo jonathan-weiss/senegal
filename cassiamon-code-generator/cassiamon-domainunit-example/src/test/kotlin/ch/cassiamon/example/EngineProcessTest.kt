@@ -1,7 +1,6 @@
 package ch.cassiamon.example
 
 import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
@@ -9,7 +8,10 @@ import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
 import ch.cassiamon.api.model.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.registration.*
+import ch.cassiamon.api.registration.DefaultConceptDataCollector
+import ch.cassiamon.api.registration.DefaultDomainUnit
+import ch.cassiamon.api.registration.InputSourceExtensionAccess
+import ch.cassiamon.api.registration.TargetFilesCollector
 import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
@@ -140,7 +142,6 @@ class EngineProcessTest {
     }
 
     class TestDomainUnit: DefaultDomainUnit<TestSchema>(
-        domainUnitName = DomainUnitName.of("TestProject"),
         schemaDefinitionClass = TestSchema::class.java
     ) {
         companion object {

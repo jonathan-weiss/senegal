@@ -1,10 +1,9 @@
 package ch.cassiamon.api.registration
 
-import ch.cassiamon.api.DomainUnitName
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.schema.SchemaAccess
 
-abstract class DomainUnit<S: Any, I: Any>(val domainUnitName: DomainUnitName, private val schemaDefinitionClass: Class<S>, private val inputDefinitionClass: Class<I>) {
+abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Class<S>, private val inputDefinitionClass: Class<I>) {
     fun createSchema(domainUnitSchemaHelper: DomainUnitSchemaHelper): SchemaAccess {
         return domainUnitSchemaHelper.createDomainUnitSchema(schemaDefinitionClass = schemaDefinitionClass)
     }
