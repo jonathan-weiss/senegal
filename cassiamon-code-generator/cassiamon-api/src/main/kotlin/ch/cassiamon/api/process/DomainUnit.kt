@@ -15,14 +15,14 @@ abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Cla
     }
 
     fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitDataCollectionHelper: DomainUnitDataCollectionHelper): List<ConceptData> {
-        val domainUnitProcessInputData = domainUnitDataCollectionHelper.createDomainUnitProcessInputData(inputDefinitionClass = inputDefinitionClass)
+        val domainUnitProcessInputData = domainUnitDataCollectionHelper.createDomainUnitDataCollection(inputDefinitionClass = inputDefinitionClass)
 
         collectInputData(
             parameterAccess = parameterAccess,
-            extensionAccess = domainUnitProcessInputData.getInputDataExtensionAccess(),
+            extensionAccess = domainUnitProcessInputData.getDataCollectionExtensionAccess(),
             dataCollector = domainUnitProcessInputData.getDataCollector()
         )
-        return domainUnitProcessInputData.provideConceptEntries()
+        return domainUnitProcessInputData.getCollectedData()
     }
 
     fun processDomainUnitTargetFiles(parameterAccess: ParameterAccess, domainUnitProcessTargetFilesHelper: DomainUnitProcessTargetFilesHelper): TargetFilesCollector {

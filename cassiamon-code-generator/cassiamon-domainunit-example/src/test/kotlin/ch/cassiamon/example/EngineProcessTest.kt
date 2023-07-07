@@ -164,6 +164,7 @@ class EngineProcessTest {
 
             dataCollector
                 .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .setParent(null)
                 .addFacetValue(testEntityNameFacetName,  "MeinTestkonzeptName")
 
             dataCollector

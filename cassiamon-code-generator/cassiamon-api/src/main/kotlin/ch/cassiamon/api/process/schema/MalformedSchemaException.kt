@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.process.schema
+package ch.cassiamon.api.process.schema
 
 class MalformedSchemaException(msg: String) : RuntimeException(msg) {
 }

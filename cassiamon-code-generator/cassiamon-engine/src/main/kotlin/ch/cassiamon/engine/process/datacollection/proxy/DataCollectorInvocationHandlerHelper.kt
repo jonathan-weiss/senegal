@@ -17,6 +17,10 @@ object DataCollectorInvocationHandlerHelper {
         return validatedMethod(method).getAnnotation(AddFacet::class.java) != null
     }
 
+    fun isSetParentConceptAnnotated(method: Method?): Boolean {
+        return validatedMethod(method).getAnnotation(SetParent::class.java) != null
+    }
+
     fun getConceptNameParameter(method: Method?, args: Array<out Any>?): ConceptName {
         return getParameter(method, ConceptNameValue::class.java, ConceptName::class.java, args)
     }

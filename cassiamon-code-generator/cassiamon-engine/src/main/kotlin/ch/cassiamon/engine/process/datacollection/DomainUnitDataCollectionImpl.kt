@@ -23,11 +23,11 @@ class DomainUnitDataCollectionImpl<I: Any>(
         return dataCollectorInterface
     }
 
-    override fun getInputDataExtensionAccess(): DataCollectionExtensionAccess {
+    override fun getDataCollectionExtensionAccess(): DataCollectionExtensionAccess {
         return extensionAccess
     }
 
-    override fun provideConceptEntries(): List<ConceptData> {
+    override fun getCollectedData(): List<ConceptData> {
         return conceptDataCollector.provideConceptData()
     }
 

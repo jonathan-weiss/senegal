@@ -6,7 +6,7 @@ import ch.cassiamon.api.process.datacollection.extensions.DataCollectionExtensio
 interface DomainUnitDataCollection<I: Any> {
     fun getDataCollector(): I
 
-    fun getInputDataExtensionAccess(): DataCollectionExtensionAccess
+    fun getDataCollectionExtensionAccess(): DataCollectionExtensionAccess
 
-    fun provideConceptEntries(): List<ConceptData>
+    fun getCollectedData(): List<ConceptData>
 }

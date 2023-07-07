@@ -1,14 +1,10 @@
 package ch.cassiamon.engine.process.schema
 
-import ch.cassiamon.api.process.schema.ConceptName
-import ch.cassiamon.api.process.schema.FacetName
+import ch.cassiamon.api.process.schema.*
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.InputFacet
 import ch.cassiamon.api.process.schema.annotations.Schema
-import ch.cassiamon.api.process.schema.ConceptSchema
-import ch.cassiamon.api.process.schema.FacetSchema
-import ch.cassiamon.api.process.schema.FacetTypeEnum
 import java.lang.reflect.Method
 
 object SchemaCreator {

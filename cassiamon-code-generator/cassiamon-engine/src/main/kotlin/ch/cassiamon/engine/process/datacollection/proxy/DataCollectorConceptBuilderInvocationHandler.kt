@@ -13,6 +13,10 @@ class DataCollectorConceptBuilderInvocationHandler(private val dataCollectorConc
 
             dataCollectorConceptBuilder.addOrReplaceFacetValue(facetName = facetName, facetValue = facetValue)
             return InvocationHandlerHelper.requiredProxy(proxy, method)
+        } else if(DataCollectorInvocationHandlerHelper.isSetParentConceptAnnotated(method)) {
+            val parentConceptIdentifier = DataCollectorInvocationHandlerHelper.getParentConceptIdentifierParameter(method, args)
+            dataCollectorConceptBuilder.setParentConceptIdentifier(parentConceptIdentifier)
+            return InvocationHandlerHelper.requiredProxy(proxy, method)
         }
 
         return InvocationHandlerHelper.handleObjectMethodsOrThrow(this, method)
