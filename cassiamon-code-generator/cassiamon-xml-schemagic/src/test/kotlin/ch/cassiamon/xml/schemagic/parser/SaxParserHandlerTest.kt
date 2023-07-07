@@ -66,7 +66,7 @@ internal class SaxParserHandlerTest {
         factory.isValidating = false // turn of validation as schema is not found
         val saxParser: SAXParser = factory.newSAXParser()
         val schema = createSchema()
-        val dataCollector = ConceptDataCollector(schema, validateConcept = false)
+        val dataCollector = ConceptDataCollector(schema)
 
         val saxParserHandler = SaxParserHandler(schema, dataCollector, emptyMap(), Paths.get("."), virtualFileSystem, logger)
 
@@ -80,18 +80,18 @@ internal class SaxParserHandlerTest {
 
         val personRootNode = conceptDataList[0]
         assertEquals(testEntityConceptName, personRootNode.conceptName)
-        assertEquals("Person", personRootNode.facets[testEntityNameFacetName])
-        assertEquals("Person", personRootNode.facets[testEntityKotlinModelClassnameFacetName])
-        assertEquals("ch.senegal.entities", personRootNode.facets[testEntityKotlinModelPackageFacetName])
+        assertEquals("Person", personRootNode.getFacet(testEntityNameFacetName))
+        assertEquals("Person", personRootNode.getFacet(testEntityKotlinModelClassnameFacetName))
+        assertEquals("ch.senegal.entities", personRootNode.getFacet(testEntityKotlinModelPackageFacetName))
         val firstnameNode = conceptDataList[1]
         assertEquals(testEntityAttributeConceptName, firstnameNode.conceptName)
-        assertEquals("firstname", firstnameNode.facets[testEntityAttributeNameFacetName])
-        assertEquals("TEXT", firstnameNode.facets[testEntityAttributeTypeFacetName])
-        assertEquals("kotlin.String", firstnameNode.facets[testKotlinFieldTypeFacetName])
+        assertEquals("firstname", firstnameNode.getFacet(testEntityAttributeNameFacetName))
+        assertEquals("TEXT", firstnameNode.getFacet(testEntityAttributeTypeFacetName))
+        assertEquals("kotlin.String", firstnameNode.getFacet(testKotlinFieldTypeFacetName))
         val addressRootNode = conceptDataList[4]
         assertEquals(testEntityConceptName, addressRootNode.conceptName)
-        assertEquals("Address", addressRootNode.facets[testEntityNameFacetName])
-        assertEquals("ch.senegal.entities", addressRootNode.facets[testEntityKotlinModelPackageFacetName])
+        assertEquals("Address", addressRootNode.getFacet(testEntityNameFacetName))
+        assertEquals("ch.senegal.entities", addressRootNode.getFacet(testEntityKotlinModelPackageFacetName))
     }
 
 

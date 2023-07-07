@@ -24,7 +24,7 @@ object ConceptDataValidator {
         }
 
         // iterate through all entry facet values to find obsolet ones
-        conceptData.facets.keys.forEach { facetName ->
+        conceptData.getFacetNames().forEach { facetName ->
             if(!schemaConcept.hasFacet(facetName)) {
                 throw InvalidFacetConfigurationModelException(
                     conceptName = conceptData.conceptName,
@@ -38,7 +38,16 @@ object ConceptDataValidator {
 
         // iterate through all schema facets to find missing ones/invalid ones
         schemaConcept.facets.forEach { facetSchema ->
-            val facetValue = conceptData.facets[facetSchema.facetName]
+            if(!conceptData.hasFacet(facetSchema.facetName)) {
+                    throw InvalidFacetConfigurationModelException(
+                        conceptName = conceptData.conceptName,
+                        conceptIdentifier = conceptData.conceptIdentifier,
+                        facetName = facetSchema.facetName,
+                        reason = "Facet with facet name '${facetSchema.facetName.name}' is not found/missing. "
+                    )
+            }
+
+            val facetValue = conceptData.getFacet(facetSchema.facetName)
 
             // TODO This seems to be a duplication in method #validateValueAgainstInputFacet
             if(facetValue == null && facetSchema.mandatory) {

@@ -14,7 +14,7 @@ object ConceptResolver {
             conceptName = conceptData.conceptName,
             conceptIdentifier = conceptData.conceptIdentifier,
             parentConceptIdentifier = conceptData.parentConceptIdentifier,
-            facetValues = conceptData.facets,
+            facetValues = conceptData.allFacets(),
         )
     }
 }

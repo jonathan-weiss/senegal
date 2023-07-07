@@ -43,7 +43,9 @@ class SaxParserHandler(
             val facetValues: Map<FacetName, Any?> = facetValuesFromAttributes(conceptSchema, xmlAttributes)
             try {
                 dataCollector
-                    .newConceptData(conceptSchema.conceptName, conceptIdentifier, parentConceptIdentifier, facetValues)
+                    .existingOrNewConceptData(conceptSchema.conceptName, conceptIdentifier)
+                    .setParentConceptIdentifier(parentConceptIdentifier)
+                    .addOrReplaceFacetValues(facetValues)
                 this.conceptIdentifierStack.add(conceptIdentifier)
             } catch (ex: Exception) {
                 throw SAXException(ex)

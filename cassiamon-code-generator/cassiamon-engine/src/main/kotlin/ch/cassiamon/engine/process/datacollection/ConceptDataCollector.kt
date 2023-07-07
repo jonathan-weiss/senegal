@@ -8,43 +8,61 @@ import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.SchemaAccess
 
 class ConceptDataCollector(private val schema: SchemaAccess, private val validateConcept: Boolean = true):
-    ExtensionDataCollector, ConceptDataProvider {
+    ExtensionDataCollector {
 
     private val conceptData: MutableMap<ConceptIdentifier, ConceptData> = mutableMapOf()
 
-    fun conceptByConceptIdentifier(conceptIdentifier: ConceptIdentifier): ConceptData {
+    override fun existingConceptData(conceptIdentifier: ConceptIdentifier): ConceptData {
         return conceptData[conceptIdentifier] ?: throw IllegalArgumentException("No concept with concept id '$conceptIdentifier' found.")
     }
 
-    fun newConceptData(conceptName: ConceptName, conceptIdentifier: ConceptIdentifier, parentConceptIdentifier: ConceptIdentifier?): MutableConceptData {
-        return MutableConceptData(conceptName, conceptIdentifier, parentConceptIdentifier)
+    override fun existingOrNewConceptData(conceptName: ConceptName, conceptIdentifier: ConceptIdentifier, parentConceptIdentifier: ConceptIdentifier?): ConceptData {
+        return conceptData.getOrPut(conceptIdentifier) {
+            ConceptDataImpl(conceptName, conceptIdentifier)
+        }.setParentConceptIdentifier(parentConceptIdentifier)
     }
 
-    override fun provideConceptData(): List<ConceptData> {
+    fun provideConceptData(): List<ConceptData> {
         return conceptData.values.toList()
     }
 
-    override fun newConceptData(
-        conceptName: ConceptName,
-        conceptIdentifier: ConceptIdentifier,
-        parentConceptIdentifier: ConceptIdentifier?,
-        facetValues: Map<FacetName, Any?>
-    ) {
-        newConceptData(conceptName, conceptIdentifier, parentConceptIdentifier)
-            .addFacetValues(facetValues)
-            .attach()
-    }
-
-    inner class MutableConceptData(
+    class ConceptDataImpl(
         override val conceptName: ConceptName,
         override val conceptIdentifier: ConceptIdentifier,
-        override val parentConceptIdentifier: ConceptIdentifier?,
     ): ConceptData {
+        private var mutableParentConceptIdentifier: ConceptIdentifier? = null
         private val mutableFacets: MutableMap<FacetName, Any?> = mutableMapOf()
-        override val facets: Map<FacetName, Any?>
-            get() = mutableFacets.toMap()
+        override val parentConceptIdentifier: ConceptIdentifier?
+            get() = mutableParentConceptIdentifier
 
-        fun addFacetValues(facetValues: Map<FacetName, Any?>): MutableConceptData {
+        override fun setParentConceptIdentifier(parentConceptIdentifier: ConceptIdentifier?): ConceptData {
+            this.mutableParentConceptIdentifier = parentConceptIdentifier
+            return this
+        }
+
+
+        override fun hasFacet(facetName: FacetName): Boolean {
+            return mutableFacets.containsKey(facetName)
+        }
+
+        override fun getFacet(facetName: FacetName): Any? {
+            if(hasFacet(facetName)) {
+                return mutableFacets[facetName]
+            } else {
+                throw NoSuchElementException("No facet defined for name ${facetName.name}.")
+            }
+        }
+
+        override fun getFacetNames(): Set<FacetName> {
+            return mutableFacets.keys
+        }
+
+        override fun allFacets(): Map<FacetName, Any?> {
+            return mutableFacets.toMap()
+        }
+
+
+        override fun addOrReplaceFacetValues(facetValues: Map<FacetName, Any?>): ConceptDataImpl {
             facetValues.forEach { (facetName, facetValue) ->
                 mutableFacets[facetName] = facetValue
             }
@@ -52,20 +70,9 @@ class ConceptDataCollector(private val schema: SchemaAccess, private val validat
         }
 
 
-        fun addFacetValue(facetName: FacetName, facetValue: Any?): MutableConceptData {
+        override fun addOrReplaceFacetValue(facetName: FacetName, facetValue: Any?): ConceptDataImpl {
             mutableFacets[facetName] = facetValue
             return this
-        }
-
-        fun attach() {
-            if(conceptData.contains(conceptIdentifier)) {
-                throw IllegalStateException("Can not attach this ConceptData to collection, as already attached.")
-            }
-            if(validateConcept) {
-                ConceptDataValidator.validateSingleEntry(schema, this)
-            }
-
-            conceptData[conceptIdentifier] = this
         }
     }
 }

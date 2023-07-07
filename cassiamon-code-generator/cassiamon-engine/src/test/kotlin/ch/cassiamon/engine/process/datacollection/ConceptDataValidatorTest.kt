@@ -64,7 +64,7 @@ class ConceptDataValidatorTest {
 
     private val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DatabaseSchema::class.java)
     private fun createCollector(schema: SchemaAccess): ConceptDataCollector {
-        return ConceptDataCollector(schema, validateConcept = false)
+        return ConceptDataCollector(schema)
     }
 
     @Test
@@ -73,11 +73,11 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
 
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         // act + assert
         assertForConceptDataValidator(personTableId, conceptDataCollector, schema)
@@ -89,11 +89,11 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
 
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = ConceptName.of("UnknownConcept"), // unknown concept
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         // act + assert
         assertForConceptDataValidator(personTableId, conceptDataCollector, schema, ConceptNotKnownModelException::class)
@@ -106,22 +106,21 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
 
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, "255") // TODO Add field as soon as data type is supported
-            .attach()
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, "255") // TODO Add field as soon as data type is supported
 
 
         // act + assert
@@ -135,11 +134,11 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
 
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = ConceptIdentifier.of("InvalidParentIdentifier"), // wrong concept
-        ).addFacetValue(tableNameFacetName, "Person").attach()
+        ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         // act + assert
         assertForConceptDataValidator(personTableId, conceptDataCollector, schema, ConceptParentInvalidModelException::class)
@@ -152,15 +151,14 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
 
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = null, // parent concept missing
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
-            .attach()
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
 
 
@@ -174,11 +172,11 @@ class ConceptDataValidatorTest {
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
 
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).attach()// facet tableNameFacetName missing
+        ) // facet tableNameFacetName missing
 
         // act + assert
         assertForConceptDataValidator(personTableId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -191,16 +189,15 @@ class ConceptDataValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, "firstname")
-            .addFacetValue(tableNameFacetName, "foobar") // this facet is not allowed in this concept
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName, 255)
-            .attach()
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
+            .addOrReplaceFacetValue(tableNameFacetName, "foobar") // this facet is not allowed in this concept
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
         // act + assert
         assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -213,15 +210,14 @@ class ConceptDataValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, 23) // type field with wrong type
-            .addFacetValue(tableFieldTypeFacetName,  "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName,  255)
-            .attach()
+            .addOrReplaceFacetValue(tableFieldNameFacetName, 23) // type field with wrong type
+            .addOrReplaceFacetValue(tableFieldTypeFacetName,  "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
 
         // act + assert
         assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -234,15 +230,14 @@ class ConceptDataValidatorTest {
 
         val personTableId = ConceptIdentifier.of("Person")
         val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
-        conceptDataCollector.newConceptData(
+        conceptDataCollector.existingOrNewConceptData(
             conceptName = databaseTableFieldConceptName,
             conceptIdentifier = personFirstnameFieldId,
             parentConceptIdentifier = personTableId,
         )
-            .addFacetValue(tableFieldNameFacetName, null) // mandatory type with null value
-            .addFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addFacetValue(tableFieldLengthFacetName,  255)
-            .attach()
+            .addOrReplaceFacetValue(tableFieldNameFacetName, null) // mandatory type with null value
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
 
         // act + assert
         assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
@@ -266,7 +261,7 @@ class ConceptDataValidatorTest {
     }
 
     private fun entryByConceptIdentifier(id: ConceptIdentifier, collector: ConceptDataCollector): ConceptData {
-        return collector.conceptByConceptIdentifier(id)
+        return collector.existingConceptData(id)
     }
 
 }

@@ -16,7 +16,7 @@ class DataCollectorInvocationHandler(private val dataCollector: ConceptDataColle
             val parentConceptIdentifier =
                 DataCollectorInvocationHandlerHelper.getParentConceptIdentifierParameter(method, args)
 
-            val conceptBuilder = dataCollector.newConceptData(conceptName = conceptName, conceptIdentifier = conceptIdentifier, parentConceptIdentifier = parentConceptIdentifier)
+            val conceptBuilder = dataCollector.existingOrNewConceptData(conceptName = conceptName, conceptIdentifier = conceptIdentifier, parentConceptIdentifier = parentConceptIdentifier)
             return ProxyCreator.createProxy(conceptDataBuilderClass.java, DataCollectorConceptBuilderInvocationHandler(conceptBuilder))
         }
 

@@ -17,11 +17,6 @@ object DataCollectorInvocationHandlerHelper {
         return validatedMethod(method).getAnnotation(AddFacet::class.java) != null
     }
 
-    fun isCommitConceptAnnotated(method: Method?): Boolean {
-        return validatedMethod(method).getAnnotation(CommitConcept::class.java) != null
-    }
-
-
     fun getConceptNameParameter(method: Method?, args: Array<out Any>?): ConceptName {
         return getParameter(method, ConceptNameValue::class.java, ConceptName::class.java, args)
     }
@@ -35,7 +30,7 @@ object DataCollectorInvocationHandlerHelper {
     }
 
     fun getConceptBuilderClazz(method: Method?): KClass<*> {
-        return validatedMethod(method).getAnnotation(AddConcept::class.java).clazz
+        return validatedMethod(method).getAnnotation(AddConcept::class.java).conceptBuilderClazz
     }
 
     fun getFacetNameParameter(method: Method?, args: Array<out Any>?): FacetName {
