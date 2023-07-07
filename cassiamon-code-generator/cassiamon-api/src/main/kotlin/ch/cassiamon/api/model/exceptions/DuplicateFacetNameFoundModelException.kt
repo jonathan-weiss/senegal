@@ -2,7 +2,7 @@ package ch.cassiamon.api.model.exceptions
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.ConceptIdentifier
 
 
 class DuplicateFacetNameFoundModelException(val concept: ConceptName, val conceptIdentifier: ConceptIdentifier, facetName: FacetName): ModelException(

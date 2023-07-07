@@ -3,7 +3,7 @@ package ch.cassiamon.engine.domain.datacollection
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
-import ch.cassiamon.api.registration.ConceptData
+import ch.cassiamon.api.datacollection.ConceptData
 import ch.cassiamon.api.schema.ConceptSchema
 import ch.cassiamon.api.schema.FacetSchema
 import ch.cassiamon.api.schema.SchemaAccess

@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.domain.process.conceptresolver
 
-import ch.cassiamon.api.registration.ConceptData
+import ch.cassiamon.api.datacollection.ConceptData
 
 object ConceptResolver {
 

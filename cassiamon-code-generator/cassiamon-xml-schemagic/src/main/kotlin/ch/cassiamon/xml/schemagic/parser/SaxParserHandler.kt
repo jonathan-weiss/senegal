@@ -6,7 +6,7 @@ import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
 import ch.cassiamon.api.extensions.inputsource.ConceptAndFacetDataCollector
 import ch.cassiamon.api.logger.LoggerFacade
-import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
 import org.xml.sax.Attributes

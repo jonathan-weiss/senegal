@@ -1,8 +1,11 @@
 package ch.cassiamon.engine
 
 import ch.cassiamon.api.registration.DomainUnit
-import ch.cassiamon.engine.domain.process.*
+import ch.cassiamon.engine.domain.datacollection.DomainUnitDataCollectionHelperImpl
 import ch.cassiamon.engine.domain.process.conceptresolver.ConceptResolver
+import ch.cassiamon.engine.domain.schema.DomainUnitSchemaHelperImpl
+import ch.cassiamon.engine.domain.templating.DomainUnitProcessTargetFilesDataHelperImpl
+import ch.cassiamon.engine.domain.templating.TargetFileCollectionProvider
 import kotlin.io.path.absolutePathString
 
 class EngineProcess(private val processSession: ProcessSession) {
@@ -15,7 +18,7 @@ class EngineProcess(private val processSession: ProcessSession) {
 
     private fun processDomainUnit(domainUnit: DomainUnit<*, *>) {
         val schema = domainUnit.createSchema(DomainUnitSchemaHelperImpl())
-        val conceptEntries = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitProcessInputDataHelperImpl(processSession, schema))
+        val conceptEntries = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitDataCollectionHelperImpl(processSession, schema))
 
         println("Schema: $schema")
         println("InputData: $conceptEntries")

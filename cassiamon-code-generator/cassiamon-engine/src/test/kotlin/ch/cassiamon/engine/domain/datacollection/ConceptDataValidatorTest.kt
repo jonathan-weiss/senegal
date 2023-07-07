@@ -6,11 +6,11 @@ import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
-import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
 import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
 import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
-import ch.cassiamon.api.registration.ConceptData
+import ch.cassiamon.api.datacollection.ConceptData
 import ch.cassiamon.api.schema.SchemaAccess
 import ch.cassiamon.engine.domain.schema.SchemaCreator
 import org.junit.jupiter.api.Assertions.*

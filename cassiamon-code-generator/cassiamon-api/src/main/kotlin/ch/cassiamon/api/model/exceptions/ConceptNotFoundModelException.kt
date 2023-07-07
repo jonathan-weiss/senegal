@@ -1,6 +1,6 @@
 package ch.cassiamon.api.model.exceptions
 
-import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.ConceptIdentifier
 
 
 class ConceptNotFoundModelException(val conceptIdentifier: ConceptIdentifier): ModelException(

@@ -1,5 +1,6 @@
 package ch.cassiamon.api.registration
 
+import ch.cassiamon.api.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.extensions.ExtensionName
 import ch.cassiamon.api.parameter.ParameterAccess
 import java.nio.file.Paths

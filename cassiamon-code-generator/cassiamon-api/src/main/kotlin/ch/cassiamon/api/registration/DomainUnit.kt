@@ -1,15 +1,20 @@
 package ch.cassiamon.api.registration
 
+import ch.cassiamon.api.datacollection.ConceptData
+import ch.cassiamon.api.datacollection.DomainUnitDataCollectionHelper
 import ch.cassiamon.api.parameter.ParameterAccess
+import ch.cassiamon.api.schema.DomainUnitSchemaHelper
 import ch.cassiamon.api.schema.SchemaAccess
+import ch.cassiamon.api.templating.DomainUnitProcessTargetFilesHelper
+import ch.cassiamon.api.templating.TargetFilesCollector
 
 abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Class<S>, private val inputDefinitionClass: Class<I>) {
     fun createSchema(domainUnitSchemaHelper: DomainUnitSchemaHelper): SchemaAccess {
         return domainUnitSchemaHelper.createDomainUnitSchema(schemaDefinitionClass = schemaDefinitionClass)
     }
 
-    fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitProcessInputDataHelper: DomainUnitProcessInputDataHelper): List<ConceptData> {
-        val domainUnitProcessInputData = domainUnitProcessInputDataHelper.createDomainUnitProcessInputData(inputDefinitionClass = inputDefinitionClass)
+    fun processDomainUnitInputData(parameterAccess: ParameterAccess, domainUnitDataCollectionHelper: DomainUnitDataCollectionHelper): List<ConceptData> {
+        val domainUnitProcessInputData = domainUnitDataCollectionHelper.createDomainUnitProcessInputData(inputDefinitionClass = inputDefinitionClass)
 
         collectInputData(
             parameterAccess = parameterAccess,

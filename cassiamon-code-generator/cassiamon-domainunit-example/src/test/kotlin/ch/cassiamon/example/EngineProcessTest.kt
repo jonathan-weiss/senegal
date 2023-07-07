@@ -6,12 +6,12 @@ import ch.cassiamon.api.annotations.ChildConcepts
 import ch.cassiamon.api.annotations.Concept
 import ch.cassiamon.api.annotations.InputFacet
 import ch.cassiamon.api.annotations.Schema
-import ch.cassiamon.api.model.ConceptIdentifier
+import ch.cassiamon.api.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.registration.DefaultConceptDataCollector
+import ch.cassiamon.api.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.registration.DefaultDomainUnit
 import ch.cassiamon.api.registration.InputSourceExtensionAccess
-import ch.cassiamon.api.registration.TargetFilesCollector
+import ch.cassiamon.api.templating.TargetFilesCollector
 import ch.cassiamon.engine.EngineProcess
 import ch.cassiamon.engine.ProcessSession
 import ch.cassiamon.engine.parameters.ParameterSource
