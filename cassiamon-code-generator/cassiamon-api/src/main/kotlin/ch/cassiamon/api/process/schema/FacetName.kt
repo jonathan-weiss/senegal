@@ -1,4 +1,6 @@
-package ch.cassiamon.api
+package ch.cassiamon.api.process.schema
+
+import ch.cassiamon.api.NamedId
 
 class FacetName private constructor(name: String): NamedId(name) {
 

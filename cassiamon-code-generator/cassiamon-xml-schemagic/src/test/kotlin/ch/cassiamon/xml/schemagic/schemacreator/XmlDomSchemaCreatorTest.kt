@@ -1,7 +1,7 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.process.schema.ConceptName
+import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.ConceptSchema
 import ch.cassiamon.api.process.schema.FacetTypeEnum
 import ch.cassiamon.api.process.schema.SchemaAccess

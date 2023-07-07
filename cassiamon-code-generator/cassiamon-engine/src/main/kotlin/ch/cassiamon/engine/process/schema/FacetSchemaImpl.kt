@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.process.schema
 
-import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.FacetSchema
 import ch.cassiamon.api.process.schema.FacetTypeEnum
 

@@ -1,7 +1,5 @@
 package ch.cassiamon.api.process.schema
 
-import ch.cassiamon.api.ConceptName
-
 interface SchemaAccess {
     fun conceptByConceptName(conceptName: ConceptName): ConceptSchema
 

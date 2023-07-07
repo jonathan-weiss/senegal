@@ -1,14 +1,12 @@
 package ch.cassiamon.api.extensions
 
-import ch.cassiamon.api.rules.NameEnforcer
+import ch.cassiamon.api.NamedId
 
 
-@JvmInline
-value class ExtensionName private constructor(val name: String) {
+class ExtensionName private constructor(name: String): NamedId(name) {
 
     companion object {
         fun of(name: String): ExtensionName {
-            NameEnforcer.isValidNameOrThrow(name)
             return ExtensionName(name)
         }
     }

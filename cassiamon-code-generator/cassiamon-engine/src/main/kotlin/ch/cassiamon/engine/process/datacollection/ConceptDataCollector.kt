@@ -1,9 +1,10 @@
 package ch.cassiamon.engine.process.datacollection
 
-import ch.cassiamon.api.ConceptIdentifier
-import ch.cassiamon.api.*
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
 import ch.cassiamon.api.process.datacollection.ConceptData
+import ch.cassiamon.api.process.schema.ConceptName
+import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.SchemaAccess
 
 class ConceptDataCollector(private val schema: SchemaAccess, private val validateConcept: Boolean = true):

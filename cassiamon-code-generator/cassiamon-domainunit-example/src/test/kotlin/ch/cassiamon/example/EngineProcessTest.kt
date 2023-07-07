@@ -1,12 +1,12 @@
 package ch.cassiamon.example
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
+import ch.cassiamon.api.process.schema.ConceptName
+import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.InputFacet
 import ch.cassiamon.api.process.schema.annotations.Schema
-import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.process.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.process.DefaultDomainUnit

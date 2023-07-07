@@ -1,4 +1,4 @@
-package ch.cassiamon.api
+package ch.cassiamon.api.process.schema
 
 import ch.cassiamon.api.rules.NameEnforcer
 import java.util.*

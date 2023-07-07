@@ -1,8 +1,8 @@
 package ch.cassiamon.engine.process.conceptresolver
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.process.schema.ConceptName
+import ch.cassiamon.api.process.schema.FacetName
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 
 class ResolvedConcepts(
     conceptData: List<ConceptEntryData>

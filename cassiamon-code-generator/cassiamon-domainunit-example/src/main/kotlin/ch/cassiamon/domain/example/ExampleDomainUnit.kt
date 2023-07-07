@@ -1,7 +1,7 @@
 package ch.cassiamon.domain.example
 
 import ch.cassiamon.api.process.datacollection.defaults.DefaultConceptDataCollector
-import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.datacollection.extensions.DataCollectionExtensionAccess
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.process.DefaultDomainUnit

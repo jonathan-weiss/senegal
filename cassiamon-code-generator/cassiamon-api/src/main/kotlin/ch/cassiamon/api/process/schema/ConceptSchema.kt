@@ -1,8 +1,5 @@
 package ch.cassiamon.api.process.schema
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
-
 
 interface ConceptSchema {
     val conceptName: ConceptName

@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.process.schema
 
-import ch.cassiamon.api.ConceptName
+import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.ConceptSchema
 import ch.cassiamon.api.process.schema.SchemaAccess
 

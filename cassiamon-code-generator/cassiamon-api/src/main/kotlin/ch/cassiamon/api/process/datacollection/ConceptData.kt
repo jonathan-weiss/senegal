@@ -1,8 +1,8 @@
 package ch.cassiamon.api.process.datacollection
 
-import ch.cassiamon.api.ConceptName
-import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.process.schema.ConceptName
+import ch.cassiamon.api.process.schema.FacetName
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 
 interface ConceptData {
     val conceptName: ConceptName
