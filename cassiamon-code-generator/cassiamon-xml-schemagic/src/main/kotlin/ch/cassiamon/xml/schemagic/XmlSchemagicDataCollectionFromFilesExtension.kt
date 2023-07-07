@@ -1,7 +1,7 @@
 package ch.cassiamon.xml.schemagic
 
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.process.datacollection.extensions.ExtensionDataCollector
 import ch.cassiamon.api.process.datacollection.extensions.DataCollectionFromFilesExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
@@ -20,7 +20,7 @@ import kotlin.io.path.name
 class XmlSchemagicDataCollectionFromFilesExtension: DataCollectionFromFilesExtension {
 
     private lateinit var schemaAccess: SchemaAccess;
-    private lateinit var conceptAndFacetDataCollector: ConceptAndFacetDataCollector;
+    private lateinit var extensionDataCollector: ExtensionDataCollector;
     private lateinit var fileSystemAccess: FileSystemAccess;
     private lateinit var loggerFacade: LoggerFacade;
     private lateinit var parameterAccess: ParameterAccess;
@@ -40,12 +40,12 @@ class XmlSchemagicDataCollectionFromFilesExtension: DataCollectionFromFilesExten
         parameterAccess: ParameterAccess,
         fileSystemAccess: FileSystemAccess,
         schemaAccess: SchemaAccess,
-        conceptAndFacetDataCollector: ConceptAndFacetDataCollector
+        extensionDataCollector: ExtensionDataCollector
     ) {
         this.loggerFacade = loggerFacade
         this.parameterAccess = parameterAccess
         this.fileSystemAccess = fileSystemAccess
-        this.conceptAndFacetDataCollector = conceptAndFacetDataCollector
+        this.extensionDataCollector = extensionDataCollector
         this.schemaAccess = schemaAccess
     }
 
@@ -81,7 +81,7 @@ class XmlSchemagicDataCollectionFromFilesExtension: DataCollectionFromFilesExten
 
         val saxParser: SAXParser = factory.newSAXParser()
 
-        val saxParserHandler = SaxParserHandler(schemaAccess, conceptAndFacetDataCollector, placeholders, xmlDefinitionDirectory, fileSystemAccess, loggerFacade)
+        val saxParserHandler = SaxParserHandler(schemaAccess, extensionDataCollector, placeholders, xmlDefinitionDirectory, fileSystemAccess, loggerFacade)
 
         fileSystemAccess.fileAsInputStream(xmlDefinitionFile).use {
             saxParser.parse(it, saxParserHandler)

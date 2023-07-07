@@ -1,7 +1,7 @@
 package ch.cassiamon.engine.extension
 
 import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.process.datacollection.extensions.ExtensionDataCollector
 import ch.cassiamon.api.process.datacollection.extensions.DataCollectionFromFilesExtension
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.logger.LoggerFacade
@@ -15,7 +15,7 @@ class ExtensionHolder(
     private val loggerFacade: LoggerFacade,
     private val parameterAccess: ParameterAccess,
     private val schemaAccess: SchemaAccess,
-    private val conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
+    private val extensionDataCollector: ExtensionDataCollector,
 ): DataCollectionExtensionAccess {
 
     private val dataCollectionFromFilesExtensions: Map<ExtensionName, DataCollectionFromFilesExtension> =
@@ -28,7 +28,7 @@ class ExtensionHolder(
         extension.initializeDataCollectionExtension(
             loggerFacade = loggerFacade,
             parameterAccess = parameterAccess,
-            conceptAndFacetDataCollector = conceptAndFacetDataCollector,
+            extensionDataCollector = extensionDataCollector,
             fileSystemAccess = fileSystemAccess,
             schemaAccess = schemaAccess,
         )

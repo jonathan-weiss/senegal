@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptSchema
 import ch.cassiamon.api.filesystem.FileSystemAccess
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
-import ch.cassiamon.api.process.datacollection.extensions.ConceptAndFacetDataCollector
+import ch.cassiamon.api.process.datacollection.extensions.ExtensionDataCollector
 import ch.cassiamon.api.logger.LoggerFacade
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.schema.SchemaAccess
@@ -20,7 +20,7 @@ import java.util.*
 
 class SaxParserHandler(
     private val schema: SchemaAccess,
-    private val dataCollector: ConceptAndFacetDataCollector,
+    private val dataCollector: ExtensionDataCollector,
     private val placeholders: Map<String, String>,
     private val schemaFileDirectory: Path,
     private val fileSystemAccess: FileSystemAccess,

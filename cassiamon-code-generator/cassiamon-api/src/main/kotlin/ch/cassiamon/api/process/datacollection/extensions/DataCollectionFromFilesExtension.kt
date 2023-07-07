@@ -14,7 +14,7 @@ interface DataCollectionFromFilesExtension: Extension {
         parameterAccess: ParameterAccess,
         fileSystemAccess: FileSystemAccess,
         schemaAccess: SchemaAccess,
-        conceptAndFacetDataCollector: ConceptAndFacetDataCollector,
+        extensionDataCollector: ExtensionDataCollector,
     )
 
     fun readFromFiles(files: Set<Path>)
