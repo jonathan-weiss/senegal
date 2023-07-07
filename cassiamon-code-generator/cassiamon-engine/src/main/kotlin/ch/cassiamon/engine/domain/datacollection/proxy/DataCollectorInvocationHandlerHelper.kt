@@ -2,8 +2,8 @@ package ch.cassiamon.engine.domain.datacollection.proxy
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.annotations.datacollector.*
 import ch.cassiamon.api.ConceptIdentifier
+import ch.cassiamon.api.datacollection.annotations.*
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 

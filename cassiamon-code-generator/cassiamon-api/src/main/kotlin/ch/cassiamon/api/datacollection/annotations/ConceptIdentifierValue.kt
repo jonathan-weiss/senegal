@@ -1,4 +1,4 @@
-package ch.cassiamon.api.annotations.datacollector
+package ch.cassiamon.api.datacollection.annotations
 
 
 @Target(AnnotationTarget.VALUE_PARAMETER)

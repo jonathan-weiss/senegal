@@ -1,4 +1,4 @@
-package ch.cassiamon.api.annotations
+package ch.cassiamon.api.schema.annotations
 
 
 @Target(AnnotationTarget.FUNCTION)

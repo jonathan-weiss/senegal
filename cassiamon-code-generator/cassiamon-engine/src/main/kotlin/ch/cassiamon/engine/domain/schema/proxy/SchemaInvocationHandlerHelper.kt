@@ -2,10 +2,10 @@ package ch.cassiamon.engine.domain.schema.proxy
 
 import ch.cassiamon.api.ConceptName
 import ch.cassiamon.api.FacetName
-import ch.cassiamon.api.annotations.ChildConcepts
-import ch.cassiamon.api.annotations.Concept
-import ch.cassiamon.api.annotations.InputFacet
-import ch.cassiamon.api.annotations.Schema
+import ch.cassiamon.api.schema.annotations.ChildConcepts
+import ch.cassiamon.api.schema.annotations.Concept
+import ch.cassiamon.api.schema.annotations.InputFacet
+import ch.cassiamon.api.schema.annotations.Schema
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
