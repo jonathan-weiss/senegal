@@ -3,11 +3,13 @@ package ch.cassiamon.engine.process.schema
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.FacetTypeEnum
+import ch.cassiamon.api.process.schema.MalformedSchemaException
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.InputFacet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SchemaCreatorFacetTest {
@@ -55,6 +57,49 @@ class SchemaCreatorFacetTest {
 
         Assertions.assertEquals(FacetTypeEnum.BOOLEAN, concept.facetByName(booleanFacetName).facetType)
         Assertions.assertEquals(true, concept.facetByName(booleanFacetName).mandatory)
+    }
+
+    @Schema
+    interface SchemaConceptWithDuplicateFacetsDefinitionClass {
+        @ChildConcepts(ConceptWithWrongFacetType::class)
+        fun getChildrenConcepts(): List<ConceptWithWrongFacetType>
+
+    }
+
+    @Concept("ConceptWithDuplicateFacets")
+    interface ConceptWithDuplicateFacets {
+        @InputFacet("MyDuplicateFacet")
+        fun getDuplicateFacet(): String
+
+        @InputFacet("MyDuplicateFacet")
+        fun getSecondDuplicateFacet(): String
+    }
+
+    @Test
+    fun `test concept with duplicate facet names should throw an exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithDuplicateFacetsDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
+    interface SchemaConceptWithWrongFacetTypeDefinitionClass {
+        @ChildConcepts(ConceptWithWrongFacetType::class)
+        fun getChildrenConcepts(): List<ConceptWithWrongFacetType>
+
+    }
+
+    @Concept("ConceptWithWrongFacetType")
+    interface ConceptWithWrongFacetType {
+        @InputFacet("MyFacetWithWrongType")
+        fun getWrongTypeFacet(): Double
+    }
+
+    @Test
+    fun `test concept with wrong facet type should throw an exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithWrongFacetTypeDefinitionClass::class.java)
+        }
     }
 
 }

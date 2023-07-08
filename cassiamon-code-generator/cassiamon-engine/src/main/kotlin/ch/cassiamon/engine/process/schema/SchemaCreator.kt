@@ -12,6 +12,10 @@ object SchemaCreator {
     fun createSchemaFromSchemaDefinitionClass(schemaDefinitionClass: Class<*>): SchemaImpl {
         validateTypeAnnotation(annotation = Schema::class.java, classToInspect = schemaDefinitionClass)
 
+        if(hasClassAnnotation(annotation = Concept::class.java, classToInspect = schemaDefinitionClass)) {
+            throw MalformedSchemaException("Definition class '${schemaDefinitionClass.name}' can not be a concept having an annotation of type '${Concept::class.java.name}'")
+        }
+
         val concepts: MutableMap<ConceptName, ConceptSchema> = mutableMapOf()
 
         schemaDefinitionClass.methods.forEach { method ->

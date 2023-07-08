@@ -8,7 +8,6 @@ import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.InputFacet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SchemaCreatorTest {
@@ -42,13 +41,13 @@ class SchemaCreatorTest {
 
     @Schema
     interface SimpleSchemaDefinitionClass {
-        @ChildConcepts(FooConcept::class)
-        fun getChildrenConceptsOfFoo(): List<FooConcept>
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConceptsOfFoo(): List<SimpleConcept>
 
     }
 
     @Concept("FooConcept")
-    interface FooConcept {
+    interface SimpleConcept {
         @InputFacet("Bar")
         fun getBarFacet(): String
     }
@@ -65,10 +64,10 @@ class SchemaCreatorTest {
 
     @Schema
     interface SimpleSchemaDefinitionClassWithUnannotatedMethods {
-        @ChildConcepts(FooConcept::class)
-        fun getChildrenConceptsOfFoo(): List<FooConcept>
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConceptsOfFoo(): List<SimpleConcept>
 
-        fun getOtherChildren(): List<FooConcept>
+        fun getOtherChildren(): List<SimpleConcept>
     }
 
     @Test
@@ -79,9 +78,39 @@ class SchemaCreatorTest {
     }
 
     @Schema
+    interface SimpleSchemaDefinitionClassWithFacetMethods {
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConceptsOfFoo(): List<SimpleConcept>
+
+        @InputFacet("MyFacet")
+        fun getStringValue(): String
+    }
+
+    @Test
+    fun `test schema with facet methods should throw an exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SimpleSchemaDefinitionClassWithFacetMethods::class.java)
+        }
+    }
+
+    @Schema
+    interface SimpleSchemaDefinitionClassButNotACollection {
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConceptsOfFoo(): SimpleConcept
+
+    }
+
+    @Test
+    fun `test schema with a child concept annotation returning a single entry should throw an exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SimpleSchemaDefinitionClassButNotACollection::class.java)
+        }
+    }
+
+    @Schema
     interface SimpleSchemaDefinitionClassButNotAList {
-        @ChildConcepts(FooConcept::class)
-        fun getChildrenConceptsOfFoo(): FooConcept
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConceptsOfFoo(): Set<SimpleConcept>
 
     }
 
@@ -104,30 +133,6 @@ class SchemaCreatorTest {
     fun `test schema with a method not returning an interface annotated with @Concept should throw an exception`() {
         Assertions.assertThrows(MalformedSchemaException::class.java) {
             SchemaCreator.createSchemaFromSchemaDefinitionClass(SimpleSchemaDefinitionClassButNotAListOfConcept::class.java)
-        }
-    }
-
-    @Schema
-    interface SchemaConceptWithDuplicateFacetsDefinitionClass {
-        @ChildConcepts(ConceptWithDuplicateFacets::class)
-        fun getChildrenConcepts(): List<ConceptWithDuplicateFacets>
-
-    }
-
-    @Concept("ConceptWithDuplicateFacets")
-    interface ConceptWithDuplicateFacets {
-        @InputFacet("MyDuplicateFacet")
-        fun getDuplicateFacet(): String
-
-        @InputFacet("MyDuplicateFacet")
-        fun getSecondDuplicateFacet(): String
-    }
-
-    @Test
-    @Disabled
-    fun `test concept with duplicate facet names should throw an exception`() {
-        Assertions.assertThrows(MalformedSchemaException::class.java) {
-            SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithDuplicateFacetsDefinitionClass::class.java)
         }
     }
 
@@ -283,10 +288,21 @@ class SchemaCreatorTest {
     fun `test with duplicate root concept`() {
         val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaDefinitionWithDuplicateRootConceptClass::class.java)
         Assertions.assertEquals(1, schema.numberOfConcepts())
-        val fooConcept = schema.conceptByConceptName(ConceptName.of("DuplicateRootConcept"))
-        Assertions.assertEquals(ConceptName.of("DuplicateRootConcept"), fooConcept.conceptName)
-        Assertions.assertNull(fooConcept.parentConceptName)
+        val concept = schema.conceptByConceptName(ConceptName.of("DuplicateRootConcept"))
+        Assertions.assertEquals(ConceptName.of("DuplicateRootConcept"), concept.conceptName)
+        Assertions.assertNull(concept.parentConceptName)
     }
 
+    @Schema
+    @Concept("SchemaAndConceptDefinitionClass")
+    interface SchemaAndConceptDefinitionClass
+
+
+    @Test
+    fun `test schema with root schema that is itself a concept throw exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaAndConceptDefinitionClass::class.java)
+        }
+    }
 
 }
