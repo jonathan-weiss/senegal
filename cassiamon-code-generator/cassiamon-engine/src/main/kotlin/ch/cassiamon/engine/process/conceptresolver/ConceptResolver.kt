@@ -4,13 +4,13 @@ import ch.cassiamon.api.process.datacollection.ConceptData
 
 object ConceptResolver {
 
-    fun validateAndResolveConcepts(conceptEntries: List<ConceptData>): ResolvedConcepts {
-        return ResolvedConcepts(conceptEntries.map { createValidatedConceptEntry(it) })
+    fun validateAndResolveConcepts(conceptEntries: List<ConceptData>): ConceptGraph {
+        return ConceptGraph(conceptEntries.map { createValidatedConceptEntry(it) })
     }
 
-    private fun createValidatedConceptEntry(conceptData: ConceptData): ResolvedConcepts.ConceptEntryData {
+    private fun createValidatedConceptEntry(conceptData: ConceptData): ConceptGraph.ConceptNode {
         // TODO Add validation and resolve graph
-        return ResolvedConcepts.ConceptEntryData(
+        return ConceptGraph.ConceptNode(
             conceptName = conceptData.conceptName,
             conceptIdentifier = conceptData.conceptIdentifier,
             parentConceptIdentifier = conceptData.parentConceptIdentifier,

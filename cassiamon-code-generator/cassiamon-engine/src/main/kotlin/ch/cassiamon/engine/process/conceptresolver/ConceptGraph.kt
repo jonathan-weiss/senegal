@@ -4,10 +4,10 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 
-class ResolvedConcepts(
-    conceptData: List<ConceptEntryData>
+class ConceptGraph(
+    conceptNodes: List<ConceptNode>
 ) {
-    private val concepts: List<ResolvedConcept> = conceptData.map { ResolvedConcept(it) }
+    private val concepts: List<ResolvedConcept> = conceptNodes.map { ResolvedConcept(it) }
     fun conceptsByConceptName(conceptName: ConceptName): List<ResolvedConcept> {
         return concepts
             .filter { it.conceptName == conceptName }
@@ -18,7 +18,7 @@ class ResolvedConcepts(
             .filter { it.parentConceptIdentifier != null && it.parentConceptIdentifier == parentConceptIdentifier }
     }
 
-    inner class ResolvedConcept(conceptData: ConceptEntryData, ) {
+    inner class ResolvedConcept(conceptData: ConceptNode, ) {
         val conceptName: ConceptName = conceptData.conceptName
         val conceptIdentifier: ConceptIdentifier = conceptData.conceptIdentifier
         val parentConceptIdentifier: ConceptIdentifier? = conceptData.parentConceptIdentifier
@@ -30,7 +30,7 @@ class ResolvedConcepts(
         }
     }
 
-    data class ConceptEntryData(
+    data class ConceptNode(
         val conceptName: ConceptName,
         val conceptIdentifier: ConceptIdentifier,
         val parentConceptIdentifier: ConceptIdentifier?,
