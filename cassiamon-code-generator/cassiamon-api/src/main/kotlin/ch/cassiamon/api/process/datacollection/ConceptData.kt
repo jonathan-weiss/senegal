@@ -14,7 +14,6 @@ interface ConceptData {
 
     fun allFacets(): Map<FacetName, Any?>
     fun hasFacet(facetName: FacetName):Boolean
-    @Throws(NoSuchElementException::class)
     fun getFacet(facetName: FacetName):Any?
     fun getFacetNames(): Set<FacetName>
 

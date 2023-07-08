@@ -7,10 +7,8 @@ import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import ch.cassiamon.api.process.schema.ConceptIdentifier
-import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
-import ch.cassiamon.api.model.exceptions.ConceptParentInvalidModelException
-import ch.cassiamon.api.model.exceptions.InvalidFacetConfigurationModelException
 import ch.cassiamon.api.process.datacollection.ConceptData
+import ch.cassiamon.api.process.datacollection.exceptions.*
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.engine.process.schema.SchemaCreator
 import org.junit.jupiter.api.Assertions.*
@@ -96,7 +94,7 @@ class ConceptDataValidatorTest {
         ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         // act + assert
-        assertForConceptDataValidator(personTableId, conceptDataCollector, schema, ConceptNotKnownModelException::class)
+        assertForConceptDataValidator(personTableId, conceptDataCollector, schema, UnknownConceptException::class)
     }
 
 
@@ -141,7 +139,7 @@ class ConceptDataValidatorTest {
         ).addOrReplaceFacetValue(tableNameFacetName, "Person")
 
         // act + assert
-        assertForConceptDataValidator(personTableId, conceptDataCollector, schema, ConceptParentInvalidModelException::class)
+        assertForConceptDataValidator(personTableId, conceptDataCollector, schema, InvalidConceptParentException::class)
     }
 
 
@@ -163,23 +161,27 @@ class ConceptDataValidatorTest {
 
 
         // act + assert
-        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, ConceptParentInvalidModelException::class)
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidConceptParentException::class)
     }
 
     @Test
     fun `validate a concept with missing facet`() {
         // arrange
         val conceptDataCollector = createCollector(schema)
-        val personTableId = ConceptIdentifier.of("Person")
 
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
         conceptDataCollector.existingOrNewConceptData(
-            conceptName = databaseTableConceptName,
-            conceptIdentifier = personTableId,
-            parentConceptIdentifier = null,
-        ) // facet tableNameFacetName missing
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            //.addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")  // facet tableNameFacetName missing
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
         // act + assert
-        assertForConceptDataValidator(personTableId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, MissingFacetValueException::class)
     }
 
     @Test
@@ -200,7 +202,7 @@ class ConceptDataValidatorTest {
             .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
         // act + assert
-        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, UnknownFacetNameException::class)
     }
 
     @Test
@@ -220,7 +222,7 @@ class ConceptDataValidatorTest {
             .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
 
         // act + assert
-        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, WrongTypeForFacetValueException::class)
     }
 
     @Test
@@ -240,7 +242,7 @@ class ConceptDataValidatorTest {
             .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
 
         // act + assert
-        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, InvalidFacetConfigurationModelException::class)
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, MissingFacetValueException::class)
     }
 
     private fun assertForConceptDataValidator(conceptId: ConceptIdentifier, collector: ConceptDataCollector, schema: SchemaAccess, expectedExceptionType: KClass<out Throwable>? = null) {
