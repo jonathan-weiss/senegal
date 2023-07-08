@@ -8,6 +8,7 @@ object XmlFacetValueConverter {
         return when(facetSchema.facetType) {
             FacetTypeEnum.TEXT -> attributeValue
             FacetTypeEnum.NUMBER -> attributeValue.toLong()
+            FacetTypeEnum.BOOLEAN -> attributeValue.toBoolean()
         }
     }
 }

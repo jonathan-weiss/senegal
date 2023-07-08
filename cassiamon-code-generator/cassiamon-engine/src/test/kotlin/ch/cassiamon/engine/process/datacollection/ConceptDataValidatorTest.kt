@@ -120,7 +120,7 @@ class ConceptDataValidatorTest {
         )
             .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
             .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
-            .addOrReplaceFacetValue(tableFieldLengthFacetName, "255") // TODO Add field as soon as data type is supported
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
 
         // act + assert

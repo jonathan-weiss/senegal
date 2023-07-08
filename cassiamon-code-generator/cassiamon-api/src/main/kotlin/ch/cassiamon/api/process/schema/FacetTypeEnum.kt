@@ -1,10 +1,27 @@
 package ch.cassiamon.api.process.schema
 
-enum class FacetTypeEnum(val typeClass: Class<*>) {
-    TEXT(String::class.java),
-    NUMBER(Long::class.java);
+import kotlin.reflect.KClass
+
+enum class FacetTypeEnum(val typeClass: KClass<*>) {
+    TEXT(String::class),
+    NUMBER(Long::class),
+    BOOLEAN(Boolean::class);
 
     fun isCompatibleType(facetValue: Any): Boolean {
-        return typeClass.isAssignableFrom(facetValue.javaClass)
+        return matchingEnumByTypeClass(facetValue::class)
+            ?.let { matchingEnum -> matchingEnum == this }
+            ?: false
+    }
+
+    companion object {
+        fun matchingEnumByTypeClass(classType: KClass<*>): FacetTypeEnum? {
+            return when(classType) {
+                String::class -> TEXT
+                Int::class -> NUMBER // TODO is the cast to Int done properly in case of Long values?
+                Long::class -> NUMBER
+                Boolean::class -> BOOLEAN
+                else -> null
+            }
+        }
     }
 }

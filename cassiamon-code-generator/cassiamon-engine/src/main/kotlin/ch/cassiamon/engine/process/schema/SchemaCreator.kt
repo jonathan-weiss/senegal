@@ -67,12 +67,15 @@ object SchemaCreator {
         conceptClass.methods.forEach { method ->
             if(hasMethodAnnotation(InputFacet::class.java, method)) {
                 val inputFacetName = FacetName.of(method.getAnnotation(InputFacet::class.java).inputFacetName)
+                val returnType = method.returnType
+                val facetType: FacetTypeEnum = FacetTypeEnum.matchingEnumByTypeClass(returnType.kotlin)
+                    ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types (${FacetTypeEnum.values().map { it.typeClass }}).")
 
 
                 // TODO add other facets
                 // TODO check if already has this facet name
 
-                val facet = FacetSchemaImpl(inputFacetName, FacetTypeEnum.TEXT, mandatory = true)
+                val facet = FacetSchemaImpl(inputFacetName, facetType, mandatory = true)
                 facets.add(facet)
             }
         }

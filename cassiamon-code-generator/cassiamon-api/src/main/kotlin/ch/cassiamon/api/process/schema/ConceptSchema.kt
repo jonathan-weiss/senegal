@@ -12,4 +12,8 @@ interface ConceptSchema {
     fun hasFacet(facetName: FacetName): Boolean {
         return facetNames.contains(facetName)
     }
+
+    fun facetByName(facetName: FacetName): FacetSchema {
+        return facets.first { it.facetName == facetName }
+    }
 }
