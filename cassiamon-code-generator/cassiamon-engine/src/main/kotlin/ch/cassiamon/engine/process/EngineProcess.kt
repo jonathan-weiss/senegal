@@ -2,7 +2,7 @@ package ch.cassiamon.engine.process
 
 import ch.cassiamon.api.process.DomainUnit
 import ch.cassiamon.engine.process.datacollection.DomainUnitDataCollectionHelperImpl
-import ch.cassiamon.engine.process.conceptresolver.ConceptResolver
+import ch.cassiamon.engine.process.conceptgraph.ConceptResolver
 import ch.cassiamon.engine.process.schema.DomainUnitSchemaHelperImpl
 import ch.cassiamon.engine.process.templating.DomainUnitProcessTargetFilesDataHelperImpl
 import ch.cassiamon.engine.process.templating.TargetFileCollectionProvider
@@ -18,22 +18,19 @@ class EngineProcess(private val processSession: ProcessSession) {
 
     private fun processDomainUnit(domainUnit: DomainUnit<*, *>) {
         val schema = domainUnit.createSchema(DomainUnitSchemaHelperImpl())
-        val conceptEntries = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitDataCollectionHelperImpl(processSession, schema))
+        val conceptData = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitDataCollectionHelperImpl(processSession, schema))
 
         println("Schema: $schema")
-        println("InputData: $conceptEntries")
+        println("InputData: $conceptData")
 
-        val concepts = ConceptResolver.validateAndResolveConcepts(conceptEntries)
+        val conceptGraph = ConceptResolver.validateAndResolveConcepts(schema, conceptData)
 
-        // traverse whole model and transform (adapt/calculate/transform) the missing model values
-        // val conceptModelGraph = ConceptModelGraphCalculator.calculateConceptModelGraph(schema, conceptEntries)
-        // println("conceptModelGraph: $conceptModelGraph")
-        println("concepts: $concepts")
+        println("concepts: $conceptGraph")
 
 
         val targetFilesCollector = domainUnit.processDomainUnitTargetFiles(
             processSession.parameterAccess,
-            DomainUnitProcessTargetFilesDataHelperImpl(concepts)
+            DomainUnitProcessTargetFilesDataHelperImpl(conceptGraph)
         )
 
         // TODO This casts are not really a good solution. Move this into the domain unit?

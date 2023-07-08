@@ -1,6 +1,6 @@
 package ch.cassiamon.engine.process.schema.proxy
 
-import ch.cassiamon.engine.process.conceptresolver.ConceptGraph
+import ch.cassiamon.engine.process.conceptgraph.ConceptGraph
 import ch.cassiamon.engine.proxy.InvocationHandlerHelper
 import ch.cassiamon.engine.proxy.ProxyCreator
 import java.lang.reflect.InvocationHandler

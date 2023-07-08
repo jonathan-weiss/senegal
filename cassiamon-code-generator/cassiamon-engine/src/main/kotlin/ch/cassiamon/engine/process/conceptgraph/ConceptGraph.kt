@@ -1,4 +1,4 @@
-package ch.cassiamon.engine.process.conceptresolver
+package ch.cassiamon.engine.process.conceptgraph
 
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
@@ -7,6 +7,7 @@ import ch.cassiamon.api.process.schema.ConceptIdentifier
 class ConceptGraph(
     conceptNodes: List<ConceptNode>
 ) {
+    // TODO get rid of the resolved concepts. This is the ConceptNode.
     private val concepts: List<ResolvedConcept> = conceptNodes.map { ResolvedConcept(it) }
     fun conceptsByConceptName(conceptName: ConceptName): List<ResolvedConcept> {
         return concepts
