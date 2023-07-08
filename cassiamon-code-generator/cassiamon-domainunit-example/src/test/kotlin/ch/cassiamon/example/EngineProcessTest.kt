@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
@@ -127,7 +127,7 @@ class EngineProcessTest {
 
     @Concept("TestEntity")
     interface TestEntityConcept {
-        @InputFacet("TestEntityName")
+        @Facet("TestEntityName")
         fun getEntityName(): String
         @ChildConcepts(TestEntityAttributeConcept::class)
         fun getAttributes(): List<TestEntityAttributeConcept>
@@ -136,7 +136,7 @@ class EngineProcessTest {
 
     @Concept("TestEntityAttribute")
     interface TestEntityAttributeConcept {
-        @InputFacet("TestEntityAttributeName")
+        @Facet("TestEntityAttributeName")
         fun getAttributeName(): String
 
     }

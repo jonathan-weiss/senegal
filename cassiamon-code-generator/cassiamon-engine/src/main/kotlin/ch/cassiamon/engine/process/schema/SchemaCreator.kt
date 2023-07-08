@@ -3,7 +3,7 @@ package ch.cassiamon.engine.process.schema
 import ch.cassiamon.api.process.schema.*
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import java.lang.reflect.Method
 
@@ -56,11 +56,11 @@ object SchemaCreator {
                 validateChildConceptMethod(conceptClass, method)
                 val childConceptClass = method.getAnnotation(ChildConcepts::class.java).clazz.java
                 validateAndAddConcept(concepts, conceptClass = childConceptClass, parentConcept = conceptName)
-            } else if(hasMethodAnnotation(InputFacet::class.java, method)) {
+            } else if(hasMethodAnnotation(Facet::class.java, method)) {
                 // ignore and skip, this is allowed
             } else {
                 throw MalformedSchemaException("Concept definition class '${conceptClass.name}' can " +
-                        "only have methods annotated with '${ChildConcepts::class.qualifiedName}' or '${InputFacet::class.qualifiedName}'. " +
+                        "only have methods annotated with '${ChildConcepts::class.qualifiedName}' or '${Facet::class.qualifiedName}'. " +
                         "Not valid for method '$method'.")
             }
         }
@@ -69,17 +69,14 @@ object SchemaCreator {
     private fun createConceptSchema(conceptName: ConceptName, conceptClass: Class<*>, parentConcept: ConceptName?): ConceptSchema {
         val facets = mutableListOf<FacetSchema>()
         conceptClass.methods.forEach { method ->
-            if(hasMethodAnnotation(InputFacet::class.java, method)) {
-                val inputFacetName = FacetName.of(method.getAnnotation(InputFacet::class.java).inputFacetName)
+            if(hasMethodAnnotation(Facet::class.java, method)) {
+                val facetName = FacetName.of(method.getAnnotation(Facet::class.java).facetName)
+                val isMandatory = method.getAnnotation(Facet::class.java).mandatory
                 val returnType = method.returnType
                 val facetType: FacetTypeEnum = FacetTypeEnum.matchingEnumByTypeClass(returnType.kotlin)
                     ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types (${FacetTypeEnum.values().map { it.typeClass }}).")
 
-
-                // TODO add other facets
-                // TODO check if already has this facet name
-
-                val facet = FacetSchemaImpl(inputFacetName, facetType, mandatory = true)
+                val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory)
                 facets.add(facet)
             }
         }

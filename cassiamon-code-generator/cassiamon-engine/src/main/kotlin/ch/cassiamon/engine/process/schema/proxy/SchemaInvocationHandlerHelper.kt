@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
@@ -31,11 +31,11 @@ object SchemaInvocationHandlerHelper {
     }
 
     fun isInputFacetAnnotated(method: Method?): Boolean {
-        return validatedMethod(method).getAnnotation(InputFacet::class.java) != null
+        return validatedMethod(method).getAnnotation(Facet::class.java) != null
     }
 
     fun getInputFacetName(method: Method?): FacetName {
-        return FacetName.of(validatedMethod(method).getAnnotation(InputFacet::class.java).inputFacetName)
+        return FacetName.of(validatedMethod(method).getAnnotation(Facet::class.java).facetName)
     }
 
     private fun validatedMethod(method: Method?): Method {

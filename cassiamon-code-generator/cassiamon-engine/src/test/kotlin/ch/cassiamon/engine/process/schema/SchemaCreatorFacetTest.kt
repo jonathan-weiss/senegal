@@ -6,10 +6,9 @@ import ch.cassiamon.api.process.schema.FacetTypeEnum
 import ch.cassiamon.api.process.schema.MalformedSchemaException
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SchemaCreatorFacetTest {
@@ -24,13 +23,13 @@ class SchemaCreatorFacetTest {
     @Concept("DifferentTypeConcept")
     interface DifferentTypeConcept {
 
-        @InputFacet("TextFacet")
+        @Facet("TextFacet")
         fun getTextFacet(): String
 
-        @InputFacet("NumberFacet")
+        @Facet("NumberFacet")
         fun getNumberFacet(): Int
 
-        @InputFacet("BooleanFacet")
+        @Facet("BooleanFacet")
         fun getBooleanFacet(): Boolean
 
     }
@@ -68,10 +67,10 @@ class SchemaCreatorFacetTest {
 
     @Concept("ConceptWithDuplicateFacets")
     interface ConceptWithDuplicateFacets {
-        @InputFacet("MyDuplicateFacet")
+        @Facet("MyDuplicateFacet")
         fun getDuplicateFacet(): String
 
-        @InputFacet("MyDuplicateFacet")
+        @Facet("MyDuplicateFacet")
         fun getSecondDuplicateFacet(): String
     }
 
@@ -91,7 +90,7 @@ class SchemaCreatorFacetTest {
 
     @Concept("ConceptWithWrongFacetType")
     interface ConceptWithWrongFacetType {
-        @InputFacet("MyFacetWithWrongType")
+        @Facet("MyFacetWithWrongType")
         fun getWrongTypeFacet(): Double
     }
 
@@ -100,6 +99,43 @@ class SchemaCreatorFacetTest {
         Assertions.assertThrows(MalformedSchemaException::class.java) {
             SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithWrongFacetTypeDefinitionClass::class.java)
         }
+    }
+
+    @Schema
+    interface SchemaConceptWithMandatoryFacetsAndOptionalFacetsDefinitionClass {
+        @ChildConcepts(ConceptWithMandatoryAndOptionalFacets::class)
+        fun getChildrenConcepts(): List<ConceptWithMandatoryAndOptionalFacets>
+
+    }
+
+    @Concept("ConceptWithMandatoryAndOptionalFacets")
+    interface ConceptWithMandatoryAndOptionalFacets {
+        @Facet(facetName = "DefaultMandatoryFacet")
+        fun getDefaultMandatoryFacet(): Boolean
+
+        @Facet(facetName = "MandatoryFacet", mandatory = true)
+        fun getMandatoryFacet(): Int
+
+        @Facet(facetName = "OptionalFacet", mandatory = false)
+        fun getOptionalFacet(): Boolean
+    }
+
+    @Test
+    fun `test concept with mandatory and optional facets`() {
+        val defaultMandatoryFacetName = FacetName.of("DefaultMandatoryFacet")
+        val mandatoryFacetName = FacetName.of("MandatoryFacet")
+        val optionalFacetName = FacetName.of("OptionalFacet")
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaConceptWithMandatoryFacetsAndOptionalFacetsDefinitionClass::class.java)
+        Assertions.assertEquals(1, schema.numberOfConcepts())
+        val concept = schema.conceptByConceptName(ConceptName.of("ConceptWithMandatoryAndOptionalFacets"))
+
+        Assertions.assertTrue(concept.hasFacet(defaultMandatoryFacetName))
+        Assertions.assertTrue(concept.hasFacet(mandatoryFacetName))
+        Assertions.assertTrue(concept.hasFacet(optionalFacetName))
+
+        Assertions.assertEquals(true, concept.facetByName(defaultMandatoryFacetName).mandatory)
+        Assertions.assertEquals(true, concept.facetByName(mandatoryFacetName).mandatory)
+        Assertions.assertEquals(false, concept.facetByName(optionalFacetName).mandatory)
     }
 
 }

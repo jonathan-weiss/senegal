@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.model.exceptions.ConceptNotKnownModelException
@@ -44,7 +44,7 @@ class ConceptDataValidatorTest {
     @Concept(databaseTableConceptConst)
     interface DatabaseTableConcept {
         
-        @InputFacet(tableNameFacetConst)
+        @Facet(tableNameFacetConst)
         fun getDatabaseName(): String
 
         @ChildConcepts(DatabaseFieldConcept::class)
@@ -54,11 +54,11 @@ class ConceptDataValidatorTest {
 
     @Concept(databaseFieldConceptConst)
     interface DatabaseFieldConcept {
-        @InputFacet(fieldNameFacetConst)
+        @Facet(fieldNameFacetConst)
         fun getFieldName(): String
-        @InputFacet(fieldTypeFacetConst)
+        @Facet(fieldTypeFacetConst)
         fun getFieldType(): String
-        @InputFacet(fieldLengthFacetConst)
+        @Facet(fieldLengthFacetConst)
         fun getFieldLength(): Int
     }
 

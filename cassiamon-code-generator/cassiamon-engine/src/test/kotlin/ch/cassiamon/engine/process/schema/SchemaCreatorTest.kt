@@ -5,9 +5,10 @@ import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.MalformedSchemaException
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SchemaCreatorTest {
@@ -48,7 +49,7 @@ class SchemaCreatorTest {
 
     @Concept("FooConcept")
     interface SimpleConcept {
-        @InputFacet("Bar")
+        @Facet("Bar")
         fun getBarFacet(): String
     }
 
@@ -82,7 +83,7 @@ class SchemaCreatorTest {
         @ChildConcepts(SimpleConcept::class)
         fun getChildrenConceptsOfFoo(): List<SimpleConcept>
 
-        @InputFacet("MyFacet")
+        @Facet("MyFacet")
         fun getStringValue(): String
     }
 
@@ -151,10 +152,10 @@ class SchemaCreatorTest {
         @ChildConcepts(SubSubConcept1::class)
         fun getChildrenConceptsOfChild(): List<SubSubConcept1>
 
-        @InputFacet("SubConcept1Facet1")
+        @Facet("SubConcept1Facet1")
         fun getSubConcept1Facet1(): String
 
-        @InputFacet("SubConcept1Facet2")
+        @Facet("SubConcept1Facet2")
         fun getSubConcept1Facet2(): String
 
 
@@ -176,7 +177,7 @@ class SchemaCreatorTest {
         @ChildConcepts(SubSubConcept2::class)
         fun getChildrenConceptsOfChild(): List<SubSubConcept2>
 
-        @InputFacet("SubConcept2Facet")
+        @Facet("SubConcept2Facet")
         fun getSubConcept2Facet(): String
 
 
@@ -302,6 +303,21 @@ class SchemaCreatorTest {
     fun `test schema with root schema that is itself a concept throw exception`() {
         Assertions.assertThrows(MalformedSchemaException::class.java) {
             SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaAndConceptDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
+    interface SimpleSchemaDefinitionClassWithNullableListOfConcept {
+        @ChildConcepts(SimpleConcept::class)
+        fun getChildrenConcepts(): List<SimpleConcept>?
+
+    }
+
+    @Test
+    @Disabled("Not working without kotlin reflection")
+    fun `test schema with a method returning a nullable list of concepts should throw an exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(SimpleSchemaDefinitionClassWithNullableListOfConcept::class.java)
         }
     }
 

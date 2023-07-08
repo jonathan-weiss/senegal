@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.InputFacet
+import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.engine.process.schema.SchemaCreator
@@ -106,22 +106,22 @@ internal class SaxParserHandlerTest {
         @ChildConcepts(TestEntityAttributeConcept::class)
         fun getTestEntityAttributeChildren(): List<TestEntityAttributeConcept>
 
-        @InputFacet(testEntityNameFacetNameConst)
+        @Facet(testEntityNameFacetNameConst)
         fun getName(): String
-        @InputFacet(testEntityKotlinModelClassnameFacetNameConst)
+        @Facet(testEntityKotlinModelClassnameFacetNameConst)
         fun getKotlinModelClassname(): String
-        @InputFacet(testEntityKotlinModelPackageFacetNameConst)
+        @Facet(testEntityKotlinModelPackageFacetNameConst)
         fun getKotlinModelPackage(): String
 
     }
     @Concept(testEntityAttributeConceptNameConst)
     private interface TestEntityAttributeConcept {
 
-        @InputFacet(testEntityAttributeNameFacetNameConst)
+        @Facet(testEntityAttributeNameFacetNameConst)
         fun getName(): String
-        @InputFacet(testEntityAttributeTypeFacetNameConst) // TODO use enumeration as soon as available
+        @Facet(testEntityAttributeTypeFacetNameConst) // TODO use enumeration as soon as available
         fun getType(): String
-        @InputFacet(testKotlinFieldTypeFacetNameConst)
+        @Facet(testKotlinFieldTypeFacetNameConst)
         fun getKotlinType(): String
 
 
