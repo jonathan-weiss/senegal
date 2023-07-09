@@ -80,14 +80,13 @@ object ConceptDataValidator {
                 val facetValue = conceptData.getFacet(facetSchema.facetName) ?: return@forEach
 
                 if(!facetSchema.facetType.isCompatibleType(facetValue)) {
-                    val expectedClass = facetSchema.facetType.typeClass
                     val actualClass = facetValue::class
 
                     throw WrongTypeForFacetValueException(
                         concept = conceptData.conceptName,
                         conceptIdentifier = conceptData.conceptIdentifier,
                         facetName = facetSchema.facetName,
-                        reason = "Expected was type '$expectedClass' but was type '$actualClass'"
+                        reason = "A facet of type '${facetSchema.facetType}' can not have a value of type '$actualClass'"
                     )
                 }
             }

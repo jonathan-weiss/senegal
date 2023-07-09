@@ -1,5 +1,6 @@
 package ch.cassiamon.xml.schemagic.parser
 
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.schema.FacetSchema
 import ch.cassiamon.api.process.schema.FacetTypeEnum
 
@@ -9,6 +10,7 @@ object XmlFacetValueConverter {
             FacetTypeEnum.TEXT -> attributeValue
             FacetTypeEnum.NUMBER -> attributeValue.toLong()
             FacetTypeEnum.BOOLEAN -> attributeValue.toBoolean()
+            FacetTypeEnum.REFERENCE -> ConceptIdentifier.of(attributeValue)
         }
     }
 }

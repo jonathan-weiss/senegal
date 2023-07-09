@@ -74,14 +74,12 @@ object SchemaCreator {
                 val isMandatory = method.getAnnotation(Facet::class.java).mandatory
                 val returnType = method.returnType
                 val facetType: FacetTypeEnum = FacetTypeEnum.matchingEnumByTypeClass(returnType.kotlin)
-                    ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types (${FacetTypeEnum.values().map { it.typeClass }}).")
-
-                val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory)
+                    ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types.")
+                val referencingConcept = FacetTypeEnum.referencedTypeConceptName(returnType.kotlin)
+                val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory, referencingConcept = referencingConcept)
                 facets.add(facet)
             }
         }
-
-
 
         return ConceptSchemaImpl(conceptName, parentConcept, facets)
     }

@@ -32,13 +32,25 @@ class SchemaCreatorFacetTest {
         @Facet("BooleanFacet")
         fun getBooleanFacet(): Boolean
 
+        @Facet("SelfReferenceFacet")
+        fun getSelfReferenceFacet(): DifferentTypeConcept
+
+        @Facet("OtherConceptReferenceFacet")
+        fun getOtherConceptReferenceFacet(): OtherConcept
+
     }
 
-    @Test
+    @Concept("OtherConcept")
+    interface OtherConcept
+
+
+        @Test
     fun `test valid concept with different types`() {
         val textFacetName = FacetName.of("TextFacet")
         val numberFacetName = FacetName.of("NumberFacet")
         val booleanFacetName = FacetName.of("BooleanFacet")
+        val selfReferenceFacetName = FacetName.of("SelfReferenceFacet")
+        val otherConceptReferenceFacetName = FacetName.of("OtherConceptReferenceFacet")
         val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(SchemaDefinitionWithDifferentTypes::class.java)
         Assertions.assertEquals(1, schema.numberOfConcepts())
         val concept = schema.conceptByConceptName(ConceptName.of("DifferentTypeConcept"))
@@ -47,6 +59,8 @@ class SchemaCreatorFacetTest {
         Assertions.assertTrue(concept.hasFacet(textFacetName))
         Assertions.assertTrue(concept.hasFacet(numberFacetName))
         Assertions.assertTrue(concept.hasFacet(booleanFacetName))
+        Assertions.assertTrue(concept.hasFacet(selfReferenceFacetName))
+        Assertions.assertTrue(concept.hasFacet(otherConceptReferenceFacetName))
 
         Assertions.assertEquals(FacetTypeEnum.TEXT, concept.facetByName(textFacetName).facetType)
         Assertions.assertEquals(true, concept.facetByName(textFacetName).mandatory)
@@ -56,6 +70,13 @@ class SchemaCreatorFacetTest {
 
         Assertions.assertEquals(FacetTypeEnum.BOOLEAN, concept.facetByName(booleanFacetName).facetType)
         Assertions.assertEquals(true, concept.facetByName(booleanFacetName).mandatory)
+
+        Assertions.assertEquals(FacetTypeEnum.REFERENCE, concept.facetByName(selfReferenceFacetName).facetType)
+        Assertions.assertEquals(true, concept.facetByName(selfReferenceFacetName).mandatory)
+
+        Assertions.assertEquals(FacetTypeEnum.REFERENCE, concept.facetByName(otherConceptReferenceFacetName).facetType)
+        Assertions.assertEquals(true, concept.facetByName(otherConceptReferenceFacetName).mandatory)
+
     }
 
     @Schema

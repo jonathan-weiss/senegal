@@ -1,11 +1,14 @@
 package ch.cassiamon.api.process.schema
 
+import ch.cassiamon.api.process.schema.annotations.Concept
 import kotlin.reflect.KClass
 
-enum class FacetTypeEnum(val typeClass: KClass<*>) {
-    TEXT(String::class),
-    NUMBER(Long::class),
-    BOOLEAN(Boolean::class);
+enum class FacetTypeEnum {
+    TEXT,
+    NUMBER,
+    BOOLEAN,
+    REFERENCE,
+    ;
 
     fun isCompatibleType(facetValue: Any): Boolean {
         return matchingEnumByTypeClass(facetValue::class)
@@ -20,8 +23,12 @@ enum class FacetTypeEnum(val typeClass: KClass<*>) {
                 Int::class -> NUMBER // TODO is the cast to Int done properly in case of Long values?
                 Long::class -> NUMBER
                 Boolean::class -> BOOLEAN
-                else -> null
+                else -> if (referencedTypeConceptName(classType) != null) REFERENCE else null
             }
+        }
+
+        fun referencedTypeConceptName(clazzType: KClass<*>): ConceptName? {
+            return clazzType.java.getAnnotation(Concept::class.java)?.let { ConceptName.of(it.conceptName) }
         }
     }
 }
