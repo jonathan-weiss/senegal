@@ -8,9 +8,5 @@ class InvalidConceptParentException(val concept: ConceptName,
                                     val conceptIdentifier: ConceptIdentifier,
                                     val parentConceptIdentifier: ConceptIdentifier?,
     ): SchemaValidationException(
-    """The entry with the identifier '${conceptIdentifier.code}' ('${concept.name}') 
-        has an invalid parent concept identifier '${parentConceptIdentifier?.code}'. 
-    """.trimMargin()
-) {
-
-}
+    "The entry with the identifier '${conceptIdentifier.code}' ('${concept.name}') has an invalid parent concept identifier '${parentConceptIdentifier?.code}'."
+)

@@ -6,8 +6,5 @@ import ch.cassiamon.api.process.schema.FacetName
 
 
 class UnknownFacetNameException(val concept: ConceptName, val conceptIdentifier: ConceptIdentifier, facetName: FacetName, reason: String,): SchemaValidationException(
-    """Unknown facet name ${facetName.name} found for concept identifier '${conceptIdentifier.code}' in concept '${concept.name}: $reason'. 
-    """.trimMargin()
-) {
-
-}
+    "Unknown facet name ${facetName.name} found for concept identifier '${conceptIdentifier.code}' in concept '${concept.name}: $reason'."
+)

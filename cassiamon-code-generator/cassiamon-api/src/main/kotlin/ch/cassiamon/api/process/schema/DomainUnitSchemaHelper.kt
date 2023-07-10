@@ -1,5 +1,6 @@
 package ch.cassiamon.api.process.schema
 
+import ch.cassiamon.api.process.schema.exceptions.MalformedSchemaException
 import kotlin.jvm.Throws
 
 interface DomainUnitSchemaHelper {

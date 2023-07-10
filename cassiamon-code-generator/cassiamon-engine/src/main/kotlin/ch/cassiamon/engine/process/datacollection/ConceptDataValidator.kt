@@ -7,6 +7,7 @@ import ch.cassiamon.api.process.schema.SchemaAccess
 
 object ConceptDataValidator {
 
+    @Throws(SchemaValidationException::class)
     fun validateSingleEntry(schema: SchemaAccess, conceptData: ConceptData) {
         validateConceptBase(schema, conceptData)
 

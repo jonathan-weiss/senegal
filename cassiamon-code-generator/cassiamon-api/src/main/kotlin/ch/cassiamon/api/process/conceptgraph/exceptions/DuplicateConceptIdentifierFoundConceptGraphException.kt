@@ -5,8 +5,5 @@ import ch.cassiamon.api.process.schema.ConceptIdentifier
 
 
 class DuplicateConceptIdentifierFoundConceptGraphException(val concept: ConceptName, val conceptIdentifier: ConceptIdentifier): ConceptGraphException(
-    """Duplicate concept identifier '${conceptIdentifier.code}' in concept '${concept.name}'. 
-    """.trimMargin()
-) {
-
-}
+    "Duplicate concept identifier '${conceptIdentifier.code}' in concept '${concept.name}'."
+)

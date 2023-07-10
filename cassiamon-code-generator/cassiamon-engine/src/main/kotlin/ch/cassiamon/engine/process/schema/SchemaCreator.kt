@@ -5,10 +5,13 @@ import ch.cassiamon.api.process.schema.annotations.ChildConcepts
 import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.Facet
 import ch.cassiamon.api.process.schema.annotations.Schema
+import ch.cassiamon.api.process.schema.exceptions.MalformedSchemaException
 import java.lang.reflect.Method
+import kotlin.jvm.Throws
 
 object SchemaCreator {
 
+    @Throws(MalformedSchemaException::class)
     fun createSchemaFromSchemaDefinitionClass(schemaDefinitionClass: Class<*>): SchemaImpl {
         validateTypeAnnotation(annotation = Schema::class.java, classToInspect = schemaDefinitionClass)
 

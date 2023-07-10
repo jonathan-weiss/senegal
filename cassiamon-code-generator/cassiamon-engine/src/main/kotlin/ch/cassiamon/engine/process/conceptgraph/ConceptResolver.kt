@@ -1,15 +1,18 @@
 package ch.cassiamon.engine.process.conceptgraph
 
+import ch.cassiamon.api.process.conceptgraph.exceptions.ConceptGraphException
 import ch.cassiamon.api.process.conceptgraph.exceptions.ParentConceptNotFoundConceptGraphException
 import ch.cassiamon.api.process.conceptgraph.exceptions.DuplicateConceptIdentifierFoundConceptGraphException
 import ch.cassiamon.api.process.conceptgraph.exceptions.ReferencedConceptConceptGraphNodeNotFoundException
 import ch.cassiamon.api.process.datacollection.ConceptData
+import ch.cassiamon.api.process.datacollection.exceptions.SchemaValidationException
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.engine.process.datacollection.ConceptDataValidator
 
 object ConceptResolver {
 
+    @Throws(SchemaValidationException::class, ConceptGraphException::class)
     fun validateAndResolveConcepts(schema: SchemaAccess, conceptDataEntries: List<ConceptData>): ConceptGraph {
         conceptDataEntries.forEach { ConceptDataValidator.validateSingleEntry(schema, it) }
         val conceptDataMap = conceptDataEntries.associateBy { it.conceptIdentifier }
