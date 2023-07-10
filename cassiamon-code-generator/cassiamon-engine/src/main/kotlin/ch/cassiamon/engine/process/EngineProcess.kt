@@ -18,14 +18,14 @@ class EngineProcess(private val processSession: ProcessSession) {
 
     private fun processDomainUnit(domainUnit: DomainUnit<*, *>) {
         val schema = domainUnit.createSchema(DomainUnitSchemaHelperImpl())
+        println("Schema: $schema")
         val conceptData = domainUnit.processDomainUnitInputData(processSession.parameterAccess, DomainUnitDataCollectionHelperImpl(processSession, schema))
 
-        println("Schema: $schema")
         println("InputData: $conceptData")
 
         val conceptGraph = ConceptResolver.validateAndResolveConcepts(schema, conceptData)
 
-        println("concepts: $conceptGraph")
+        println("Concepts: $conceptGraph")
 
 
         val targetFilesCollector = domainUnit.processDomainUnitTargetFiles(

@@ -1,15 +1,14 @@
 package ch.cassiamon.api.process.schema
 
-import ch.cassiamon.api.rules.NameEnforcer
+import ch.cassiamon.api.NamedId
 import java.util.*
 
 
-class ConceptIdentifier private constructor(val code: String) {
+class ConceptIdentifier private constructor(val code: String): NamedId(code) {
 
     companion object {
-        fun of(name: String): ConceptIdentifier {
-            NameEnforcer.isValidIdentifierOrThrow(name)
-            return ConceptIdentifier(name)
+        fun of(code: String): ConceptIdentifier {
+            return ConceptIdentifier(code)
         }
 
         fun random(): ConceptIdentifier {

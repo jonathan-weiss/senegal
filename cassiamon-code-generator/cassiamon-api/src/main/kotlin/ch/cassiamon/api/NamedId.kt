@@ -23,5 +23,8 @@ abstract class NamedId protected constructor(val name: String) {
         return name.hashCode()
     }
 
+    override fun toString(): String {
+        return "${this.javaClass.simpleName}:$name"
+    }
 
 }
