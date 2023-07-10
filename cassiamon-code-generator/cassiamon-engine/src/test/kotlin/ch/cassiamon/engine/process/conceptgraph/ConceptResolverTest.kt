@@ -1,5 +1,8 @@
 package ch.cassiamon.engine.process.conceptgraph
 
+import ch.cassiamon.api.process.conceptgraph.exceptions.ParentConceptNotFoundConceptGraphException
+import ch.cassiamon.api.process.conceptgraph.exceptions.ReferencedConceptConceptGraphNodeNotFoundException
+import ch.cassiamon.api.process.datacollection.exceptions.InvalidConceptParentException
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
@@ -21,6 +24,7 @@ private const val tableNameFacetConst = "TableName"
 private const val fieldNameFacetConst = "FieldName"
 private const val fieldTypeFacetConst = "FieldType"
 private const val fieldLengthFacetConst = "FieldLength"
+private const val fieldForeignKeyTableFacetConst = "ForeignKeyTable"
 
 class ConceptResolverTest {
 
@@ -31,6 +35,7 @@ class ConceptResolverTest {
     private val tableFieldNameFacetName = FacetName.of(fieldNameFacetConst)
     private val tableFieldTypeFacetName = FacetName.of(fieldTypeFacetConst)
     private val tableFieldLengthFacetName = FacetName.of(fieldLengthFacetConst)
+    private val tableFieldForeignKeyTableFacetName = FacetName.of(fieldForeignKeyTableFacetConst)
 
     @Schema
     interface DatabaseSchema {
@@ -58,6 +63,8 @@ class ConceptResolverTest {
         fun getFieldType(): String
         @Facet(fieldLengthFacetConst)
         fun getFieldLength(): Int
+        @Facet(fieldForeignKeyTableFacetConst, mandatory = false)
+        fun getForeignKeyTable(): DatabaseTableConcept
     }
 
     private val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DatabaseSchema::class.java)
@@ -80,7 +87,89 @@ class ConceptResolverTest {
     }
 
     @Test
-    fun `validate simple concept data`() {
+    fun `validate valid concept data`() {
+        // arrange
+        val conceptDataCollector = createCollector(schema)
+        val personTableId = ConceptIdentifier.of("Person")
+        val personIdFieldId = ConceptIdentifier.of("PersonIdField")
+        val addressTableId = ConceptIdentifier.of("Address")
+        val addressIdFieldId = ConceptIdentifier.of("AddressIdField")
+        val addressToPersonForeignKeyFieldId = ConceptIdentifier.of("AddressToPersonForeignKeyField")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = personTableId,
+            parentConceptIdentifier = null,
+        ).addOrReplaceFacetValue(tableNameFacetName, "PERSON")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personIdFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "PERSON_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "NUMBER")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = addressTableId,
+            parentConceptIdentifier = null,
+        ).addOrReplaceFacetValue(tableNameFacetName, "ADDRESS")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = addressIdFieldId,
+            parentConceptIdentifier = addressTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "ADDRESS_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "NUMBER")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = addressToPersonForeignKeyFieldId,
+            parentConceptIdentifier = addressTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "FK_PERSON_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "NUMBER")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+            .addOrReplaceFacetValue(tableFieldForeignKeyTableFacetName, personTableId)
+
+
+        // act
+        val conceptGraph = ConceptResolver.validateAndResolveConcepts(schema, conceptDataCollector.provideConceptData())
+
+        // assert
+        assertNotNull(conceptGraph)
+        conceptGraph.rootConceptsByConceptName(databaseTableConceptName)
+        assertEquals(2, conceptGraph.rootConceptsByConceptName(databaseTableConceptName).size)
+
+        val personTable = conceptGraph.conceptByConceptIdentifier(personTableId)
+        assertEquals(personTableId, personTable.conceptIdentifier)
+        assertEquals("PERSON", personTable.facetValues[tableNameFacetName])
+        assertNull(personTable.parentConceptNode)
+
+        val addressTable = conceptGraph.conceptByConceptIdentifier(addressTableId)
+        assertEquals(addressTableId, addressTable.conceptIdentifier)
+        assertEquals("ADDRESS", addressTable.facetValues[tableNameFacetName])
+        assertNull(addressTable.parentConceptNode)
+
+        val addressToPersonForeignKey = conceptGraph.conceptByConceptIdentifier(addressToPersonForeignKeyFieldId)
+        assertEquals(addressToPersonForeignKeyFieldId, addressToPersonForeignKey.conceptIdentifier)
+        assertEquals("FK_PERSON_ID", addressToPersonForeignKey.facetValues[tableFieldNameFacetName])
+        assertEquals("NUMBER", addressToPersonForeignKey.facetValues[tableFieldTypeFacetName])
+        assertEquals(255, addressToPersonForeignKey.facetValues[tableFieldLengthFacetName])
+        assertEquals(addressTable, addressToPersonForeignKey.parentConceptNode)
+
+        val referencedPersonTable = addressToPersonForeignKey.facetValues[tableFieldForeignKeyTableFacetName] as ConceptNode
+        assertEquals(personTable, referencedPersonTable)
+
+    }
+
+    @Test
+    fun `validate invalid concept data with same concept identifier multiple times`() {
         // arrange
         val conceptDataCollector = createCollector(schema)
         val personTableId = ConceptIdentifier.of("Person")
@@ -89,15 +178,93 @@ class ConceptResolverTest {
             conceptName = databaseTableConceptName,
             conceptIdentifier = personTableId,
             parentConceptIdentifier = null,
-        ).addOrReplaceFacetValue(tableNameFacetName, "Person")
+        ).addOrReplaceFacetValue(tableNameFacetName, "PERSON")
 
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personTableId, // here we use the same key again
+            parentConceptIdentifier = personTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "PERSON_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
 
-        // act
-        val conceptGraph = ConceptResolver.validateAndResolveConcepts(schema, conceptDataCollector.provideConceptData())
+        // act + assert
+        assertThrows(InvalidConceptParentException::class.java) {
+            ConceptResolver.validateAndResolveConcepts(schema, conceptDataCollector.provideConceptData())
+        }
+    }
 
-        // assert
-        assertNotNull(conceptGraph)
-        assertEquals(personTableId, conceptGraph.conceptsByConceptName(databaseTableConceptName).single().conceptIdentifier)
+    @Test
+    fun `validate invalid concept data with unknown parent identifier`() {
+        // arrange
+        val conceptDataCollector = createCollector(schema)
+        val personTableId = ConceptIdentifier.of("Person")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = personTableId,
+            parentConceptIdentifier = null,
+        ).addOrReplaceFacetValue(tableNameFacetName, "PERSON")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = ConceptIdentifier.of("PersonField"),
+            parentConceptIdentifier = ConceptIdentifier.of("UnknownParent"),
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "PERSON_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+
+        // act + assert
+        assertThrows(ParentConceptNotFoundConceptGraphException::class.java) {
+            ConceptResolver.validateAndResolveConcepts(schema, conceptDataCollector.provideConceptData())
+        }
+    }
+
+    @Test
+    fun `validate invalid concept data with unknown reference identifier`() {
+        // arrange
+        val conceptDataCollector = createCollector(schema)
+        val personTableId = ConceptIdentifier.of("Person")
+        val addressTableId = ConceptIdentifier.of("Address")
+        val unknownTableId = ConceptIdentifier.of("Unknown")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = personTableId,
+            parentConceptIdentifier = null,
+        ).addOrReplaceFacetValue(tableNameFacetName, "PERSON")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableConceptName,
+            conceptIdentifier = addressTableId,
+            parentConceptIdentifier = null,
+        ).addOrReplaceFacetValue(tableNameFacetName, "ADDRESS")
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = ConceptIdentifier.of("AddressField"),
+            parentConceptIdentifier = addressTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "ADDRESS_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "NUMBER")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = ConceptIdentifier.of("PersonForeignKeyField"),
+            parentConceptIdentifier = addressTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "FK_PERSON_ID")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "NUMBER")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+            .addOrReplaceFacetValue(tableFieldForeignKeyTableFacetName, unknownTableId)
+
+        // act + assert
+        assertThrows(ReferencedConceptConceptGraphNodeNotFoundException::class.java) {
+            ConceptResolver.validateAndResolveConcepts(schema, conceptDataCollector.provideConceptData())
+        }
     }
 
 }

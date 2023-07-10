@@ -12,7 +12,7 @@ class SchemaInstanceInvocationHandler(private val conceptGraph: ConceptGraph) : 
             val conceptClass = SchemaInvocationHandlerHelper.getChildConceptsClazz(method)
             val conceptName = SchemaInvocationHandlerHelper.getChildConceptsName(method)
 
-            return conceptGraph.conceptsByConceptName(conceptName)
+            return conceptGraph.rootConceptsByConceptName(conceptName)
                 .map { ProxyCreator.createProxy(conceptClass.java, SchemaConceptInstanceInvocationHandler(it)) }
         }
 

@@ -1,41 +1,22 @@
 package ch.cassiamon.engine.process.conceptgraph
 
 import ch.cassiamon.api.process.schema.ConceptName
-import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.ConceptIdentifier
+import kotlin.jvm.Throws
 
 class ConceptGraph(
-    conceptNodes: List<ConceptNode>
+    private val concepts: Map<ConceptIdentifier, ConceptNode>,
 ) {
-    // TODO get rid of the resolved concepts. This is the ConceptNode.
-    private val concepts: List<ResolvedConcept> = conceptNodes.map { ResolvedConcept(it) }
-    fun conceptsByConceptName(conceptName: ConceptName): List<ResolvedConcept> {
-        return concepts
-            .filter { it.conceptName == conceptName }
+    private val rootConceptsByConceptName: Map<ConceptName, List<ConceptNode>> = concepts.values
+        .filter { it.parentConceptNode == null }
+        .groupBy { it.conceptName }
+    fun rootConceptsByConceptName(conceptName: ConceptName): List<ConceptNode> {
+        return rootConceptsByConceptName[conceptName] ?: emptyList()
     }
 
-    private fun childConceptsByConceptName(conceptName: ConceptName, parentConceptIdentifier: ConceptIdentifier,): List<ResolvedConcept> {
-        return conceptsByConceptName(conceptName)
-            .filter { it.parentConceptIdentifier != null && it.parentConceptIdentifier == parentConceptIdentifier }
+    @Throws(NoSuchElementException::class)
+    fun conceptByConceptIdentifier(conceptIdentifier: ConceptIdentifier): ConceptNode {
+        return concepts[conceptIdentifier] ?: throw NoSuchElementException("No ConceptNode with id '${conceptIdentifier.code}'.")
     }
-
-    inner class ResolvedConcept(conceptData: ConceptNode, ) {
-        val conceptName: ConceptName = conceptData.conceptName
-        val conceptIdentifier: ConceptIdentifier = conceptData.conceptIdentifier
-        val parentConceptIdentifier: ConceptIdentifier? = conceptData.parentConceptIdentifier
-        val facetValues: Map<FacetName, Any?> = conceptData.facetValues
-
-
-        fun children(conceptName: ConceptName): List<ResolvedConcept> {
-            return childConceptsByConceptName(conceptName, conceptIdentifier)
-        }
-    }
-
-    data class ConceptNode(
-        val conceptName: ConceptName,
-        val conceptIdentifier: ConceptIdentifier,
-        val parentConceptIdentifier: ConceptIdentifier?,
-        val facetValues: Map<FacetName, Any?>,
-    )
 
 }

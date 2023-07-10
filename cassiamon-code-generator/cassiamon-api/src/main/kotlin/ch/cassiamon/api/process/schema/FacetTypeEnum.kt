@@ -10,13 +10,24 @@ enum class FacetTypeEnum {
     REFERENCE,
     ;
 
-    fun isCompatibleType(facetValue: Any): Boolean {
-        return matchingEnumByTypeClass(facetValue::class)
+    fun isCompatibleInputType(facetValue: Any): Boolean {
+        return matchingEnumByInputFacetTypeClass(facetValue::class)
             ?.let { matchingEnum -> matchingEnum == this }
             ?: false
     }
 
     companion object {
+        fun matchingEnumByInputFacetTypeClass(classType: KClass<*>): FacetTypeEnum? {
+            return when(classType) {
+                String::class -> TEXT
+                Int::class -> NUMBER // TODO is the cast to Int done properly in case of Long values?
+                Long::class -> NUMBER
+                Boolean::class -> BOOLEAN
+                ConceptIdentifier::class -> REFERENCE
+                else -> null
+            }
+        }
+
         fun matchingEnumByTypeClass(classType: KClass<*>): FacetTypeEnum? {
             return when(classType) {
                 String::class -> TEXT
