@@ -7,6 +7,7 @@ import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.process.schema.DomainUnitSchemaHelper
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.api.process.templating.DomainUnitProcessTargetFilesHelper
+import ch.cassiamon.api.process.templating.TargetFileWithContent
 import ch.cassiamon.api.process.templating.TargetFilesCollector
 
 abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Class<S>, private val inputDefinitionClass: Class<I>) {
@@ -25,14 +26,14 @@ abstract class DomainUnit<S: Any, I: Any>(private val schemaDefinitionClass: Cla
         return domainUnitProcessInputData.getCollectedData()
     }
 
-    fun processDomainUnitTargetFiles(parameterAccess: ParameterAccess, domainUnitProcessTargetFilesHelper: DomainUnitProcessTargetFilesHelper): TargetFilesCollector {
+    fun processDomainUnitTargetFiles(parameterAccess: ParameterAccess, domainUnitProcessTargetFilesHelper: DomainUnitProcessTargetFilesHelper): List<TargetFileWithContent> {
         val domainUnitProcessTargetFilesData = domainUnitProcessTargetFilesHelper.createDomainUnitProcessTargetFilesData(schemaDefinitionClass = schemaDefinitionClass)
         collectTargetFiles(
             parameterAccess = parameterAccess,
             schemaInstance = domainUnitProcessTargetFilesData.getSchemaInstance(),
             targetFilesCollector = domainUnitProcessTargetFilesData.getTargetFilesCollector()
         )
-        return domainUnitProcessTargetFilesData.getTargetFilesCollector()
+        return domainUnitProcessTargetFilesData.getTargetFilesWithContent()
     }
 
     abstract fun collectInputData(parameterAccess: ParameterAccess, extensionAccess: DataCollectionExtensionAccess, dataCollector: I)

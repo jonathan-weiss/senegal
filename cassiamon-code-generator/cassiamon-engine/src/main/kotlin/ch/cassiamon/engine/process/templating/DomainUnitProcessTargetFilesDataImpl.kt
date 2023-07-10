@@ -1,6 +1,7 @@
 package ch.cassiamon.engine.process.templating
 
 import ch.cassiamon.api.process.templating.DomainUnitProcessTargetFilesData
+import ch.cassiamon.api.process.templating.TargetFileWithContent
 import ch.cassiamon.api.process.templating.TargetFilesCollector
 import ch.cassiamon.engine.process.conceptgraph.ConceptGraph
 import ch.cassiamon.engine.proxy.ProxyCreator
@@ -12,11 +13,15 @@ class DomainUnitProcessTargetFilesDataImpl<S: Any>(
 ): DomainUnitProcessTargetFilesData<S> {
 
 
-    private val targetFilesCollector: TargetFilesCollector = ListTargetFilesCollectorImpl()
+    private val targetFilesCollector: ListTargetFilesCollectorImpl = ListTargetFilesCollectorImpl()
     private val schemaInstance = ProxyCreator.createProxy(schemaDefinitionClass, SchemaInstanceInvocationHandler(conceptGraph))
 
     override fun getSchemaInstance(): S {
         return schemaInstance
+    }
+
+    override fun getTargetFilesWithContent(): List<TargetFileWithContent> {
+        return targetFilesCollector.getTargetFiles()
     }
 
 

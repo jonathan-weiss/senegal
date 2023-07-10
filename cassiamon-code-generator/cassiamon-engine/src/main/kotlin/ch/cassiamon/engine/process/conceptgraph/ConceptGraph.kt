@@ -16,7 +16,7 @@ class ConceptGraph(
 
     @Throws(NoSuchElementException::class)
     fun conceptByConceptIdentifier(conceptIdentifier: ConceptIdentifier): ConceptNode {
-        return concepts[conceptIdentifier] ?: throw NoSuchElementException("No ConceptNode with id '${conceptIdentifier.code}'.")
+        return concepts[conceptIdentifier] ?: throw NoSuchElementException("No ConceptNode with id '${conceptIdentifier.name}'.")
     }
 
 }

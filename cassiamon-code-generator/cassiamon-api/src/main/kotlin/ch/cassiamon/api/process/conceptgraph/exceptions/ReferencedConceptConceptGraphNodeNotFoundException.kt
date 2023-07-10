@@ -10,5 +10,5 @@ class ReferencedConceptConceptGraphNodeNotFoundException(
     facetName: FacetName,
     referencedConceptIdentifier: ConceptIdentifier
 ): ConceptGraphException(
-    "Concept with identifier '${conceptIdentifier.code}' (${conceptName.name}) has a facet '${facetName.name}' referencing a concept '${referencedConceptIdentifier.code}' that could not be found."
+    "Concept with identifier '${conceptIdentifier.name}' (${conceptName.name}) has a facet '${facetName.name}' referencing a concept '${referencedConceptIdentifier.name}' that could not be found."
 )

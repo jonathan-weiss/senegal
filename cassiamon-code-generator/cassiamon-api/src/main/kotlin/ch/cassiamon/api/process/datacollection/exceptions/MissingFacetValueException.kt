@@ -10,6 +10,6 @@ class MissingFacetValueException(
     conceptIdentifier: ConceptIdentifier,
     facetName: FacetName,
 ): SchemaValidationException(
-    "The entry with the identifier '${conceptIdentifier.code}' ('${concept.name}') " +
+    "The entry with the identifier '${conceptIdentifier.name}' ('${concept.name}') " +
     "is missing a value for facet '${facetName.name}'. "
 )
