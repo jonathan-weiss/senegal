@@ -4,7 +4,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 
 object ExampleEntitySchemaConstants {
-    val conceptName = ConceptName.of("TestEntity")
+    val conceptName = ConceptName.of("Entity")
 
-    val exampleEntityNameFacetName = FacetName.of("TestEntityName")
+    val entityName = FacetName.of("Name")
 }

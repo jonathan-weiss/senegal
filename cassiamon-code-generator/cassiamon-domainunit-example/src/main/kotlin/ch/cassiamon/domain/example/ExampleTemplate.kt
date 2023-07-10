@@ -18,7 +18,7 @@ object ExampleTemplate {
             ---------
             
             Entity name: ${entity.entityName()}
-            Entity alternative name: ${entity.entityName()}
+            Entity alternative name: ${entity.entityAlternativeName()}
             
             Entity attributes:
             {nestedIdent}$entityAttributes{nestedIdent} 

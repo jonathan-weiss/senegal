@@ -45,11 +45,11 @@ class ExampleDomainUnit: DefaultDomainUnit<ExampleDomainSchema>(
 
         dataCollector
             .newConceptData(ExampleEntitySchemaConstants.conceptName, ConceptIdentifier.of("MeinTestkonzept"))
-            .addFacetValue(ExampleEntitySchemaConstants.exampleEntityNameFacetName,  "MeinTestkonzept-Name")
+            .addFacetValue(ExampleEntitySchemaConstants.entityName,  "MeinTestkonzept-Name")
 
         dataCollector
             .newConceptData(ExampleEntitySchemaConstants.conceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-            .addFacetValue(ExampleEntitySchemaConstants.exampleEntityNameFacetName,  "MeinZweitesTestkonzept-Name")
+            .addFacetValue(ExampleEntitySchemaConstants.entityName,  "MeinZweitesTestkonzept-Name")
 
     }
 }
