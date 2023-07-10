@@ -142,7 +142,7 @@ class SchemaCreatorFacetTest {
     }
 
     @Test
-    fun `test concept with mandatory and optional facets`() {
+    fun `test valid concept with mandatory and optional facets`() {
         val defaultMandatoryFacetName = FacetName.of("DefaultMandatoryFacet")
         val mandatoryFacetName = FacetName.of("MandatoryFacet")
         val optionalFacetName = FacetName.of("OptionalFacet")

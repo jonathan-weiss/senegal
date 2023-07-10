@@ -22,6 +22,7 @@ private const val tableNameFacetConst = "TableName"
 private const val fieldNameFacetConst = "FieldName"
 private const val fieldTypeFacetConst = "FieldType"
 private const val fieldLengthFacetConst = "FieldLength"
+private const val foreignKeyFacetConst = "ForeignKey"
 class ConceptDataValidatorTest {
 
     private val databaseTableConceptName = ConceptName.of(databaseTableConceptConst)
@@ -31,7 +32,8 @@ class ConceptDataValidatorTest {
     private val tableFieldNameFacetName = FacetName.of(fieldNameFacetConst)
     private val tableFieldTypeFacetName = FacetName.of(fieldTypeFacetConst)
     private val tableFieldLengthFacetName = FacetName.of(fieldLengthFacetConst)
-    
+    private val foreignKeyTableFacetName = FacetName.of(foreignKeyFacetConst)
+
     @Schema
     interface DatabaseSchema {
         
@@ -58,6 +60,9 @@ class ConceptDataValidatorTest {
         fun getFieldType(): String
         @Facet(fieldLengthFacetConst)
         fun getFieldLength(): Int
+
+        @Facet(foreignKeyFacetConst, mandatory = false)
+        fun getForeignKeyTable(): DatabaseTableConcept?
     }
 
     private val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DatabaseSchema::class.java)
@@ -119,6 +124,17 @@ class ConceptDataValidatorTest {
             .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
             .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
             .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+
+        val personNeighborFieldId = ConceptIdentifier.of("Person_neighbor")
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personNeighborFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "neighborPersonId")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName, 255)
+            .addOrReplaceFacetValue(foreignKeyTableFacetName, personTableId)
 
 
         // act + assert
@@ -243,6 +259,48 @@ class ConceptDataValidatorTest {
 
         // act + assert
         assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, MissingFacetValueException::class)
+    }
+
+    @Test
+    fun `validate a concept with optional reference facet type and null value`() {
+        // arrange
+        val conceptDataCollector = createCollector(schema)
+
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
+            .addOrReplaceFacetValue(foreignKeyTableFacetName, null)
+
+        // act + assert
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema)
+    }
+
+    @Test
+    fun `validate a concept with reference facet type with value other than ConceptIdentifier`() {
+        // arrange
+        val conceptDataCollector = createCollector(schema)
+
+        val personTableId = ConceptIdentifier.of("Person")
+        val personFirstnameFieldId = ConceptIdentifier.of("Person_firstname")
+        conceptDataCollector.existingOrNewConceptData(
+            conceptName = databaseTableFieldConceptName,
+            conceptIdentifier = personFirstnameFieldId,
+            parentConceptIdentifier = personTableId,
+        )
+            .addOrReplaceFacetValue(tableFieldNameFacetName, "firstname")
+            .addOrReplaceFacetValue(tableFieldTypeFacetName, "VARCHAR")
+            .addOrReplaceFacetValue(tableFieldLengthFacetName,  255)
+            .addOrReplaceFacetValue(foreignKeyTableFacetName, "Person") // not a ConceptIdentifier
+
+        // act + assert
+        assertForConceptDataValidator(personFirstnameFieldId, conceptDataCollector, schema, WrongTypeForFacetValueException::class)
     }
 
     private fun assertForConceptDataValidator(conceptId: ConceptIdentifier, collector: ConceptDataCollector, schema: SchemaAccess, expectedExceptionType: KClass<out Throwable>? = null) {
