@@ -13,8 +13,8 @@ data class DbField(private val model: EntityAttributeConcept, private val dbTabl
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"
 
-    private val entityAttributeName: String = model.name
-    private val entityAttributeType: String = model.type
+    private val entityAttributeName: String = model.getName()
+    private val entityAttributeType: String = model.getType()
 
     val columnName = CaseUtil.camelToSnakeCaseAllCaps(entityAttributeName)
     val columnType = when(entityAttributeType) {

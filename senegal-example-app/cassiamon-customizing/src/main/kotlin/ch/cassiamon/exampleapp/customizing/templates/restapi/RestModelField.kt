@@ -9,8 +9,8 @@ data class RestModelField(private val model: EntityAttributeConcept, private val
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"
 
-    private val entityAttributeName: String = model.name
-    private val entityAttributeType: String = model.type
+    private val entityAttributeName: String = model.getName()
+    private val entityAttributeType: String = model.getType()
 
     val transferObjectFieldName = CaseUtil.decapitalize(entityAttributeName)
     val transferObjectFieldType = when(entityAttributeType) {

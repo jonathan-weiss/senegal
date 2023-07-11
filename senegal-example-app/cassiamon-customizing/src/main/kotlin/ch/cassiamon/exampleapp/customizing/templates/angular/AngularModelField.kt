@@ -8,8 +8,8 @@ data class AngularModelField(private val model: EntityAttributeConcept, private 
     private val typescriptIntType = "number"
     private val typescriptBooleanType = "boolean"
 
-    private val entityAttributeName: String = model.name
-    private val entityAttributeType: String = model.type
+    private val entityAttributeName: String = model.getName()
+    private val entityAttributeType: String = model.getType()
 
     val transferObjectFieldDefaultValue = when(entityAttributeType) {
         "Text" -> "''"

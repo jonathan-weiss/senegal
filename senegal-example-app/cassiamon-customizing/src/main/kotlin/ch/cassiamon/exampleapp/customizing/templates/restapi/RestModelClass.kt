@@ -7,7 +7,7 @@ import ch.cassiamon.tools.CaseUtil
 
 data class RestModelClass(private val model: EntityConcept) {
 
-    private val entityName: String = model.name
+    private val entityName: String = model.getName()
     val kotlinModelClass: KotlinModelClass = KotlinModelClass(model)
     val facadeClassName: String = "${entityName}Facade"
     val facadePackageName: String = "ch.senegal.example.frontendapi.facade.${CaseUtil.decapitalize(entityName)}"

@@ -10,7 +10,7 @@ data class DbTable(private val model: EntityConcept) {
         const val liquibaseIndexFileName = "structure.xml"
     }
 
-    private val entityName: String = model.name
+    private val entityName: String = model.getName()
     val kotlinModelClass: KotlinModelClass = KotlinModelClass(model)
     val tableName: String = CaseUtil.camelToSnakeCaseAllCaps(entityName)
     val liquibaseFileName: String = "${tableName}.structure.xml"

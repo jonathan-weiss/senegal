@@ -8,7 +8,7 @@ import ch.cassiamon.tools.CaseUtil
 data class AngularModelClass(private val model: EntityConcept) {
 
     val kotlinModelClass: KotlinModelClass = KotlinModelClass(model)
-    val entityName: String = model.name
+    val entityName: String = model.getName()
 
     val entityFileName: String = CaseUtil.camelToDashCase(this.entityName)
     val decapitalizedEntityName: String = CaseUtil.decapitalize(this.entityName)

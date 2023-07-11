@@ -28,7 +28,7 @@ object EntityDescriptionTemplate {
             .joinToString("\n") { createEntityAttributeSubTemplate(it) }
 
         return """
-            Entity name: ${entity.name}
+            Entity name: ${entity.getName()}
             
             Entity attributes:
             {nestedIdent}$entityAttributes{nestedIdent} 
@@ -38,7 +38,7 @@ object EntityDescriptionTemplate {
 
     private fun createEntityAttributeSubTemplate(entityAttribute: EntityAttributeConcept): String {
         return """
-            Entity Attribute: ${entityAttribute.name} (Type: ${entityAttribute.type})
+            Entity Attribute: ${entityAttribute.getName()} (Type: ${entityAttribute.getType()})
         """.replaceIndent(ident)
     }
 

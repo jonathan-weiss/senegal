@@ -1,9 +1,13 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
-import ch.cassiamon.api.model.ConceptModelNode
-import ch.cassiamon.exampleapp.customizing.concepts.EntityAttributeConceptDescription
+import ch.cassiamon.api.process.schema.annotations.Concept
+import ch.cassiamon.api.process.schema.annotations.Facet
 
-data class EntityAttributeConcept(private val model: ConceptModelNode) {
-    val name = model.templateFacetValues.facetValue(EntityAttributeConceptDescription.nameFacet)
-    val type = model.templateFacetValues.facetValue(EntityAttributeConceptDescription.typeFacet)
+@Concept("EntityAttribute")
+interface EntityAttributeConcept {
+    @Facet("EntityAttributeName")
+    fun getName(): String
+
+    @Facet("EntityAttributeType")
+    fun getType(): String
 }

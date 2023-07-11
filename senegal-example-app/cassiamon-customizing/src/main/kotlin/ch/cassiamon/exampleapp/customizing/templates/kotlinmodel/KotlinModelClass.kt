@@ -4,7 +4,7 @@ import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
 import ch.cassiamon.tools.CaseUtil
 
 data class KotlinModelClass(private val model: EntityConcept) {
-    private val entityName: String = model.name
+    private val entityName: String = model.getName()
     val kotlinClassName: String = entityName
     val kotlinFileName: String = "${kotlinClassName}.kt"
     val kotlinPackage: String = "ch.senegal.example.domain.entity.${entityName.lowercase()}"

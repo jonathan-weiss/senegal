@@ -8,8 +8,8 @@ data class KotlinModelField(private val model: EntityAttributeConcept, private v
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"
 
-    private val entityAttributeName: String = model.name
-    private val entityAttributeType: String = model.type
+    private val entityAttributeName: String = model.getName()
+    private val entityAttributeType: String = model.getType()
 
     val kotlinFieldName = CaseUtil.decapitalize(entityAttributeName)
     val kotlinFieldType = when(entityAttributeType) {
