@@ -6,6 +6,7 @@ import ch.cassiamon.api.process.schema.FacetSchema
 import ch.cassiamon.api.process.schema.FacetTypeEnum
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.tools.CaseUtil
+import ch.cassiamon.xml.schemagic.schemacreator.XmlDomSchemaCreator.toXmlAttributeName
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.StringWriter
@@ -25,6 +26,7 @@ object XmlDomSchemaCreator {
     fun createSchemagicSchemaContent(schema: SchemaAccess): String {
         val document = initializeDocument()
         val schemaElement = createMainStructure(document)
+        attachConceptIdentifierAttribute(document, schemaElement, schema)
         attachRootConceptReferences(document, schemaElement, schema)
         attachAllConceptElements(document, schemaElement, schema)
         attachAllConceptAttributes(document, schemaElement, schema)
@@ -44,6 +46,18 @@ object XmlDomSchemaCreator {
         document.appendChild(schemaElement)
 
         return schemaElement
+    }
+
+    private fun attachConceptIdentifierAttribute(document: Document, schemaElement: Element, schema: SchemaAccess) {
+        attachComment(document, schemaElement, " CONCEPT IDENTIFIER ATTRIBUTE")
+        val attributeGroupElement = createAndAttachXsdElement(document, schemaElement, "attributeGroup")
+        setElementXsdAttribute(attributeGroupElement, "name", "conceptIdentifier")
+
+        val attributeElement = createXsdElement(document, "attribute")
+        setElementXsdAttribute(attributeElement, "name", "conceptIdentifier")
+        setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:ID")
+
+        attributeGroupElement.appendChild(attributeElement)
     }
     private fun attachComment(document: Document, schemaElement: Element, comment: String) {
         schemaElement.appendChild(document.createComment(" - - - - - - - -      $comment     - - - - - - - "))
@@ -102,6 +116,7 @@ object XmlDomSchemaCreator {
                 setElementXsdAttribute(elementRef, "name", enclosedConceptXmlSchemaName)
                 setElementXsdAttribute(elementRef, "type", "${enclosedConceptXmlSchemaName}Type")
             }
+            complexType.appendChild(createAttributeReference(document, "conceptIdentifier"))
             conceptSchema.facets.forEach { facetSchema ->
                     complexType.appendChild(createFacetAttributeReference(document, facetSchema.facetName))
                 }
@@ -140,16 +155,22 @@ object XmlDomSchemaCreator {
 //            }
             FacetTypeEnum.TEXT -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
             FacetTypeEnum.NUMBER -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
+            FacetTypeEnum.BOOLEAN -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:boolean")
+            FacetTypeEnum.REFERENCE -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:IDREF") // TODO choose a better type
         }
 
         attributeGroupElement.appendChild(attributeElement)
         return attributeGroupElement
     }
 
-    private fun createFacetAttributeReference(document: Document, facetName: FacetName): Element {
+    private fun createAttributeReference(document: Document, attributeGroupName: String): Element {
         val attributeElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeElement, "ref", facetName.toXmlAttributeName())
+        setElementXsdAttribute(attributeElement, "ref", attributeGroupName)
         return attributeElement
+    }
+
+    private fun createFacetAttributeReference(document: Document, facetName: FacetName): Element {
+        return createAttributeReference(document, facetName.toXmlAttributeName())
     }
 
     private fun initializeDocument(): Document {

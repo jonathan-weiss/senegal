@@ -1,10 +1,10 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
-import ch.cassiamon.exampleapp.customizing.templates.EntityAttributeConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntitySimpleAttributeConcept
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil
 
-data class DbField(private val model: EntityAttributeConcept, private val dbTable: DbTable, val kotlinModelField: KotlinModelField) {
+data class DbField(private val model: EntitySimpleAttributeConcept, private val dbTable: DbTable, val kotlinModelField: KotlinModelField) {
     private val sqlStringType = "VARCHAR(255)"
     private val sqlIntType = "INTEGER"
     private val sqlBooleanType = "BOOLEAN"

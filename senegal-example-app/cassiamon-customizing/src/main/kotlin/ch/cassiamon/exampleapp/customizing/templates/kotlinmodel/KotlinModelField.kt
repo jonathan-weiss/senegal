@@ -1,9 +1,9 @@
 package ch.cassiamon.exampleapp.customizing.templates.kotlinmodel
 
-import ch.cassiamon.exampleapp.customizing.templates.EntityAttributeConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntitySimpleAttributeConcept
 import ch.cassiamon.tools.CaseUtil
 
-data class KotlinModelField(private val model: EntityAttributeConcept, private val kotlinModelClass: KotlinModelClass) {
+data class KotlinModelField(private val model: EntitySimpleAttributeConcept, private val kotlinModelClass: KotlinModelClass) {
     private val kotlinStringType = "kotlin.String"
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"

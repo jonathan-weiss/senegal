@@ -1,9 +1,9 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular
 
-import ch.cassiamon.exampleapp.customizing.templates.EntityAttributeConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntitySimpleAttributeConcept
 import ch.cassiamon.tools.CaseUtil
 
-data class AngularModelField(private val model: EntityAttributeConcept, private val angularModelClass: AngularModelClass) {
+data class AngularModelField(private val model: EntitySimpleAttributeConcept, private val angularModelClass: AngularModelClass) {
     private val typescriptStringType = "string"
     private val typescriptIntType = "number"
     private val typescriptBooleanType = "boolean"

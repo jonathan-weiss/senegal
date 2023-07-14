@@ -10,6 +10,9 @@ interface EntityConcept {
     @Facet("EntityName")
     fun getName(): String
 
-    @ChildConcepts(EntityAttributeConcept::class)
-    fun entityAttributes(): List<EntityAttributeConcept>
+    @ChildConcepts(EntitySimpleAttributeConcept::class)
+    fun entityAttributes(): List<EntitySimpleAttributeConcept>
+
+    @ChildConcepts(EntityReferenceAttributeConcept::class)
+    fun entityReferences(): List<EntityReferenceAttributeConcept>
 }

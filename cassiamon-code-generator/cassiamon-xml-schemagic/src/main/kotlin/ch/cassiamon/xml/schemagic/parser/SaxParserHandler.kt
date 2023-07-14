@@ -38,7 +38,7 @@ class SaxParserHandler(
 
         if(isInDefinitionTag) {
             val conceptSchema = getConceptByXmlLocalName(localName) ?: return
-            val conceptIdentifier = ConceptIdentifier.random() // TODO implement
+            val conceptIdentifier = getConceptIdentifier(xmlAttributes) ?: ConceptIdentifier.random()
             val parentConceptIdentifier = conceptIdentifierStack.lastOrNull()
             val facetValues: Map<FacetName, Any?> = facetValuesFromAttributes(conceptSchema, xmlAttributes)
             try {
@@ -57,6 +57,11 @@ class SaxParserHandler(
             "configuration" -> xmlAttributes.forEach { addConfigurationAttribute(it) }
             "definitions" -> isInDefinitionTag = true
         }
+    }
+
+    private fun getConceptIdentifier(xmlAttributes: List<XmlAttribute>): ConceptIdentifier? {
+        val conceptIdentifierAttribute: XmlAttribute = xmlAttributes.firstOrNull { it.localName == "conceptIdentifier" } ?: return null
+        return ConceptIdentifier.of(conceptIdentifierAttribute.value)
     }
 
     private fun facetValuesFromAttributes(

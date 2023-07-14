@@ -1,6 +1,5 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
-import ch.cassiamon.tools.StringIdentHelper
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -36,7 +35,7 @@ object EntityDescriptionTemplate {
         """.identForMarker()
     }
 
-    private fun createEntityAttributeSubTemplate(entityAttribute: EntityAttributeConcept): String {
+    private fun createEntityAttributeSubTemplate(entityAttribute: EntitySimpleAttributeConcept): String {
         return """
             Entity Attribute: ${entityAttribute.getName()} (Type: ${entityAttribute.getType()})
         """.replaceIndent(ident)

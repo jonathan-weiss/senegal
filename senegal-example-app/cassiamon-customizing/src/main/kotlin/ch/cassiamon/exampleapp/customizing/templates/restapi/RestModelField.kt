@@ -1,10 +1,10 @@
 package ch.cassiamon.exampleapp.customizing.templates.restapi
 
-import ch.cassiamon.exampleapp.customizing.templates.EntityAttributeConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntitySimpleAttributeConcept
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil
 
-data class RestModelField(private val model: EntityAttributeConcept, private val restModelClass: RestModelClass, val kotlinModelField: KotlinModelField) {
+data class RestModelField(private val model: EntitySimpleAttributeConcept, private val restModelClass: RestModelClass, val kotlinModelField: KotlinModelField) {
     private val kotlinStringType = "kotlin.String"
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"
