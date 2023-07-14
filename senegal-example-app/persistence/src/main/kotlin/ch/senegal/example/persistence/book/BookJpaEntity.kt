@@ -1,5 +1,6 @@
 package ch.senegal.example.persistence.book
 
+import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.book.Book
 import ch.senegal.example.shareddomain.BookId
 import java.util.*
@@ -19,6 +20,9 @@ class BookJpaEntity(
     @Column(name = "BOOK_NAME")
     val bookName: String,
 
+    @Column(name = "MAIN_AUTHOR_ID")
+    val mainAuthorId: UUID,
+
     ) {
 
     companion object {
@@ -26,11 +30,13 @@ class BookJpaEntity(
             BookJpaEntity(
                 id = book.bookId.value,
                 bookName = book.bookName,
+                mainAuthorId = book.mainAuthor.authorId.value
             )
     }
 
-    internal fun toDomain() = Book(
+    internal fun toDomain(mainAuthor: Author) = Book(
         bookId = BookId(this.id),
         bookName = this.bookName,
+        mainAuthor = mainAuthor
     )
 }

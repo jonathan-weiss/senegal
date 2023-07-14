@@ -1,5 +1,7 @@
 package ch.senegal.example.domain.book
 
+import ch.senegal.example.domain.author.Author
+import ch.senegal.example.domain.author.AuthorRepository
 import ch.senegal.example.shareddomain.BookId
 import ch.senegal.example.sharedservice.tx.Transactional
 import org.springframework.stereotype.Service
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class BookService(
     private val repository: BookRepository,
+    private val authorRepository: AuthorRepository,
 ) {
 
     fun getBook(bookId: BookId): Book {
@@ -16,7 +19,8 @@ class BookService(
 
     @Transactional
     fun createBook(instruction: CreateBookInstruction): Book {
-        val book = Book.create(instruction)
+        val author: Author = authorRepository.fetchAuthorById(instruction.mainAuthorId)
+        val book = Book.create(instruction, author)
         repository.insertBook(book)
         return getBook(book.bookId)
     }
@@ -24,7 +28,8 @@ class BookService(
     @Transactional
     fun updateBook(instruction: UpdateBookInstruction): Book {
         val existingEntry = repository.fetchBookById(instruction.bookId)
-        existingEntry.update(instruction)
+        val author: Author = authorRepository.fetchAuthorById(instruction.mainAuthorId)
+        existingEntry.update(instruction, author)
         repository.updateBook(existingEntry)
         return getBook(instruction.bookId)
     }

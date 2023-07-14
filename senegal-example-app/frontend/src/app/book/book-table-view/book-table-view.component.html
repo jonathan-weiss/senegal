@@ -10,6 +10,11 @@
     <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="mainAuthor">
+    <th mat-header-cell *matHeaderCellDef> Main Author </th>
+    <td mat-cell *matCellDef="let element"> {{element.mainAuthor.firstname}} {{element.mainAuthor.lastname}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="context">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">

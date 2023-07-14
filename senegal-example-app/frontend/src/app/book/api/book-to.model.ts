@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { UuidTO } from '../../uuid-to.model';
+import {AuthorTO} from "../../author/api/author-to.model";
 
 
 export interface BookTO {
     bookId: UuidTO;
     bookName: string;
+    mainAuthor: AuthorTO;
 }
 

@@ -4,17 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <changeSet id="20221108_book_structure" author="Senegal">
-        <createTable tableName="BOOK">
-            <column name="ID" type="uuid">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="BOOK_NAME" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="20230714_author_structure" author="Senegal">
+    <changeSet id="book_structure" author="Senegal">
         <createTable tableName="AUTHOR">
             <column name="ID" type="uuid">
                 <constraints primaryKey="true"/>
@@ -26,6 +16,19 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createTable tableName="BOOK">
+            <column name="ID" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="BOOK_NAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MAIN_AUTHOR_ID" type="uuid">
+                <constraints nullable="false" foreignKeyName="BOOK_FK_AUTHOR_ID" referencedTableName="AUTHOR" referencedColumnNames="ID"/>
+            </column>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

@@ -17,7 +17,7 @@ export class BookTableViewComponent {
   @Output() editEntryClicked: EventEmitter<BookTO> = new EventEmitter<BookTO>();
   @Output() deleteEntryClicked: EventEmitter<BookTO> = new EventEmitter<BookTO>();
 
-  displayedColumns: string[] = ['bookId', 'bookName', 'context'];
+  displayedColumns: string[] = ['bookId', 'bookName', 'mainAuthor', 'context'];
 
   constructor(private bookService: BookService) {
   }

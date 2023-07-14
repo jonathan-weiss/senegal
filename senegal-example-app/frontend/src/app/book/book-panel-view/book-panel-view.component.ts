@@ -5,6 +5,7 @@ import {BookTO} from "../api/book-to.model";
 import {UpdateBookInstructionTO} from "../api/update-book-instruction.to";
 import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
+import {UuidUtil} from "../../commons/uuid.util";
 
 
 @Component({
@@ -41,6 +42,7 @@ export class BookPanelViewComponent implements OnInit {
     this.updateBookInstruction = {
       bookId: entry.bookId,
       bookName: entry.bookName,
+      mainAuthorId: entry.mainAuthor.authorId,
     }
   }
 
@@ -72,7 +74,8 @@ export class BookPanelViewComponent implements OnInit {
   onNewEntry(): void {
     this.updateBookInstruction = undefined;
     this.createBookInstruction = {
-      bookName: ''
+      bookName: '',
+      mainAuthorId: UuidUtil.createFromString(''),
     }
   }
 

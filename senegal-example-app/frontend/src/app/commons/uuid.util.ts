@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { UuidTO } from '../../generated-openapi';
+import {UuidTO} from "../uuid-to.model";
 
 export class UuidUtil {
 
