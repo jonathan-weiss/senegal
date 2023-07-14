@@ -6,6 +6,7 @@ import {UpdateBookInstructionTO} from "../api/update-book-instruction.to";
 import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
 import {UuidUtil} from "../../commons/uuid.util";
+import {EditingModeEnum} from "../../editing-mode.enum";
 
 
 @Component({
@@ -17,8 +18,8 @@ export class BookPanelViewComponent implements OnInit {
 
   books: ReadonlyArray<BookTO> = CollectionsUtil.emptyList()
 
-  updateBookInstruction: UpdateBookInstructionTO | undefined = undefined;
-  createBookInstruction: CreateBookInstructionTO | undefined = undefined;
+  editingMode: EditingModeEnum = EditingModeEnum.NONE
+  selectedBook: BookTO | undefined = undefined;
 
   constructor(private bookService: BookService) {
   }
@@ -33,17 +34,21 @@ export class BookPanelViewComponent implements OnInit {
     })
   }
 
-  isEditingMode(): boolean {
-    return this.createBookInstruction != undefined || this.updateBookInstruction != undefined;
+  isUpdateMode(): boolean {
+    return this.editingMode === EditingModeEnum.UPDATE
+  }
+
+  isCreateMode(): boolean {
+    return this.editingMode === EditingModeEnum.CREATE
+  }
+
+  isInEditingMode(): boolean {
+    return this.isUpdateMode() || this.isCreateMode()
   }
 
   onEdit(entry: BookTO): void {
-    this.createBookInstruction = undefined;
-    this.updateBookInstruction = {
-      bookId: entry.bookId,
-      bookName: entry.bookName,
-      mainAuthorId: entry.mainAuthor.authorId,
-    }
+    this.editingMode = EditingModeEnum.UPDATE;
+    this.selectedBook = entry;
   }
 
   onPerformDelete(entry: BookTO): void {
@@ -58,29 +63,24 @@ export class BookPanelViewComponent implements OnInit {
   onPerformUpdate(updateInstruction: UpdateBookInstructionTO): void {
     this.bookService.updateBook(updateInstruction).subscribe(() => {
       this.loadBooks();
-      this.updateBookInstruction = undefined;
-      this.createBookInstruction = undefined;
+      this.editingMode = EditingModeEnum.NONE;
     })
   }
 
   onPerformCreate(createInstruction: CreateBookInstructionTO): void {
     this.bookService.createBook(createInstruction).subscribe(() => {
       this.loadBooks();
-      this.updateBookInstruction = undefined;
-      this.createBookInstruction = undefined;
+      this.editingMode = EditingModeEnum.NONE;
     })
   }
 
   onNewEntry(): void {
-    this.updateBookInstruction = undefined;
-    this.createBookInstruction = {
-      bookName: '',
-      mainAuthorId: UuidUtil.createFromString(''),
-    }
+    this.editingMode = EditingModeEnum.CREATE;
   }
 
   resetEdit() {
-    this.updateBookInstruction = undefined;
-    this.createBookInstruction = undefined;
+    this.editingMode = EditingModeEnum.NONE;
   }
+
+  protected readonly undefined = undefined;
 }

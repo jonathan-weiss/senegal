@@ -2,20 +2,26 @@
   <mat-card-content>
     <mat-form-field appearance="fill">
       <mat-label>Book Id</mat-label>
-      <input matInput type="text" [(ngModel)]="updateBookInstruction.bookId.uuid" disabled="true">
+      <input matInput type="text" [(ngModel)]="book.bookId.uuid" disabled="true">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Book name</mat-label>
-      <input matInput type="text" [(ngModel)]="updateBookInstruction.bookName">
-      <button *ngIf="updateBookInstruction.bookName" matSuffix mat-icon-button aria-label="Clear" (click)="updateBookInstruction.bookName=''">
+      <input matInput type="text" [formControl]="bookNameFormControl">
+      <button *ngIf="bookNameFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="bookNameFormControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Main Author</mat-label>
-      <input matInput type="text" [(ngModel)]="updateBookInstruction.mainAuthorId.uuid"><!-- TODO make a typeahead selection -->
+      <input matInput type="text" [formControl]="mainAuthorFormControl" [matAutocomplete]="mainAuthorAutocomplete" >
+
+      <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
+        <mat-option *ngFor="let author of authors" [value]="author" >
+          {{author.firstname}} {{author.lastname}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
   </mat-card-content>

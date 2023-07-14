@@ -29,6 +29,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
 import {AuthorReadonlyTableViewComponent} from "./author/author-table-view/author-readonly-table-view.component";
 import {AuthorPanelViewComponent} from "./author/author-panel-view/author-panel-view.component";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import {AuthorPanelViewComponent} from "./author/author-panel-view/author-panel-
     MatCardModule,
     GeneratedEntitiesModule,
     GeneratedEntitiesRoutingModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {provide: MAT_TABS_CONFIG, useValue: {animationDuration: '0ms'}},

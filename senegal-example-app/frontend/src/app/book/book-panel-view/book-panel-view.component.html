@@ -1,15 +1,15 @@
 <h1>Books</h1>
 
-<book-table-view [books]="books" [tableControlsDisabled]="isEditingMode()" (editEntryClicked)="onEdit($event)" (deleteEntryClicked)="onPerformDelete($event)"></book-table-view>
+<book-table-view [books]="books" [tableControlsDisabled]="isInEditingMode()" (editEntryClicked)="onEdit($event)" (deleteEntryClicked)="onPerformDelete($event)"></book-table-view>
 
 <div class="action-box">
-  <button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new book...</button>
+  <button mat-raised-button color="primary" [disabled]="isInEditingMode()" (click)="onNewEntry()">Add new book...</button>
 </div>
 
-<ng-container *ngIf="updateBookInstruction != undefined">
-  <book-edit-view [updateBookInstruction]="updateBookInstruction!" (saveClicked)="onPerformUpdate($event)" (cancelClicked)="resetEdit()"></book-edit-view>
+<ng-container *ngIf="isUpdateMode() && selectedBook != undefined">
+  <book-edit-view [book]="selectedBook" (saveClicked)="onPerformUpdate($event)" (cancelClicked)="resetEdit()"></book-edit-view>
 </ng-container>
-<ng-container *ngIf="createBookInstruction != undefined">
-  <book-add-view [createBookInstruction]="createBookInstruction!" (saveClicked)="onPerformCreate($event)" (cancelClicked)="resetEdit()"></book-add-view>
+<ng-container *ngIf="isCreateMode()">
+  <book-add-view (saveClicked)="onPerformCreate($event)" (cancelClicked)="resetEdit()"></book-add-view>
 </ng-container>
 
