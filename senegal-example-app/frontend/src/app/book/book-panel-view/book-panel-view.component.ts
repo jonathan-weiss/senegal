@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from "../book.service";
 import {CollectionsUtil} from "../../commons/collections.util";
-import {
-  BookTO,
-  CreateBookInstructionTO,
-  DeleteBookInstructionTO,
-  UpdateBookInstructionTO
-} from "../../../generated-openapi";
+import {BookTO} from "../api/book-to.model";
+import {UpdateBookInstructionTO} from "../api/update-book-instruction.to";
+import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
+import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
 
 
 @Component({

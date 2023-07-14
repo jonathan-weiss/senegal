@@ -1,13 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {
-  BookApiService,
-  BookTO,
-  CreateBookInstructionTO,
-  DeleteBookInstructionTO,
-  UpdateBookInstructionTO
-} from "../../generated-openapi";
-import {BookApiAlternativeService} from "./book-api-alternative.service";
+import {BookApiService} from "./api/book-api.service";
+import {BookTO} from "./api/book-to.model";
+import {UpdateBookInstructionTO} from "./api/update-book-instruction.to";
+import {CreateBookInstructionTO} from "./api/create-book-instruction.to";
+import {DeleteBookInstructionTO} from "./api/delete-book-instruction.to";
 
 
 @Injectable({
@@ -15,12 +12,11 @@ import {BookApiAlternativeService} from "./book-api-alternative.service";
 })
 export class BookService {
 
-  constructor(private readonly bookApiService: BookApiService,
-              private readonly bookApiAlternativeService: BookApiAlternativeService) {
+  constructor(private readonly bookApiService: BookApiService) {
   }
 
   getAllBooks(): Observable<ReadonlyArray<BookTO>> {
-    return this.bookApiAlternativeService.getBooks();
+    return this.bookApiService.getBooks();
   }
 
   updateBook(updateInstruction: UpdateBookInstructionTO): Observable<BookTO> {
