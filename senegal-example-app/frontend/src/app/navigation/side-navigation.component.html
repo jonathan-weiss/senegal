@@ -1,4 +1,5 @@
 <div class="navigation-menu">
   <button class="navigation-item" routerLink="/books">Books</button>
+  <button class="navigation-item" routerLink="/authors">Book Authors</button>
   <button class="navigation-item" *ngFor="let entry of sideNavigationEntries" routerLink="/{{entry.path}}">{{ entry.name }}</button>
 </div>

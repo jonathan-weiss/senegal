@@ -14,4 +14,18 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="20230714_author_structure" author="Senegal">
+        <createTable tableName="AUTHOR">
+            <column name="ID" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="FIRSTNAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LASTNAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

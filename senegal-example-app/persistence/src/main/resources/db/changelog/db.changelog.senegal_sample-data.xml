@@ -7,10 +7,6 @@
 
 
     <changeSet id="20221108_book_sample_data" author="Senegal">
-        <preConditions onFail="CONTINUE">
-            <changeLogPropertyDefined property="senegal_sample_data" value="true"/>
-        </preConditions>
-
         <insert tableName="BOOK">
             <column name="ID" value="6d9f2fd3-5a31-4477-8d04-bf87f00f5406"/>
             <column name="BOOK_NAME" value="Gullivers traveling guide"/>
@@ -25,6 +21,27 @@
             <column name="ID" value="d1d9874b-07d9-4eb4-82d2-123ca6839a5d"/>
             <column name="BOOK_NAME" value="Thomson study bible"/>
         </insert>
+    </changeSet>
+
+    <changeSet id="20230714_author_sample_data" author="Senegal">
+        <insert tableName="AUTHOR">
+            <column name="ID" value="34aa97e7-9c15-434a-81f0-1a2e12066281"/>
+            <column name="FIRSTNAME" value="William"/>
+            <column name="LASTNAME" value="Golding"/>
+        </insert>
+
+        <insert tableName="AUTHOR">
+            <column name="ID" value="3d5436c7-1170-4515-b11c-93b99921c26c"/>
+            <column name="FIRSTNAME" value="Jonathan"/>
+            <column name="LASTNAME" value="Swift"/>
+        </insert>
+
+        <insert tableName="AUTHOR">
+            <column name="ID" value="a4a16270-bd19-453a-9067-632f300c8cff"/>
+            <column name="FIRSTNAME" value="God"/>
+            <column name="LASTNAME" value="Almighty"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

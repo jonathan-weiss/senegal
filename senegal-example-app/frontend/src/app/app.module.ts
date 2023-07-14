@@ -27,11 +27,15 @@ import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-ro
 import {RouterModule} from "@angular/router";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
+import {AuthorReadonlyTableViewComponent} from "./author/author-table-view/author-readonly-table-view.component";
+import {AuthorPanelViewComponent} from "./author/author-panel-view/author-panel-view.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuthorReadonlyTableViewComponent,
+    AuthorPanelViewComponent,
     BookTableViewComponent,
     BookAddViewComponent,
     BookEditViewComponent,
