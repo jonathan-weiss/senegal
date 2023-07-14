@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BookService} from "../book.service";
 import {CollectionsUtil} from "../../commons/collections.util";
-import {BookTO} from "../../../generated-openapi";
+import {BookTO} from "../api/book-to.model";
 
 
 @Component({

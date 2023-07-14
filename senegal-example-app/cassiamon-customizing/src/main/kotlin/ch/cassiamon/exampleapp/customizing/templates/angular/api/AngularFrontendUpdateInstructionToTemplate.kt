@@ -9,7 +9,7 @@ object AngularFrontendUpdateInstructionToTemplate {
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
 
-        import { UuidTO } from '../../../generated-openapi';
+        import { UuidTO } from '../../../app/uuid-to.model';
 
 
         export interface Update${templateModel.entityName}InstructionTO {

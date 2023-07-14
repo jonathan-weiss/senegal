@@ -10,7 +10,7 @@ object AngularFrontendServiceToTemplate {
             import { Injectable }       from '@angular/core';
             import { HttpClient }       from '@angular/common/http';
             import { Observable }       from 'rxjs';
-            import { UuidTO }           from '../../../generated-openapi';
+            import { UuidTO } from '../../../app/uuid-to.model';
             
             import { ${templateModel.entityName}TO } from "./${templateModel.entityFileName}-to.model";
             import { Create${templateModel.entityName}InstructionTO } from "./create-${templateModel.entityFileName}-instruction-to.model";

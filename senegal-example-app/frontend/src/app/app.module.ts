@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {ApiModule} from "../generated-openapi";
 import {MatIconModule} from "@angular/material/icon";
 import {MatStepperModule} from "@angular/material/stepper";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -12,7 +11,6 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatMenuModule} from "@angular/material/menu";
 import {MAT_TABS_CONFIG} from "@angular/material/tabs";
-import {OpenApiRestConfigurationFactory} from "./configuration/openapi-server.config";
 import {MatDialogModule} from "@angular/material/dialog";
 import {HttpClientModule} from "@angular/common/http";
 import {BookTableViewComponent} from "./book/book-table-view/book-table-view.component";
@@ -54,7 +52,6 @@ import {MatCardModule} from "@angular/material/card";
     MatDialogModule,
     MatStepperModule,
     HttpClientModule,
-    ApiModule.forRoot(OpenApiRestConfigurationFactory),
     FormsModule,
     ReactiveFormsModule,
     MatChipsModule,

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CreateBookInstructionTO} from "../../../generated-openapi";
+import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
 
 
 @Component({

@@ -9,7 +9,7 @@ object AngularFrontendModelToTemplate {
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
 
-        import { UuidTO } from '../../../generated-openapi';
+        import { UuidTO } from '../../../app/uuid-to.model';
         
         export interface ${templateModel.entityName}TO {
             ${templateModel.transferObjectIdFieldName}: ${templateModel.transferObjectIdFieldType},${
