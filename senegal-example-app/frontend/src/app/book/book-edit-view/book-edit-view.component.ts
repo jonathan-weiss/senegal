@@ -5,6 +5,7 @@ import {FormControl} from "@angular/forms";
 import {AuthorTO} from "../../author/api/author-to.model";
 import {CollectionsUtil} from "../../commons/collections.util";
 import {AuthorService} from "../../author/author.service";
+import {Observable, startWith, switchMap} from "rxjs";
 
 
 @Component({
@@ -19,7 +20,7 @@ export class BookEditViewComponent implements OnInit {
   @Output() saveClicked: EventEmitter<UpdateBookInstructionTO> = new EventEmitter<UpdateBookInstructionTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
-  authors: ReadonlyArray<AuthorTO> = CollectionsUtil.emptyList()
+  authorsOptions!: Observable<ReadonlyArray<AuthorTO>>
 
   bookNameFormControl = new FormControl('');
   mainAuthorFormControl = new FormControl('');
@@ -29,20 +30,17 @@ export class BookEditViewComponent implements OnInit {
   ngOnInit(): void {
     this.bookNameFormControl.patchValue(this.book.bookName)
     this.mainAuthorFormControl.patchValue(this.book.mainAuthor)
-    this.loadAuthors();
 
+    this.authorsOptions = this.mainAuthorFormControl.valueChanges.pipe(
+      startWith(''),
+      switchMap(searchValue => this.authorService.getAllAuthorsFiltered(searchValue || '')),
+    );
   }
 
-  private loadAuthors(): void {
-    this.authorService.getAllAuthors().subscribe((authors: ReadonlyArray<AuthorTO>) => {
-      this.authors = authors;
-    })
-  }
 
   displayAuthorFn(author: AuthorTO): string {
     return author ? author.firstname + ' ' + author.lastname : '';
   }
-
 
   saveChanges(): void {
     const updateInstruction: UpdateBookInstructionTO = {

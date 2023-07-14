@@ -13,7 +13,7 @@
       <input matInput type="text" [formControl]="mainAuthorFormControl" [matAutocomplete]="mainAuthorAutocomplete" >
 
       <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
-        <mat-option *ngFor="let author of authors" [value]="author" >
+        <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
           {{author.firstname}} {{author.lastname}}
         </mat-option>
       </mat-autocomplete>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {AuthorApiService} from "./api/author-api.service";
 import {AuthorTO} from "./api/author-to.model";
 
@@ -14,6 +14,13 @@ export class AuthorService {
   }
 
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
+    return this.authorApiService.getAuthors();
+  }
+
+  getAllAuthorsFiltered(filter: String): Observable<ReadonlyArray<AuthorTO>> {
+    if(filter.length < 3) {
+      return EMPTY;
+    }
     return this.authorApiService.getAuthors();
   }
 }
