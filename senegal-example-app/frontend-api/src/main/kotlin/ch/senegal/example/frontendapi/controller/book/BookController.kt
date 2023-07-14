@@ -4,7 +4,6 @@ import ch.senegal.example.frontendapi.API
 import ch.senegal.example.frontendapi.controller.ResponseStatusExceptionFactory
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 import ch.senegal.example.frontendapi.facade.BookFacade
-import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,7 +16,6 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("$API/books")
-@Tag(name = "BookApi")
 class BookController(
     private val bookFacade: BookFacade
 ) {

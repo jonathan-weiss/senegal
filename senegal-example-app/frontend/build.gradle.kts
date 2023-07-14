@@ -1,6 +1,5 @@
 plugins {
   id("com.github.node-gradle.node") version ("3.2.1")
-  id("org.openapi.generator") version "6.0.1"
 }
 
 val nodeAndNpmBaseDownloadDir: File = project.buildDir
@@ -68,39 +67,6 @@ tasks.register<com.github.gradle.node.npm.task.NpmTask>("buildAngular") {
   npmCommand.set(listOf("run", "build"))
 }
 
-val openApiSpec = projectDir.resolve("../open-api/build/senegal-frontend-api.yaml")
-val openApiOutputDir = buildDir.resolve("generated-openapi-files")
-val openApiDestinationDir = projectDir.resolve("src/generated-openapi")
-
-openApiGenerate {
-  generatorName.set("typescript-angular")
-  inputSpec.set(openApiSpec.absolutePath)
-  outputDir.set(openApiOutputDir.absolutePath)
-  apiPackage.set("api")
-  modelPackage.set("model")
-}
-
-tasks.register<Delete>("openApiCleanGeneratedFiles") {
-  delete(openApiOutputDir)
-  delete(openApiDestinationDir)
-}
-
-tasks.register<Copy>("openApiCopyGeneratedFiles") {
-  dependsOn("openApiGenerate")
-  mustRunAfter("openApiCleanGeneratedFiles")
-
-  from(openApiOutputDir)
-  include("api/*")
-  include("model/*")
-  include("api.module.ts", "configuration.ts", "encoder.ts", "index.ts", "variables.ts")
-  into(openApiDestinationDir)
-}
-
-tasks.named<Task>("openApiGenerate") {
-  mustRunAfter("openApiCleanGeneratedFiles")
-  dependsOn(":senegal-example-app:open-api:generateOpenApiDocs")
-}
-
 tasks.register<Delete>("clearNodeModules") {
   delete(angularFrontendDirectory.resolve("node_modules"))
 }
@@ -113,15 +79,9 @@ tasks.register<Delete>("clearAngularDist") {
 tasks.register("clearFrontend") {
   // we do not call the task clearNodeModules, as npmInstall does clear unused modules itself.
   // (analogous to the backend where we do not clear the gradle cache with all dependencies either)
-  dependsOn("openApiCleanGeneratedFiles")
   dependsOn("clearAngularDist")
-}
-
-tasks.register("generate") {
-  dependsOn("openApiCopyGeneratedFiles")
 }
 
 tasks.register<Delete>("clearGeneratedSource") {
   delete(project.fileTree(projectDir.resolve("src/generated")).include("**/*"))
-  delete(project.fileTree(projectDir.resolve("src/generated-openapi")).include("**/*"))
 }

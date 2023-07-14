@@ -42,5 +42,4 @@ testem.log
 Thumbs.db
 
 # Generated files
-src/generated-openapi
 src/generated
