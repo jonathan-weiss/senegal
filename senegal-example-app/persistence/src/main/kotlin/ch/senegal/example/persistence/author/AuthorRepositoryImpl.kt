@@ -21,6 +21,19 @@ private val jpaRepository: AuthorJpaRepository
         return jpaRepository.findAll().map { it.toDomain() }
     }
 
+    override fun fetchAllAuthorFiltered(searchTerm: String): List<Author> {
+        return jpaRepository
+            .findAll()
+            .map { it.toDomain() }
+            // TODO Filter directly in the database by WHERE statement
+            .filter {
+                searchTerm.isEmpty()
+                    || it.firstname.contains(searchTerm)
+                    || it.lastname.contains(searchTerm)
+                    || it.authorId.value.toString().contains(searchTerm)
+            }
+    }
+
     override fun insertAuthor(domainInstance: Author) {
         jpaRepository.save(AuthorJpaEntity.fromDomain(domainInstance))
     }

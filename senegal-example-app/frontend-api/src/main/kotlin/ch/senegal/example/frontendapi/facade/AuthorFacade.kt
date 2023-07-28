@@ -23,6 +23,10 @@ class AuthorFacade(
         return service.getListOfAllAuthor().map { AuthorTO.fromDomain(it) }
     }
 
+    fun getAllAuthorFiltered(searchTerm: String): List<AuthorTO> {
+        return service.getListOfFilteredAuthor(searchTerm).map { AuthorTO.fromDomain(it) }
+    }
+
     fun createAuthor(instruction: CreateAuthorInstructionTO): AuthorTO {
         val createdAuthor = service.createAuthor(instruction.toDomain())
         return AuthorTO.fromDomain(createdAuthor)

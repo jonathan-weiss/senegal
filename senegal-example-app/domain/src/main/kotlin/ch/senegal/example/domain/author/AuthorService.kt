@@ -37,4 +37,9 @@ class AuthorService(
     fun getListOfAllAuthor(): List<Author> {
         return repository.fetchAllAuthor()
     }
+
+    fun getListOfFilteredAuthor(searchTerm: String): List<Author> {
+        return repository.fetchAllAuthorFiltered(searchTerm)
+    }
+
 }

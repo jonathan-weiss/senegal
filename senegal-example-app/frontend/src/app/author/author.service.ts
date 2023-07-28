@@ -19,8 +19,8 @@ export class AuthorService {
     return this.authorApiService.getAllAuthor();
   }
 
-  getAllAuthorsFiltered(filterTerm: string): Observable<ReadonlyArray<AuthorTO>> {
-    return this.authorApiService.getAllAuthor();
+  getAllAuthorsFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
+    return this.authorApiService.getAllAuthorFiltered(searchTerm);
   }
 
 

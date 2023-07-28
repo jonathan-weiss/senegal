@@ -23,6 +23,10 @@ export class AuthorApiService {
         return this.httpClient.get<Array<AuthorTO>>(`/api/author/all`);
     }
 
+    getAllAuthorFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
+        return this.httpClient.get<Array<AuthorTO>>(`/api/author/all-filtered?searchTerm=` + searchTerm);
+    }
+
     createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
         return this.httpClient.post<AuthorTO>(`/api/author/entry`, createInstruction);
     }
