@@ -4,7 +4,7 @@
     [allAuthor]="allAuthor"
     [tableControlsDisabled]="isEditingMode()"
     (editEntryClicked)="onEdit($event)"
-    (deleteEntryClicked)="onPerformDelete($event)"
+    (deleteEntryClicked)="onPerformDeleteOnServer($event)"
 ></author-table-view>
 
 
@@ -12,17 +12,10 @@
     <button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new Author...</button>
 </div>
 
-<ng-container *ngIf="updateAuthorInstruction != undefined">
+<ng-container *ngIf="isEditingMode()">
     <author-edit-view
-        [updateAuthorInstruction]="updateAuthorInstruction!"
-        (saveClicked)="onPerformUpdate($event)"
+        [author]="authorToEdit"
+        (saveClicked)="onPerformCreateOrUpdateOnServer($event)"
         (cancelClicked)="resetEdit()"
     ></author-edit-view>
-</ng-container>
-<ng-container *ngIf="createAuthorInstruction != undefined">
-    <author-add-view
-        [createAuthorInstruction]="createAuthorInstruction!"
-        (saveClicked)="onPerformCreate($event)"
-        (cancelClicked)="resetEdit()"
-    ></author-add-view>
 </ng-container>

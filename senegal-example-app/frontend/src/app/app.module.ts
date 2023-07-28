@@ -10,7 +10,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatMenuModule} from "@angular/material/menu";
-import {MAT_TABS_CONFIG} from "@angular/material/tabs";
+import {MAT_TABS_CONFIG, MatTabsModule} from "@angular/material/tabs";
 import {MatDialogModule} from "@angular/material/dialog";
 import {HttpClientModule} from "@angular/common/http";
 import {BookTableViewComponent} from "./book/book-table-view/book-table-view.component";
@@ -31,7 +31,6 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AuthorPanelViewComponent} from "./author/component/author-panel-view/author-panel-view.component";
 import {AuthorEditViewComponent} from "./author/component/author-edit-view/author-edit-view.component";
 import {AuthorTableViewComponent} from "./author/component/author-table-view/author-table-view.component";
-import {AuthorAddViewComponent} from "./author/component/author-add-view/author-add-view.component";
 
 
 @NgModule({
@@ -39,7 +38,6 @@ import {AuthorAddViewComponent} from "./author/component/author-add-view/author-
     AppComponent,
     AuthorEditViewComponent,
     AuthorTableViewComponent,
-    AuthorAddViewComponent,
     AuthorPanelViewComponent,
     BookTableViewComponent,
     BookAddViewComponent,
@@ -70,6 +68,7 @@ import {AuthorAddViewComponent} from "./author/component/author-add-view/author-
     GeneratedEntitiesModule,
     GeneratedEntitiesRoutingModule,
     MatAutocompleteModule,
+    MatTabsModule,
   ],
   providers: [
     {provide: MAT_TABS_CONFIG, useValue: {animationDuration: '0ms'}},

@@ -1,29 +1,41 @@
-<h2>Edit Author</h2>
+<h2 *ngIf="isCreateMode()">Add Author</h2>
+<h2 *ngIf="!isCreateMode()">Edit Author</h2>
 
-<mat-card>
-    <mat-card-content>
-        <mat-form-field appearance="fill">
-            <mat-label>Author Id</mat-label>
-            <input matInput type="text" [(ngModel)]="updateAuthorInstruction.authorId.uuid" disabled="true">
-        </mat-form-field>
-        
-        <mat-form-field appearance="fill">
-            <mat-label> firstname</mat-label>
-            <input matInput type="text" [(ngModel)]="updateAuthorInstruction.firstname">
-            <button *ngIf="updateAuthorInstruction.firstname" matSuffix mat-icon-button aria-label="Clear" (click)="updateAuthorInstruction.firstname=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label> lastname</mat-label>
-            <input matInput type="text" [(ngModel)]="updateAuthorInstruction.lastname">
-            <button *ngIf="updateAuthorInstruction.lastname" matSuffix mat-icon-button aria-label="Clear" (click)="updateAuthorInstruction.lastname=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="saveChanges()">Save</button>
-        <button mat-raised-button color="secondary" (click)="cancelEdit()">Cancel</button>
-    </mat-card-actions>
-</mat-card>
+<form [formGroup]="authorForm">
+
+
+  <mat-card>
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab label="Commons">
+            <div class="tab-content">
+              <mat-form-field class="full-width-form-field" appearance="fill" *ngIf="!isCreateMode()">
+                <mat-label>Author Id</mat-label>
+                <input matInput type="text" formControlName="authorId" >
+              </mat-form-field>
+              <mat-form-field class="full-width-form-field" appearance="fill">
+                <mat-label>Firstname</mat-label>
+                <input matInput type="text" formControlName="firstname">
+                <mat-error *ngIf="firstnameFormControl.hasError('required')">
+                  Firstname is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-form-field" appearance="fill">
+                <mat-label>Lastname</mat-label>
+                <input matInput type="text" formControlName="lastname">
+                <mat-error *ngIf="lastnameFormControl.hasError('required')">
+                  Lastname is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-tab>
+          <mat-tab label="Books">
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" (click)="saveChanges()" [disabled]="!isFormValid()">Save</button>
+          <button mat-raised-button color="secondary" (click)="cancelEdit()">Cancel</button>
+      </mat-card-actions>
+  </mat-card>
+</form>
