@@ -3,6 +3,10 @@ import {EditableAuthorData} from "./editable-author.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthorTO} from "../../api/author-to.model";
 import { Validators } from '@angular/forms';
+import {BookTO} from "../../../book/api/book-to.model";
+import {CollectionsUtil} from "../../../commons/collections.util";
+import {BookService} from "../../../book/book.service";
+import {MatTabChangeEvent} from "@angular/material/tabs";
 
 
 @Component({
@@ -26,6 +30,11 @@ export class AuthorEditViewComponent implements OnInit {
     firstname: this.firstnameFormControl,
     lastname: this.lastnameFormControl,
   });
+
+  booksByAuthor: ReadonlyArray<BookTO> = CollectionsUtil.emptyList();
+
+  constructor(private readonly bookService: BookService) {
+  }
 
   ngOnInit() {
     this.authorIdFormControl.disable();
@@ -54,5 +63,18 @@ export class AuthorEditViewComponent implements OnInit {
 
   isFormValid() {
     return !this.authorForm.invalid;
+  }
+
+  openTab(tabChangeEvent: MatTabChangeEvent): void {
+    if(tabChangeEvent.index == 1) {
+      this.reloadBooksByAuthor();
+    }
+  }
+
+  private reloadBooksByAuthor(): void {
+    // TODO load only books of this author
+    this.bookService.getAllBooks().subscribe((books: ReadonlyArray<BookTO>) => {
+      this.booksByAuthor = books;
+    });
   }
 }

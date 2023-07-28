@@ -6,7 +6,7 @@
 
   <mat-card>
       <mat-card-content>
-        <mat-tab-group>
+        <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">
             <div class="tab-content">
               <mat-form-field class="full-width-form-field" appearance="fill" *ngIf="!isCreateMode()">
@@ -30,6 +30,7 @@
             </div>
           </mat-tab>
           <mat-tab label="Books">
+              <book-table-view [books]="booksByAuthor" [tableControlsDisabled]="true" ></book-table-view>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
