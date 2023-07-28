@@ -186,7 +186,7 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
 
             // create REST api transfer object delete instruction
             targetFilesCollector.addFile(
-                targetFile = toTargetFilePath(frontendApiSourceDirectory, restModelClass.transferObjectPackageName, "Delete${restModelClass.facadeClassName}InstructionTO.kt"),
+                targetFile = toTargetFilePath(frontendApiSourceDirectory, restModelClass.transferObjectPackageName, "Delete${restModelClass.transferObjectBaseName}InstructionTO.kt"),
                 fileContent = RestApiTransferObjectDeleteInstructionTemplate.fillTemplate(restModelClass),
             )
 
