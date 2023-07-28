@@ -6,7 +6,7 @@
 
     <changeSet id="book_structure" author="Senegal">
         <createTable tableName="AUTHOR">
-            <column name="ID" type="uuid">
+            <column name="AUTHOR_ID" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
             <column name="FIRSTNAME" type="varchar(255)">
@@ -25,7 +25,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="MAIN_AUTHOR_ID" type="uuid">
-                <constraints nullable="false" foreignKeyName="BOOK_FK_AUTHOR_ID" referencedTableName="AUTHOR" referencedColumnNames="ID"/>
+                <constraints nullable="false" foreignKeyName="BOOK_FK_AUTHOR_ID" referencedTableName="AUTHOR" referencedColumnNames="AUTHOR_ID"/>
             </column>
         </createTable>
 

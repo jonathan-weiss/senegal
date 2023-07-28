@@ -2,7 +2,8 @@ package ch.senegal.example.persistence.book
 
 import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.book.Book
-import ch.senegal.example.shareddomain.BookId
+import ch.senegal.example.domain.book.BookId
+
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity

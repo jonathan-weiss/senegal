@@ -1,6 +1,6 @@
 package ch.senegal.example.domain.author
 
-import ch.senegal.example.shareddomain.AuthorId
+import ch.senegal.example.sharedservice.tx.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,9 +12,29 @@ class AuthorService(
         return repository.fetchAuthorById(authorId)
     }
 
-    fun getAuthors(): List<Author> {
-        return repository.fetchAllAuthors()
+
+    @Transactional
+    fun createAuthor(instruction: CreateAuthorInstruction): Author {
+        val instance = Author.create(instruction)
+        repository.insertAuthor(instance)
+        return getAuthor(instance.authorId)
     }
 
+    @Transactional
+    fun updateAuthor(instruction: UpdateAuthorInstruction): Author {
+        val existingEntry = repository.fetchAuthorById(instruction.authorId)
+        existingEntry.update(instruction)
+        repository.updateAuthor(existingEntry)
+        return getAuthor(instruction.authorId)
+    }
 
+    @Transactional
+    fun deleteAuthor(instruction: DeleteAuthorInstruction) {
+        val existingEntry = repository.fetchAuthorById(instruction.authorId)
+        repository.deleteAuthor(existingEntry)
+    }
+
+    fun getListOfAllAuthor(): List<Author> {
+        return repository.fetchAllAuthor()
+    }
 }

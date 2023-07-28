@@ -8,19 +8,19 @@
 
     <changeSet id="sample_data" author="Senegal">
         <insert tableName="AUTHOR">
-            <column name="ID" value="34aa97e7-9c15-434a-81f0-1a2e12066281"/>
+            <column name="AUTHOR_ID" value="34aa97e7-9c15-434a-81f0-1a2e12066281"/>
             <column name="FIRSTNAME" value="William"/>
             <column name="LASTNAME" value="Golding"/>
         </insert>
 
         <insert tableName="AUTHOR">
-            <column name="ID" value="3d5436c7-1170-4515-b11c-93b99921c26c"/>
+            <column name="AUTHOR_ID" value="3d5436c7-1170-4515-b11c-93b99921c26c"/>
             <column name="FIRSTNAME" value="Jonathan"/>
             <column name="LASTNAME" value="Swift"/>
         </insert>
 
         <insert tableName="AUTHOR">
-            <column name="ID" value="a4a16270-bd19-453a-9067-632f300c8cff"/>
+            <column name="AUTHOR_ID" value="a4a16270-bd19-453a-9067-632f300c8cff"/>
             <column name="FIRSTNAME" value="God"/>
             <column name="LASTNAME" value="Almighty"/>
         </insert>

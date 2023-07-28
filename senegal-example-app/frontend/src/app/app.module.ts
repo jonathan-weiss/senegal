@@ -27,15 +27,19 @@ import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-ro
 import {RouterModule} from "@angular/router";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
-import {AuthorReadonlyTableViewComponent} from "./author/author-table-view/author-readonly-table-view.component";
-import {AuthorPanelViewComponent} from "./author/author-panel-view/author-panel-view.component";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {AuthorPanelViewComponent} from "./author/component/author-panel-view/author-panel-view.component";
+import {AuthorEditViewComponent} from "./author/component/author-edit-view/author-edit-view.component";
+import {AuthorTableViewComponent} from "./author/component/author-table-view/author-table-view.component";
+import {AuthorAddViewComponent} from "./author/component/author-add-view/author-add-view.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthorReadonlyTableViewComponent,
+    AuthorEditViewComponent,
+    AuthorTableViewComponent,
+    AuthorAddViewComponent,
     AuthorPanelViewComponent,
     BookTableViewComponent,
     BookAddViewComponent,

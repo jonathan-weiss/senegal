@@ -1,7 +1,8 @@
 
 import { UuidTO } from '../../uuid-to.model';
 
-export interface AuthorTO {
+
+export interface UpdateAuthorInstructionTO {
     authorId: UuidTO,
     firstname: string,
     lastname: string,

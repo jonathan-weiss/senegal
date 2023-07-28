@@ -2,9 +2,10 @@ package ch.senegal.example.persistence.book
 
 import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.book.Book
+import ch.senegal.example.domain.book.BookId
 import ch.senegal.example.domain.book.BookRepository
 import ch.senegal.example.persistence.author.AuthorJpaRepository
-import ch.senegal.example.shareddomain.BookId
+
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.util.*

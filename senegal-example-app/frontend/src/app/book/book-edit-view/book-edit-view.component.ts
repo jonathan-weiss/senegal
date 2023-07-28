@@ -3,9 +3,8 @@ import {UpdateBookInstructionTO} from "../api/update-book-instruction.to";
 import {BookTO} from "../api/book-to.model";
 import {FormControl} from "@angular/forms";
 import {AuthorTO} from "../../author/api/author-to.model";
-import {CollectionsUtil} from "../../commons/collections.util";
-import {AuthorService} from "../../author/author.service";
 import {Observable, startWith, switchMap} from "rxjs";
+import {AuthorService} from "../../author/author.service";
 
 
 @Component({

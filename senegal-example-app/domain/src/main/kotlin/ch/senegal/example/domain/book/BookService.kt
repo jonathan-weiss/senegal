@@ -2,7 +2,6 @@ package ch.senegal.example.domain.book
 
 import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.author.AuthorRepository
-import ch.senegal.example.shareddomain.BookId
 import ch.senegal.example.sharedservice.tx.Transactional
 import org.springframework.stereotype.Service
 

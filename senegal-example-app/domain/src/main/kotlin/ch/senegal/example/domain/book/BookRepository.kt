@@ -1,7 +1,5 @@
 package ch.senegal.example.domain.book
 
-import ch.senegal.example.domain.book.Book
-import ch.senegal.example.shareddomain.BookId
 
 interface BookRepository {
     fun fetchBookById(bookId: BookId): Book

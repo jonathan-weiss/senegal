@@ -1,7 +1,7 @@
 package ch.senegal.example.domain.book
 
 import ch.senegal.example.domain.author.Author
-import ch.senegal.example.shareddomain.BookId
+
 
 class Book(
     val bookId: BookId,

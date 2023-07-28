@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {EMPTY, Observable} from 'rxjs';
-import {AuthorApiService} from "./api/author-api.service";
+import {Observable} from 'rxjs';
 import {AuthorTO} from "./api/author-to.model";
-
+import {AuthorApiService} from "./api/author-api.service";
+import {UpdateAuthorInstructionTO} from "./api/update-author-instruction-to.model";
+import {CreateAuthorInstructionTO} from "./api/create-author-instruction-to.model";
+import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.model";
 
 
 @Injectable({
@@ -14,13 +16,23 @@ export class AuthorService {
   }
 
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
-    return this.authorApiService.getAuthors();
+    return this.authorApiService.getAllAuthor();
   }
 
-  getAllAuthorsFiltered(filter: String): Observable<ReadonlyArray<AuthorTO>> {
-    if(filter.length < 3) {
-      return EMPTY;
-    }
-    return this.authorApiService.getAuthors();
+  getAllAuthorsFiltered(filterTerm: string): Observable<ReadonlyArray<AuthorTO>> {
+    return this.authorApiService.getAllAuthor();
+  }
+
+
+  updateAuthor(updateInstruction: UpdateAuthorInstructionTO): Observable<AuthorTO> {
+    return this.authorApiService.updateAuthor(updateInstruction);
+  }
+
+  createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
+    return this.authorApiService.createAuthor(createInstruction);
+  }
+
+  deleteAuthor(deleteInstruction: DeleteAuthorInstructionTO): Observable<void> {
+    return this.authorApiService.deleteAuthor(deleteInstruction);
   }
 }
