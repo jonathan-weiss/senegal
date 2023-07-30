@@ -2,20 +2,13 @@
 
 <author-table-view
     [allAuthor]="allAuthor"
-    [tableControlsDisabled]="isEditingMode()"
+    [highlightedAuthor]="highlightedAuthor"
+    [tableControlsDisabled]="isEditingDisabled"
     (editEntryClicked)="onEdit($event)"
     (deleteEntryClicked)="onPerformDeleteOnServer($event)"
 ></author-table-view>
 
 
 <div class="action-box">
-    <button mat-raised-button color="primary" [disabled]="isEditingMode()" (click)="onNewEntry()">Add new Author...</button>
+    <button mat-raised-button color="primary" [disabled]="isEditingDisabled" (click)="onNewEntry()">Add new Author...</button>
 </div>
-
-<ng-container *ngIf="isEditingMode()">
-    <author-edit-view
-        [author]="authorToEdit"
-        (saveClicked)="onPerformCreateOrUpdateOnServer($event)"
-        (cancelClicked)="resetEdit()"
-    ></author-edit-view>
-</ng-container>

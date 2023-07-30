@@ -5,6 +5,9 @@
       <mat-icon *ngIf="sideNavigationOpened">chevron_left</mat-icon>
       <mat-icon *ngIf="!sideNavigationOpened">chevron_right</mat-icon>
     </button>
-    <div class="content-frame"><router-outlet></router-outlet></div>
+    <div class="content-frame">
+      <router-outlet></router-outlet>
+      <display-component-stack-component></display-component-stack-component>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

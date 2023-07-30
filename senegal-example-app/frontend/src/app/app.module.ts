@@ -31,14 +31,22 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AuthorPanelViewComponent} from "./author/component/author-panel-view/author-panel-view.component";
 import {AuthorEditViewComponent} from "./author/component/author-edit-view/author-edit-view.component";
 import {AuthorTableViewComponent} from "./author/component/author-table-view/author-table-view.component";
+import {DisplayComponentStackComponent} from "./component-stack/display-component-stack.component";
+import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
+import {AuthorUpdateViewComponent} from "./author/component/author-update-view/author-update-view.component";
+import {AuthorCreateViewComponent} from "./author/component/author-create-view/author-create-view.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    DisplayComponentStackComponent,
+    ComponentStackAnchorDirective,
     AuthorEditViewComponent,
     AuthorTableViewComponent,
     AuthorPanelViewComponent,
+    AuthorCreateViewComponent,
+    AuthorUpdateViewComponent,
     BookTableViewComponent,
     BookAddViewComponent,
     BookEditViewComponent,

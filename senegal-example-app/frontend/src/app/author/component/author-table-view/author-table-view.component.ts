@@ -10,6 +10,7 @@ import { AuthorTO } from "../../api/author-to.model";
 export class AuthorTableViewComponent {
 
     @Input() allAuthor!: ReadonlyArray<AuthorTO>
+    @Input() highlightedAuthor: AuthorTO | undefined = undefined;
     @Input() tableControlsDisabled!: boolean;
 
     @Output() editEntryClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
@@ -21,6 +22,14 @@ export class AuthorTableViewComponent {
         'lastname',
         'context'
     ];
+
+    asAuthor(entry: any): AuthorTO {
+      return entry as AuthorTO
+    }
+
+  isHighlighted(author: AuthorTO): boolean {
+      return this.highlightedAuthor != undefined && author.authorId.uuid == this.highlightedAuthor.authorId.uuid;
+  }
 
     getEntries(): AuthorTO[] {
         return [...this.allAuthor];
