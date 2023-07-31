@@ -7,6 +7,9 @@ import {BookTO} from "../api/book-to.model";
 import {AuthorTO} from "../../author/api/author-to.model";
 import {Observable, startWith, switchMap} from "rxjs";
 import {AuthorService} from "../../author/author.service";
+import {ComponentStackService} from "../../component-stack/component-stack.service";
+import {AuthorCreateViewComponent} from "../../author/component/author-create-view/author-create-view.component";
+import {AuthorUpdateViewComponent} from "../../author/component/author-update-view/author-update-view.component";
 
 
 @Component({
@@ -33,7 +36,8 @@ export class BookEditViewComponent implements OnInit {
     mainBookAuthor: this.mainBookAuthorFormControl,
   });
 
-  constructor(private readonly authorService: AuthorService) {
+  constructor(private readonly authorService: AuthorService,
+              private componentStackService: ComponentStackService) {
   }
 
   ngOnInit() {
@@ -78,5 +82,31 @@ export class BookEditViewComponent implements OnInit {
 
   openTab(tabChangeEvent: MatTabChangeEvent): void {
     // nothing to do
+  }
+
+  hasMainAuthor(): boolean {
+    return this.mainBookAuthorFormControl.value != undefined;
+  }
+
+  onNewAuthor(): void {
+    this.componentStackService.newComponentOnStack(AuthorCreateViewComponent, (component: AuthorCreateViewComponent) => {
+      component.saveClicked.subscribe((book) => this.refreshAuthorAfterEditing(book));
+      component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
+    });
+  }
+
+  onEditAuthor(): void {
+    const entry: AuthorTO = this.mainBookAuthorFormControl.value as AuthorTO;
+    this.componentStackService.newComponentOnStack(AuthorUpdateViewComponent, (component: AuthorUpdateViewComponent) => {
+      component.author = entry;
+      component.saveClicked.subscribe((book) => this.refreshAuthorAfterEditing(book));
+      component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
+    })
+  }
+
+  private refreshAuthorAfterEditing(entry: AuthorTO | undefined = undefined): void {
+    if(entry != undefined) {
+      this.mainBookAuthorFormControl.patchValue(entry);
+    }
   }
 }
