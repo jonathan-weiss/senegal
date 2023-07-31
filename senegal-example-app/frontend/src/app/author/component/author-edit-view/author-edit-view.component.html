@@ -2,8 +2,6 @@
 <h2 *ngIf="!isCreateMode()">Edit Author</h2>
 
 <form [formGroup]="authorForm">
-
-
   <mat-card>
       <mat-card-content>
         <mat-tab-group (selectedTabChange)="openTab($event)">
@@ -11,18 +9,18 @@
             <div class="tab-content">
               <mat-form-field class="full-width-form-field" appearance="fill" *ngIf="!isCreateMode()">
                 <mat-label>Author Id</mat-label>
-                <input matInput type="text" formControlName="authorId" >
+                <input matInput type="text" [formControl]="authorIdFormControl" >
               </mat-form-field>
               <mat-form-field class="full-width-form-field" appearance="fill">
                 <mat-label>Firstname</mat-label>
-                <input matInput type="text" formControlName="firstname">
+                <input matInput type="text" [formControl]="firstnameFormControl">
                 <mat-error *ngIf="firstnameFormControl.hasError('required')">
                   Firstname is <strong>required</strong>
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="full-width-form-field" appearance="fill">
                 <mat-label>Lastname</mat-label>
-                <input matInput type="text" formControlName="lastname">
+                <input matInput type="text" [formControl]="lastnameFormControl">
                 <mat-error *ngIf="lastnameFormControl.hasError('required')">
                   Lastname is <strong>required</strong>
                 </mat-error>

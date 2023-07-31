@@ -4,6 +4,7 @@ import {AuthorTO} from "../../api/author-to.model";
 import {UpdateAuthorInstructionTO} from "../../api/update-author-instruction-to.model";
 import {AuthorApiService} from "../../api/author-api.service";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {AuthorService} from "../../author.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class AuthorUpdateViewComponent {
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
 
-  constructor(private authorService: AuthorApiService,
+  constructor(private authorService: AuthorService,
               private componentStackService: ComponentStackService) {
   }
 

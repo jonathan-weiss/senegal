@@ -21,7 +21,7 @@ export class AuthorEditViewComponent implements OnInit {
   @Output() saveClicked: EventEmitter<EditableAuthorData> = new EventEmitter<EditableAuthorData>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
-  private authorIdFormControl: FormControl =  new FormControl('');
+  authorIdFormControl: FormControl =  new FormControl('');
   firstnameFormControl: FormControl = new FormControl('', Validators.required);
   lastnameFormControl: FormControl = new FormControl('', Validators.required);
 

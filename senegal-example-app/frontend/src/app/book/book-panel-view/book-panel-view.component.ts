@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from "../book.service";
-import {CollectionsUtil} from "../../commons/collections.util";
-import {BookTO} from "../api/book-to.model";
-import {UpdateBookInstructionTO} from "../api/update-book-instruction.to";
-import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
+import {BookCreateViewComponent} from "../book-create-view/book-create-view.component";
+import {BookUpdateViewComponent} from "../book-update-view/book-update-view.component";
 import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
-import {UuidUtil} from "../../commons/uuid.util";
-import {EditingModeEnum} from "../../editing-mode.enum";
-
+import {BookTO} from "../api/book-to.model";
+import {ComponentStackService} from "../../component-stack/component-stack.service";
 
 @Component({
   selector: 'book-panel-view',
@@ -16,71 +13,60 @@ import {EditingModeEnum} from "../../editing-mode.enum";
 })
 export class BookPanelViewComponent implements OnInit {
 
-  books: ReadonlyArray<BookTO> = CollectionsUtil.emptyList()
+  allBooks: ReadonlyArray<BookTO> = []
 
-  editingMode: EditingModeEnum = EditingModeEnum.NONE
-  selectedBook: BookTO | undefined = undefined;
+  isEditingDisabled: boolean = false;
 
-  constructor(private bookService: BookService) {
+  highlightedBook: BookTO | undefined = undefined;
+
+  constructor(private bookService: BookService,
+              private componentStackService: ComponentStackService) {
   }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.loadAllBook();
   }
 
-  private loadBooks(): void {
-    this.bookService.getAllBooks().subscribe((books: ReadonlyArray<BookTO>) => {
-      this.books = books;
-    })
+  private loadAllBook(): void {
+    this.bookService
+      .getAllBooks()
+      .subscribe((entities: ReadonlyArray<BookTO>) => {
+        this.allBooks = entities;
+      });
   }
 
-  isUpdateMode(): boolean {
-    return this.editingMode === EditingModeEnum.UPDATE
-  }
-
-  isCreateMode(): boolean {
-    return this.editingMode === EditingModeEnum.CREATE
-  }
-
-  isInEditingMode(): boolean {
-    return this.isUpdateMode() || this.isCreateMode()
+  onNewEntry(): void {
+    this.isEditingDisabled = true;
+    this.highlightedBook = undefined;
+    this.componentStackService.newComponentOnStack(BookCreateViewComponent, (component: BookCreateViewComponent) => {
+      component.saveClicked.subscribe((book) => this.reloadAllBooksAfterEditing(book));
+      component.cancelClicked.subscribe(() => this.reloadAllBooksAfterEditing());
+    });
   }
 
   onEdit(entry: BookTO): void {
-    this.editingMode = EditingModeEnum.UPDATE;
-    this.selectedBook = entry;
+    this.isEditingDisabled = true;
+    this.highlightedBook = entry;
+    this.componentStackService.newComponentOnStack(BookUpdateViewComponent, (component: BookUpdateViewComponent) => {
+      component.book = entry;
+      component.saveClicked.subscribe((book) => this.reloadAllBooksAfterEditing(book));
+      component.cancelClicked.subscribe(() => this.reloadAllBooksAfterEditing());
+    })
   }
 
-  onPerformDelete(entry: BookTO): void {
+
+  onPerformDeleteOnServer(entry: BookTO): void {
     const deleteInstruction: DeleteBookInstructionTO = {
       bookId: entry.bookId,
     }
     this.bookService.deleteBook(deleteInstruction).subscribe(() => {
-      this.loadBooks();
-    })
+      this.loadAllBook();
+    });
   }
 
-  onPerformUpdate(updateInstruction: UpdateBookInstructionTO): void {
-    this.bookService.updateBook(updateInstruction).subscribe(() => {
-      this.loadBooks();
-      this.editingMode = EditingModeEnum.NONE;
-    })
+  private reloadAllBooksAfterEditing(highlightedEntry: BookTO | undefined = undefined): void {
+    this.loadAllBook();
+    this.isEditingDisabled = false;
+    this.highlightedBook = highlightedEntry;
   }
-
-  onPerformCreate(createInstruction: CreateBookInstructionTO): void {
-    this.bookService.createBook(createInstruction).subscribe(() => {
-      this.loadBooks();
-      this.editingMode = EditingModeEnum.NONE;
-    })
-  }
-
-  onNewEntry(): void {
-    this.editingMode = EditingModeEnum.CREATE;
-  }
-
-  resetEdit() {
-    this.editingMode = EditingModeEnum.NONE;
-  }
-
-  protected readonly undefined = undefined;
 }

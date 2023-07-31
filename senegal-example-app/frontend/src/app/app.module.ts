@@ -20,7 +20,6 @@ import {BookEditViewComponent} from "./book/book-edit-view/book-edit-view.compon
 import {BookPanelViewComponent} from "./book/book-panel-view/book-panel-view.component";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {BookAddViewComponent} from "./book/book-add-view/book-add-view.component";
 import {SideNavigationComponent} from "./navigation/side-navigation.component";
 import {GeneratedEntitiesModule} from "../generated/generated-entities.module";
 import {GeneratedEntitiesRoutingModule} from "../generated/generated-entities-routing.module";
@@ -35,6 +34,8 @@ import {DisplayComponentStackComponent} from "./component-stack/display-componen
 import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
 import {AuthorUpdateViewComponent} from "./author/component/author-update-view/author-update-view.component";
 import {AuthorCreateViewComponent} from "./author/component/author-create-view/author-create-view.component";
+import {BookCreateViewComponent} from "./book/book-create-view/book-create-view.component";
+import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.component";
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {AuthorCreateViewComponent} from "./author/component/author-create-view/a
     AuthorCreateViewComponent,
     AuthorUpdateViewComponent,
     BookTableViewComponent,
-    BookAddViewComponent,
+    BookCreateViewComponent,
+    BookUpdateViewComponent,
     BookEditViewComponent,
     BookPanelViewComponent,
     SideNavigationComponent,

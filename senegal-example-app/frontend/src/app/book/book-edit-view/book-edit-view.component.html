@@ -1,32 +1,42 @@
-<mat-card>
-  <mat-card-content>
-    <mat-form-field appearance="fill">
-      <mat-label>Book Id</mat-label>
-      <input matInput type="text" [(ngModel)]="book.bookId.uuid" disabled="true">
-    </mat-form-field>
+<h2 *ngIf="isCreateMode()">Add Author</h2>
+<h2 *ngIf="!isCreateMode()">Edit Author</h2>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Book name</mat-label>
-      <input matInput type="text" [formControl]="bookNameFormControl">
-      <button *ngIf="bookNameFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="bookNameFormControl.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Main Author</mat-label>
-      <input matInput type="text" [formControl]="mainAuthorFormControl" [matAutocomplete]="mainAuthorAutocomplete" >
-
-      <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
-        <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
-          {{author.firstname}} {{author.lastname}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="saveChanges()">Save</button>
-    <button mat-raised-button color="secondary" (click)="cancelEdit()">Cancel</button>
-  </mat-card-actions>
-</mat-card>
+<form [formGroup]="bookForm">
+  <mat-card>
+      <mat-card-content>
+        <mat-tab-group (selectedTabChange)="openTab($event)">
+          <mat-tab label="Commons">
+            <div class="tab-content">
+              <mat-form-field class="full-width-form-field" appearance="fill" *ngIf="!isCreateMode()">
+                <mat-label>Book Id</mat-label>
+                <input matInput type="text" [formControl]="bookIdFormControl" >
+              </mat-form-field>
+              <mat-form-field class="full-width-form-field" appearance="fill">
+                <mat-label>Book Name</mat-label>
+                <input matInput type="text" [formControl]="bookNameFormControl">
+                <mat-error *ngIf="bookNameFormControl.hasError('required')">
+                  Book Name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-form-field" appearance="fill">
+                <mat-label>Main Author</mat-label>
+                <input matInput type="text" [formControl]="mainBookAuthorFormControl" [matAutocomplete]="mainAuthorAutocomplete" >
+                <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
+                  <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
+                    {{author.firstname}} {{author.lastname}}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="mainBookAuthorFormControl.hasError('required')">
+                  Main Book Author is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" (click)="saveChanges()" [disabled]="!isFormValid()">Save</button>
+          <button mat-raised-button color="secondary" (click)="cancelEdit()">Cancel</button>
+      </mat-card-actions>
+  </mat-card>
+</form>
