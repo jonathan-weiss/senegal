@@ -18,25 +18,33 @@
                   Book Name is <strong>required</strong>
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="full-width-form-field" appearance="fill">
+
+              <div class="full-width-form-field">
+              <mat-form-field appearance="fill" matAutocompleteOrigin #origin="matAutocompleteOrigin">
                 <mat-label>Main Author</mat-label>
+                  <input matInput type="text" [formControl]="mainBookAuthorFormControl"
+                         [matAutocomplete]="mainAuthorAutocomplete"
+                         [matAutocompleteConnectedTo]="origin"
+                  >
+                  <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
+                    <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
+                      {{author.firstname}} {{author.lastname}}
+                    </mat-option>
+                  </mat-autocomplete>
+                <mat-error *ngIf="mainBookAuthorFormControl.hasError('required')">
+                  Main Book Author is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
                 <button matSuffix mat-icon-button (click)="onEditAuthor()" [disabled]="!hasMainAuthor()">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button matSuffix mat-icon-button (click)="onNewAuthor()">
                   <mat-icon>add</mat-icon>
                 </button>
-                <input matInput type="text" [formControl]="mainBookAuthorFormControl" [matAutocomplete]="mainAuthorAutocomplete">
-                <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn">
-                  <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
-                    {{author.firstname}} {{author.lastname}}
-                  </mat-option>
-                </mat-autocomplete>
-                <mat-error *ngIf="mainBookAuthorFormControl.hasError('required')">
-                  Main Book Author is <strong>required</strong>
-                </mat-error>
-              </mat-form-field>
-
+                <button matSuffix mat-icon-button (click)="onSelectAuthor()">
+                  <mat-icon>search</mat-icon>
+                </button>
+              </div>
             </div>
           </mat-tab>
         </mat-tab-group>

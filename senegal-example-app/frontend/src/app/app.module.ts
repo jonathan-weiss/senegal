@@ -36,6 +36,7 @@ import {AuthorUpdateViewComponent} from "./author/component/author-update-view/a
 import {AuthorCreateViewComponent} from "./author/component/author-create-view/author-create-view.component";
 import {BookCreateViewComponent} from "./book/book-create-view/book-create-view.component";
 import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.component";
+import {AuthorSelectViewComponent} from "./author/component/author-select-view/author-select-view.component";
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.
     AuthorPanelViewComponent,
     AuthorCreateViewComponent,
     AuthorUpdateViewComponent,
+    AuthorSelectViewComponent,
     BookTableViewComponent,
     BookCreateViewComponent,
     BookUpdateViewComponent,

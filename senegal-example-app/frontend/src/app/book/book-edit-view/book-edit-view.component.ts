@@ -10,6 +10,7 @@ import {AuthorService} from "../../author/author.service";
 import {ComponentStackService} from "../../component-stack/component-stack.service";
 import {AuthorCreateViewComponent} from "../../author/component/author-create-view/author-create-view.component";
 import {AuthorUpdateViewComponent} from "../../author/component/author-update-view/author-update-view.component";
+import {AuthorSelectViewComponent} from "../../author/component/author-select-view/author-select-view.component";
 
 
 @Component({
@@ -90,7 +91,7 @@ export class BookEditViewComponent implements OnInit {
 
   onNewAuthor(): void {
     this.componentStackService.newComponentOnStack(AuthorCreateViewComponent, (component: AuthorCreateViewComponent) => {
-      component.saveClicked.subscribe((book) => this.refreshAuthorAfterEditing(book));
+      component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
     });
   }
@@ -99,7 +100,14 @@ export class BookEditViewComponent implements OnInit {
     const entry: AuthorTO = this.mainBookAuthorFormControl.value as AuthorTO;
     this.componentStackService.newComponentOnStack(AuthorUpdateViewComponent, (component: AuthorUpdateViewComponent) => {
       component.author = entry;
-      component.saveClicked.subscribe((book) => this.refreshAuthorAfterEditing(book));
+      component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
+      component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
+    })
+  }
+
+  onSelectAuthor(): void {
+    this.componentStackService.newComponentOnStack(AuthorSelectViewComponent, (component: AuthorSelectViewComponent) => {
+      component.selectClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
     })
   }
