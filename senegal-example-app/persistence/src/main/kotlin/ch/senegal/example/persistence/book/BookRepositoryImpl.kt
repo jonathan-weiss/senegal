@@ -1,6 +1,7 @@
 package ch.senegal.example.persistence.book
 
 import ch.senegal.example.domain.author.Author
+import ch.senegal.example.domain.author.AuthorId
 import ch.senegal.example.domain.book.Book
 import ch.senegal.example.domain.book.BookId
 import ch.senegal.example.domain.book.BookRepository
@@ -24,6 +25,11 @@ class BookRepositoryImpl(
 
     override fun fetchAllBooks(): List<Book> {
         return bookJpaRepository.findAll().map { it.toDomain(fetchAuthorByUuid(it.mainAuthorId)) }
+    }
+
+    override fun fetchAllBooksByAuthor(authorId: AuthorId): List<Book> {
+        return fetchAllBooks()
+            .filter { it.mainAuthor.authorId == authorId } // TODO do that by SQL
     }
 
     override fun insertBook(book: Book) {

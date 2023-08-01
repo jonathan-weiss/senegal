@@ -5,6 +5,9 @@ import {AuthorApiService} from "./api/author-api.service";
 import {UpdateAuthorInstructionTO} from "./api/update-author-instruction-to.model";
 import {CreateAuthorInstructionTO} from "./api/create-author-instruction-to.model";
 import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.model";
+import {UuidTO} from "../uuid-to.model";
+import {BookTO} from "../book/api/book-to.model";
+import {BookApiService} from "../book/api/book-api.service";
 
 
 @Injectable({
@@ -12,7 +15,8 @@ import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.mode
 })
 export class AuthorService {
 
-  constructor(private readonly authorApiService: AuthorApiService) {
+  constructor(private readonly authorApiService: AuthorApiService,
+              private readonly bookApiService: BookApiService) {
   }
 
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
@@ -22,6 +26,11 @@ export class AuthorService {
   getAllAuthorsFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
     return this.authorApiService.getAllAuthorFiltered(searchTerm);
   }
+
+  getAllBooksByAuthor(authorId: UuidTO): Observable<ReadonlyArray<BookTO>> {
+    return this.bookApiService.getAllBookByAuthor(authorId);
+  }
+
 
 
   updateAuthor(updateInstruction: UpdateAuthorInstructionTO): Observable<AuthorTO> {

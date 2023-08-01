@@ -7,6 +7,7 @@ import {BookTO} from "../../../book/api/book-to.model";
 import {CollectionsUtil} from "../../../commons/collections.util";
 import {BookService} from "../../../book/book.service";
 import {MatTabChangeEvent} from "@angular/material/tabs";
+import {AuthorService} from "../../author.service";
 
 
 @Component({
@@ -33,7 +34,7 @@ export class AuthorEditViewComponent implements OnInit {
 
   booksByAuthor: ReadonlyArray<BookTO> = CollectionsUtil.emptyList();
 
-  constructor(private readonly bookService: BookService) {
+  constructor(private readonly authorService: AuthorService) {
   }
 
   ngOnInit() {
@@ -72,9 +73,10 @@ export class AuthorEditViewComponent implements OnInit {
   }
 
   private reloadBooksByAuthor(): void {
-    // TODO load only books of this author
-    this.bookService.getAllBooks().subscribe((books: ReadonlyArray<BookTO>) => {
-      this.booksByAuthor = books;
-    });
+    if(this.author != undefined) {
+      this.authorService.getAllBooksByAuthor(this.author.authorId).subscribe((books: ReadonlyArray<BookTO>) => {
+        this.booksByAuthor = books;
+      });
+    }
   }
 }

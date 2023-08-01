@@ -1,5 +1,6 @@
 package ch.senegal.example.frontendapi.facade
 
+import ch.senegal.example.domain.author.AuthorId
 import ch.senegal.example.domain.book.BookId
 import ch.senegal.example.frontendapi.controller.book.BookTO
 import ch.senegal.example.frontendapi.controller.book.CreateBookInstructionTO
@@ -36,5 +37,9 @@ class BookFacade(
 
     fun getAllBooks(): List<BookTO> {
         return bookService.getBooks().map { BookTO.fromDomain(it) }
+    }
+
+    fun getAllBooksByAuthor(authorId: UuidTO): List<BookTO> {
+        return bookService.getBooksByAuthor(AuthorId(authorId.uuid)).map { BookTO.fromDomain(it) }
     }
 }

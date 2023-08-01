@@ -39,6 +39,15 @@ class BookController(
         }
     }
 
+    @GetMapping("/all-by-author/{authorId}")
+    fun getBooksByAuthor(@PathVariable("authorId") authorId: UUID): List<BookTO> {
+        try {
+            return bookFacade.getAllBooksByAuthor(UuidTO(authorId))
+        } catch (e: IllegalArgumentException) {
+            throw ResponseStatusExceptionFactory.createValidationMessageResponseException(e.message ?: "Unknown error.")
+        }
+    }
+
     @PostMapping("/entry")
     fun createBook(@RequestBody request: CreateBookInstructionTO): BookTO {
         try {

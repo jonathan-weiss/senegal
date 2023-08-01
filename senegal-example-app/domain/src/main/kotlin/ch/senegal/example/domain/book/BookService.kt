@@ -1,6 +1,7 @@
 package ch.senegal.example.domain.book
 
 import ch.senegal.example.domain.author.Author
+import ch.senegal.example.domain.author.AuthorId
 import ch.senegal.example.domain.author.AuthorRepository
 import ch.senegal.example.sharedservice.tx.Transactional
 import org.springframework.stereotype.Service
@@ -41,6 +42,10 @@ class BookService(
 
     fun getBooks(): List<Book> {
         return repository.fetchAllBooks()
+    }
+
+    fun getBooksByAuthor(authorId: AuthorId): List<Book> {
+        return repository.fetchAllBooksByAuthor(authorId)
     }
 
 

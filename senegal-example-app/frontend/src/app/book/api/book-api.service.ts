@@ -28,6 +28,10 @@ export class BookApiService {
     return this.httpClient.get<Array<BookTO>>(`/api/books/all`);
   }
 
+  getAllBookByAuthor(authorId: UuidTO): Observable<ReadonlyArray<BookTO>> {
+    return this.httpClient.get<Array<BookTO>>(`/api/books/all-by-author/` + authorId.uuid);
+  }
+
   createBook(createInstruction: CreateBookInstructionTO): Observable<BookTO> {
     return this.httpClient.post<BookTO>(`/api/books/entry`, createInstruction);
   }
