@@ -8,6 +8,10 @@ import {CollectionsUtil} from "../../../commons/collections.util";
 import {BookService} from "../../../book/book.service";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {AuthorService} from "../../author.service";
+import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {UpdateAuthorInstructionTO} from "../../api/update-author-instruction-to.model";
+import {AuthorCreateViewComponent} from "../author-create-view/author-create-view.component";
+import {BookCreateViewComponent} from "../../../book/book-create-view/book-create-view.component";
 
 
 @Component({
@@ -34,7 +38,8 @@ export class AuthorEditViewComponent implements OnInit {
 
   booksByAuthor: ReadonlyArray<BookTO> = CollectionsUtil.emptyList();
 
-  constructor(private readonly authorService: AuthorService) {
+  constructor(private readonly authorService: AuthorService,
+              private componentStackService: ComponentStackService) {
   }
 
   ngOnInit() {
@@ -79,4 +84,13 @@ export class AuthorEditViewComponent implements OnInit {
       });
     }
   }
+
+  addBook() {
+    this.componentStackService.newComponentOnStack(BookCreateViewComponent, (component: BookCreateViewComponent) => {
+      component.saveClicked.subscribe((author) => this.reloadBooksByAuthor());
+      component.cancelClicked.subscribe(() => this.reloadBooksByAuthor());
+    });
+
+  }
+
 }
