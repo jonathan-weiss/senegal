@@ -87,6 +87,7 @@ export class AuthorEditViewComponent implements OnInit {
 
   addBook() {
     this.componentStackService.newComponentOnStack(BookCreateViewComponent, (component: BookCreateViewComponent) => {
+      component.fixedMainAuthor = this.author;
       component.saveClicked.subscribe((author) => this.reloadBooksByAuthor());
       component.cancelClicked.subscribe(() => this.reloadBooksByAuthor());
     });

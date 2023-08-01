@@ -21,6 +21,7 @@ import {AuthorSelectViewComponent} from "../../author/component/author-select-vi
 export class BookEditViewComponent implements OnInit {
 
   @Input() book: BookTO | undefined;
+  @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
 
   @Output() saveClicked: EventEmitter<EditableBookData> = new EventEmitter<EditableBookData>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -47,6 +48,11 @@ export class BookEditViewComponent implements OnInit {
       this.bookIdFormControl.patchValue(this.book.bookId.uuid)
       this.bookNameFormControl.patchValue(this.book.bookName)
       this.mainBookAuthorFormControl.patchValue(this.book.mainAuthor)
+    }
+
+    if(this.fixedMainAuthor != undefined) {
+      this.mainBookAuthorFormControl.patchValue(this.fixedMainAuthor);
+      this.mainBookAuthorFormControl.disable();
     }
 
     this.authorsOptions = this.mainBookAuthorFormControl.valueChanges.pipe(

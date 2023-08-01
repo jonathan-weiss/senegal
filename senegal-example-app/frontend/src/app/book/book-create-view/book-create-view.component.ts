@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BookTO} from "../api/book-to.model";
 import {BookService} from "../book.service";
 import {CreateBookInstructionTO} from "../api/create-book-instruction.to";
 import {ComponentStackService} from "../../component-stack/component-stack.service";
 import {EditableBookData} from "../book-edit-view/editable-book.model";
 import {UuidUtil} from "../../commons/uuid.util";
+import {AuthorTO} from "../../author/api/author-to.model";
 
 
 @Component({
@@ -13,6 +14,7 @@ import {UuidUtil} from "../../commons/uuid.util";
   styleUrls: ['./book-create-view.component.scss'],
 })
 export class BookCreateViewComponent {
+  @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
 
   @Output() saveClicked: EventEmitter<BookTO> = new EventEmitter<BookTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
