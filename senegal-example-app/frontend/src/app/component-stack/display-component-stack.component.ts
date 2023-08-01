@@ -5,7 +5,7 @@ import {ComponentStackObservationService} from "./component-stack-observation.se
 
 
 @Component({
-  selector: 'display-component-stack-component',
+  selector: 'display-component-stack',
   templateUrl: './display-component-stack.component.html',
   styleUrls: ['./display-component-stack.component.scss'],
 })

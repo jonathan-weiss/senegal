@@ -7,28 +7,36 @@
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">
             <div class="tab-content">
-              <mat-form-field class="full-width-form-field" appearance="fill" *ngIf="!isCreateMode()">
-                <mat-label>Author Id</mat-label>
-                <input matInput type="text" [formControl]="authorIdFormControl" >
-              </mat-form-field>
-              <mat-form-field class="full-width-form-field" appearance="fill">
-                <mat-label>Firstname</mat-label>
-                <input matInput type="text" [formControl]="firstnameFormControl">
-                <mat-error *ngIf="firstnameFormControl.hasError('required')">
-                  Firstname is <strong>required</strong>
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field class="full-width-form-field" appearance="fill">
-                <mat-label>Lastname</mat-label>
-                <input matInput type="text" [formControl]="lastnameFormControl">
-                <mat-error *ngIf="lastnameFormControl.hasError('required')">
-                  Lastname is <strong>required</strong>
-                </mat-error>
-              </mat-form-field>
+              <section *ngIf="!isCreateMode()">
+                <mat-form-field appearance="fill">
+                  <mat-label>Author Id</mat-label>
+                  <input matInput type="text" [formControl]="authorIdFormControl" >
+                </mat-form-field>
+              </section>
+              <section>
+                <mat-form-field appearance="fill">
+                  <mat-label>Firstname</mat-label>
+                  <input matInput type="text" [formControl]="firstnameFormControl">
+                  <mat-error *ngIf="firstnameFormControl.hasError('required')">
+                    Firstname is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>Lastname</mat-label>
+                  <input matInput type="text" [formControl]="lastnameFormControl">
+                  <mat-error *ngIf="lastnameFormControl.hasError('required')">
+                    Lastname is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </section>
             </div>
           </mat-tab>
           <mat-tab label="Books">
+            <div class="tab-content">
+            <section>
               <book-table-view [books]="booksByAuthor" [tableControlsDisabled]="true" ></book-table-view>
+            </section>
+            </div>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>

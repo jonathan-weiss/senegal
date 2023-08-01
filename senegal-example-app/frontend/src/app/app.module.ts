@@ -37,12 +37,14 @@ import {AuthorCreateViewComponent} from "./author/component/author-create-view/a
 import {BookCreateViewComponent} from "./book/book-create-view/book-create-view.component";
 import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.component";
 import {AuthorSelectViewComponent} from "./author/component/author-select-view/author-select-view.component";
+import {SectionComponent} from "./section/section.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DisplayComponentStackComponent,
+    SectionComponent,
     ComponentStackAnchorDirective,
     AuthorEditViewComponent,
     AuthorTableViewComponent,
