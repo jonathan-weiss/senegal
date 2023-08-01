@@ -5,7 +5,7 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 import {EditableBookData} from "./editable-book.model";
 import {BookTO} from "../api/book-to.model";
 import {AuthorTO} from "../../author/api/author-to.model";
-import {Observable, startWith, switchMap} from "rxjs";
+import {filter, Observable, startWith, switchMap} from "rxjs";
 import {AuthorService} from "../../author/author.service";
 import {ComponentStackService} from "../../component-stack/component-stack.service";
 import {AuthorCreateViewComponent} from "../../author/component/author-create-view/author-create-view.component";
@@ -51,9 +51,16 @@ export class BookEditViewComponent implements OnInit {
 
     this.authorsOptions = this.mainBookAuthorFormControl.valueChanges.pipe(
       startWith(''),
-      switchMap(searchValue => this.authorService.getAllAuthorsFiltered(searchValue || '')),
+      filter(searchTerm => typeof searchTerm === "string"),
+      switchMap(searchValue => this.authorService.getAllAuthorsFiltered(this.cleanupSearchTerm(searchValue))),
     );
+  }
 
+  private cleanupSearchTerm(searchValue: string | undefined): string {
+    if(searchValue == undefined) {
+      return ''
+    }
+    return searchValue;
   }
 
   displayAuthorFn(author: AuthorTO): string {
