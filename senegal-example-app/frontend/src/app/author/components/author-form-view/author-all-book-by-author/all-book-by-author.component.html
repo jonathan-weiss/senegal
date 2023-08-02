@@ -1,0 +1,10 @@
+<ng-container *ngIf="author != undefined">
+  <book-table-view [books]="booksByAuthor" [tableControlsDisabled]="true" ></book-table-view>
+  <div class="action-box">
+    <button mat-raised-button color="primary" (click)="addBook()">Add new Book...</button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="author == undefined">
+  <p>Books can not be showed during creation of author.</p>
+</ng-container>

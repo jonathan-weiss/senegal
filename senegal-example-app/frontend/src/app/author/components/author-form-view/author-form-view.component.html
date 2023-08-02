@@ -1,0 +1,36 @@
+<h2 *ngIf="isCreateMode()">Add Author (new)</h2>
+<h2 *ngIf="!isCreateMode()">Edit Author (new)</h2>
+
+<form [formGroup]="authorForm">
+  <mat-card>
+      <mat-card-content>
+        <mat-tab-group (selectedTabChange)="openTab($event)">
+          <mat-tab label="Commons">
+            <div class="tab-content">
+              <section *ngIf="!isCreateMode()">
+                <author-id-form-field [authorIdFormControl]="authorIdFormControl" [authorId]="author?.authorId"></author-id-form-field>
+              </section>
+              <section>
+                <author-firstname-form-field [authorFirstnameFormControl]="authorFirstnameFormControl" [firstname]="author?.firstname"></author-firstname-form-field>
+                <author-lastname-form-field [authorLastnameFormControl]="authorLastnameFormControl" [lastname]="author?.lastname"></author-lastname-form-field>
+              </section>
+            </div>
+          </mat-tab>
+          <mat-tab label="Books">
+            <div class="tab-content">
+              <section>
+                <all-book-by-author [author]="author" [reloadAllBookEvent]="tabBooksSelected"></all-book-by-author>
+              </section>
+
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid()">Save</button>
+          <button mat-raised-button color="secondary" (click)="cancelForm()">Cancel</button>
+      </mat-card-actions>
+  </mat-card>
+</form>

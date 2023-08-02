@@ -7,6 +7,7 @@ import {ComponentStackService} from "../../../../component-stack/component-stack
 import {AuthorCreateViewComponent} from "../../../../author/component/author-create-view/author-create-view.component";
 import {AuthorUpdateViewComponent} from "../../../../author/component/author-update-view/author-update-view.component";
 import {AuthorSelectViewComponent} from "../../../../author/component/author-select-view/author-select-view.component";
+import {AuthorFormViewComponent} from "../../../../author/components/author-form-view/author-form-view.component";
 
 
 @Component({
@@ -59,17 +60,16 @@ export class MainAuthorFormFieldComponent implements OnInit {
   }
 
   onNewAuthor(): void {
-    // TODO These components will be replaced with the author-form-view
-    this.componentStackService.newComponentOnStack(AuthorCreateViewComponent, (component: AuthorCreateViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+      component.author = undefined;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
     });
   }
 
   onEditAuthor(): void {
-    // TODO These components will be replaced with the author-form-view
     const entry: AuthorTO = this.mainAuthorFormControl.value as AuthorTO;
-    this.componentStackService.newComponentOnStack(AuthorUpdateViewComponent, (component: AuthorUpdateViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
       component.author = entry;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());

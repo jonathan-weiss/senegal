@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {BookTO} from "../../api/book-to.model";
 import {AuthorTO} from "../../../author/api/author-to.model";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {BookFormService} from "./book-form.service";
+import {UuidTO} from "../../../uuid-to.model";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {BookFormService} from "./book-form.service";
   templateUrl: './book-form-view.component.html',
   styleUrls: ['./book-form-view.component.scss'],
 })
-export class BookFormViewComponent {
+export class BookFormViewComponent implements OnInit {
 
   @Input() book: BookTO | undefined;
   @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
@@ -33,13 +34,28 @@ export class BookFormViewComponent {
 
   get bookIdFormControl(): FormControl {
     return this.bookFormService.getFormControl(this.bookForm, this.bookFormService.bookIdFormControlName);
-  };
+  }
   get bookNameFormControl(): FormControl {
     return this.bookFormService.getFormControl(this.bookForm, this.bookFormService.bookNameFormControlName);
-  };
+  }
   get mainAuthorFormControl(): FormControl {
     return this.bookFormService.getFormControl(this.bookForm, this.bookFormService.mainAuthorFormControlName);
-  };
+  }
+
+
+  bookId(): UuidTO | undefined {
+    return this.book?.bookId;
+  }
+  bookName(): string | undefined {
+    return this.book?.bookName;
+  }
+
+  mainAuthor(): AuthorTO | undefined {
+    if(this.fixedMainAuthor != undefined) {
+      return this.fixedMainAuthor
+    }
+    return this.book?.mainAuthor
+  }
 
   isCreateMode(): boolean {
     return this.book == undefined;

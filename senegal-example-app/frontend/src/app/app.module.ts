@@ -48,6 +48,19 @@ import {
 import {
   MainAuthorFormFieldComponent
 } from "./book/components/book-form-view/main-author-form-field/main-author-form-field.component";
+import {
+  AuthorFirstnameFormFieldComponent
+} from "./author/components/author-form-view/author-firstname-form-field/author-firstname-form-field.component";
+import {
+  AuthorIdFormFieldComponent
+} from "./author/components/author-form-view/author-id-form-field/author-id-form-field.component";
+import {
+  AuthorLastnameFormFieldComponent
+} from "./author/components/author-form-view/author-lastname-form-field/author-lastname-form-field.component";
+import {AuthorFormViewComponent} from "./author/components/author-form-view/author-form-view.component";
+import {
+  AllBookByAuthorComponent
+} from "./author/components/author-form-view/author-all-book-by-author/all-book-by-author.component";
 
 
 @NgModule({
@@ -62,6 +75,11 @@ import {
     AuthorCreateViewComponent,
     AuthorUpdateViewComponent,
     AuthorSelectViewComponent,
+    AuthorFirstnameFormFieldComponent,
+    AuthorIdFormFieldComponent,
+    AuthorLastnameFormFieldComponent,
+    AuthorFormViewComponent,
+    AllBookByAuthorComponent,
     BookTableViewComponent,
     BookCreateViewComponent,
     BookUpdateViewComponent,
@@ -71,6 +89,7 @@ import {
     MainAuthorFormFieldComponent,
     BookNameFormFieldComponent,
     BookIdFormFieldComponent,
+
     SideNavigationComponent,
   ],
   imports: [

@@ -1,5 +1,5 @@
-<h2 *ngIf="isCreateMode()">Add Author</h2>
-<h2 *ngIf="!isCreateMode()">Edit Author</h2>
+<h2 *ngIf="isCreateMode()">Add Book (new)</h2>
+<h2 *ngIf="!isCreateMode()">Edit Book (new)</h2>
 
 <form [formGroup]="bookForm">
   <mat-card>
@@ -7,9 +7,9 @@
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">
             <div class="tab-content">
-              <book-id-form-field *ngIf="!isCreateMode()" [bookIdFormControl]="bookIdFormControl" [bookId]="book?.bookId"></book-id-form-field>
-              <book-name-form-field [bookNameFormControl]="bookNameFormControl" [bookName]="book?.bookName"></book-name-form-field>
-              <main-author-form-field [mainAuthorFormControl]="mainAuthorFormControl" [mainAuthor]="book?.mainAuthor"></main-author-form-field>
+              <book-id-form-field *ngIf="!isCreateMode()" [bookIdFormControl]="bookIdFormControl" [bookId]="bookId()"></book-id-form-field>
+              <book-name-form-field [bookNameFormControl]="bookNameFormControl" [bookName]="bookName()"></book-name-form-field>
+              <main-author-form-field [mainAuthorFormControl]="mainAuthorFormControl" [mainAuthor]="mainAuthor()" [fixedField]="fixedMainAuthor != undefined"></main-author-form-field>
             </div>
           </mat-tab>
         </mat-tab-group>

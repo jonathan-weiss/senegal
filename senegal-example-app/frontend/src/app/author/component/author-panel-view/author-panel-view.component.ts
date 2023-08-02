@@ -5,6 +5,8 @@ import {ComponentStackService} from "../../../component-stack/component-stack.se
 import {AuthorUpdateViewComponent} from "../author-update-view/author-update-view.component";
 import {AuthorCreateViewComponent} from "../author-create-view/author-create-view.component";
 import {AuthorService} from "../../author.service";
+import {BookFormViewComponent} from "../../../book/components/book-form-view/book-form-view.component";
+import {AuthorFormViewComponent} from "../../components/author-form-view/author-form-view.component";
 
 @Component({
   selector: 'author-panel-view',
@@ -38,7 +40,8 @@ export class AuthorPanelViewComponent implements OnInit {
   onNewEntry(): void {
     this.isEditingDisabled = true;
     this.highlightedAuthor = undefined;
-    this.componentStackService.newComponentOnStack(AuthorCreateViewComponent, (component: AuthorCreateViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+      component.author = undefined;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
     });
@@ -47,7 +50,7 @@ export class AuthorPanelViewComponent implements OnInit {
   onEdit(entry: AuthorTO): void {
     this.isEditingDisabled = true;
     this.highlightedAuthor = entry;
-    this.componentStackService.newComponentOnStack(AuthorUpdateViewComponent, (component: AuthorUpdateViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
       component.author = entry;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
