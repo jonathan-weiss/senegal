@@ -1,22 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
-import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {AuthorService} from "../../author.service";
-import {AuthorFormViewComponent} from "../../components/author-form-view/author-form-view.component";
+import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {AuthorFormViewComponent} from "../author-form-view/author-form-view.component";
+import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
+
 
 @Component({
-  selector: 'author-panel-view',
-  templateUrl: './author-panel-view.component.html',
-  styleUrls: ['./author-panel-view.component.scss'],
+  selector: 'author-search-view',
+  templateUrl: './author-search-view.component.html',
+  styleUrls: ['./author-search-view.component.scss'],
 })
-export class AuthorPanelViewComponent implements OnInit {
+export class AuthorSearchViewComponent implements OnInit {
+  @Input() showCancelButton: boolean = false
+  @Input() showAddButton: boolean = false
+  @Input() showSelectButton: boolean = false
+  @Input() showEditButton: boolean = false
+  @Input() showDeleteButton: boolean = false
+
+  @Output() selectClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
+  @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
   allAuthor: ReadonlyArray<AuthorTO> = []
 
   isEditingDisabled: boolean = false;
 
   highlightedAuthor: AuthorTO | undefined = undefined;
+
 
   constructor(private authorService: AuthorService,
               private componentStackService: ComponentStackService) {
@@ -34,7 +44,17 @@ export class AuthorPanelViewComponent implements OnInit {
       });
   }
 
-  onNewEntry(): void {
+  select(author: AuthorTO): void {
+    this.selectClicked.emit(author);
+    this.componentStackService.removeLatestComponentFromStack();
+  }
+
+  cancel(): void {
+    this.cancelClicked.emit();
+    this.componentStackService.removeLatestComponentFromStack();
+  }
+
+  add(): void {
     this.isEditingDisabled = true;
     this.highlightedAuthor = undefined;
     this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
@@ -44,7 +64,7 @@ export class AuthorPanelViewComponent implements OnInit {
     });
   }
 
-  onEdit(entry: AuthorTO): void {
+  edit(entry: AuthorTO): void {
     this.isEditingDisabled = true;
     this.highlightedAuthor = entry;
     this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
@@ -54,13 +74,17 @@ export class AuthorPanelViewComponent implements OnInit {
     })
   }
 
+  delete(entry: AuthorTO): void {
+    this.isEditingDisabled = true;
+    this.onPerformDeleteOnServer(entry);
+  }
 
-  onPerformDeleteOnServer(entry: AuthorTO): void {
+  private onPerformDeleteOnServer(entry: AuthorTO): void {
     const deleteInstruction: DeleteAuthorInstructionTO = {
       authorId: entry.authorId,
     }
     this.authorService.deleteAuthor(deleteInstruction).subscribe(() => {
-      this.loadAllAuthor();
+      this.reloadAllAuthorsAfterEditing();
     });
   }
 
@@ -69,4 +93,5 @@ export class AuthorPanelViewComponent implements OnInit {
     this.isEditingDisabled = false;
     this.highlightedAuthor = highlightedEntry;
   }
+
 }

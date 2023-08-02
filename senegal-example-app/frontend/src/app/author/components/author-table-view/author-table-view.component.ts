@@ -8,11 +8,16 @@ import { AuthorTO } from "../../api/author-to.model";
     styleUrls: ['./author-table-view.component.scss'],
 })
 export class AuthorTableViewComponent {
+  @Input() showSelectButton: boolean = false
+  @Input() showEditButton: boolean = false
+  @Input() showDeleteButton: boolean = false
+    @Input() tableControlsDisabled!: boolean;
+
 
     @Input() allAuthor!: ReadonlyArray<AuthorTO>
     @Input() highlightedAuthor: AuthorTO | undefined = undefined;
-    @Input() tableControlsDisabled!: boolean;
 
+    @Output() selectEntryClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
     @Output() editEntryClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
     @Output() deleteEntryClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
 
@@ -31,19 +36,24 @@ export class AuthorTableViewComponent {
       return this.highlightedAuthor != undefined && author.authorId.uuid == this.highlightedAuthor.authorId.uuid;
   }
 
-    getEntries(): AuthorTO[] {
-        return [...this.allAuthor];
-    }
+  onRowDoubleClicked(entry: AuthorTO): void {
+      if(this.showSelectButton) {
+        this.selectEntryClicked.emit(entry);
+      } else if(this.showEditButton) {
+        this.editEntryClicked.emit(entry);
+      }
+  }
 
-    onCtxEditClicked(entry: AuthorTO): void {
+
+  editClicked(entry: AuthorTO): void {
         this.editEntryClicked.emit(entry);
     }
 
-    onRowDoubleClicked(entry: AuthorTO): void {
-        this.editEntryClicked.emit(entry);
+    selectClicked(entry: AuthorTO): void {
+        this.selectEntryClicked.emit(entry);
     }
 
-    onCtxDeleteClicked(entry: AuthorTO): void {
+    deleteClicked(entry: AuthorTO): void {
         this.deleteEntryClicked.emit(entry);
     }
 

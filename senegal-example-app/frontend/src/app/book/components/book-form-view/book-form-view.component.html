@@ -1,8 +1,12 @@
-<h2 *ngIf="isCreateMode()">Add Book (new)</h2>
-<h2 *ngIf="!isCreateMode()">Edit Book (new)</h2>
-
 <form [formGroup]="bookForm">
   <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <span *ngIf="isCreateMode()">Add Book</span>
+        <span *ngIf="!isCreateMode()">Edit Book</span>
+      </mat-card-title>
+    </mat-card-header>
+
       <mat-card-content>
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">

@@ -25,12 +25,18 @@ export class DisplayComponentStackComponent implements OnInit, OnDestroy, Compon
     this.panelStackObservationService.unregisterOfStackObservation(this);
   }
 
-  componentAddedToStack(componentStackEntry: Type<any>, onInitialization: (component: any) => void): void {
+  addComponentToStack(componentStackEntry: Type<any>, onInitialization: (component: any) => void): void {
     const componentRef: ComponentRef<any> = this.stackAnchor.viewContainerRef.createComponent<any>(componentStackEntry);
     onInitialization(componentRef.instance);
   }
 
-  latestComponentRemovedFromStack(): void {
+  removeLatestComponentFromStack(): void {
     this.stackAnchor.viewContainerRef.remove()
   }
+
+  removeAllComponentsFromStack(): void {
+    this.stackAnchor.viewContainerRef.clear();
+  }
+
+
 }

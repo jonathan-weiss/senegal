@@ -15,4 +15,8 @@ export class ComponentStackService {
   public removeLatestComponentFromStack(): void {
       this.componentStackObservationService.removeLatestComponentFromStack();
   }
+
+  public resetComponentStack() {
+    this.componentStackObservationService.removeAllComponentFromStack();
+  }
 }

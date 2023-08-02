@@ -13,10 +13,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MAT_TABS_CONFIG, MatTabsModule} from "@angular/material/tabs";
 import {MatDialogModule} from "@angular/material/dialog";
 import {HttpClientModule} from "@angular/common/http";
-import {BookTableViewComponent} from "./book/book-table-view/book-table-view.component";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
-import {BookPanelViewComponent} from "./book/book-panel-view/book-panel-view.component";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {SideNavigationComponent} from "./navigation/side-navigation.component";
@@ -26,11 +24,10 @@ import {RouterModule} from "@angular/router";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {AuthorPanelViewComponent} from "./author/component/author-panel-view/author-panel-view.component";
-import {AuthorTableViewComponent} from "./author/component/author-table-view/author-table-view.component";
+import {AuthorPanelViewComponent} from "./author/components/author-panel-view/author-panel-view.component";
+import {AuthorTableViewComponent} from "./author/components/author-table-view/author-table-view.component";
 import {DisplayComponentStackComponent} from "./component-stack/display-component-stack.component";
 import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
-import {AuthorSelectViewComponent} from "./author/component/author-select-view/author-select-view.component";
 import {SectionComponent} from "./section/section.component";
 import {BookFormViewComponent} from "./book/components/book-form-view/book-form-view.component";
 import {
@@ -55,6 +52,10 @@ import {AuthorFormViewComponent} from "./author/components/author-form-view/auth
 import {
   AllBookByAuthorComponent
 } from "./author/components/author-form-view/author-all-book-by-author/all-book-by-author.component";
+import {AuthorSearchViewComponent} from "./author/components/author-search-view/author-search-view.component";
+import {BookTableViewComponent} from "./book/components/book-table-view/book-table-view.component";
+import {BookPanelViewComponent} from "./book/components/book-panel-view/book-panel-view.component";
+import {BookSearchViewComponent} from "./book/components/book-search-view/book-search-view.component";
 
 
 @NgModule({
@@ -65,19 +66,19 @@ import {
     ComponentStackAnchorDirective,
     AuthorTableViewComponent,
     AuthorPanelViewComponent,
-    AuthorSelectViewComponent,
+    AuthorSearchViewComponent,
     AuthorFirstnameFormFieldComponent,
     AuthorIdFormFieldComponent,
     AuthorLastnameFormFieldComponent,
     AuthorFormViewComponent,
     AllBookByAuthorComponent,
-    BookTableViewComponent,
-    BookPanelViewComponent,
     BookFormViewComponent,
     MainAuthorFormFieldComponent,
     BookNameFormFieldComponent,
     BookIdFormFieldComponent,
-
+    BookTableViewComponent,
+    BookPanelViewComponent,
+    BookSearchViewComponent,
     SideNavigationComponent,
   ],
   imports: [

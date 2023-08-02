@@ -3,10 +3,13 @@ table {
 }
 
 .mat-column-context {
-    width: 32px;
+    width: 128px;
     text-align: center;
 }
 
-.highlightedRow {
+.highlighted-row {
   background-color: ghostwhite;
+}
+.context-column {
+  background-color: lightgrey;
 }

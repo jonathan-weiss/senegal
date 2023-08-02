@@ -1,8 +1,9 @@
-<h2 *ngIf="isCreateMode()">Add Author (new)</h2>
-<h2 *ngIf="!isCreateMode()">Edit Author (new)</h2>
-
 <form [formGroup]="authorForm">
   <mat-card>
+      <mat-card-header>
+        <mat-card-title *ngIf="isCreateMode()">Add Author</mat-card-title>
+        <mat-card-title *ngIf="!isCreateMode()">Edit Author</mat-card-title>
+      </mat-card-header>
       <mat-card-content>
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">

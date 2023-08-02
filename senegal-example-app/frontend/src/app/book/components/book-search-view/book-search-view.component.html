@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-header><mat-card-title>Books</mat-card-title></mat-card-header>
+  <mat-card-content>
+
+  <book-table-view
+  [allBooks]="allBooks"
+  (selectEntryClicked)="select($event)"
+  (editEntryClicked)="edit($event)"
+  (deleteEntryClicked)="delete($event)"
+  [highlightedBook]="highlightedBook"
+  [showDeleteButton]="showDeleteButton"
+  [showEditButton]="showEditButton"
+  [showSelectButton]="showSelectButton"
+></book-table-view>
+  </mat-card-content>
+  <mat-card-actions>
+    <button *ngIf="showCancelButton" mat-raised-button color="secondary" (click)="cancel()">Cancel</button>
+    <button *ngIf="showAddButton" mat-raised-button color="primary" [disabled]="isEditingDisabled" (click)="add()">Add new Book...</button>
+  </mat-card-actions>
+</mat-card>

@@ -10,15 +10,23 @@ export class ComponentStackObservationService {
 
   public addComponentOntoStack(component: Type<any>, onInitialization: (component: any) => void): void {
     this.stackObservers.forEach((componentStackObserver: ComponentStackObserver) =>  {
-      componentStackObserver.componentAddedToStack(component, onInitialization);
+      componentStackObserver.addComponentToStack(component, onInitialization);
     });
   }
 
   public removeLatestComponentFromStack(): void {
       this.stackObservers.forEach((componentStackObserver: ComponentStackObserver) =>  {
-        componentStackObserver.latestComponentRemovedFromStack();
+        componentStackObserver.removeLatestComponentFromStack();
       });
   }
+
+  public removeAllComponentFromStack() {
+    this.stackObservers.forEach((componentStackObserver: ComponentStackObserver) =>  {
+      componentStackObserver.removeAllComponentsFromStack();
+    });
+
+  }
+
 
   public registerForStackObservation(componentStackObserver: ComponentStackObserver): void {
     if(!this.stackObservers.has(componentStackObserver)) {

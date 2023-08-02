@@ -1,8 +1,12 @@
 <ng-container *ngIf="author != undefined">
-  <book-table-view [books]="booksByAuthor" [tableControlsDisabled]="true" ></book-table-view>
-  <div class="action-box">
-    <button mat-raised-button color="primary" (click)="addBook()">Add new Book...</button>
-  </div>
+  <book-search-view
+                   [showSelectButton]="false"
+                   [showEditButton]="true"
+                   [showDeleteButton]="true"
+                   [showAddButton]="true"
+                   [fixedMainAuthor]="author"
+                   [searchEvent]="reloadAllBookEvent"
+  ></book-search-view>
 </ng-container>
 
 <ng-container *ngIf="author == undefined">
