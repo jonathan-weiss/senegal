@@ -5,6 +5,7 @@ import {BookUpdateViewComponent} from "../book-update-view/book-update-view.comp
 import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
 import {BookTO} from "../api/book-to.model";
 import {ComponentStackService} from "../../component-stack/component-stack.service";
+import {BookFormViewComponent} from "../components/book-form-view/book-form-view.component";
 
 @Component({
   selector: 'book-panel-view',
@@ -38,7 +39,7 @@ export class BookPanelViewComponent implements OnInit {
   onNewEntry(): void {
     this.isEditingDisabled = true;
     this.highlightedBook = undefined;
-    this.componentStackService.newComponentOnStack(BookCreateViewComponent, (component: BookCreateViewComponent) => {
+    this.componentStackService.newComponentOnStack(BookFormViewComponent, (component: BookFormViewComponent) => {
       component.saveClicked.subscribe((book) => this.reloadAllBooksAfterEditing(book));
       component.cancelClicked.subscribe(() => this.reloadAllBooksAfterEditing());
     });
@@ -47,7 +48,7 @@ export class BookPanelViewComponent implements OnInit {
   onEdit(entry: BookTO): void {
     this.isEditingDisabled = true;
     this.highlightedBook = entry;
-    this.componentStackService.newComponentOnStack(BookUpdateViewComponent, (component: BookUpdateViewComponent) => {
+    this.componentStackService.newComponentOnStack(BookFormViewComponent, (component: BookFormViewComponent) => {
       component.book = entry;
       component.saveClicked.subscribe((book) => this.reloadAllBooksAfterEditing(book));
       component.cancelClicked.subscribe(() => this.reloadAllBooksAfterEditing());

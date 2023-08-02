@@ -38,6 +38,16 @@ import {BookCreateViewComponent} from "./book/book-create-view/book-create-view.
 import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.component";
 import {AuthorSelectViewComponent} from "./author/component/author-select-view/author-select-view.component";
 import {SectionComponent} from "./section/section.component";
+import {BookFormViewComponent} from "./book/components/book-form-view/book-form-view.component";
+import {
+  BookNameFormFieldComponent
+} from "./book/components/book-form-view/book-name-form-field/book-name-form-field.component";
+import {
+  BookIdFormFieldComponent
+} from "./book/components/book-form-view/book-id-form-field/book-id-form-field.component";
+import {
+  MainAuthorFormFieldComponent
+} from "./book/components/book-form-view/main-author-form-field/main-author-form-field.component";
 
 
 @NgModule({
@@ -57,6 +67,10 @@ import {SectionComponent} from "./section/section.component";
     BookUpdateViewComponent,
     BookEditViewComponent,
     BookPanelViewComponent,
+    BookFormViewComponent,
+    MainAuthorFormFieldComponent,
+    BookNameFormFieldComponent,
+    BookIdFormFieldComponent,
     SideNavigationComponent,
   ],
   imports: [

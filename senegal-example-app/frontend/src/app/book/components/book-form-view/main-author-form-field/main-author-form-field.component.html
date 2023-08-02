@@ -1,0 +1,26 @@
+<div class="full-width-form-field">
+  <mat-form-field appearance="fill" matAutocompleteOrigin #origin="matAutocompleteOrigin">
+    <mat-label>Main Author</mat-label>
+      <input matInput type="text" [formControl]="mainAuthorFormControl"
+             [matAutocomplete]="mainAuthorAutocomplete"
+             [matAutocompleteConnectedTo]="origin"
+      >
+      <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn" [autoActiveFirstOption]="true">
+        <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
+          {{author.firstname}} {{author.lastname}}
+        </mat-option>
+      </mat-autocomplete>
+    <mat-error *ngIf="mainAuthorFormControl.hasError('required')">
+      Main Book Author is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <button matSuffix mat-icon-button (click)="onEditAuthor()" [disabled]="!hasMainAuthor()">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button matSuffix mat-icon-button (click)="onNewAuthor()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button matSuffix mat-icon-button (click)="onSelectAuthor()">
+    <mat-icon>search</mat-icon>
+  </button>
+</div>
