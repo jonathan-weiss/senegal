@@ -4,8 +4,6 @@ import {filter, Observable, startWith, switchMap} from "rxjs";
 import {AuthorTO} from "../../../../author/api/author-to.model";
 import {AuthorService} from "../../../../author/author.service";
 import {ComponentStackService} from "../../../../component-stack/component-stack.service";
-import {AuthorCreateViewComponent} from "../../../../author/component/author-create-view/author-create-view.component";
-import {AuthorUpdateViewComponent} from "../../../../author/component/author-update-view/author-update-view.component";
 import {AuthorSelectViewComponent} from "../../../../author/component/author-select-view/author-select-view.component";
 import {AuthorFormViewComponent} from "../../../../author/components/author-form-view/author-form-view.component";
 

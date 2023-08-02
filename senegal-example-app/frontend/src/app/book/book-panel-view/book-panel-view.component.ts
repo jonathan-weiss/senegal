@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from "../book.service";
-import {BookCreateViewComponent} from "../book-create-view/book-create-view.component";
-import {BookUpdateViewComponent} from "../book-update-view/book-update-view.component";
 import {DeleteBookInstructionTO} from "../api/delete-book-instruction.to";
 import {BookTO} from "../api/book-to.model";
 import {ComponentStackService} from "../../component-stack/component-stack.service";

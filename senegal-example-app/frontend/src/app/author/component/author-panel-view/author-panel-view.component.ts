@@ -2,10 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
-import {AuthorUpdateViewComponent} from "../author-update-view/author-update-view.component";
-import {AuthorCreateViewComponent} from "../author-create-view/author-create-view.component";
 import {AuthorService} from "../../author.service";
-import {BookFormViewComponent} from "../../../book/components/book-form-view/book-form-view.component";
 import {AuthorFormViewComponent} from "../../components/author-form-view/author-form-view.component";
 
 @Component({

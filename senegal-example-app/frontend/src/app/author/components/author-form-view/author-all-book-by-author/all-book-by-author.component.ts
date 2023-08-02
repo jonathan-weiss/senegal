@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {BookTO} from "../../../../book/api/book-to.model";
-import {BookCreateViewComponent} from "../../../../book/book-create-view/book-create-view.component";
 import {AuthorTO} from "../../../api/author-to.model";
 import {CollectionsUtil} from "../../../../commons/collections.util";
 import {AuthorService} from "../../../author.service";

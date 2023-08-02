@@ -16,7 +16,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {BookTableViewComponent} from "./book/book-table-view/book-table-view.component";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
-import {BookEditViewComponent} from "./book/book-edit-view/book-edit-view.component";
 import {BookPanelViewComponent} from "./book/book-panel-view/book-panel-view.component";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -28,14 +27,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AuthorPanelViewComponent} from "./author/component/author-panel-view/author-panel-view.component";
-import {AuthorEditViewComponent} from "./author/component/author-edit-view/author-edit-view.component";
 import {AuthorTableViewComponent} from "./author/component/author-table-view/author-table-view.component";
 import {DisplayComponentStackComponent} from "./component-stack/display-component-stack.component";
 import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
-import {AuthorUpdateViewComponent} from "./author/component/author-update-view/author-update-view.component";
-import {AuthorCreateViewComponent} from "./author/component/author-create-view/author-create-view.component";
-import {BookCreateViewComponent} from "./book/book-create-view/book-create-view.component";
-import {BookUpdateViewComponent} from "./book/book-update-view/book-update-view.component";
 import {AuthorSelectViewComponent} from "./author/component/author-select-view/author-select-view.component";
 import {SectionComponent} from "./section/section.component";
 import {BookFormViewComponent} from "./book/components/book-form-view/book-form-view.component";
@@ -69,11 +63,8 @@ import {
     DisplayComponentStackComponent,
     SectionComponent,
     ComponentStackAnchorDirective,
-    AuthorEditViewComponent,
     AuthorTableViewComponent,
     AuthorPanelViewComponent,
-    AuthorCreateViewComponent,
-    AuthorUpdateViewComponent,
     AuthorSelectViewComponent,
     AuthorFirstnameFormFieldComponent,
     AuthorIdFormFieldComponent,
@@ -81,9 +72,6 @@ import {
     AuthorFormViewComponent,
     AllBookByAuthorComponent,
     BookTableViewComponent,
-    BookCreateViewComponent,
-    BookUpdateViewComponent,
-    BookEditViewComponent,
     BookPanelViewComponent,
     BookFormViewComponent,
     MainAuthorFormFieldComponent,
