@@ -42,4 +42,9 @@ class AuthorService(
         return repository.fetchAllAuthorFiltered(searchTerm)
     }
 
+    fun searchAllAuthor(searchParam: SearchAuthorInstruction): List<Author> {
+        // TODO implement that in SQL
+        return repository.fetchAllAuthor()
+    }
+
 }

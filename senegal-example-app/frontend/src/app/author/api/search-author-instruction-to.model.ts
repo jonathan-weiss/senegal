@@ -12,9 +12,9 @@
 import {UuidTO} from "../../uuid-to.model";
 
 
-export interface BookSearchCriteria {
-    bookId: UuidTO | undefined;
-    bookName: string | undefined;
-    mainAuthorId: UuidTO | undefined,
+export interface SearchAuthorInstrctionTO {
+    authorId: UuidTO | undefined;
+    firstname: string | undefined;
+    lastname: string | undefined;
 }
 

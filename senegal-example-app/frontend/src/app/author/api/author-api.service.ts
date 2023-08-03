@@ -7,6 +7,7 @@ import { AuthorTO } from "./author-to.model";
 import { CreateAuthorInstructionTO } from "./create-author-instruction-to.model";
 import { UpdateAuthorInstructionTO } from "./update-author-instruction-to.model";
 import { DeleteAuthorInstructionTO } from "./delete-author-instruction-to.model";
+import {SearchAuthorInstrctionTO} from "./search-author-instruction-to.model";
 
 @Injectable({
 providedIn: 'root'
@@ -21,6 +22,9 @@ export class AuthorApiService {
 
     getAllAuthor(): Observable<ReadonlyArray<AuthorTO>> {
         return this.httpClient.get<Array<AuthorTO>>(`/api/author/all`);
+    }
+    searchAllAuthor(searchCriteria: SearchAuthorInstrctionTO): Observable<ReadonlyArray<AuthorTO>> {
+        return this.httpClient.post<Array<AuthorTO>>(`/api/author/search`, searchCriteria);
     }
 
     getAllAuthorFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {

@@ -48,5 +48,10 @@ class BookService(
         return repository.fetchAllBooksByAuthor(authorId)
     }
 
+    fun searchAllBook(searchParams: SearchBookInstruction): List<Book> {
+        // TODO implement as SQL search
+        return repository.fetchAllBooks().filter { searchParams.mainAuthorId == null || searchParams.mainAuthorId == it.mainAuthor.authorId }
+    }
+
 
 }

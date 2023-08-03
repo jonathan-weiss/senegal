@@ -5,10 +5,10 @@ import {ComponentStackService} from "../../../component-stack/component-stack.se
 import {BookFormViewComponent} from "../book-form-view/book-form-view.component";
 import {DeleteBookInstructionTO} from "../../api/delete-book-instruction.to";
 import {AuthorTO} from "../../../author/api/author-to.model";
-import {BookSearchCriteria} from "../../api/book-search-criteria.model";
 import {
   BookFormStackEntryComponent
 } from "../../stack-components/book-form-stack-entry/book-form-stack-entry.component";
+import {SearchBookInstructionTO} from "../../api/search-book-instruction.to";
 
 
 @Component({
@@ -48,14 +48,14 @@ export class BookSearchViewComponent implements OnInit {
   }
 
   private loadAllBooks(): void {
-    const searchCriteria: BookSearchCriteria = {
+    const searchCriteria: SearchBookInstructionTO = {
       bookId: undefined,
       bookName: undefined,
       mainAuthorId: this.fixedMainAuthor?.authorId,
 
     }
     this.bookService
-      .getBooks(searchCriteria)
+      .searchBooks(searchCriteria)
       .subscribe((entities: ReadonlyArray<BookTO>) => {
           this.allBooks = entities;
       });

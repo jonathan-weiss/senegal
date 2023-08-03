@@ -2,10 +2,7 @@ package ch.senegal.example.frontendapi.facade
 
 import ch.senegal.example.domain.author.AuthorService
 import ch.senegal.example.domain.author.AuthorId
-import ch.senegal.example.frontendapi.controller.author.AuthorTO
-import ch.senegal.example.frontendapi.controller.author.CreateAuthorInstructionTO
-import ch.senegal.example.frontendapi.controller.author.DeleteAuthorInstructionTO
-import ch.senegal.example.frontendapi.controller.author.UpdateAuthorInstructionTO
+import ch.senegal.example.frontendapi.controller.author.*
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 import org.springframework.stereotype.Service
 
@@ -39,5 +36,9 @@ class AuthorFacade(
 
     fun deleteAuthor(instruction: DeleteAuthorInstructionTO) {
         service.deleteAuthor(instruction.toDomain())
+    }
+
+    fun searchAllAuthor(searchParams: SearchAuthorInstructionTO): List<AuthorTO> {
+        return service.searchAllAuthor(searchParams.toDomain()).map { AuthorTO.fromDomain(it) }
     }
 }

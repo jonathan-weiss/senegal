@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {AuthorTO} from "./api/author-to.model";
 import {AuthorApiService} from "./api/author-api.service";
 import {UpdateAuthorInstructionTO} from "./api/update-author-instruction-to.model";
@@ -8,6 +8,7 @@ import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.mode
 import {UuidTO} from "../uuid-to.model";
 import {BookTO} from "../book/api/book-to.model";
 import {BookApiService} from "../book/api/book-api.service";
+import {SearchAuthorInstrctionTO} from "./api/search-author-instruction-to.model";
 
 
 @Injectable({
@@ -22,6 +23,13 @@ export class AuthorService {
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
     return this.authorApiService.getAllAuthor();
   }
+
+  searchAllAuthor(searchCriteria: SearchAuthorInstrctionTO): Observable<ReadonlyArray<AuthorTO>> {
+    return this.authorApiService.searchAllAuthor(searchCriteria).pipe(
+      map( (entities) => entities)
+    );
+  }
+
 
   getAllAuthorsFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
     return this.authorApiService.getAllAuthorFiltered(searchTerm);

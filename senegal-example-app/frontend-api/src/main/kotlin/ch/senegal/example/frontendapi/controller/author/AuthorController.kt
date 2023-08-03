@@ -31,6 +31,11 @@ class AuthorController(
         return facade.getAllAuthor()
     }
 
+    @PostMapping("/search")
+    fun searchAuthor(@RequestBody searchParams: SearchAuthorInstructionTO): List<AuthorTO> {
+        return facade.searchAllAuthor(searchParams)
+    }
+
     @GetMapping("/all-filtered")
     fun getAllAuthorFiltered(@RequestParam("searchTerm") searchTerm: String): List<AuthorTO> {
         return facade.getAllAuthorFiltered(searchTerm)

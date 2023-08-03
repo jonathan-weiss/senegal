@@ -4,7 +4,6 @@ import ch.senegal.example.frontendapi.API
 import ch.senegal.example.frontendapi.controller.ResponseStatusExceptionFactory
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 import ch.senegal.example.frontendapi.facade.BookFacade
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -38,6 +37,16 @@ class BookController(
             throw ResponseStatusExceptionFactory.createValidationMessageResponseException(e.message ?: "Unknown error.")
         }
     }
+
+    @PostMapping("/search")
+    fun searchBooks(@RequestBody searchParams: SearchBookInstructionTO): List<BookTO> {
+        try {
+            return bookFacade.searchAllBook(searchParams)
+        } catch (e: IllegalArgumentException) {
+            throw ResponseStatusExceptionFactory.createValidationMessageResponseException(e.message ?: "Unknown error.")
+        }
+    }
+
 
     @GetMapping("/all-by-author/{authorId}")
     fun getBooksByAuthor(@PathVariable("authorId") authorId: UUID): List<BookTO> {

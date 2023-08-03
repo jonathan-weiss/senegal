@@ -6,6 +6,7 @@ import {CreateBookInstructionTO} from "./create-book-instruction.to";
 import {UpdateBookInstructionTO} from "./update-book-instruction.to";
 import {DeleteBookInstructionTO} from "./delete-book-instruction.to";
 import {UuidTO} from "../../uuid-to.model";
+import {SearchBookInstructionTO} from "./search-book-instruction.to";
 
 
 @Injectable({
@@ -26,6 +27,10 @@ export class BookApiService {
 
   getAllBook(): Observable<ReadonlyArray<BookTO>> {
     return this.httpClient.get<Array<BookTO>>(`/api/books/all`);
+  }
+
+  searchAllBook(searchParams: SearchBookInstructionTO): Observable<ReadonlyArray<BookTO>> {
+    return this.httpClient.post<Array<BookTO>>(`/api/books/search`, searchParams);
   }
 
   getAllBookByAuthor(authorId: UuidTO): Observable<ReadonlyArray<BookTO>> {

@@ -5,8 +5,7 @@ import {BookTO} from "./api/book-to.model";
 import {UpdateBookInstructionTO} from "./api/update-book-instruction.to";
 import {CreateBookInstructionTO} from "./api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "./api/delete-book-instruction.to";
-import {UuidTO} from "../uuid-to.model";
-import {BookSearchCriteria} from "./api/book-search-criteria.model";
+import {SearchBookInstructionTO} from "./api/search-book-instruction.to";
 
 
 @Injectable({
@@ -21,11 +20,8 @@ export class BookService {
     return this.bookApiService.getBooks();
   }
 
-  getBooks(searchCriteria: BookSearchCriteria): Observable<ReadonlyArray<BookTO>> {
-    // TODO implement that in sql
-    return this.bookApiService.getBooks().pipe(
-      map( (entities) => entities.filter((book: BookTO) => searchCriteria.mainAuthorId == undefined || (book.mainAuthor.authorId.uuid == searchCriteria.mainAuthorId.uuid)))
-    );
+  searchBooks(searchCriteria: SearchBookInstructionTO): Observable<ReadonlyArray<BookTO>> {
+    return this.bookApiService.searchAllBook(searchCriteria);
   }
 
   updateBook(updateInstruction: UpdateBookInstructionTO): Observable<BookTO> {

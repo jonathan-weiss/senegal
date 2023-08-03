@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {AuthorService} from "../../author.service";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
-import {AuthorFormViewComponent} from "../author-form-view/author-form-view.component";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
 import {
   AuthorFormStackEntryComponent
 } from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
+import {SearchAuthorInstrctionTO} from "../../api/search-author-instruction-to.model";
 
 
 @Component({
@@ -39,8 +39,14 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   private loadAllAuthor(): void {
+    const searchCriteria: SearchAuthorInstrctionTO = {
+      authorId: undefined,
+      firstname: undefined,
+      lastname: undefined,
+    }
+
     this.authorService
-      .getAllAuthors()
+      .searchAllAuthor(searchCriteria)
       .subscribe((entities: ReadonlyArray<AuthorTO>) => {
         this.allAuthor = entities;
       });
