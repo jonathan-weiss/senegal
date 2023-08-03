@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {UuidTO} from "../../uuid-to.model";
+import {BookIdTO} from "./book-id-to.model";
+import {AuthorIdTO} from "../../author/api/author-id-to.model";
 
 
 export interface SearchBookInstructionTO {
-    bookId: UuidTO | undefined;
+    bookId: BookIdTO | undefined;
     bookName: string | undefined;
-    mainAuthorId: UuidTO | undefined,
+    mainAuthorId: AuthorIdTO | undefined,
 }
 

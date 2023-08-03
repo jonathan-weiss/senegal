@@ -33,7 +33,7 @@ export class AuthorTableViewComponent {
     }
 
   isHighlighted(author: AuthorTO): boolean {
-      return this.highlightedAuthor != undefined && author.authorId.uuid == this.highlightedAuthor.authorId.uuid;
+      return this.highlightedAuthor != undefined && author.authorId.value == this.highlightedAuthor.authorId.value;
   }
 
   onRowDoubleClicked(entry: AuthorTO): void {

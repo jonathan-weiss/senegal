@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {UuidTO} from "../../../../uuid-to.model";
+import {AuthorIdTO} from "../../../api/author-id-to.model";
 
 
 @Component({
@@ -12,10 +13,10 @@ export class AuthorIdFormFieldComponent implements OnInit {
 
   @Input() authorIdFormControl!: FormControl;
 
-  @Input() authorId: UuidTO | undefined;
+  @Input() authorId: AuthorIdTO | undefined;
 
   ngOnInit() {
     this.authorIdFormControl.disable() // id is not editable
-    this.authorIdFormControl.patchValue(this.authorId == undefined ? undefined : this.authorId.uuid)
+    this.authorIdFormControl.patchValue(this.authorId == undefined ? undefined : this.authorId.value)
   }
 }

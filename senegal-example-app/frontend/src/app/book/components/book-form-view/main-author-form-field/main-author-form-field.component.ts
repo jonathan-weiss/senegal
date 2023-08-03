@@ -10,6 +10,8 @@ import {
 import {
   AuthorSearchStackEntryComponent
 } from "../../../../author/stack-components/author-search-stack-entry/author-search-stack-entry.component";
+import {BookAuthorDescriptionTO} from "../../../api/book-author-description-to.model";
+import {BookService} from "../../../book.service";
 
 
 @Component({
@@ -21,14 +23,14 @@ export class MainAuthorFormFieldComponent implements OnInit {
 
   @Input() mainAuthorFormControl!: FormControl;
 
-  @Input() mainAuthor: AuthorTO | undefined;
+  @Input() mainAuthor: BookAuthorDescriptionTO | undefined;
   @Input() fixedField: boolean = false;
 
   @Input() isLocked!: boolean;
 
-  authorsOptions!: Observable<ReadonlyArray<AuthorTO>>
+  authorsOptions!: Observable<ReadonlyArray<BookAuthorDescriptionTO>>
 
-  constructor(private readonly authorService: AuthorService,
+  constructor(private readonly bookService: BookService,
               private componentStackService: ComponentStackService) {
   }
 
@@ -43,7 +45,7 @@ export class MainAuthorFormFieldComponent implements OnInit {
     this.authorsOptions = this.mainAuthorFormControl.valueChanges.pipe(
       startWith(''),
       filter(searchTerm => typeof searchTerm === "string"),
-      switchMap(searchValue => this.authorService.getAllAuthorsFiltered(this.cleanupSearchTerm(searchValue))),
+      switchMap(searchValue => this.bookService.getAllAuthorsFiltered(this.cleanupSearchTerm(searchValue))),
     );
   }
 

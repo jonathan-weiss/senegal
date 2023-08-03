@@ -6,6 +6,8 @@ import {AuthorTO} from "../../../author/api/author-to.model";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {BookFormService} from "./book-form.service";
 import {UuidTO} from "../../../uuid-to.model";
+import {BookIdTO} from "../../api/book-id-to.model";
+import {BookAuthorDescriptionTO} from "../../api/book-author-description-to.model";
 
 
 @Component({
@@ -44,14 +46,14 @@ export class BookFormViewComponent implements OnInit {
   }
 
 
-  bookId(): UuidTO | undefined {
+  bookId(): BookIdTO | undefined {
     return this.book?.bookId;
   }
   bookName(): string | undefined {
     return this.book?.bookName;
   }
 
-  mainAuthor(): AuthorTO | undefined {
+  mainAuthor(): BookAuthorDescriptionTO | undefined {
     if(this.fixedMainAuthor != undefined) {
       return this.fixedMainAuthor
     }

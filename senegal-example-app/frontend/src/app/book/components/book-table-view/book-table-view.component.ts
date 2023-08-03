@@ -34,7 +34,7 @@ export class BookTableViewComponent {
     }
 
   isHighlighted(book: BookTO): boolean {
-      return this.highlightedBook != undefined && book.bookId.uuid == this.highlightedBook.bookId.uuid;
+      return this.highlightedBook != undefined && book.bookId.value == this.highlightedBook.bookId.value;
   }
 
   onRowDoubleClicked(entry: BookTO): void {

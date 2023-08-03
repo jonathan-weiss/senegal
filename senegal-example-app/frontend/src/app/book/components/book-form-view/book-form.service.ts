@@ -7,6 +7,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {BookTO} from "../../api/book-to.model";
 import {CreateBookInstructionTO} from "../../api/create-book-instruction.to";
 import {UpdateBookInstructionTO} from "../../api/update-book-instruction.to";
+import {AuthorIdTO} from "../../../author/api/author-id-to.model";
 
 
 @Injectable({
@@ -38,7 +39,7 @@ export class BookFormService {
   private getBookNameFormValue(bookForm: FormGroup): string {
     return this.getFormControl(bookForm, this.bookNameFormControlName).value as string
   }
-  private getMainAuthorIdFormValue(bookForm: FormGroup): UuidTO {
+  private getMainAuthorIdFormValue(bookForm: FormGroup): AuthorIdTO {
     const mainAuthor: AuthorTO = this.getFormControl(bookForm, this.mainAuthorFormControlName).value as AuthorTO
     return mainAuthor.authorId
   }

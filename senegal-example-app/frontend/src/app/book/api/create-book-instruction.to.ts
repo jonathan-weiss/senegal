@@ -1,7 +1,7 @@
-import {UuidTO} from "../../uuid-to.model";
+import {AuthorIdTO} from "../../author/api/author-id-to.model";
 
 export interface CreateBookInstructionTO {
     bookName: string;
-    mainAuthorId: UuidTO;
+    mainAuthorId: AuthorIdTO;
 }
 

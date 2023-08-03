@@ -14,13 +14,13 @@
       Main Book Author is <strong>required</strong>
     </mat-error>
   </mat-form-field>
-  <button matSuffix mat-icon-button (click)="onEditAuthor()" [disabled]="!hasMainAuthor() || isLocked">
+  <button matSuffix mat-icon-button (click)="onEditAuthor()" [disabled]="!hasMainAuthor() || isLocked || fixedField">
     <mat-icon>edit</mat-icon>
   </button>
-  <button matSuffix mat-icon-button (click)="onNewAuthor()" [disabled]="isLocked">
+  <button matSuffix mat-icon-button (click)="onNewAuthor()" [disabled]="isLocked || fixedField">
     <mat-icon>add</mat-icon>
   </button>
-  <button matSuffix mat-icon-button (click)="onSelectAuthor()" [disabled]="isLocked">
+  <button matSuffix mat-icon-button (click)="onSelectAuthor()" [disabled]="isLocked || fixedField">
     <mat-icon>search</mat-icon>
   </button>
 </div>

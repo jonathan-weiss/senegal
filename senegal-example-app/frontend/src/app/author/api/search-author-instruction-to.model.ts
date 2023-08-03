@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {UuidTO} from "../../uuid-to.model";
+import {AuthorIdTO} from "./author-id-to.model";
 
 
-export interface SearchAuthorInstrctionTO {
-    authorId: UuidTO | undefined;
+export interface SearchAuthorInstructionTO {
+    authorId: AuthorIdTO | undefined;
     firstname: string | undefined;
     lastname: string | undefined;
 }

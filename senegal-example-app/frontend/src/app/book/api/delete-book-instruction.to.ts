@@ -1,7 +1,7 @@
-import { UuidTO } from '../../uuid-to.model';
+import {BookIdTO} from "./book-id-to.model";
 
 
 export interface DeleteBookInstructionTO {
-    bookId: UuidTO;
+    bookId: BookIdTO;
 }
 

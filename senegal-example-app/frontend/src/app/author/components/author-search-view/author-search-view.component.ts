@@ -6,7 +6,7 @@ import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.
 import {
   AuthorFormStackEntryComponent
 } from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
-import {SearchAuthorInstrctionTO} from "../../api/search-author-instruction-to.model";
+import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
 
 
 @Component({
@@ -39,7 +39,7 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   private loadAllAuthor(): void {
-    const searchCriteria: SearchAuthorInstrctionTO = {
+    const searchCriteria: SearchAuthorInstructionTO = {
       authorId: undefined,
       firstname: undefined,
       lastname: undefined,

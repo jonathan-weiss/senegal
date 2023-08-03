@@ -6,6 +6,8 @@ import {UpdateBookInstructionTO} from "./api/update-book-instruction.to";
 import {CreateBookInstructionTO} from "./api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "./api/delete-book-instruction.to";
 import {SearchBookInstructionTO} from "./api/search-book-instruction.to";
+import {AuthorTO} from "../author/api/author-to.model";
+import {BookAuthorDescriptionTO} from "./api/book-author-description-to.model";
 
 
 @Injectable({
@@ -23,6 +25,11 @@ export class BookService {
   searchBooks(searchCriteria: SearchBookInstructionTO): Observable<ReadonlyArray<BookTO>> {
     return this.bookApiService.searchAllBook(searchCriteria);
   }
+
+  getAllAuthorsFiltered(searchTerm: string): Observable<ReadonlyArray<BookAuthorDescriptionTO>> {
+    return this.bookApiService.getAllAuthorFiltered(searchTerm);
+  }
+
 
   updateBook(updateInstruction: UpdateBookInstructionTO): Observable<BookTO> {
     return this.bookApiService.updateBook(updateInstruction);

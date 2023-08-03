@@ -7,46 +7,46 @@ import ch.senegal.example.frontendapi.controller.author.AuthorTO
 
 
 data class BookTO(
-    val bookId: UuidTO,
+    val bookId: BookId,
     val bookName: String,
-    val mainAuthor: AuthorTO,
+    val mainAuthor: BookAuthorDescriptionTO,
 ) {
 
     companion object {
         internal fun fromDomain(it: Book) = BookTO(
-            bookId = UuidTO(it.bookId.value),
+            bookId = it.bookId,
             bookName = it.bookName,
-            mainAuthor = AuthorTO.fromDomain(it.mainAuthor)
+            mainAuthor = BookAuthorDescriptionTO.fromDomain(it.mainAuthor)
         )
     }
 }
 
 data class CreateBookInstructionTO(
     val bookName: String,
-    val mainAuthorId: UuidTO,
+    val mainAuthorId: AuthorId,
 ) {
     fun toDomain() = CreateBookInstruction(
         bookName = this.bookName,
-        mainAuthorId = AuthorId(mainAuthorId.uuid)
+        mainAuthorId = mainAuthorId,
     )
 }
 
 data class UpdateBookInstructionTO(
-    val bookId: UuidTO,
+    val bookId: BookId,
     val bookName: String,
-    val mainAuthorId: UuidTO,
+    val mainAuthorId: AuthorId,
 ) {
     fun toDomain() = UpdateBookInstruction(
-        bookId = BookId(this.bookId.uuid),
+        bookId = this.bookId,
         bookName = this.bookName,
-        mainAuthorId = AuthorId(this.mainAuthorId.uuid)
+        mainAuthorId = this.mainAuthorId
     )
 }
 
 class DeleteBookInstructionTO(
-    val bookId: UuidTO,
+    val bookId: BookId,
 ) {
     fun toDomain() = DeleteBookInstruction(
-        bookId = BookId(this.bookId.uuid),
+        bookId = this.bookId,
     )
 }

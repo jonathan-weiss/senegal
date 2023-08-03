@@ -6,9 +6,9 @@ import ch.senegal.example.domain.author.DeleteAuthorInstruction
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 
 data class DeleteAuthorInstructionTO(
-    val authorId: UuidTO,
+    val authorId: AuthorId,
 ){
     fun toDomain() = DeleteAuthorInstruction(
-        authorId = AuthorId(this.authorId.uuid),
+        authorId = this.authorId,
     )
 }

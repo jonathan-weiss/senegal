@@ -6,12 +6,12 @@ import ch.senegal.example.domain.author.UpdateAuthorInstruction
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 
 data class UpdateAuthorInstructionTO(
-    val authorId: UuidTO,
-    val firstname: kotlin.String,
-    val lastname: kotlin.String,
+    val authorId: AuthorId,
+    val firstname: String,
+    val lastname: String,
 ) {
     fun toDomain() = UpdateAuthorInstruction(
-        authorId = AuthorId(this.authorId.uuid),
+        authorId = this.authorId,
         firstname = this.firstname,
         lastname = this.lastname,
     )

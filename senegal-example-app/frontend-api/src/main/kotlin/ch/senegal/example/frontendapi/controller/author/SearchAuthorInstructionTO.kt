@@ -5,12 +5,12 @@ import ch.senegal.example.domain.author.SearchAuthorInstruction
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 
 data class SearchAuthorInstructionTO(
-    val authorId: UuidTO?,
+    val authorId: AuthorId?,
     val firstname: String?,
     val lastname: String?,
 ) {
     fun toDomain() = SearchAuthorInstruction(
-        authorId = this.authorId?.let { AuthorId(it.uuid) },
+        authorId = this.authorId,
         firstname = this.firstname,
         lastname = this.lastname,
     )

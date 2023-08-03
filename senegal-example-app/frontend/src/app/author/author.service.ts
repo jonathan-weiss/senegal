@@ -8,7 +8,8 @@ import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.mode
 import {UuidTO} from "../uuid-to.model";
 import {BookTO} from "../book/api/book-to.model";
 import {BookApiService} from "../book/api/book-api.service";
-import {SearchAuthorInstrctionTO} from "./api/search-author-instruction-to.model";
+import {SearchAuthorInstructionTO} from "./api/search-author-instruction-to.model";
+import {AuthorIdTO} from "./api/author-id-to.model";
 
 
 @Injectable({
@@ -24,18 +25,14 @@ export class AuthorService {
     return this.authorApiService.getAllAuthor();
   }
 
-  searchAllAuthor(searchCriteria: SearchAuthorInstrctionTO): Observable<ReadonlyArray<AuthorTO>> {
+  searchAllAuthor(searchCriteria: SearchAuthorInstructionTO): Observable<ReadonlyArray<AuthorTO>> {
     return this.authorApiService.searchAllAuthor(searchCriteria).pipe(
       map( (entities) => entities)
     );
   }
 
 
-  getAllAuthorsFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
-    return this.authorApiService.getAllAuthorFiltered(searchTerm);
-  }
-
-  getAllBooksByAuthor(authorId: UuidTO): Observable<ReadonlyArray<BookTO>> {
+  getAllBooksByAuthor(authorId: AuthorIdTO): Observable<ReadonlyArray<BookTO>> {
     return this.bookApiService.getAllBookByAuthor(authorId);
   }
 

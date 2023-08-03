@@ -6,14 +6,14 @@ import ch.senegal.example.domain.book.SearchBookInstruction
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 
 data class SearchBookInstructionTO(
-    val bookId: UuidTO?,
+    val bookId: BookId?,
     val bookName: String?,
-    val mainAuthorId: UuidTO?,
+    val mainAuthorId: AuthorId?,
 ) {
     fun toDomain() = SearchBookInstruction(
-        bookId = this.bookId?.let { BookId(it.uuid) },
+        bookId = this.bookId,
         bookName = this.bookName,
-        mainAuthorId = this.mainAuthorId?.let { AuthorId(it.uuid) }
+        mainAuthorId = this.mainAuthorId,
     )
 
 }

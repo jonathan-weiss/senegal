@@ -7,7 +7,8 @@ import { AuthorTO } from "./author-to.model";
 import { CreateAuthorInstructionTO } from "./create-author-instruction-to.model";
 import { UpdateAuthorInstructionTO } from "./update-author-instruction-to.model";
 import { DeleteAuthorInstructionTO } from "./delete-author-instruction-to.model";
-import {SearchAuthorInstrctionTO} from "./search-author-instruction-to.model";
+import {SearchAuthorInstructionTO} from "./search-author-instruction-to.model";
+import {AuthorIdTO} from "./author-id-to.model";
 
 @Injectable({
 providedIn: 'root'
@@ -16,19 +17,15 @@ export class AuthorApiService {
 
     constructor(private readonly httpClient: HttpClient) {}
 
-    getAuthorById(authorId: UuidTO): Observable<AuthorTO> {
-        return this.httpClient.get<AuthorTO>(`/api/author/entry/` + authorId.uuid);
+    getAuthorById(authorId: AuthorIdTO): Observable<AuthorTO> {
+        return this.httpClient.get<AuthorTO>(`/api/author/entry/` + authorId.value);
     }
 
     getAllAuthor(): Observable<ReadonlyArray<AuthorTO>> {
         return this.httpClient.get<Array<AuthorTO>>(`/api/author/all`);
     }
-    searchAllAuthor(searchCriteria: SearchAuthorInstrctionTO): Observable<ReadonlyArray<AuthorTO>> {
+    searchAllAuthor(searchCriteria: SearchAuthorInstructionTO): Observable<ReadonlyArray<AuthorTO>> {
         return this.httpClient.post<Array<AuthorTO>>(`/api/author/search`, searchCriteria);
-    }
-
-    getAllAuthorFiltered(searchTerm: string): Observable<ReadonlyArray<AuthorTO>> {
-        return this.httpClient.get<Array<AuthorTO>>(`/api/author/all-filtered?searchTerm=` + searchTerm);
     }
 
     createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
