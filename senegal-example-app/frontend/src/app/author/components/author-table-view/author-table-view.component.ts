@@ -11,7 +11,7 @@ export class AuthorTableViewComponent {
   @Input() showSelectButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
-    @Input() tableControlsDisabled!: boolean;
+    @Input() isLocked!: boolean;
 
 
     @Input() allAuthor!: ReadonlyArray<AuthorTO>

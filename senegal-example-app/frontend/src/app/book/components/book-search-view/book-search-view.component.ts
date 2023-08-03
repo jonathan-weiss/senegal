@@ -6,6 +6,9 @@ import {BookFormViewComponent} from "../book-form-view/book-form-view.component"
 import {DeleteBookInstructionTO} from "../../api/delete-book-instruction.to";
 import {AuthorTO} from "../../../author/api/author-to.model";
 import {BookSearchCriteria} from "../../api/book-search-criteria.model";
+import {
+  BookFormStackEntryComponent
+} from "../../stack-components/book-form-stack-entry/book-form-stack-entry.component";
 
 
 @Component({
@@ -20,6 +23,8 @@ export class BookSearchViewComponent implements OnInit {
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
 
+  @Input() isLocked!: boolean;
+
   @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
   @Input() searchEvent: EventEmitter<void> | undefined = undefined;
 
@@ -27,8 +32,6 @@ export class BookSearchViewComponent implements OnInit {
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
   allBooks: ReadonlyArray<BookTO> = []
-
-  isEditingDisabled: boolean = false;
 
   highlightedBook: BookTO | undefined = undefined;
 
@@ -69,9 +72,8 @@ export class BookSearchViewComponent implements OnInit {
   }
 
   add(): void {
-    this.isEditingDisabled = true;
     this.highlightedBook = undefined;
-    this.componentStackService.newComponentOnStack(BookFormViewComponent, (component: BookFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(BookFormStackEntryComponent, (component: BookFormStackEntryComponent) => {
       component.book = undefined;
       component.fixedMainAuthor = this.fixedMainAuthor;
       component.saveClicked.subscribe((author) => this.reloadAllBooksAfterEditing(author));
@@ -80,9 +82,8 @@ export class BookSearchViewComponent implements OnInit {
   }
 
   edit(entry: BookTO): void {
-    this.isEditingDisabled = true;
     this.highlightedBook = entry;
-    this.componentStackService.newComponentOnStack(BookFormViewComponent, (component: BookFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(BookFormStackEntryComponent, (component: BookFormStackEntryComponent) => {
       component.book = entry;
       component.fixedMainAuthor = this.fixedMainAuthor;
       component.saveClicked.subscribe((author) => this.reloadAllBooksAfterEditing(author));
@@ -91,7 +92,6 @@ export class BookSearchViewComponent implements OnInit {
   }
 
   delete(entry: BookTO): void {
-    this.isEditingDisabled = true;
     this.onPerformDeleteOnServer(entry);
   }
 
@@ -106,7 +106,6 @@ export class BookSearchViewComponent implements OnInit {
 
   private reloadAllBooksAfterEditing(highlightedEntry: BookTO | undefined = undefined): void {
     this.loadAllBooks();
-    this.isEditingDisabled = false;
     this.highlightedBook = highlightedEntry;
   }
 

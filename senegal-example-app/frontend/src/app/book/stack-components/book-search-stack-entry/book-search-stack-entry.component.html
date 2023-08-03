@@ -1,0 +1,13 @@
+<book-search-view
+  [showCancelButton]="showCancelButton"
+  [showAddButton]="showAddButton"
+  [showSelectButton]="showSelectButton"
+  [showEditButton]="showEditButton"
+  [showDeleteButton]="showDeleteButton"
+  [isLocked]="isLocked"
+  [fixedMainAuthor]="fixedMainAuthor"
+  [searchEvent]="searchEvent"
+
+  (selectClicked)="selectClicked.emit($event)"
+  (cancelClicked)="cancelClicked.emit($event)"
+></book-search-view>

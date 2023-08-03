@@ -24,7 +24,6 @@ import {RouterModule} from "@angular/router";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {AuthorPanelViewComponent} from "./author/components/author-panel-view/author-panel-view.component";
 import {AuthorTableViewComponent} from "./author/components/author-table-view/author-table-view.component";
 import {DisplayComponentStackComponent} from "./component-stack/display-component-stack.component";
 import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
@@ -54,8 +53,21 @@ import {
 } from "./author/components/author-form-view/author-all-book-by-author/all-book-by-author.component";
 import {AuthorSearchViewComponent} from "./author/components/author-search-view/author-search-view.component";
 import {BookTableViewComponent} from "./book/components/book-table-view/book-table-view.component";
-import {BookPanelViewComponent} from "./book/components/book-panel-view/book-panel-view.component";
 import {BookSearchViewComponent} from "./book/components/book-search-view/book-search-view.component";
+import {
+  BookSearchStackEntryComponent
+} from "./book/stack-components/book-search-stack-entry/book-search-stack-entry.component";
+import {BookEntryPointComponent} from "./book/stack-components/book-entry-point/book-entry-point.component";
+import {
+  BookFormStackEntryComponent
+} from "./book/stack-components/book-form-stack-entry/book-form-stack-entry.component";
+import {
+  AuthorSearchStackEntryComponent
+} from "./author/stack-components/author-search-stack-entry/author-search-stack-entry.component";
+import {
+  AuthorFormStackEntryComponent
+} from "./author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
+import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-point/author-entry-point.component";
 
 
 @NgModule({
@@ -65,20 +77,24 @@ import {BookSearchViewComponent} from "./book/components/book-search-view/book-s
     SectionComponent,
     ComponentStackAnchorDirective,
     AuthorTableViewComponent,
-    AuthorPanelViewComponent,
     AuthorSearchViewComponent,
     AuthorFirstnameFormFieldComponent,
     AuthorIdFormFieldComponent,
     AuthorLastnameFormFieldComponent,
     AuthorFormViewComponent,
+    AuthorSearchStackEntryComponent,
+    AuthorFormStackEntryComponent,
+    AuthorEntryPointComponent,
     AllBookByAuthorComponent,
     BookFormViewComponent,
     MainAuthorFormFieldComponent,
     BookNameFormFieldComponent,
     BookIdFormFieldComponent,
     BookTableViewComponent,
-    BookPanelViewComponent,
     BookSearchViewComponent,
+    BookSearchStackEntryComponent,
+    BookFormStackEntryComponent,
+    BookEntryPointComponent,
     SideNavigationComponent,
   ],
   imports: [

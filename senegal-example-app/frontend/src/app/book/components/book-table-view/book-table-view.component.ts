@@ -11,7 +11,8 @@ export class BookTableViewComponent {
   @Input() showSelectButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
-    @Input() tableControlsDisabled!: boolean;
+  @Input() tableControlsDisabled!: boolean;
+  @Input() isLocked!: boolean;
 
 
     @Input() allBooks!: ReadonlyArray<BookTO>
@@ -37,6 +38,10 @@ export class BookTableViewComponent {
   }
 
   onRowDoubleClicked(entry: BookTO): void {
+      if(this.isLocked) {
+        return;
+      }
+
       if(this.showSelectButton) {
         this.selectEntryClicked.emit(entry);
       } else if(this.showEditButton) {
@@ -46,14 +51,23 @@ export class BookTableViewComponent {
 
 
   editClicked(entry: BookTO): void {
+    if(this.isLocked) {
+      return;
+    }
         this.editEntryClicked.emit(entry);
     }
 
     selectClicked(entry: BookTO): void {
+      if(this.isLocked) {
+        return;
+      }
         this.selectEntryClicked.emit(entry);
     }
 
     deleteClicked(entry: BookTO): void {
+      if(this.isLocked) {
+        return;
+      }
         this.deleteEntryClicked.emit(entry);
     }
 

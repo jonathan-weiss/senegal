@@ -13,6 +13,8 @@ export class AuthorLastnameFormFieldComponent implements OnInit {
 
   @Input() lastname: string | undefined;
 
+  @Input() isLocked!: boolean;
+
   ngOnInit() {
     this.authorLastnameFormControl.setValidators(Validators.required);
     this.authorLastnameFormControl.patchValue(this.lastname == undefined ? '': this.lastname)

@@ -4,8 +4,12 @@ import {filter, Observable, startWith, switchMap} from "rxjs";
 import {AuthorTO} from "../../../../author/api/author-to.model";
 import {AuthorService} from "../../../../author/author.service";
 import {ComponentStackService} from "../../../../component-stack/component-stack.service";
-import {AuthorFormViewComponent} from "../../../../author/components/author-form-view/author-form-view.component";
-import {AuthorSearchViewComponent} from "../../../../author/components/author-search-view/author-search-view.component";
+import {
+  AuthorFormStackEntryComponent
+} from "../../../../author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
+import {
+  AuthorSearchStackEntryComponent
+} from "../../../../author/stack-components/author-search-stack-entry/author-search-stack-entry.component";
 
 
 @Component({
@@ -19,6 +23,8 @@ export class MainAuthorFormFieldComponent implements OnInit {
 
   @Input() mainAuthor: AuthorTO | undefined;
   @Input() fixedField: boolean = false;
+
+  @Input() isLocked!: boolean;
 
   authorsOptions!: Observable<ReadonlyArray<AuthorTO>>
 
@@ -58,7 +64,7 @@ export class MainAuthorFormFieldComponent implements OnInit {
   }
 
   onNewAuthor(): void {
-    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
       component.author = undefined;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
@@ -67,7 +73,7 @@ export class MainAuthorFormFieldComponent implements OnInit {
 
   onEditAuthor(): void {
     const entry: AuthorTO = this.mainAuthorFormControl.value as AuthorTO;
-    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
       component.author = entry;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
@@ -75,7 +81,7 @@ export class MainAuthorFormFieldComponent implements OnInit {
   }
 
   onSelectAuthor(): void {
-    this.componentStackService.newComponentOnStack(AuthorSearchViewComponent, (component: AuthorSearchViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorSearchStackEntryComponent, (component: AuthorSearchStackEntryComponent) => {
       component.showSelectButton = true;
       component.showCancelButton= true;
       component.showDeleteButton = false;

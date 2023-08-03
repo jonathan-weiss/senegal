@@ -4,6 +4,9 @@ import {AuthorService} from "../../author.service";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {AuthorFormViewComponent} from "../author-form-view/author-form-view.component";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
+import {
+  AuthorFormStackEntryComponent
+} from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
 
 
 @Component({
@@ -17,13 +20,12 @@ export class AuthorSearchViewComponent implements OnInit {
   @Input() showSelectButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
+  @Input() isLocked!: boolean
 
   @Output() selectClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
   allAuthor: ReadonlyArray<AuthorTO> = []
-
-  isEditingDisabled: boolean = false;
 
   highlightedAuthor: AuthorTO | undefined = undefined;
 
@@ -55,9 +57,8 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   add(): void {
-    this.isEditingDisabled = true;
     this.highlightedAuthor = undefined;
-    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
       component.author = undefined;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
@@ -65,9 +66,8 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   edit(entry: AuthorTO): void {
-    this.isEditingDisabled = true;
     this.highlightedAuthor = entry;
-    this.componentStackService.newComponentOnStack(AuthorFormViewComponent, (component: AuthorFormViewComponent) => {
+    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
       component.author = entry;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
@@ -75,7 +75,6 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   delete(entry: AuthorTO): void {
-    this.isEditingDisabled = true;
     this.onPerformDeleteOnServer(entry);
   }
 
@@ -90,7 +89,6 @@ export class AuthorSearchViewComponent implements OnInit {
 
   private reloadAllAuthorsAfterEditing(highlightedEntry: AuthorTO | undefined = undefined): void {
     this.loadAllAuthor();
-    this.isEditingDisabled = false;
     this.highlightedAuthor = highlightedEntry;
   }
 

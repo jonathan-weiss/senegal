@@ -11,5 +11,6 @@ export class AllBookByAuthorComponent {
 
   @Input() author: AuthorTO | undefined;
   @Input() reloadAllBookEvent: EventEmitter<void> | undefined = undefined;
+  @Input() isLocked!: boolean;
 
 }

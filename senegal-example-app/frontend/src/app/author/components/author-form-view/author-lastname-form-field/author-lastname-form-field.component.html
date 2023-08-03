@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill">
   <mat-label>Lastname</mat-label>
-  <input matInput type="text" [formControl]="authorLastnameFormControl">
+  <input matInput type="text" [formControl]="authorLastnameFormControl" [disabled]="isLocked">
   <mat-error *ngIf="authorLastnameFormControl.hasError('required')">
     Lastname is <strong>required</strong>
   </mat-error>

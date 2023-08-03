@@ -18,6 +18,8 @@ export class AuthorFormViewComponent implements OnInit {
   @Output() saveClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
+  @Input() isLocked!: boolean;
+
   authorForm: FormGroup = new FormGroup({});
 
   tabCommonsSelected: EventEmitter<void> = new EventEmitter<void>()

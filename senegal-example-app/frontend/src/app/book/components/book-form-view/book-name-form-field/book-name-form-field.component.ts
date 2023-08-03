@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
@@ -12,6 +12,10 @@ export class BookNameFormFieldComponent implements OnInit {
   @Input() bookNameFormControl!: FormControl;
 
   @Input() bookName: string | undefined;
+
+  @Input() isLocked!: boolean;
+
+
 
   ngOnInit() {
     this.bookNameFormControl.setValidators(Validators.required);

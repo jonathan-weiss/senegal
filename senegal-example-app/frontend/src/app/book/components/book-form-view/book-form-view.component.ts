@@ -17,6 +17,7 @@ export class BookFormViewComponent implements OnInit {
 
   @Input() book: BookTO | undefined;
   @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
+  @Input() isLocked!: boolean
 
   @Output() saveClicked: EventEmitter<BookTO> = new EventEmitter<BookTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -62,6 +63,10 @@ export class BookFormViewComponent implements OnInit {
   }
 
   saveForm(): void {
+    if(this.isLocked) {
+      return;
+    }
+
     if(this.book == undefined) {
       this.bookFormService.performCreateOnServer(this.bookForm).subscribe(book => this.afterServerResponse(book));
     } else {

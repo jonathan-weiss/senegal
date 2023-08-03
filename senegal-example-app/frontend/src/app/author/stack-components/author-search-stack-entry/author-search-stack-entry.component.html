@@ -1,0 +1,11 @@
+<author-search-view
+  [showCancelButton]="showCancelButton"
+  [showAddButton]="showAddButton"
+  [showSelectButton]="showSelectButton"
+  [showEditButton]="showEditButton"
+  [showDeleteButton]="showDeleteButton"
+  [isLocked]="isLocked"
+
+  (selectClicked)="selectClicked.emit($event)"
+  (cancelClicked)="cancelClicked.emit($event)"
+></author-search-view>

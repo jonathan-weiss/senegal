@@ -1,5 +1,6 @@
 import {Injectable, Type} from '@angular/core';
 import {ComponentStackObserver} from "./component-stack-observer.interface";
+import {StackEntry} from "./stack-entry.interface";
 
 
 @Injectable({
@@ -8,7 +9,7 @@ import {ComponentStackObserver} from "./component-stack-observer.interface";
 export class ComponentStackObservationService {
   private stackObservers: Set<ComponentStackObserver> = new Set<ComponentStackObserver>();
 
-  public addComponentOntoStack(component: Type<any>, onInitialization: (component: any) => void): void {
+  public addComponentOntoStack<C extends StackEntry>(component: Type<C>, onInitialization: (component: C) => void): void {
     this.stackObservers.forEach((componentStackObserver: ComponentStackObserver) =>  {
       componentStackObserver.addComponentToStack(component, onInitialization);
     });

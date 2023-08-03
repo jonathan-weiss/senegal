@@ -6,21 +6,22 @@
         <span *ngIf="!isCreateMode()">Edit Book</span>
       </mat-card-title>
     </mat-card-header>
-
       <mat-card-content>
+      <fieldset [disabled]="isLocked">
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">
             <div class="tab-content">
               <book-id-form-field *ngIf="!isCreateMode()" [bookIdFormControl]="bookIdFormControl" [bookId]="bookId()"></book-id-form-field>
-              <book-name-form-field [bookNameFormControl]="bookNameFormControl" [bookName]="bookName()"></book-name-form-field>
-              <main-author-form-field [mainAuthorFormControl]="mainAuthorFormControl" [mainAuthor]="mainAuthor()" [fixedField]="fixedMainAuthor != undefined"></main-author-form-field>
+              <book-name-form-field [bookNameFormControl]="bookNameFormControl" [bookName]="bookName()" [isLocked]="isLocked"></book-name-form-field>
+              <main-author-form-field [mainAuthorFormControl]="mainAuthorFormControl" [mainAuthor]="mainAuthor()" [fixedField]="fixedMainAuthor != undefined" [isLocked]="isLocked"></main-author-form-field>
             </div>
           </mat-tab>
         </mat-tab-group>
+      </fieldset>
       </mat-card-content>
       <mat-card-actions>
-          <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid()">Save</button>
-          <button mat-raised-button color="secondary" (click)="cancelForm()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid() || isLocked">Save</button>
+          <button mat-raised-button color="secondary" (click)="cancelForm()" [disabled]="isLocked">Cancel</button>
       </mat-card-actions>
   </mat-card>
 </form>

@@ -2,6 +2,7 @@ import {Component, ComponentRef, OnDestroy, OnInit, Type, ViewChild} from '@angu
 import {ComponentStackAnchorDirective} from "./component-stack-anchor.directive";
 import {ComponentStackObserver} from "./component-stack-observer.interface";
 import {ComponentStackObservationService} from "./component-stack-observation.service";
+import {StackEntry} from "./stack-entry.interface";
 
 
 @Component({
@@ -10,6 +11,8 @@ import {ComponentStackObservationService} from "./component-stack-observation.se
   styleUrls: ['./display-component-stack.component.scss'],
 })
 export class DisplayComponentStackComponent implements OnInit, OnDestroy, ComponentStackObserver {
+
+  private stackComponents: Array<StackEntry> = [];
 
   @ViewChild(ComponentStackAnchorDirective, {static: true}) stackAnchor!: ComponentStackAnchorDirective;
 
@@ -25,12 +28,22 @@ export class DisplayComponentStackComponent implements OnInit, OnDestroy, Compon
     this.panelStackObservationService.unregisterOfStackObservation(this);
   }
 
-  addComponentToStack(componentStackEntry: Type<any>, onInitialization: (component: any) => void): void {
-    const componentRef: ComponentRef<any> = this.stackAnchor.viewContainerRef.createComponent<any>(componentStackEntry);
-    onInitialization(componentRef.instance);
+  addComponentToStack<C extends StackEntry>(componentStackEntry: Type<C>, onInitialization: (component: C) => void): void {
+    const componentRef: ComponentRef<C> = this.stackAnchor.viewContainerRef.createComponent<C>(componentStackEntry);
+    const stackComponent: C = componentRef.instance
+    onInitialization(stackComponent);
+    this.forAllStackComponents((stackEntry: StackEntry) => {
+      stackEntry.lock();
+    })
+    this.stackComponents.push(stackComponent);
+
   }
 
   removeLatestComponentFromStack(): void {
+    this.stackComponents.pop();
+    this.forLastStackComponent((stackEntry: StackEntry) => {
+      stackEntry.unlock();
+    })
     this.stackAnchor.viewContainerRef.remove()
   }
 
@@ -38,5 +51,17 @@ export class DisplayComponentStackComponent implements OnInit, OnDestroy, Compon
     this.stackAnchor.viewContainerRef.clear();
   }
 
+  private forAllStackComponents(callback: (stackEntry: StackEntry) => void): void {
+    this.stackComponents.forEach((stackEntry: StackEntry) => {
+      callback(stackEntry)
+    })
+  }
+
+  private forLastStackComponent(callback: (stackEntry: StackEntry) => void): void {
+    const length = this.stackComponents.length;
+    if(length > 0) {
+      callback(this.stackComponents[length -1]);
+    }
+  }
 
 }

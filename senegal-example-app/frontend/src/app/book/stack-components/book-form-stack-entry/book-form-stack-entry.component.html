@@ -1,0 +1,7 @@
+<book-form-view
+  [book]="book"
+  [fixedMainAuthor]="fixedMainAuthor"
+  (saveClicked)="saveClicked.emit($event)"
+  (cancelClicked)="cancelClicked.emit($event)"
+  [isLocked]="isLocked"
+></book-form-view>

@@ -11,10 +11,11 @@
   [showDeleteButton]="showDeleteButton"
   [showEditButton]="showEditButton"
   [showSelectButton]="showSelectButton"
+  [isLocked]="isLocked"
 ></book-table-view>
   </mat-card-content>
   <mat-card-actions>
-    <button *ngIf="showCancelButton" mat-raised-button color="secondary" (click)="cancel()">Cancel</button>
-    <button *ngIf="showAddButton" mat-raised-button color="primary" [disabled]="isEditingDisabled" (click)="add()">Add new Book...</button>
+    <button *ngIf="showCancelButton" mat-raised-button color="secondary" (click)="cancel()" [disabled]="isLocked">Cancel</button>
+    <button *ngIf="showAddButton" mat-raised-button color="primary" [disabled]="isLocked" (click)="add()">Add new Book...</button>
   </mat-card-actions>
 </mat-card>

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AuthorPanelViewComponent} from "./author/components/author-panel-view/author-panel-view.component";
-import {BookPanelViewComponent} from "./book/components/book-panel-view/book-panel-view.component";
+import {BookEntryPointComponent} from "./book/stack-components/book-entry-point/book-entry-point.component";
+import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-point/author-entry-point.component";
 
 const routes: Routes = [
-  { path: 'books', component: BookPanelViewComponent },
-  { path: 'authors', component: AuthorPanelViewComponent },
+  { path: 'books', component: BookEntryPointComponent },
+  { path: 'authors', component: AuthorEntryPointComponent },
 ];
 
 @NgModule({

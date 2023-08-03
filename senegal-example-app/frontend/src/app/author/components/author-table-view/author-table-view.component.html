@@ -19,13 +19,13 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element" class="context-column">
 
-          <button *ngIf="showSelectButton" matSuffix mat-icon-button (click)="selectClicked(element)" [disabled]="tableControlsDisabled">
+          <button *ngIf="showSelectButton" matSuffix mat-icon-button (click)="selectClicked(element)" [disabled]="isLocked">
             <mat-icon>check</mat-icon>
           </button>
-          <button *ngIf="showEditButton" matSuffix mat-icon-button (click)="editClicked(element)" [disabled]="tableControlsDisabled">
+          <button *ngIf="showEditButton" matSuffix mat-icon-button (click)="editClicked(element)" [disabled]="isLocked">
             <mat-icon>edit</mat-icon>
           </button>
-          <button *ngIf="showDeleteButton" matSuffix mat-icon-button (click)="deleteClicked(element)" [disabled]="tableControlsDisabled">
+          <button *ngIf="showDeleteButton" matSuffix mat-icon-button (click)="deleteClicked(element)" [disabled]="isLocked">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
