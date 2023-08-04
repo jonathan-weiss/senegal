@@ -12,6 +12,8 @@ import {
 } from "../../../../author/stack-components/author-search-stack-entry/author-search-stack-entry.component";
 import {BookAuthorDescriptionTO} from "../../../api/book-author-description-to.model";
 import {BookService} from "../../../book.service";
+import {bookStackKey} from "../../../stack-components/book-stack-key";
+import {StackKey} from "../../../../component-stack/stack-key";
 
 
 @Component({
@@ -27,6 +29,7 @@ export class MainAuthorFormFieldComponent implements OnInit {
   @Input() fixedField: boolean = false;
 
   @Input() isLocked!: boolean;
+  @Input() stackKey!: StackKey
 
   authorsOptions!: Observable<ReadonlyArray<BookAuthorDescriptionTO>>
 
@@ -66,7 +69,8 @@ export class MainAuthorFormFieldComponent implements OnInit {
   }
 
   onNewAuthor(): void {
-    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+      component.stackKey = this.stackKey;
       component.author = undefined;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
@@ -75,7 +79,8 @@ export class MainAuthorFormFieldComponent implements OnInit {
 
   onEditAuthor(): void {
     const entry: AuthorTO = this.mainAuthorFormControl.value as AuthorTO;
-    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+      component.stackKey = this.stackKey;
       component.author = entry;
       component.saveClicked.subscribe((author) => this.refreshAuthorAfterEditing(author));
       component.cancelClicked.subscribe(() => this.refreshAuthorAfterEditing());
@@ -83,7 +88,8 @@ export class MainAuthorFormFieldComponent implements OnInit {
   }
 
   onSelectAuthor(): void {
-    this.componentStackService.newComponentOnStack(AuthorSearchStackEntryComponent, (component: AuthorSearchStackEntryComponent) => {
+    this.componentStackService.newComponentOnStack(this.stackKey, AuthorSearchStackEntryComponent, (component: AuthorSearchStackEntryComponent) => {
+      component.stackKey = this.stackKey;
       component.showSelectButton = true;
       component.showCancelButton= true;
       component.showDeleteButton = false;

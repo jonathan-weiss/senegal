@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BookTO} from "../../api/book-to.model";
+import {StackKey} from "../../../component-stack/stack-key";
 
 
 @Component({
@@ -13,6 +14,7 @@ export class BookTableViewComponent {
   @Input() showDeleteButton: boolean = false
   @Input() tableControlsDisabled!: boolean;
   @Input() isLocked!: boolean;
+  @Input() stackKey!: StackKey
 
 
     @Input() allBooks!: ReadonlyArray<BookTO>

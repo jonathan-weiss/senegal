@@ -4,6 +4,8 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {AuthorFormService} from "./author-form.service";
 import {AuthorTO} from "../../api/author-to.model";
+import {authorStackKey} from "../../stack-components/author-stack-key";
+import {StackKey} from "../../../component-stack/stack-key";
 
 
 @Component({
@@ -19,6 +21,7 @@ export class AuthorFormViewComponent implements OnInit {
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
   @Input() isLocked!: boolean;
+  @Input() stackKey!: StackKey
 
   authorForm: FormGroup = new FormGroup({});
 
@@ -60,12 +63,12 @@ export class AuthorFormViewComponent implements OnInit {
 
   private afterServerResponse(author: AuthorTO) {
       this.saveClicked.emit(author);
-      this.componentStackService.removeLatestComponentFromStack();
+      this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancelForm() {
     this.cancelClicked.emit();
-    this.componentStackService.removeLatestComponentFromStack();
+    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
 

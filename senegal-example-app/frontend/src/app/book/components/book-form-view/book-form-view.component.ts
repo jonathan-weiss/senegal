@@ -8,6 +8,8 @@ import {BookFormService} from "./book-form.service";
 import {UuidTO} from "../../../uuid-to.model";
 import {BookIdTO} from "../../api/book-id-to.model";
 import {BookAuthorDescriptionTO} from "../../api/book-author-description-to.model";
+import {bookStackKey} from "../../stack-components/book-stack-key";
+import {StackKey} from "../../../component-stack/stack-key";
 
 
 @Component({
@@ -20,6 +22,7 @@ export class BookFormViewComponent implements OnInit {
   @Input() book: BookTO | undefined;
   @Input() fixedMainAuthor: AuthorTO | undefined = undefined;
   @Input() isLocked!: boolean
+  @Input() stackKey!: StackKey
 
   @Output() saveClicked: EventEmitter<BookTO> = new EventEmitter<BookTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -80,12 +83,12 @@ export class BookFormViewComponent implements OnInit {
 
   private afterServerResponse(book: BookTO) {
       this.saveClicked.emit(book);
-      this.componentStackService.removeLatestComponentFromStack();
+      this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancelForm() {
     this.cancelClicked.emit();
-    this.componentStackService.removeLatestComponentFromStack();
+    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
 

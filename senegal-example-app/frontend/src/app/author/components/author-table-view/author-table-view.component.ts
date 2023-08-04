@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { AuthorTO } from "../../api/author-to.model";
+import {StackKey} from "../../../component-stack/stack-key";
 
 
 @Component({
@@ -11,7 +12,8 @@ export class AuthorTableViewComponent {
   @Input() showSelectButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
-    @Input() isLocked!: boolean;
+  @Input() isLocked!: boolean;
+  @Input() stackKey!: StackKey
 
 
     @Input() allAuthor!: ReadonlyArray<AuthorTO>

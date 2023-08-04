@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {AuthorTO} from "../../../api/author-to.model";
+import {StackKey} from "../../../../component-stack/stack-key";
 
 
 @Component({
@@ -12,5 +13,6 @@ export class AllBookByAuthorComponent {
   @Input() author: AuthorTO | undefined;
   @Input() reloadAllBookEvent: EventEmitter<void> | undefined = undefined;
   @Input() isLocked!: boolean;
+  @Input() stackKey!: StackKey
 
 }

@@ -7,6 +7,8 @@ import {
   AuthorFormStackEntryComponent
 } from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
+import {authorStackKey} from "../../stack-components/author-stack-key";
+import {StackKey} from "../../../component-stack/stack-key";
 
 
 @Component({
@@ -21,6 +23,7 @@ export class AuthorSearchViewComponent implements OnInit {
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
   @Input() isLocked!: boolean
+  @Input() stackKey!: StackKey
 
   @Output() selectClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -54,17 +57,18 @@ export class AuthorSearchViewComponent implements OnInit {
 
   select(author: AuthorTO): void {
     this.selectClicked.emit(author);
-    this.componentStackService.removeLatestComponentFromStack();
+    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancel(): void {
     this.cancelClicked.emit();
-    this.componentStackService.removeLatestComponentFromStack();
+    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   add(): void {
     this.highlightedAuthor = undefined;
-    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+      component.stackKey = this.stackKey;
       component.author = undefined;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
@@ -73,7 +77,8 @@ export class AuthorSearchViewComponent implements OnInit {
 
   edit(entry: AuthorTO): void {
     this.highlightedAuthor = entry;
-    this.componentStackService.newComponentOnStack(AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
+      component.stackKey = this.stackKey;
       component.author = entry;
       component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
       component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
