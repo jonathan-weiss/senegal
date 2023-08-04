@@ -8,7 +8,6 @@ import {
   BookFormStackEntryComponent
 } from "../../stack-components/book-form-stack-entry/book-form-stack-entry.component";
 import {SearchBookInstructionTO} from "../../api/search-book-instruction.to";
-import {bookStackKey} from "../../stack-components/book-stack-key";
 import {StackKey} from "../../../component-stack/stack-key";
 
 

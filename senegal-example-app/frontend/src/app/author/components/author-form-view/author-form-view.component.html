@@ -5,7 +5,6 @@
         <mat-card-title *ngIf="!isCreateMode()">Edit Author</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <fieldset [disabled]="isLocked">
         <mat-tab-group (selectedTabChange)="openTab($event)">
           <mat-tab label="Commons">
             <div class="tab-content">
@@ -13,8 +12,8 @@
                 <author-id-form-field [authorIdFormControl]="authorIdFormControl" [authorId]="author?.authorId"></author-id-form-field>
               </section>
               <section>
-                <author-firstname-form-field [authorFirstnameFormControl]="authorFirstnameFormControl" [firstname]="author?.firstname"></author-firstname-form-field>
-                <author-lastname-form-field [authorLastnameFormControl]="authorLastnameFormControl" [lastname]="author?.lastname"></author-lastname-form-field>
+                <author-firstname-form-field [authorFirstnameFormControl]="authorFirstnameFormControl" [firstname]="author?.firstname" [isLocked]="isLocked"></author-firstname-form-field>
+                <author-lastname-form-field [authorLastnameFormControl]="authorLastnameFormControl" [lastname]="author?.lastname" [isLocked]="isLocked"></author-lastname-form-field>
               </section>
             </div>
           </mat-tab>
@@ -28,7 +27,6 @@
           </mat-tab>
 
         </mat-tab-group>
-        </fieldset>
       </mat-card-content>
       <mat-card-actions>
           <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid() || isLocked">Save</button>

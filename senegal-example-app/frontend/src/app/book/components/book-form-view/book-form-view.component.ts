@@ -5,10 +5,8 @@ import {BookTO} from "../../api/book-to.model";
 import {AuthorTO} from "../../../author/api/author-to.model";
 import {ComponentStackService} from "../../../component-stack/component-stack.service";
 import {BookFormService} from "./book-form.service";
-import {UuidTO} from "../../../uuid-to.model";
 import {BookIdTO} from "../../api/book-id-to.model";
 import {BookAuthorDescriptionTO} from "../../api/book-author-description-to.model";
-import {bookStackKey} from "../../stack-components/book-stack-key";
 import {StackKey} from "../../../component-stack/stack-key";
 
 

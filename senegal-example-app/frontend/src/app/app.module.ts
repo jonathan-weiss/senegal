@@ -68,6 +68,7 @@ import {
   AuthorFormStackEntryComponent
 } from "./author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-point/author-entry-point.component";
+import {DisableFormControlDirective} from "./reactive-forms/disable-form-control.directive";
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-
     BookFormStackEntryComponent,
     BookEntryPointComponent,
     SideNavigationComponent,
+    DisableFormControlDirective,
   ],
   imports: [
     BrowserModule,
