@@ -19,7 +19,6 @@ export class ComponentStackObservationService {
   }
 
   public removeLatestComponentFromStack(stackSelector: StackKey): void {
-    console.log("removeLatestComponentFromStack", stackSelector)
     this.stackObserversForStackSelector(stackSelector).forEach((componentStackObserver: ComponentStackObserver) =>  {
         componentStackObserver.removeLatestComponentFromStack();
       });
