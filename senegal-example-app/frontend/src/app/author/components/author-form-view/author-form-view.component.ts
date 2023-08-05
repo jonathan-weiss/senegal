@@ -6,6 +6,9 @@ import {AuthorFormService} from "./author-form.service";
 import {AuthorTO} from "../../api/author-to.model";
 import {authorStackKey} from "../../stack-components/author-stack-key";
 import {StackKey} from "../../../component-stack/stack-key";
+import {ErrorMessage} from "../../../error-list/error-message.model";
+import {ErrorTransformationService} from "../../../error-list/error-transformation.service";
+import {Observer} from "rxjs";
 
 
 @Component({
@@ -28,8 +31,11 @@ export class AuthorFormViewComponent implements OnInit {
   tabCommonsSelected: EventEmitter<void> = new EventEmitter<void>()
   tabBooksSelected: EventEmitter<void> = new EventEmitter<void>()
 
+  errorMessages: Array<ErrorMessage> = []
+
   constructor(private authorFormService: AuthorFormService,
               private componentStackService: ComponentStackService,
+              private errorTransformationService: ErrorTransformationService,
               ) {
   }
 
@@ -51,19 +57,39 @@ export class AuthorFormViewComponent implements OnInit {
     return this.author == undefined;
   }
 
-  saveForm(): void {
-    if(this.author == undefined) {
-      this.authorFormService.performCreateOnServer(this.authorForm).subscribe(book => this.afterServerResponse(book));
-    } else {
-      this.authorFormService.performUpdateOnServer(this.authorForm, this.author).subscribe(book => this.afterServerResponse(book));
-    }
-
-    this.saveClicked.emit();
+  private storeAuthorObserver: Partial<Observer<AuthorTO>> = {
+    next: book => this.afterSuccessfulServerResponse(book),
+    error: error => this.errorCase(this.author, error)
   }
 
-  private afterServerResponse(author: AuthorTO) {
-      this.saveClicked.emit(author);
-      this.componentStackService.removeLatestComponentFromStack(this.stackKey);
+  saveForm(): void {
+    if(this.author == undefined) {
+      this.authorFormService.performCreateOnServer(this.authorForm).subscribe(this.storeAuthorObserver);
+    } else {
+      this.authorFormService.performUpdateOnServer(this.authorForm, this.author).subscribe(this.storeAuthorObserver);
+    }
+  }
+
+  private errorCase(entry: AuthorTO | undefined, error: any): void {
+    const errorMessage = this.errorTransformationService.transformError(this.entityDescription(entry), error)
+
+    if(errorMessage != undefined) {
+      this.errorMessages.push(errorMessage)
+    }
+  }
+
+  private entityDescription(entry: AuthorTO | undefined): string {
+    if(entry == undefined) {
+      return 'The Author could not be created.'
+    } else {
+      return 'The Author ' + entry.firstname + ' ' + entry.lastname + ' could not be stored.'
+    }
+  }
+
+
+  private afterSuccessfulServerResponse(author: AuthorTO) {
+    this.saveClicked.emit(author);
+    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancelForm() {

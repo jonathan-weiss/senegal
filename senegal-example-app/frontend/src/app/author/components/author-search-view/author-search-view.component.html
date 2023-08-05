@@ -14,6 +14,7 @@
   [isLocked]="isLocked"
   [stackKey]="stackKey"
 ></author-table-view>
+    <error-list [errorMessages]="errorMessages"></error-list>
   </mat-card-content>
   <mat-card-actions>
     <button *ngIf="showCancelButton" mat-raised-button color="secondary" (click)="cancel()">Cancel</button>

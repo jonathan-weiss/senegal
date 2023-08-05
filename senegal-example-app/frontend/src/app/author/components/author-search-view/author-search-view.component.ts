@@ -9,6 +9,8 @@ import {
 import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
 import {authorStackKey} from "../../stack-components/author-stack-key";
 import {StackKey} from "../../../component-stack/stack-key";
+import {ErrorMessage} from "../../../error-list/error-message.model";
+import {ErrorTransformationService} from "../../../error-list/error-transformation.service";
 
 
 @Component({
@@ -32,9 +34,12 @@ export class AuthorSearchViewComponent implements OnInit {
 
   highlightedAuthor: AuthorTO | undefined = undefined;
 
+  errorMessages: Array<ErrorMessage> = []
+
 
   constructor(private authorService: AuthorService,
-              private componentStackService: ComponentStackService) {
+              private componentStackService: ComponentStackService,
+              private errorTransformationService: ErrorTransformationService) {
   }
 
   ngOnInit(): void {
@@ -95,7 +100,17 @@ export class AuthorSearchViewComponent implements OnInit {
     }
     this.authorService.deleteAuthor(deleteInstruction).subscribe(() => {
       this.reloadAllAuthorsAfterEditing();
-    });
+    },
+      (error: any) => this.errorCase(entry, error));
+  }
+
+  private errorCase(entry: AuthorTO, error: any): void {
+    const entityDescription = 'The Author ' + entry.firstname + ' ' + entry.lastname + 'could not be deleted.'
+    const errorMessage = this.errorTransformationService.transformError(entityDescription, error)
+
+    if(errorMessage != undefined) {
+      this.errorMessages.push(errorMessage)
+    }
   }
 
   private reloadAllAuthorsAfterEditing(highlightedEntry: AuthorTO | undefined = undefined): void {

@@ -44,11 +44,17 @@ class AuthorController(
 
     @PostMapping("/entry")
     fun createAuthor(@RequestBody request: CreateAuthorInstructionTO): AuthorTO {
+        if(request.firstname == "error") {
+            throw RuntimeException("O la la. There was an error.")
+        }
         return facade.createAuthor(request)
     }
 
     @PutMapping("/entry")
     fun updateAuthor(@RequestBody request: UpdateAuthorInstructionTO): AuthorTO {
+        if(request.firstname == "error") {
+            throw RuntimeException("O la la. There was an error.")
+        }
         return facade.updateAuthor(request)
     }
 

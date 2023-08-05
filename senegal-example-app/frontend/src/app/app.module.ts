@@ -69,6 +69,9 @@ import {
 } from "./author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-point/author-entry-point.component";
 import {DisableFormControlDirective} from "./reactive-forms/disable-form-control.directive";
+import {ErrorListComponent} from "./error-list/error-list.component";
+import {MatListModule} from "@angular/material/list";
+import {MatDividerModule} from "@angular/material/divider";
 
 
 @NgModule({
@@ -98,6 +101,7 @@ import {DisableFormControlDirective} from "./reactive-forms/disable-form-control
     BookEntryPointComponent,
     SideNavigationComponent,
     DisableFormControlDirective,
+    ErrorListComponent,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +127,8 @@ import {DisableFormControlDirective} from "./reactive-forms/disable-form-control
     GeneratedEntitiesRoutingModule,
     MatAutocompleteModule,
     MatTabsModule,
+    MatListModule,
+    MatDividerModule,
   ],
   providers: [
     {provide: MAT_TABS_CONFIG, useValue: {animationDuration: '0ms'}},

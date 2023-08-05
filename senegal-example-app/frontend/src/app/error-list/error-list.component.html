@@ -1,0 +1,9 @@
+<mat-list *ngIf="hasErrors()" class="error-list-panel">
+  <div mat-subheader>Errors</div>
+  <mat-list-item *ngFor="let errorMessage of errorMessages; let idx = index">
+    <mat-icon matListItemIcon>error</mat-icon>
+    <div class="one-line">{{errorMessage.errorTitle}}</div>
+    <div class="one-line">{{errorMessage.errorMessage}}</div>
+    <mat-icon (click)="removeMessage(idx)">delete</mat-icon>
+  </mat-list-item>
+</mat-list>
