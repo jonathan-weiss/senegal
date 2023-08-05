@@ -105,8 +105,8 @@ export class AuthorSearchViewComponent implements OnInit {
   }
 
   private errorCase(entry: AuthorTO, error: any): void {
-    const entityDescription = 'The Author ' + entry.firstname + ' ' + entry.lastname + 'could not be deleted.'
-    const errorMessage = this.errorTransformationService.transformError(entityDescription, error)
+    const entityDescription = 'The Author ' + entry.firstname + ' ' + entry.lastname + ' could not be deleted.'
+    const errorMessage = this.errorTransformationService.transformErrorToMessage(entityDescription, error)
 
     if(errorMessage != undefined) {
       this.errorMessages.push(errorMessage)

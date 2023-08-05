@@ -71,7 +71,7 @@ export class AuthorFormViewComponent implements OnInit {
   }
 
   private errorCase(entry: AuthorTO | undefined, error: any): void {
-    const errorMessage = this.errorTransformationService.transformError(this.entityDescription(entry), error)
+    const errorMessage = this.errorTransformationService.transformErrorToMessage(this.entityDescription(entry), error)
 
     if(errorMessage != undefined) {
       this.errorMessages.push(errorMessage)

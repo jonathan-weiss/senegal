@@ -3,16 +3,11 @@ package ch.senegal.example.frontendapi.controller.author
 import ch.senegal.example.frontendapi.API
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 import ch.senegal.example.frontendapi.facade.AuthorFacade
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 @RestController
 @RequestMapping("$API/author")
@@ -61,7 +56,11 @@ class AuthorController(
     // @DeleteMapping does not support request body
     @PostMapping("/entry/delete")
     fun deleteAuthor(@RequestBody request: DeleteAuthorInstructionTO) {
-        facade.deleteAuthor(request)
+        try {
+            facade.deleteAuthor(request)
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.message, ex)
+        }
     }
 
 }

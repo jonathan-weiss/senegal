@@ -8,11 +8,14 @@ import {ErrorMessage} from "./error-message.model";
 export class ErrorTransformationService {
 
 
-  transformError(entityDescription: string, error: any | undefined): ErrorMessage | undefined {
+  transformErrorToMessage(entityDescription: string, error: any | undefined): ErrorMessage | undefined {
     if(error == undefined) {
       return undefined
     }
-    const errorMessage = error['statusText'];
+    const errorMessage: string | undefined =
+      this.httpErrorResponseWithErrorDescriptionMessage(error)
+      ?? this.httpErrorResponseMessage(error);
+
     if(errorMessage == undefined) {
       return undefined
     }
@@ -21,5 +24,18 @@ export class ErrorTransformationService {
       errorTitle: entityDescription,
       errorMessage: errorMessage,
     }
+  }
+
+  private httpErrorResponseWithErrorDescriptionMessage(error: any): string | undefined {
+    const errorObject = error['error'];
+    if(errorObject == undefined) {
+      return undefined;
+    }
+    return errorObject['message'];
+  }
+
+  private httpErrorResponseMessage(error: any): string | undefined {
+    return error['statusText'];
+
   }
 }
