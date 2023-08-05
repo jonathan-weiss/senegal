@@ -8,12 +8,13 @@ import java.lang.reflect.Method
 
 class SchemaConceptInstanceInvocationHandler(private val conceptNode: ConceptNode) : InvocationHandler {
     override fun invoke(proxy: Any?, method: Method?, args: Array<out Any>?): Any? {
-        if(SchemaInvocationHandlerHelper.isChildConceptAnnotated(method)) {
-            val conceptClass = SchemaInvocationHandlerHelper.getChildConceptsClazz(method)
-            val conceptName = SchemaInvocationHandlerHelper.getChildConceptsName(method)
-
-            return conceptNode.children(conceptName)
+        if(SchemaInvocationHandlerHelper.isAnnotatedWithChildConcept(method)
+            || SchemaInvocationHandlerHelper.isAnnotatedWithChildConceptWithCommonBaseInterface(method)) {
+            val conceptNamesAndClasses = SchemaInvocationHandlerHelper.getChildConceptNamesWithInterfaceClass(method)
+            return conceptNamesAndClasses.flatMap { (conceptName, conceptClass) -> conceptNode.children(conceptName)
                 .map { ProxyCreator.createProxy(conceptClass.java, SchemaConceptInstanceInvocationHandler(it)) }
+
+            }
         }
 
         if(SchemaInvocationHandlerHelper.isInputFacetAnnotated(method)) {

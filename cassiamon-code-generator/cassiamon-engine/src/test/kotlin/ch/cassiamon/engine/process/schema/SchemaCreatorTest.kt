@@ -2,11 +2,8 @@ package ch.cassiamon.engine.process.schema
 
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
+import ch.cassiamon.api.process.schema.annotations.*
 import ch.cassiamon.api.process.schema.exceptions.MalformedSchemaException
-import ch.cassiamon.api.process.schema.annotations.ChildConcepts
-import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.Facet
-import ch.cassiamon.api.process.schema.annotations.Schema
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -62,6 +59,103 @@ class SchemaCreatorTest {
         Assertions.assertNull(fooConcept.parentConceptName)
         Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
     }
+
+    @Schema
+    interface InheritanceChildConceptsSchemaDefinitionClass {
+        @ChildConceptsWithCommonBaseInterface(CommonChildConceptInterface::class, conceptClasses = [InheritanceOneChildConcept::class, InheritanceTwoChildConcept::class])
+        fun getMultipleChildrenConcepts(): List<CommonChildConceptInterface>
+
+    }
+    interface CommonChildConceptInterface
+
+    @Concept("InheritanceOneChildConcept")
+    interface InheritanceOneChildConcept: CommonChildConceptInterface {}
+
+    @Concept("InheritanceTwoChildConcept")
+    interface InheritanceTwoChildConcept: CommonChildConceptInterface {}
+
+
+    @Test
+    fun `test with inheritance child concepts`() {
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(InheritanceChildConceptsSchemaDefinitionClass::class.java)
+        Assertions.assertEquals(2, schema.numberOfConcepts())
+        val inheritanceOneChildConcept = schema.conceptByConceptName(ConceptName.of("InheritanceOneChildConcept"))
+        Assertions.assertEquals(ConceptName.of("InheritanceOneChildConcept"), inheritanceOneChildConcept.conceptName)
+        val inheritanceTwoChildConcept = schema.conceptByConceptName(ConceptName.of("InheritanceTwoChildConcept"))
+        Assertions.assertEquals(ConceptName.of("InheritanceTwoChildConcept"), inheritanceTwoChildConcept.conceptName)
+        Assertions.assertNull(inheritanceOneChildConcept.parentConceptName)
+        Assertions.assertNull(inheritanceTwoChildConcept.parentConceptName)
+    }
+
+    @Schema
+    interface IncompatibleInheritanceChildConceptsSchemaDefinitionClass {
+        @ChildConceptsWithCommonBaseInterface(IncompatibleChildConceptInterface::class, conceptClasses = [IncompatibleInheritanceOneChildConcept::class, IncompatibleInheritanceTwoChildConcept::class])
+        fun getMultipleChildrenConcepts(): List<IncompatibleChildConceptInterface>
+
+    }
+    interface IncompatibleChildConceptInterface
+
+    @Concept("IncompatibleInheritanceOneChildConcept")
+    interface IncompatibleInheritanceOneChildConcept: IncompatibleChildConceptInterface {}
+
+    @Concept("IncompatibleInheritanceTwoChildConcept")
+    interface IncompatibleInheritanceTwoChildConcept {}
+
+    @Test
+    fun `test with incompatible inheritance child concepts`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(IncompatibleInheritanceChildConceptsSchemaDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
+    interface EmptyCommonChildConceptsSchemaDefinitionClass {
+        @ChildConceptsWithCommonBaseInterface(EmptyCommonChildConceptInterface::class, conceptClasses = [])
+        fun getMultipleChildrenConcepts(): List<EmptyCommonChildConceptInterface>
+
+    }
+    interface EmptyCommonChildConceptInterface
+
+    @Test
+    fun `test with base interface without inheritance child concepts`() {
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(EmptyCommonChildConceptsSchemaDefinitionClass::class.java)
+        Assertions.assertEquals(0, schema.numberOfConcepts())
+    }
+
+    @Schema
+    interface SeparatelyDefinedChildConceptsSchemaDefinitionClass {
+
+        @ChildConcepts(SeparatelyDefinedInheritanceOneChildConcept::class)
+        fun getSeparatelyDefinedInheritanceOneChildConcept(): List<SeparatelyDefinedInheritanceOneChildConcept>
+
+        @ChildConceptsWithCommonBaseInterface(SeparatelyDefinedCommonChildConceptInterface::class, conceptClasses = [SeparatelyDefinedInheritanceOneChildConcept::class, SeparatelyDefinedInheritanceTwoChildConcept::class])
+        fun getMultipleChildrenConcepts(): List<SeparatelyDefinedCommonChildConceptInterface>
+
+        @ChildConcepts(SeparatelyDefinedInheritanceTwoChildConcept::class)
+        fun getSeparatelyDefinedInheritanceTwoChildConcept(): List<SeparatelyDefinedInheritanceTwoChildConcept>
+
+    }
+    interface SeparatelyDefinedCommonChildConceptInterface
+
+    @Concept("SeparatelyDefinedInheritanceOneChildConcept")
+    interface SeparatelyDefinedInheritanceOneChildConcept: SeparatelyDefinedCommonChildConceptInterface {}
+
+    @Concept("SeparatelyDefinedInheritanceTwoChildConcept")
+    interface SeparatelyDefinedInheritanceTwoChildConcept: SeparatelyDefinedCommonChildConceptInterface {}
+
+
+    @Test
+    fun `test with separately defined child concepts`() {
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(SeparatelyDefinedChildConceptsSchemaDefinitionClass::class.java)
+        Assertions.assertEquals(2, schema.numberOfConcepts())
+        val inheritanceOneChildConcept = schema.conceptByConceptName(ConceptName.of("SeparatelyDefinedInheritanceOneChildConcept"))
+        Assertions.assertEquals(ConceptName.of("SeparatelyDefinedInheritanceOneChildConcept"), inheritanceOneChildConcept.conceptName)
+        val inheritanceTwoChildConcept = schema.conceptByConceptName(ConceptName.of("SeparatelyDefinedInheritanceTwoChildConcept"))
+        Assertions.assertEquals(ConceptName.of("SeparatelyDefinedInheritanceTwoChildConcept"), inheritanceTwoChildConcept.conceptName)
+        Assertions.assertNull(inheritanceOneChildConcept.parentConceptName)
+        Assertions.assertNull(inheritanceTwoChildConcept.parentConceptName)
+    }
+
 
     @Schema
     interface SimpleSchemaDefinitionClassWithUnannotatedMethods {

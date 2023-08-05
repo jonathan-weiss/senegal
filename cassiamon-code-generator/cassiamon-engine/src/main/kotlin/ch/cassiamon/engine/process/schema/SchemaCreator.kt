@@ -1,10 +1,7 @@
 package ch.cassiamon.engine.process.schema
 
 import ch.cassiamon.api.process.schema.*
-import ch.cassiamon.api.process.schema.annotations.ChildConcepts
-import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.Facet
-import ch.cassiamon.api.process.schema.annotations.Schema
+import ch.cassiamon.api.process.schema.annotations.*
 import ch.cassiamon.api.process.schema.exceptions.MalformedSchemaException
 import java.lang.reflect.Method
 import kotlin.jvm.Throws
@@ -23,9 +20,9 @@ object SchemaCreator {
 
         schemaDefinitionClass.methods.forEach { method ->
             if(hasMethodAnnotation(ChildConcepts::class.java, method)) {
-                validateChildConceptMethod(schemaDefinitionClass, method)
-                val conceptClass = method.getAnnotation(ChildConcepts::class.java).clazz.java
-                validateAndAddConcept(concepts, conceptClass = conceptClass, parentConcept = null)
+                validateAndAddConceptForChildConceptsAnnotation(concepts, schemaDefinitionClass, method, null)
+            } else if(hasMethodAnnotation(ChildConceptsWithCommonBaseInterface::class.java, method)) {
+                validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts, schemaDefinitionClass, method, null)
             } else {
                 throw MalformedSchemaException("Schema definition class '${schemaDefinitionClass.name}' can " +
                         "only have methods annotated with '${ChildConcepts::class.qualifiedName}'. Not valid for method '$method'.")
@@ -56,9 +53,9 @@ object SchemaCreator {
 
         conceptClass.methods.forEach { method ->
             if(hasMethodAnnotation(ChildConcepts::class.java, method)) {
-                validateChildConceptMethod(conceptClass, method)
-                val childConceptClass = method.getAnnotation(ChildConcepts::class.java).clazz.java
-                validateAndAddConcept(concepts, conceptClass = childConceptClass, parentConcept = conceptName)
+                validateAndAddConceptForChildConceptsAnnotation(concepts, conceptClass, method, conceptName)
+            } else if(hasMethodAnnotation(ChildConceptsWithCommonBaseInterface::class.java, method)) {
+                validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts, conceptClass, method, conceptName)
             } else if(hasMethodAnnotation(Facet::class.java, method)) {
                 // ignore and skip, this is allowed
             } else {
@@ -67,6 +64,28 @@ object SchemaCreator {
                         "Not valid for method '$method'.")
             }
         }
+    }
+
+    private fun validateAndAddConceptForChildConceptsAnnotation(concepts: MutableMap<ConceptName, ConceptSchema>, definitionClass: Class<*>, method: Method, parentConcept: ConceptName?) {
+        validateChildConceptMethod(definitionClass, method)
+        val conceptClass = method.getAnnotation(ChildConcepts::class.java).conceptClass.java
+        validateAndAddConcept(concepts, conceptClass = conceptClass, parentConcept = parentConcept)
+    }
+
+    private fun validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts: MutableMap<ConceptName, ConceptSchema>, definitionClass: Class<*>, method: Method, parentConcept: ConceptName?) {
+        validateChildConceptMethod(definitionClass, method)
+        val baseInterfaceClass = method.getAnnotation(ChildConceptsWithCommonBaseInterface::class.java).baseInterfaceClass.java
+        val conceptClasses = method.getAnnotation(ChildConceptsWithCommonBaseInterface::class.java).conceptClasses.map { it.java }
+        conceptClasses.forEach { conceptClass ->
+            if(!isInheriting(conceptClass, baseInterfaceClass)) {
+                throw MalformedSchemaException("Class ${conceptClass.name} must inherit base class ${baseInterfaceClass.name} in method $method.")
+            }
+            validateAndAddConcept(concepts, conceptClass = conceptClass, parentConcept = parentConcept)
+        }
+    }
+
+    private fun isInheriting(subInterface: Class<*>, baseInterface: Class<*>): Boolean {
+        return subInterface.interfaces.contains(baseInterface)
     }
 
     private fun createConceptSchema(conceptName: ConceptName, conceptClass: Class<*>, parentConcept: ConceptName?): ConceptSchema {
