@@ -4,7 +4,7 @@
       <input matInput type="text" [formControl]="mainAuthorFormControl"
              [matAutocomplete]="mainAuthorAutocomplete"
              [matAutocompleteConnectedTo]="origin"
-             [disableFormControl]="isLocked"
+             [disableFormControl]="isLocked || fixedField"
       >
       <mat-autocomplete #mainAuthorAutocomplete="matAutocomplete"  [displayWith]="displayAuthorFn" [autoActiveFirstOption]="true">
         <mat-option *ngFor="let author of authorsOptions | async" [value]="author" >
