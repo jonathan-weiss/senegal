@@ -109,6 +109,28 @@ class SchemaCreatorTest {
     }
 
     @Schema
+    interface DuplicatedConceptInheritanceChildConceptsSchemaDefinitionClass {
+        @ChildConceptsWithCommonBaseInterface(DuplicatedConceptChildConceptInterface::class, conceptClasses = [DuplicatedConceptInheritanceOneChildConcept::class, DuplicatedConceptInheritanceTwoChildConcept::class])
+        fun getMultipleChildrenConcepts(): List<DuplicatedConceptChildConceptInterface>
+
+    }
+    @Concept("DuplicatedConceptInheritanceChildConcept")
+    interface DuplicatedConceptChildConceptInterface
+
+    @Concept("DuplicatedConceptInheritanceOneChildConcept")
+    interface DuplicatedConceptInheritanceOneChildConcept: DuplicatedConceptChildConceptInterface {}
+
+    @Concept("DuplicatedConceptInheritanceTwoChildConcept")
+    interface DuplicatedConceptInheritanceTwoChildConcept {}
+
+    @Test
+    fun `test with duplicated concept inheritance child concepts`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(DuplicatedConceptInheritanceChildConceptsSchemaDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
     interface EmptyCommonChildConceptsSchemaDefinitionClass {
         @ChildConceptsWithCommonBaseInterface(EmptyCommonChildConceptInterface::class, conceptClasses = [])
         fun getMultipleChildrenConcepts(): List<EmptyCommonChildConceptInterface>

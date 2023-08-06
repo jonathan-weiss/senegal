@@ -2,15 +2,12 @@ package ch.cassiamon.example
 
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
-import ch.cassiamon.api.process.schema.annotations.ChildConcepts
-import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.Facet
-import ch.cassiamon.api.process.schema.annotations.Schema
 import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.parameter.ParameterAccess
 import ch.cassiamon.api.process.datacollection.defaults.DefaultConceptDataCollector
 import ch.cassiamon.api.process.DefaultDomainUnit
 import ch.cassiamon.api.process.datacollection.extensions.DataCollectionExtensionAccess
+import ch.cassiamon.api.process.schema.annotations.*
 import ch.cassiamon.api.process.templating.TargetFilesCollector
 import ch.cassiamon.engine.process.EngineProcess
 import ch.cassiamon.engine.process.ProcessSession
@@ -28,16 +25,15 @@ class EngineProcessTest {
         <cassiamon xmlns="https://cassiamon.ch/cassiamon-schemagic"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
-            <configuration/>
             <definitions>
                 <testEntity testEntityName="Person">
-                    <testEntityAttribute testEntityAttributeName="firstname"/>
-                    <testEntityAttribute testEntityAttributeName="lastname"/>
-                    <testEntityAttribute testEntityAttributeName="nickname"/>
+                    <testSimpleEntityAttribute testEntityAttributeName="firstname"/>
+                    <testComplexEntityAttribute testEntityAttributeName="lastname" testComplexEntityAttributeValue="very-very-complex"/>
+                    <testSimpleEntityAttribute testEntityAttributeName="nickname"/>
                 </testEntity>
                 <testEntity testEntityName="Address">
-                    <testEntityAttribute testEntityAttributeName="street"/>
-                    <testEntityAttribute testEntityAttributeName="zip"/>
+                    <testSimpleEntityAttribute testEntityAttributeName="street"/>
+                    <testComplexEntityAttribute testEntityAttributeName="zip" testComplexEntityAttributeValue="very-complex"/>
                 </testEntity>
             </definitions>
         </cassiamon>
@@ -129,15 +125,29 @@ class EngineProcessTest {
     interface TestEntityConcept {
         @Facet("TestEntityName")
         fun getEntityName(): String
-        @ChildConcepts(TestEntityAttributeConcept::class)
+        @ChildConceptsWithCommonBaseInterface(TestEntityAttributeConcept::class, conceptClasses = [TestSimpleEntityAttributeConcept::class, TestComplexEntityAttributeConcept::class])
         fun getAttributes(): List<TestEntityAttributeConcept>
+
+        @ChildConcepts(TestSimpleEntityAttributeConcept::class)
+        fun getSimpleAttributes(): List<TestSimpleEntityAttributeConcept>
 
     }
 
-    @Concept("TestEntityAttribute")
     interface TestEntityAttributeConcept {
         @Facet("TestEntityAttributeName")
         fun getAttributeName(): String
+
+    }
+
+    @Concept("TestSimpleEntityAttribute")
+    interface TestSimpleEntityAttributeConcept: TestEntityAttributeConcept{
+
+    }
+
+    @Concept("TestComplexEntityAttribute")
+    interface TestComplexEntityAttributeConcept: TestEntityAttributeConcept {
+        @Facet("TestComplexEntityAttributeValue")
+        fun getComplexAttributeValue(): String
 
     }
 

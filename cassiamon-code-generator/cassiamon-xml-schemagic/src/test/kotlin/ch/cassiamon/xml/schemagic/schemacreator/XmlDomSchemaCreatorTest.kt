@@ -23,7 +23,6 @@ internal class XmlDomSchemaCreatorTest {
             <xsd:element name="cassiamon">
                 <xsd:complexType>
                     <xsd:sequence maxOccurs="1" minOccurs="1">
-                        <xsd:element name="configuration" type="configurationType"/>
                         <xsd:element name="definitions">
                             <xsd:complexType>
                                 <!-- - - - - - - - -       ROOT CONCEPTS     - - - - - - - -->
@@ -41,25 +40,20 @@ internal class XmlDomSchemaCreatorTest {
                     <xsd:element name="testEntityAttribute" type="testEntityAttributeType"/>
                 </xsd:choice>
                 <xsd:attributeGroup ref="conceptIdentifier"/>
-                <xsd:attributeGroup ref="testEntityName"/>
+                <xsd:attributeGroup ref="testEntityTestEntityName"/>
             </xsd:complexType>
             <xsd:complexType name="testEntityAttributeType">
                 <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
                 <xsd:attributeGroup ref="conceptIdentifier"/>
-                <xsd:attributeGroup ref="testEntityAttributeName"/>
+                <xsd:attributeGroup ref="testEntityAttributeTestEntityAttributeName"/>
             </xsd:complexType>
             <!-- - - - - - - - -       ALL ATTRIBUTES      - - - - - - - -->
-            <xsd:attributeGroup name="testEntityName">
+            <xsd:attributeGroup name="testEntityTestEntityName">
                 <xsd:attribute name="testEntityName" type="xsd:string"/>
             </xsd:attributeGroup>
-            <xsd:attributeGroup name="testEntityAttributeName">
+            <xsd:attributeGroup name="testEntityAttributeTestEntityAttributeName">
                 <xsd:attribute name="testEntityAttributeName" type="xsd:string"/>
             </xsd:attributeGroup>
-            <!-- - - - - - - - -       CONFIGURATION ELEMENT     - - - - - - - -->
-            <xsd:complexType name="configurationType">
-                <xsd:attributeGroup ref="testEntityName"/>
-                <xsd:attributeGroup ref="testEntityAttributeName"/>
-            </xsd:complexType>
         </xsd:schema>
 
     """.trimIndent()

@@ -3,10 +3,27 @@ package ch.cassiamon.engine.process.schema.proxy
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.*
+import ch.cassiamon.engine.process.conceptgraph.SortedChildrenConceptNodesProvider
+import ch.cassiamon.engine.process.conceptgraph.ConceptNode
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
 object SchemaInvocationHandlerHelper {
+
+    fun mapToProxy(method: Method?, conceptNode: SortedChildrenConceptNodesProvider, createProxy: (interfaceClass: KClass<*>, childConceptNode: ConceptNode) -> Any): List<Any> {
+        val conceptNamesAndClasses = getChildConceptNamesWithInterfaceClass(method)
+
+        return conceptNode.children(conceptNamesAndClasses.keys)
+            .map { childConceptNode -> createProxy(
+                getInterfaceClass(conceptNamesAndClasses, childConceptNode), childConceptNode)
+        }
+
+    }
+
+    private fun getInterfaceClass(conceptNamesAndClasses: Map<ConceptName, KClass<*>>, conceptNode: ConceptNode): KClass<*> {
+        return conceptNamesAndClasses[conceptNode.conceptName]
+            ?: throw IllegalStateException("No concept class for concept name '${conceptNode.conceptName}'.")
+    }
 
     fun isSchemaAnnotated(clazz: Class<*>?): Boolean {
         if(clazz == null) {

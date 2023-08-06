@@ -1,12 +1,7 @@
 package ch.cassiamon.xml.schemagic.schemacreator
 
-import ch.cassiamon.api.process.schema.FacetName
-import ch.cassiamon.api.process.schema.ConceptSchema
-import ch.cassiamon.api.process.schema.FacetSchema
-import ch.cassiamon.api.process.schema.FacetTypeEnum
-import ch.cassiamon.api.process.schema.SchemaAccess
+import ch.cassiamon.api.process.schema.*
 import ch.cassiamon.tools.CaseUtil
-import ch.cassiamon.xml.schemagic.schemacreator.XmlDomSchemaCreator.toXmlAttributeName
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.StringWriter
@@ -30,7 +25,7 @@ object XmlDomSchemaCreator {
         attachRootConceptReferences(document, schemaElement, schema)
         attachAllConceptElements(document, schemaElement, schema)
         attachAllConceptAttributes(document, schemaElement, schema)
-        attachConfigurationElement(document, schemaElement, schema)
+        //attachConfigurationElement(document, schemaElement, schema)
 
         return transformDocumentToString(document)
     }
@@ -67,9 +62,13 @@ object XmlDomSchemaCreator {
         attachComment(document, schemaElement, " CONFIGURATION ELEMENT")
         val complexType = createAndAttachXsdElement(document, schemaElement, "complexType")
         setElementXsdAttribute(complexType, "name", "configurationType")
-        schema.allConcepts().forEach { conceptNode ->
-            conceptNode.facets.forEach { facetSchema ->
-                    complexType.appendChild(createFacetAttributeReference(document, facetSchema.facetName))
+        schema.allConcepts().forEach { conceptSchema ->
+            conceptSchema.facets.forEach { facetSchema ->
+                    complexType.appendChild(createFacetAttributeReference(
+                        document,
+                        conceptSchema.conceptName,
+                        facetSchema.facetName
+                    ))
                 }
         }
     }
@@ -83,9 +82,9 @@ object XmlDomSchemaCreator {
         val senegalSequence = createAndAttachXsdElement(document, senegalComplexType, "sequence")
         setElementXsdAttribute(senegalSequence, "minOccurs", "1")
         setElementXsdAttribute(senegalSequence, "maxOccurs", "1")
-        val configurationElement = createAndAttachXsdElement(document, senegalSequence, "element")
-        setElementXsdAttribute(configurationElement, "name", "configuration")
-        setElementXsdAttribute(configurationElement, "type", "configurationType")
+//        val configurationElement = createAndAttachXsdElement(document, senegalSequence, "element")
+//        setElementXsdAttribute(configurationElement, "name", "configuration")
+//        setElementXsdAttribute(configurationElement, "type", "configurationType")
         val definitionsElement = createAndAttachXsdElement(document, senegalSequence, "element")
         setElementXsdAttribute(definitionsElement, "name", "definitions")
         val definitionsComplexType = createAndAttachXsdElement(document, definitionsElement, "complexType")
@@ -118,7 +117,7 @@ object XmlDomSchemaCreator {
             }
             complexType.appendChild(createAttributeReference(document, "conceptIdentifier"))
             conceptSchema.facets.forEach { facetSchema ->
-                    complexType.appendChild(createFacetAttributeReference(document, facetSchema.facetName))
+                    complexType.appendChild(createFacetAttributeReference(document, conceptSchema.conceptName, facetSchema.facetName))
                 }
         }
     }
@@ -128,14 +127,19 @@ object XmlDomSchemaCreator {
         schema.allConcepts().forEach { conceptNode ->
             conceptNode.facets
                 .forEach { facetSchema ->
-                    schemaElement.appendChild(createFacetAttributeElement(document, facetSchema.facetName, facetSchema))
+                    schemaElement.appendChild(createFacetAttributeElement(document, conceptNode.conceptName, facetSchema.facetName, facetSchema))
                 }
         }
     }
 
-    private fun createFacetAttributeElement(document: Document, facetName: FacetName, facetSchema: FacetSchema): Element {
+    private fun createFacetAttributeElement(
+        document: Document,
+        conceptName: ConceptName,
+        facetName: FacetName,
+        facetSchema: FacetSchema
+    ): Element {
         val attributeGroupElement = createXsdElement(document, "attributeGroup")
-        setElementXsdAttribute(attributeGroupElement, "name", facetName.toXmlAttributeName())
+        setElementXsdAttribute(attributeGroupElement, "name", facetName.toXmlAttributeReferenceName(conceptName))
 
         val attributeElement = createXsdElement(document, "attribute")
         setElementXsdAttribute(attributeElement, "name", facetName.toXmlAttributeName())
@@ -169,8 +173,8 @@ object XmlDomSchemaCreator {
         return attributeElement
     }
 
-    private fun createFacetAttributeReference(document: Document, facetName: FacetName): Element {
-        return createAttributeReference(document, facetName.toXmlAttributeName())
+    private fun createFacetAttributeReference(document: Document, conceptName: ConceptName, facetName: FacetName): Element {
+        return createAttributeReference(document, facetName.toXmlAttributeReferenceName(conceptName))
     }
 
     private fun initializeDocument(): Document {
@@ -231,6 +235,10 @@ object XmlDomSchemaCreator {
 
     private fun FacetName.toXmlAttributeName(): String {
         return CaseUtil.decapitalize(this.name)
+    }
+
+    private fun FacetName.toXmlAttributeReferenceName(conceptName: ConceptName): String {
+        return "${CaseUtil.decapitalize(conceptName.name)}${this.name}"
     }
 
 

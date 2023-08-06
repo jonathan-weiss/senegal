@@ -143,8 +143,8 @@ class ConceptResolverTest {
 
         // assert
         assertNotNull(conceptGraph)
-        conceptGraph.rootConceptsByConceptName(databaseTableConceptName)
-        assertEquals(2, conceptGraph.rootConceptsByConceptName(databaseTableConceptName).size)
+        conceptGraph.children(databaseTableConceptName)
+        assertEquals(2, conceptGraph.children(databaseTableConceptName).size)
 
         val personTable = conceptGraph.conceptByConceptIdentifier(personTableId)
         assertEquals(personTableId, personTable.conceptIdentifier)

@@ -3,9 +3,9 @@ package ch.cassiamon.api.process.datacollection
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.ConceptIdentifier
-import kotlin.jvm.Throws
 
 interface ConceptData {
+    val sequenceNumber: Int
     val conceptName: ConceptName
     val conceptIdentifier: ConceptIdentifier
 

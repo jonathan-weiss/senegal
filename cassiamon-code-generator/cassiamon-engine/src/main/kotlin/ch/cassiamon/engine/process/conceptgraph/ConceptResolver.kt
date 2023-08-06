@@ -65,7 +65,7 @@ object ConceptResolver {
             if(conceptNodeMap.containsKey(conceptIdentifier)) {
                 throw DuplicateConceptIdentifierFoundConceptGraphException(conceptData.conceptName, conceptIdentifier)
             }
-            conceptNodeMap[conceptIdentifier] = MutableConceptNode(conceptData.conceptName, conceptData.conceptIdentifier)
+            conceptNodeMap[conceptIdentifier] = MutableConceptNode(conceptData.sequenceNumber, conceptData.conceptName, conceptData.conceptIdentifier)
         }
         return conceptNodeMap
     }

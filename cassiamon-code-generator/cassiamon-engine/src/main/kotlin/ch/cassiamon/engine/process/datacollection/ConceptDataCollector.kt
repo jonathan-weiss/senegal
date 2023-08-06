@@ -10,6 +10,8 @@ import ch.cassiamon.api.process.schema.SchemaAccess
 class ConceptDataCollector(private val schema: SchemaAccess, private val validateConcept: Boolean = true):
     ExtensionDataCollector {
 
+    private var sequenceNumber: Int = 0;
+
     private val conceptData: MutableMap<ConceptIdentifier, ConceptData> = mutableMapOf()
 
     override fun existingConceptData(conceptIdentifier: ConceptIdentifier): ConceptData {
@@ -18,7 +20,7 @@ class ConceptDataCollector(private val schema: SchemaAccess, private val validat
 
     override fun existingOrNewConceptData(conceptName: ConceptName, conceptIdentifier: ConceptIdentifier, parentConceptIdentifier: ConceptIdentifier?): ConceptData {
         return conceptData.getOrPut(conceptIdentifier) {
-            ConceptDataImpl(conceptName, conceptIdentifier)
+            ConceptDataImpl(sequenceNumber++, conceptName, conceptIdentifier)
         }.setParentConceptIdentifier(parentConceptIdentifier)
     }
 

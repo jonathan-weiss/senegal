@@ -6,6 +6,7 @@ import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 
 class ConceptDataImpl(
+    override val sequenceNumber: Int,
     override val conceptName: ConceptName,
     override val conceptIdentifier: ConceptIdentifier,
 ): ConceptData {
