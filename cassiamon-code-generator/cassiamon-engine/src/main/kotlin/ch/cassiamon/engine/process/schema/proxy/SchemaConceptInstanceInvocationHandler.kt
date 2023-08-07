@@ -1,5 +1,6 @@
 package ch.cassiamon.engine.process.schema.proxy
 
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.engine.process.conceptgraph.ConceptNode
 import ch.cassiamon.engine.proxy.InvocationHandlerHelper
 import ch.cassiamon.engine.proxy.ProxyCreator
@@ -20,6 +21,14 @@ class SchemaConceptInstanceInvocationHandler(private val conceptNode: ConceptNod
         if(SchemaInvocationHandlerHelper.isInputFacetAnnotated(method)) {
             val facetName = SchemaInvocationHandlerHelper.getInputFacetName(method)
             return conceptNode.facetValues[facetName]
+        }
+
+        if(SchemaInvocationHandlerHelper.isConceptIdentifierAnnotated(method)) {
+            return when(SchemaInvocationHandlerHelper.validatedMethod(method).returnType.kotlin) {
+                String::class -> conceptNode.conceptIdentifier.name
+                ConceptIdentifier::class -> conceptNode.conceptIdentifier
+                else -> throw IllegalStateException("Unsupported type for conceptIdentifier method.")
+            }
         }
 
         return InvocationHandlerHelper.handleObjectMethodsOrThrow(this, method)

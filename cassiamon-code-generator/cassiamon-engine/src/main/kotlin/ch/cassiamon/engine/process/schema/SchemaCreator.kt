@@ -19,13 +19,10 @@ object SchemaCreator {
         val concepts: MutableMap<ConceptName, ConceptSchema> = mutableMapOf()
 
         schemaDefinitionClass.methods.forEach { method ->
-            if(hasMethodAnnotation(ChildConcepts::class.java, method)) {
-                validateAndAddConceptForChildConceptsAnnotation(concepts, schemaDefinitionClass, method, null)
-            } else if(hasMethodAnnotation(ChildConceptsWithCommonBaseInterface::class.java, method)) {
-                validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts, schemaDefinitionClass, method, null)
-            } else {
+            if(!supportForChildConceptMethod(concepts, schemaDefinitionClass, method, null)) {
                 throw MalformedSchemaException("Schema definition class '${schemaDefinitionClass.name}' can " +
                         "only have methods annotated with '${ChildConcepts::class.qualifiedName}'. Not valid for method '$method'.")
+
             }
         }
 
@@ -52,18 +49,26 @@ object SchemaCreator {
         concepts[conceptName] = createConceptSchema(conceptName, conceptClass, parentConcept)
 
         conceptClass.methods.forEach { method ->
-            if(hasMethodAnnotation(ChildConcepts::class.java, method)) {
-                validateAndAddConceptForChildConceptsAnnotation(concepts, conceptClass, method, conceptName)
-            } else if(hasMethodAnnotation(ChildConceptsWithCommonBaseInterface::class.java, method)) {
-                validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts, conceptClass, method, conceptName)
-            } else if(hasMethodAnnotation(Facet::class.java, method)) {
-                // ignore and skip, this is allowed
-            } else {
+            if(!supportForChildConceptMethod(concepts, conceptClass, method, conceptName)
+                && !hasMethodAnnotation(Facet::class.java, method)
+                && !hasMethodAnnotation(ConceptId::class.java, method)) {
                 throw MalformedSchemaException("Concept definition class '${conceptClass.name}' can " +
-                        "only have methods annotated with '${ChildConcepts::class.qualifiedName}' or '${Facet::class.qualifiedName}'. " +
+                        "only have methods annotated with '${ChildConcepts::class.qualifiedName}' " +
+                        "or '${Facet::class.qualifiedName}' or '${ConceptId::class.qualifiedName}'. " +
                         "Not valid for method '$method'.")
             }
         }
+    }
+
+    private fun supportForChildConceptMethod(concepts: MutableMap<ConceptName, ConceptSchema>, definitionClass: Class<*>, method: Method, parentConceptName: ConceptName?): Boolean {
+        if(hasMethodAnnotation(ChildConcepts::class.java, method)) {
+            validateAndAddConceptForChildConceptsAnnotation(concepts, definitionClass, method, parentConceptName)
+            return true
+        } else if(hasMethodAnnotation(ChildConceptsWithCommonBaseInterface::class.java, method)) {
+            validateAndAddConceptForChildConceptsWithCommonBaseInterfaceAnnotation(concepts, definitionClass, method, parentConceptName)
+            return true
+        }
+        return false
     }
 
     private fun validateAndAddConceptForChildConceptsAnnotation(concepts: MutableMap<ConceptName, ConceptSchema>, definitionClass: Class<*>, method: Method, parentConcept: ConceptName?) {
@@ -99,7 +104,24 @@ object SchemaCreator {
                     ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types.")
                 val referencingConcept = FacetTypeEnum.referencedTypeConceptName(returnType.kotlin)
                 val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory, referencingConcept = referencingConcept)
-                facets.add(facet)
+                val alreadyExistingFacet = facets.firstOrNull { it.facetName == facetName }
+                if(alreadyExistingFacet == null) {
+                    facets.add(facet)
+                } else {
+                    if(alreadyExistingFacet != facet) {
+                        throw MalformedSchemaException("You try to define the facet '${facetName.name}' multiple " +
+                                "times but with different parameters. Facet $facet in method '$method' does not " +
+                                "match already existing facet $alreadyExistingFacet.")
+                    }
+                }
+            } else if(hasMethodAnnotation(ConceptId::class.java, method)) {
+                val returnType = method.returnType.kotlin
+                if(returnType != String::class && returnType != ConceptIdentifier::class) {
+                    throw MalformedSchemaException("The return type of a method with ${ConceptId::class.qualifiedName} " +
+                            "must be ${String::class.qualifiedName} or ${ConceptIdentifier::class.qualifiedName} " +
+                            "in method '$method'.")
+
+                }
             }
         }
 

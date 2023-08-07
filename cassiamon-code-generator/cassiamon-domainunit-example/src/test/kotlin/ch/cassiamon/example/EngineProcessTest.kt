@@ -26,39 +26,58 @@ class EngineProcessTest {
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
             <definitions>
-                <testEntity testEntityName="Person">
-                    <testSimpleEntityAttribute testEntityAttributeName="firstname"/>
-                    <testComplexEntityAttribute testEntityAttributeName="lastname" testComplexEntityAttributeValue="very-very-complex"/>
-                    <testSimpleEntityAttribute testEntityAttributeName="nickname"/>
-                </testEntity>
-                <testEntity testEntityName="Address">
-                    <testSimpleEntityAttribute testEntityAttributeName="street"/>
-                    <testComplexEntityAttribute testEntityAttributeName="zip" testComplexEntityAttributeValue="very-complex"/>
-                </testEntity>
+                <form conceptIdentifier="FoodCategoriesForm" formTitle="Food Categories Form">
+                    <textInputFormControl conceptIdentifier="FoodTextInput" displayName="Food" />
+                    <selectDropdownFormControl conceptIdentifier="FoodCategorySelect" defaultValue="default" displayName="Category">
+                        <selectDropdownEntryConcept value="meat" displayValue="Meat" />
+                        <selectDropdownEntryConcept value="fish" displayValue="Fish" />
+                        <selectDropdownEntryConcept value="vegetable" displayValue="Vegetable" />
+                        <selectDropdownEntryConcept value="fruit" displayValue="Fruit" />
+                    </selectDropdownFormControl>
+                </form>
+                <form conceptIdentifier="FoodPopularityForm" formTitle="Popularity of Food">
+                    <textInputFormControl displayName="Food"/>
+                    <selectDropdownFormControl defaultValue="++" displayName="Popularity">
+                        <selectDropdownEntryConcept value="+++" displayValue="Loved" />
+                        <selectDropdownEntryConcept value="++" displayValue="Eaten" />
+                        <selectDropdownEntryConcept value="+" displayValue="Refused" />
+                    </selectDropdownFormControl>
+                </form>
             </definitions>
         </cassiamon>
     """.trimIndent()
 
-    private val expectedTemplateOutput = """
+    private val expectedSummaryTemplateOutput = """
         
-        Properties:
-            - TestEntityName: MeinTestkonzeptName
-        Properties:
-            - TestEntityName: MeinZweitesTestkonzeptName
-        Properties:
-            - TestEntityName: Person
-        SubNode-Properties:
-            - TestEntityAttributeName: firstname
-        SubNode-Properties:
-            - TestEntityAttributeName: lastname
-        SubNode-Properties:
-            - TestEntityAttributeName: nickname
-        Properties:
-            - TestEntityName: Address
-        SubNode-Properties:
-            - TestEntityAttributeName: street
-        SubNode-Properties:
-            - TestEntityAttributeName: zip
+        Form 'Employee Work Preferences':
+        - Form-Control: Display Name: 'Firstname'
+        - Form-Control: Display Name: 'Lastname'
+        - Form-Control: Display Name: 'Workplace Preference' (Default-Value: company) Options: [home -> 'Home Office'], [company -> 'Company Office']
+        
+        Form 'Food Categories Form':
+        - Form-Control: Display Name: 'Food'
+        - Form-Control: Display Name: 'Category' (Default-Value: default) Options: [meat -> 'Meat'], [fish -> 'Fish'], [vegetable -> 'Vegetable'], [fruit -> 'Fruit']
+        
+        Form 'Popularity of Food':
+        - Form-Control: Display Name: 'Food'
+        - Form-Control: Display Name: 'Popularity' (Default-Value: ++) Options: [+++ -> 'Loved'], [++ -> 'Eaten'], [+ -> 'Refused']
+        
+    """.trimIndent()
+
+    private val expectedHtmlTemplateOutput = """
+        <html>
+          <form name="FoodCategoriesForm">
+            <label>Food</label>
+            <input type="text" name="FoodTextInput" />
+            <label>Category</label>
+            <select name="FoodCategorySelect" option="default">
+              <option value="meat">Meat</option>
+              <option value="fish">Fish</option>
+              <option value="vegetable">Vegetable</option>
+              <option value="fruit">Fruit</option>
+            </select>
+          </form>
+        </html>
     """.trimIndent()
 
 
@@ -71,9 +90,9 @@ class EngineProcessTest {
             java.util.logging.SimpleFormatter.format=%5${'$'}s%n
     """.trimIndent()
 
-    private val definitionDirectory = TestDomainUnit.xmlDefinitionDirectory
-    private val xmlFilename = TestDomainUnit.xmlFilename
-    private val defaultOutputDirectory = TestDomainUnit.defaultOutputDirectory
+    private val definitionDirectory = FormDomainUnit.xmlDefinitionDirectory
+    private val xmlFilename = FormDomainUnit.xmlFilename
+    private val defaultOutputDirectory = FormDomainUnit.defaultOutputDirectory
     private val definitionXmlFile = definitionDirectory.resolve(xmlFilename)
 
     private val classpathResourcesWithContent: Map<String, String> = mapOf(
@@ -90,7 +109,7 @@ class EngineProcessTest {
     @Test
     fun `run test domainUnit`() {
 
-        val domainUnits = listOf(TestDomainUnit())
+        val domainUnits = listOf(FormDomainUnit())
         val fileSystemAccess = StringBasedFileSystemAccess(classpathResourcesWithContent, filePathsWithContent)
         val parameterSources: List<ParameterSource> = listOf(StaticParameterSource(parameterMap))
         val processSession = ProcessSession(
@@ -103,56 +122,82 @@ class EngineProcessTest {
 
         process.runProcess()
 
-        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("index.txt")))
-        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("Person.txt")))
-        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("Address.txt")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("forms-description.txt")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("EmployeeWorkPreferencesForm.html")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("FoodCategoriesForm.html")))
+        Assertions.assertTrue(fileSystemAccess.fileExists(defaultOutputDirectory.resolve("FoodPopularityForm.html")))
 
 
         Assertions.assertEquals(
-            expectedTemplateOutput,
-            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("index.txt"))
+            expectedSummaryTemplateOutput,
+            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("forms-description.txt"))
+        )
+
+        Assertions.assertEquals(
+            expectedHtmlTemplateOutput,
+            fileSystemAccess.fetchFileContent(defaultOutputDirectory.resolve("FoodCategoriesForm.html"))
         )
 
     }
 
     @Schema
-    interface TestSchema {
-        @ChildConcepts(TestEntityConcept::class)
-        fun getEntities(): List<TestEntityConcept>
+    interface FormSchema {
+        @ChildConcepts(FormConcept::class)
+        fun getForms(): List<FormConcept>
     }
 
-    @Concept("TestEntity")
-    interface TestEntityConcept {
-        @Facet("TestEntityName")
-        fun getEntityName(): String
-        @ChildConceptsWithCommonBaseInterface(TestEntityAttributeConcept::class, conceptClasses = [TestSimpleEntityAttributeConcept::class, TestComplexEntityAttributeConcept::class])
-        fun getAttributes(): List<TestEntityAttributeConcept>
+    @Concept("Form")
+    interface FormConcept {
+        @ConceptId
+        fun getFormId(): String
 
-        @ChildConcepts(TestSimpleEntityAttributeConcept::class)
-        fun getSimpleAttributes(): List<TestSimpleEntityAttributeConcept>
+        @Facet("FormTitle")
+        fun getFormTitle(): String
+        @ChildConceptsWithCommonBaseInterface(FormControlConcept::class, conceptClasses = [TextInputFormControlConcept::class, SelectDropdownFormControlConcept::class])
+        fun getFormControls(): List<FormControlConcept>
 
-    }
-
-    interface TestEntityAttributeConcept {
-        @Facet("TestEntityAttributeName")
-        fun getAttributeName(): String
+        @ChildConcepts(TextInputFormControlConcept::class)
+        fun getOnlyTextInputControls(): List<TextInputFormControlConcept>
 
     }
 
-    @Concept("TestSimpleEntityAttribute")
-    interface TestSimpleEntityAttributeConcept: TestEntityAttributeConcept{
+    interface FormControlConcept {
+
+        @ConceptId
+        fun getFormControlName(): String
+
+        @Facet("DisplayName")
+        fun getFormControlDisplayName(): String
 
     }
 
-    @Concept("TestComplexEntityAttribute")
-    interface TestComplexEntityAttributeConcept: TestEntityAttributeConcept {
-        @Facet("TestComplexEntityAttributeValue")
-        fun getComplexAttributeValue(): String
+    @Concept("TextInputFormControl")
+    interface TextInputFormControlConcept: FormControlConcept{
 
     }
 
-    class TestDomainUnit: DefaultDomainUnit<TestSchema>(
-        schemaDefinitionClass = TestSchema::class.java
+    @Concept("SelectDropdownFormControl")
+    interface SelectDropdownFormControlConcept: FormControlConcept {
+        @Facet("DefaultValue")
+        fun getDefaultValue(): String
+
+        @ChildConcepts(SelectDropdownEntryConcept::class)
+        fun getSelectDropdownEntries(): List<SelectDropdownEntryConcept>
+
+    }
+
+    @Concept("SelectDropdownEntryConcept")
+    interface SelectDropdownEntryConcept {
+        @Facet("Value")
+        fun getValue(): String
+
+        @Facet("DisplayValue")
+        fun getDisplayValue(): String
+
+    }
+
+    class FormDomainUnit: DefaultDomainUnit<FormSchema>(
+        schemaDefinitionClass = FormSchema::class.java
     ) {
         companion object {
             val xmlDefinitionDirectory: Path = Paths.get("definition/directory")
@@ -163,8 +208,15 @@ class EngineProcessTest {
 
         override val defaultXmlPaths: Set<Path> = setOf(xmlDefinitionDirectory.resolve(xmlFilename))
 
-        private val testEntityConceptName = ConceptName.of("TestEntity")
-        private val testEntityNameFacetName = FacetName.of("TestEntityName")
+        private val formConceptName = ConceptName.of("Form")
+        private val textInputFormControlConceptName = ConceptName.of("TextInputFormControl")
+        private val selectDropdownFormControlConceptName = ConceptName.of("SelectDropdownFormControl")
+        private val selectDropdownEntryConceptName = ConceptName.of("SelectDropdownEntryConcept")
+        private val formTitleFacetName = FacetName.of("FormTitle")
+        private val formControlDisplayNameFacetName = FacetName.of("DisplayName")
+        private val selectDropdownDefaultValueFacetName = FacetName.of("DefaultValue")
+        private val selectDropdownEntryValueFacetName = FacetName.of("Value")
+        private val selectDropdownEntryDisplayNameFacetName = FacetName.of("DisplayValue")
 
         override fun collectInputData(
             parameterAccess: ParameterAccess,
@@ -172,53 +224,110 @@ class EngineProcessTest {
             dataCollector: DefaultConceptDataCollector
         ) {
 
+            val employeePreferencesFormId = ConceptIdentifier.of("EmployeeWorkPreferencesForm")
             dataCollector
-                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinTestkonzept"))
+                .newConceptData(formConceptName, employeePreferencesFormId)
                 .setParent(null)
-                .addFacetValue(testEntityNameFacetName,  "MeinTestkonzeptName")
+                .addFacetValue(formTitleFacetName,  "Employee Work Preferences")
 
             dataCollector
-                .newConceptData(testEntityConceptName, ConceptIdentifier.of("MeinZweitesTestkonzept"))
-                .addFacetValue(testEntityNameFacetName,  "MeinZweitesTestkonzeptName")
+                .newConceptData(textInputFormControlConceptName, ConceptIdentifier.of("EmployeeFirstname"))
+                .setParent(employeePreferencesFormId)
+                .addFacetValue(formControlDisplayNameFacetName,  "Firstname")
+
+            dataCollector
+                .newConceptData(textInputFormControlConceptName, ConceptIdentifier.of("EmployeeLastname"))
+                .setParent(employeePreferencesFormId)
+                .addFacetValue(formControlDisplayNameFacetName,  "Lastname")
+
+            val preferredWorkplaceId = ConceptIdentifier.of("EmployeePreferredWorkplace")
+            dataCollector
+                .newConceptData(selectDropdownFormControlConceptName, preferredWorkplaceId)
+                .setParent(employeePreferencesFormId)
+                .addFacetValue(formControlDisplayNameFacetName,  "Workplace Preference")
+                .addFacetValue(selectDropdownDefaultValueFacetName,  "company")
+
+            dataCollector
+                .newConceptData(selectDropdownEntryConceptName, ConceptIdentifier.of("HomeOffice"))
+                .setParent(preferredWorkplaceId)
+                .addFacetValue(selectDropdownEntryValueFacetName,  "home")
+                .addFacetValue(selectDropdownEntryDisplayNameFacetName,  "Home Office")
+
+            dataCollector
+                .newConceptData(selectDropdownEntryConceptName, ConceptIdentifier.of("CompanyOffice"))
+                .setParent(preferredWorkplaceId)
+                .addFacetValue(selectDropdownEntryValueFacetName,  "company")
+                .addFacetValue(selectDropdownEntryDisplayNameFacetName,  "Company Office")
 
             super.collectInputData(parameterAccess, extensionAccess, dataCollector)
         }
 
         override fun collectTargetFiles(
             parameterAccess: ParameterAccess,
-            schemaInstance: TestSchema,
+            schemaInstance: FormSchema,
             targetFilesCollector: TargetFilesCollector
         ) {
             schemaInstance
-                .getEntities()
-                .forEach { entity ->
-                    val targetFile = defaultOutputDirectory.resolve("${entity.getEntityName()}.txt")
-                    targetFilesCollector.addFile(targetFile, entityContent(listOf(entity)))
+                .getForms()
+                .forEach { form ->
+                    val targetFile = defaultOutputDirectory.resolve("${form.getFormId()}.html")
+                    targetFilesCollector.addFile(targetFile, formContent(form))
                 }
 
-            targetFilesCollector.addFile(defaultOutputDirectory.resolve("index.txt"), entityContent(schemaInstance.getEntities()))
+            targetFilesCollector.addFile(defaultOutputDirectory.resolve("forms-description.txt"), formsSummary(schemaInstance.getForms()))
         }
 
-        private fun entityContent(entities: List<TestEntityConcept>): String {
+        private fun formContent(form: FormConcept): String {
             var content = ""
 
-            entities.forEach { entity ->
+            content += """<html>""" + "\n"
+            content += """  <form name="${form.getFormId()}">""" + "\n"
+            form.getFormControls().forEach { formControl ->
+                if(formControl is TextInputFormControlConcept) {
+                    content += """    <label>${formControl.getFormControlDisplayName()}</label>""" + "\n"
+                    content += """    <input type="text" name="${formControl.getFormControlName()}" />""" + "\n"
+                } else if (formControl is SelectDropdownFormControlConcept) {
+                        content += """    <label>${formControl.getFormControlDisplayName()}</label>""" + "\n"
+                        content += """    <select name="${formControl.getFormControlName()}" option="${formControl.getDefaultValue()}">""" + "\n"
+                    formControl.getSelectDropdownEntries()
+                        .forEach { optionEntry -> content += """      <option value="${optionEntry.getValue()}">${optionEntry.getDisplayValue()}</option>""" + "\n" }
+                    content += """    </select>""" + "\n"
+                }
+            }
+            content += """  </form>""" + "\n"
+            content += """</html>"""
+
+            return content
+        }
+
+        private fun formsSummary(forms: List<FormConcept>): String {
+            var content = ""
+
+            forms.forEach { entity ->
                 content += """
                     
-                    Properties:
-                        - TestEntityName: ${entity.getEntityName()}
+                    Form '${entity.getFormTitle()}':
+                    
                     """.trimIndent()
 
-                entity.getAttributes().forEach { childModel ->
-                    content += """
+                entity.getFormControls().forEach { formControl ->
+                    if(formControl is TextInputFormControlConcept) {
+                        content += """
+                        - Form-Control: Display Name: '${formControl.getFormControlDisplayName()}'
                         
-                        SubNode-Properties:
-                            - TestEntityAttributeName: ${childModel.getAttributeName()}
-                    """.trimIndent()
+                        """.trimIndent()
+                    } else if (formControl is SelectDropdownFormControlConcept) {
+                        val options = formControl.getSelectDropdownEntries().joinToString { optionEntry -> "[${optionEntry.getValue()} -> '${optionEntry.getDisplayValue()}']" }
+                        content += """
+                        - Form-Control: Display Name: '${formControl.getFormControlDisplayName()}' (Default-Value: ${formControl.getDefaultValue()}) Options: $options
+                        
+                        """.trimIndent()
+                    }
                 }
             }
 
             return content
         }
+
     }
 }

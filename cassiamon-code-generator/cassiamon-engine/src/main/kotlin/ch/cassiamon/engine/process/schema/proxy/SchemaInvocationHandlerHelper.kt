@@ -69,7 +69,7 @@ object SchemaInvocationHandlerHelper {
 
     private fun conceptNameOfClass(clazz: KClass<*>, method: Method?): ConceptName {
         val conceptAnnotation = clazz.java.getAnnotation(Concept::class.java)
-            ?: throw IllegalStateException("Annotation attribute '${ChildConcepts::conceptClasses.name}' " +
+            ?: throw IllegalStateException("Annotation attribute '${ChildConceptsWithCommonBaseInterface::conceptClasses.name}' " +
                     "of annotation ${ChildConcepts::class.java} " +
                     "in method '$method' " +
                     "can only contain interfaces annotated with ${Concept::class.java}.")
@@ -80,11 +80,15 @@ object SchemaInvocationHandlerHelper {
         return validatedMethod(method).getAnnotation(Facet::class.java) != null
     }
 
+    fun isConceptIdentifierAnnotated(method: Method?): Boolean {
+        return validatedMethod(method).getAnnotation(ConceptId::class.java) != null
+    }
+
     fun getInputFacetName(method: Method?): FacetName {
         return FacetName.of(validatedMethod(method).getAnnotation(Facet::class.java).facetName)
     }
 
-    private fun validatedMethod(method: Method?): Method {
+    fun validatedMethod(method: Method?): Method {
         if(method == null) {
             throw IllegalStateException("Proxy $this can only handle methods, not field invocations.")
         }

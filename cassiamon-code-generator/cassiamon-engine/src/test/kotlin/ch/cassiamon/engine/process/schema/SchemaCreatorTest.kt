@@ -1,5 +1,6 @@
 package ch.cassiamon.engine.process.schema
 
+import ch.cassiamon.api.process.schema.ConceptIdentifier
 import ch.cassiamon.api.process.schema.ConceptName
 import ch.cassiamon.api.process.schema.FacetName
 import ch.cassiamon.api.process.schema.annotations.*
@@ -48,6 +49,12 @@ class SchemaCreatorTest {
     interface SimpleConcept {
         @Facet("Bar")
         fun getBarFacet(): String
+
+        @ConceptId
+        fun theConceptIdentifier(): String
+
+        @ConceptId
+        fun theConceptIdentifierAsObject(): ConceptIdentifier
     }
 
     @Test
@@ -58,6 +65,78 @@ class SchemaCreatorTest {
         Assertions.assertEquals(ConceptName.of("FooConcept"), fooConcept.conceptName)
         Assertions.assertNull(fooConcept.parentConceptName)
         Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
+    }
+
+    @Schema
+    interface DuplicateFacetSchemaDefinitionClass {
+        @ChildConcepts(DuplicateFacetConcept::class)
+        fun getDuplicateFacetChildrenConcepts(): List<DuplicateFacetConcept>
+
+    }
+
+    @Concept("DuplicateFacet")
+    interface DuplicateFacetConcept {
+        @Facet("Bar")
+        fun getBarFacet(): String
+
+        @Facet("Bar")
+        fun getAnotherBarFacet(): String
+
+    }
+
+    @Test
+    fun `test with same duplicate facet concept`() {
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DuplicateFacetSchemaDefinitionClass::class.java)
+        Assertions.assertEquals(1, schema.numberOfConcepts())
+        val fooConcept = schema.conceptByConceptName(ConceptName.of("DuplicateFacet"))
+        Assertions.assertEquals(ConceptName.of("DuplicateFacet"), fooConcept.conceptName)
+        Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
+        Assertions.assertEquals(1, fooConcept.facetNames.size)
+    }
+
+    @Schema
+    interface DifferentTypeDuplicateFacetSchemaDefinitionClass {
+        @ChildConcepts(DifferentTypeDuplicateFacetConcept::class)
+        fun getDuplicateFacetChildrenConcepts(): List<DifferentTypeDuplicateFacetConcept>
+
+    }
+
+    @Concept("DifferentTypeDuplicateFacet")
+    interface DifferentTypeDuplicateFacetConcept {
+        @Facet("Bar")
+        fun getBarFacet(): Int
+
+        @Facet("Bar")
+        fun getAnotherBarFacet(): String
+
+    }
+
+    @Test
+    fun `test with duplicate facet having different types concept`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(DifferentTypeDuplicateFacetSchemaDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
+    interface WrongConceptIdentifierSchemaDefinitionClass {
+        @ChildConcepts(WrongConceptIdentifierConcept::class)
+        fun getChildrenConcepts(): List<WrongConceptIdentifierConcept>
+
+    }
+
+    @Concept("WrongConceptIdentifier")
+    interface WrongConceptIdentifierConcept {
+        @ConceptId
+        fun getWrongTypedIdentifier(): Any
+
+    }
+
+    @Test
+    fun `test with wrong concept identifier type`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(WrongConceptIdentifierSchemaDefinitionClass::class.java)
+        }
     }
 
     @Schema
