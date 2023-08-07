@@ -53,14 +53,17 @@ class EngineProcessTest {
         - Form-Control: Display Name: 'Firstname'
         - Form-Control: Display Name: 'Lastname'
         - Form-Control: Display Name: 'Workplace Preference' (Default-Value: company) Options: [home -> 'Home Office'], [company -> 'Company Office']
+        Text Input Form Control Names: [Firstname, Lastname]
         
         Form 'Food Categories Form':
         - Form-Control: Display Name: 'Food'
         - Form-Control: Display Name: 'Category' (Default-Value: default) Options: [meat -> 'Meat'], [fish -> 'Fish'], [vegetable -> 'Vegetable'], [fruit -> 'Fruit']
+        Text Input Form Control Names: [Food]
         
         Form 'Popularity of Food':
         - Form-Control: Display Name: 'Food'
         - Form-Control: Display Name: 'Popularity' (Default-Value: ++) Options: [+++ -> 'Loved'], [++ -> 'Eaten'], [+ -> 'Refused']
+        Text Input Form Control Names: [Food]
         
     """.trimIndent()
 
@@ -324,6 +327,13 @@ class EngineProcessTest {
                         """.trimIndent()
                     }
                 }
+
+                val listOfTextInputFormControlNames = entity.getOnlyTextInputControls().joinToString { textInputFormControl -> textInputFormControl.getFormControlDisplayName() }
+                content += """
+                    Text Input Form Control Names: [$listOfTextInputFormControlNames]
+                    
+                """.trimIndent()
+
             }
 
             return content
