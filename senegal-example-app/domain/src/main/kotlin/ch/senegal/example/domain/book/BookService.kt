@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service
 @Service
 class BookService(
     private val repository: BookRepository,
-    private val authorRepository: AuthorRepository,
 ) {
 
     fun getBook(bookId: BookId): Book {
@@ -19,7 +18,7 @@ class BookService(
 
     @Transactional
     fun createBook(instruction: CreateBookInstruction): Book {
-        val author: Author = authorRepository.fetchAuthorById(instruction.mainAuthorId)
+        val author: AuthorDescription = repository.fetchAuthorDescriptionById(instruction.mainAuthorId)
         val book = Book.create(instruction, author)
         repository.insertBook(book)
         return getBook(book.bookId)
@@ -28,7 +27,7 @@ class BookService(
     @Transactional
     fun updateBook(instruction: UpdateBookInstruction): Book {
         val existingEntry = repository.fetchBookById(instruction.bookId)
-        val author: Author = authorRepository.fetchAuthorById(instruction.mainAuthorId)
+        val author: AuthorDescription = repository.fetchAuthorDescriptionById(instruction.mainAuthorId)
         existingEntry.update(instruction, author)
         repository.updateBook(existingEntry)
         return getBook(instruction.bookId)

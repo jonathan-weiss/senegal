@@ -7,6 +7,8 @@ interface BookRepository {
     fun fetchBookById(bookId: BookId): Book
     fun fetchAllBooks(): List<Book>
 
+    fun fetchAuthorDescriptionById(authorId: AuthorId): AuthorDescription
+
     fun fetchAllBooksByAuthor(authorId: AuthorId): List<Book>
 
     fun insertBook(book: Book)

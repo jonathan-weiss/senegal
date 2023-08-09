@@ -2,6 +2,7 @@ package ch.senegal.example.frontendapi.controller.book
 
 import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.author.AuthorId
+import ch.senegal.example.domain.book.AuthorDescription
 
 import ch.senegal.example.frontendapi.controller.commons.UuidTO
 
@@ -11,7 +12,7 @@ data class BookAuthorDescriptionTO(
     val lastname: String,
 ) {
     companion object {
-        internal fun fromDomain(domainInstance: Author) = BookAuthorDescriptionTO(
+        internal fun fromDomain(domainInstance: AuthorDescription) = BookAuthorDescriptionTO(
             authorId = domainInstance.authorId,
             firstname = domainInstance.firstname,
             lastname = domainInstance.lastname,

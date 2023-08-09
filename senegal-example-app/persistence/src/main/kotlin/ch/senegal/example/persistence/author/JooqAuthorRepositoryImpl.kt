@@ -18,7 +18,7 @@ class JooqAuthorRepositoryImpl(
             .selectFrom(AuthorDsl.TABLE)
             .where(AuthorDsl.TABLE.AUTHOR_ID.eq(authorId.value))
             .fetchOne(this::toDomain)
-            ?: throw RuntimeException("Author with id \$authorId not found")
+            ?: throw RuntimeException("Author with id $authorId not found")
     }
 
     override fun fetchAllAuthor(): List<Author> {
@@ -30,20 +30,17 @@ class JooqAuthorRepositoryImpl(
     override fun fetchAllAuthorFiltered(searchTerm: String): List<Author> {
         return jooqDsl
             .selectFrom(AuthorDsl.TABLE)
+            .where(AuthorDsl.TABLE.FIRSTNAME.like("%$searchTerm%"))
+            .or(AuthorDsl.TABLE.LASTNAME.like("%$searchTerm%"))
+            // .or(AuthorDsl.TABLE.AUTHOR_ID.like("%$searchTerm%"))
             .fetch(this::toDomain)
-            // TODO Filter directly in the database by WHERE statement
-            .filter {
-                searchTerm.isEmpty()
-                        || it.firstname.contains(searchTerm)
-                        || it.lastname.contains(searchTerm)
-                        || it.authorId.value.toString().contains(searchTerm)
-            }
-
     }
 
     override fun insertAuthor(domainInstance: Author) {
-        jooqDsl.insertInto(AuthorDsl.TABLE, AuthorDsl.TABLE.AUTHOR_ID, AuthorDsl.TABLE.FIRSTNAME, AuthorDsl.TABLE.LASTNAME)
-            .values(domainInstance.authorId.value, domainInstance.firstname, domainInstance.lastname)
+        jooqDsl.insertInto(AuthorDsl.TABLE)
+            .set(AuthorDsl.TABLE.AUTHOR_ID, domainInstance.authorId.value)
+            .set(AuthorDsl.TABLE.FIRSTNAME, domainInstance.firstname)
+            .set(AuthorDsl.TABLE.LASTNAME, domainInstance.lastname)
             .execute()
     }
 

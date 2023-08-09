@@ -1,53 +1,56 @@
 package ch.senegal.example.persistence.book
 
-import ch.senegal.example.domain.author.Author
 import ch.senegal.example.domain.author.AuthorId
+import ch.senegal.example.domain.book.AuthorDescription
 import ch.senegal.example.domain.book.Book
-import ch.senegal.example.domain.book.BookRepository
 import ch.senegal.example.domain.book.BookId
-import ch.senegal.example.persistence.author.JooqAuthorRepositoryImpl
+import ch.senegal.example.domain.book.BookRepository
+import ch.senegal.example.persistence.author.AuthorDsl
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.springframework.stereotype.Repository
-import java.util.*
 
 
 @Repository
 class JooqBookRepositoryImpl(
     private val jooqDsl: DSLContext,
-    private val authorRepository: JooqAuthorRepositoryImpl
 ) : BookRepository {
 
     override fun fetchBookById(bookId: BookId): Book {
-        return jooqDsl
+        val bookRecord = jooqDsl
             .selectFrom(BookDsl.TABLE)
             .where(BookDsl.TABLE.BOOK_ID.eq(bookId.value))
-            .fetchOne(this::toDomain)
-            ?: throw RuntimeException("Book with id \$bookId not found")
+            .fetchOne()
+            ?: throw RuntimeException("Book with id $bookId not found")
+
+        val mainAuthorId = AuthorId(bookRecord.get(BookDsl.TABLE.MAIN_AUTHOR_ID))
+        val authorDescriptions = authorDescriptions(listOf(mainAuthorId))
+        return toDomain(bookRecord, authorDescriptions)
     }
 
     override fun fetchAllBooks(): List<Book> {
-        return jooqDsl
+        return toDomains(jooqDsl
             .selectFrom(BookDsl.TABLE)
-            .fetch(this::toDomain)
+            .fetch())
     }
 
     override fun fetchAllBooksByAuthor(authorId: AuthorId): List<Book> {
-        return fetchAllBooks()
-            .filter { it.mainAuthor.authorId == authorId } // TODO do that by SQL
+        return toDomains(jooqDsl
+            .selectFrom(BookDsl.TABLE)
+            .where(BookDsl.TABLE.MAIN_AUTHOR_ID.eq(authorId.value))
+            .fetch())
+    }
+
+    override fun fetchAuthorDescriptionById(authorId: AuthorId): AuthorDescription {
+        return authorDescription(authorId)
     }
 
     fun fetchAllBookFiltered(searchTerm: String): List<Book> {
-        return jooqDsl
+        return toDomains(jooqDsl
             .selectFrom(BookDsl.TABLE)
-            .fetch(this::toDomain)
-            // TODO Filter directly in the database by WHERE statement
-            .filter {
-                searchTerm.isEmpty()
-                        || it.bookName.contains(searchTerm)
-                        || it.bookId.value.toString().contains(searchTerm)
-            }
-
+            .where(BookDsl.TABLE.BOOK_NAME.like("%$searchTerm%"))
+            // .or(BookDsl.TABLE.BOOK_ID.like("%$searchTerm%"))
+            .fetch())
     }
 
     override fun insertBook(book: Book) {
@@ -70,13 +73,40 @@ class JooqBookRepositoryImpl(
             .execute()
     }
 
-    private fun toDomain(record: Record): Book {
-        val mainAuthorId = AuthorId(record.get(BookDsl.TABLE.MAIN_AUTHOR_ID))
-        val mainAuthor: Author = authorRepository.fetchAuthorById(mainAuthorId)
+    private fun toDomains(bookRecords: List<Record>): List<Book> {
+        val mainAuthorIds: List<AuthorId> = bookRecords.map { AuthorId(it.get(BookDsl.TABLE.MAIN_AUTHOR_ID)) }
+        val mainAuthors: Map<AuthorId, AuthorDescription> = authorDescriptions(mainAuthorIds)
+        return bookRecords.map { toDomain(bookRecord = it, mainAuthors = mainAuthors) }
+    }
+
+    private fun toDomain(bookRecord: Record, mainAuthors: Map<AuthorId, AuthorDescription>): Book {
+        val mainAuthorId = AuthorId(bookRecord.get(BookDsl.TABLE.MAIN_AUTHOR_ID))
         return Book(
-            bookId = BookId(record.get(BookDsl.TABLE.BOOK_ID)),
-            bookName = record.get(BookDsl.TABLE.BOOK_NAME),
-            mainAuthor = mainAuthor,
+            bookId = BookId(bookRecord.get(BookDsl.TABLE.BOOK_ID)),
+            bookName = bookRecord.get(BookDsl.TABLE.BOOK_NAME),
+            mainAuthor = authorDescription(mainAuthorId, mainAuthors),
         )
+    }
+
+    private fun authorDescription(authorId: AuthorId): AuthorDescription {
+        return authorDescription(authorId, authorDescriptions(listOf(authorId)))
+    }
+
+
+    private fun authorDescription(authorId: AuthorId, authorDescriptions: Map<AuthorId, AuthorDescription>): AuthorDescription {
+        return authorDescriptions[authorId] ?: throw IllegalStateException("Author not found for id $authorId")
+    }
+
+    private fun authorDescriptions(authorIds: List<AuthorId>): Map<AuthorId, AuthorDescription> {
+        val authorRecords = jooqDsl
+            .selectFrom(AuthorDsl.TABLE)
+            .where(AuthorDsl.TABLE.AUTHOR_ID.`in`(authorIds.map { it.value }))
+            .fetch()
+
+        return authorRecords.map { record -> AuthorDescription(
+            authorId = AuthorId(record.get(AuthorDsl.TABLE.AUTHOR_ID)),
+            firstname = record.get(AuthorDsl.TABLE.FIRSTNAME),
+            lastname = record.get(AuthorDsl.TABLE.LASTNAME),
+        ) }.associateBy { author -> author.authorId }
     }
 }
