@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BookTO} from "../../api/book-to.model";
 import {BookService} from "../../book.service";
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {DeleteBookInstructionTO} from "../../api/delete-book-instruction.to";
 import {AuthorTO} from "../../../author/api/author-to.model";
 import {
   BookFormStackEntryComponent
 } from "../../stack-components/book-form-stack-entry/book-form-stack-entry.component";
 import {SearchBookInstructionTO} from "../../api/search-book-instruction.to";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 
 @Component({

@@ -25,9 +25,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from "@angular/material/card";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AuthorTableViewComponent} from "./author/components/author-table-view/author-table-view.component";
-import {DisplayComponentStackComponent} from "./component-stack/display-component-stack.component";
-import {ComponentStackAnchorDirective} from "./component-stack/component-stack-anchor.directive";
-import {SectionComponent} from "./section/section.component";
+import {DisplayComponentStackComponent} from "./shared/component-stack/display-component-stack.component";
+import {ComponentStackAnchorDirective} from "./shared/component-stack/component-stack-anchor.directive";
+import {SectionComponent} from "./shared/section/section.component";
 import {BookFormViewComponent} from "./book/components/book-form-view/book-form-view.component";
 import {
   BookNameFormFieldComponent
@@ -69,17 +69,15 @@ import {
 } from "./author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {AuthorEntryPointComponent} from "./author/stack-components/author-entry-point/author-entry-point.component";
 import {DisableFormControlDirective} from "./reactive-forms/disable-form-control.directive";
-import {ErrorListComponent} from "./error-list/error-list.component";
+import {ErrorListComponent} from "./shared/error-list/error-list.component";
 import {MatListModule} from "@angular/material/list";
 import {MatDividerModule} from "@angular/material/divider";
+import {SharedModule} from "./shared/shared.module";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DisplayComponentStackComponent,
-    SectionComponent,
-    ComponentStackAnchorDirective,
     AuthorTableViewComponent,
     AuthorSearchViewComponent,
     AuthorFirstnameFormFieldComponent,
@@ -101,9 +99,9 @@ import {MatDividerModule} from "@angular/material/divider";
     BookEntryPointComponent,
     SideNavigationComponent,
     DisableFormControlDirective,
-    ErrorListComponent,
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,

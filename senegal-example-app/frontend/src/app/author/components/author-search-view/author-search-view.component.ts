@@ -1,16 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {AuthorService} from "../../author.service";
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
 import {
   AuthorFormStackEntryComponent
 } from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
-import {authorStackKey} from "../../stack-components/author-stack-key";
-import {StackKey} from "../../../component-stack/stack-key";
-import {ErrorMessage} from "../../../error-list/error-message.model";
-import {ErrorTransformationService} from "../../../error-list/error-transformation.service";
+import {StackKey} from "../../../shared/component-stack/stack-key";
+import {ErrorMessage} from "../../../shared/error-list/error-message.model";
+import {ErrorTransformationService} from "../../../shared/error-list/error-transformation.service";
 
 
 @Component({

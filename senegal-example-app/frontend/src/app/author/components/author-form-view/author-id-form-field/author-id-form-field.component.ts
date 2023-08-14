@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {UuidTO} from "../../../../uuid-to.model";
 import {AuthorIdTO} from "../../../api/author-id-to.model";
 
 

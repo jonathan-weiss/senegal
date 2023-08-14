@@ -1,18 +1,18 @@
-package ch.cassiamon.exampleapp.customizing.templates.angular.panelview
+package ch.cassiamon.exampleapp.customizing.templates.angular.api
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import ch.cassiamon.tools.StringTemplateHelper
 
-object AngularFrontendPanelViewScssTemplate {
+object AngularFrontendIdModelToTemplate {
 
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
 
-        .action-box {
-            padding-top: 20px;
-            padding-bottom: 20px;
+        export interface ${templateModel.entityName}IdTO {
+            value: string;
         }
+            
         """.identForMarker()
     }
 }

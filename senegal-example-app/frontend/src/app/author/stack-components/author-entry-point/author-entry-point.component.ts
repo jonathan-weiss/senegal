@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import { Component, OnInit} from '@angular/core';
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {AuthorSearchStackEntryComponent} from "../author-search-stack-entry/author-search-stack-entry.component";
 import {authorStackKey} from "../author-stack-key";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 @Component({
   selector: "author-entry-point",

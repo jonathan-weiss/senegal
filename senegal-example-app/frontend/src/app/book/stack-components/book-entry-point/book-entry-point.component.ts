@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {BookSearchStackEntryComponent} from "../book-search-stack-entry/book-search-stack-entry.component";
 import {bookStackKey} from "../book-stack-key";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 @Component({
   selector: "book-entry-point",

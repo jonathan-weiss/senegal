@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {filter, Observable, startWith, switchMap} from "rxjs";
 import {AuthorTO} from "../../../../author/api/author-to.model";
-import {ComponentStackService} from "../../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../../shared/component-stack/component-stack.service";
 import {
   AuthorFormStackEntryComponent
 } from "../../../../author/stack-components/author-form-stack-entry/author-form-stack-entry.component";
@@ -11,7 +11,7 @@ import {
 } from "../../../../author/stack-components/author-search-stack-entry/author-search-stack-entry.component";
 import {BookAuthorDescriptionTO} from "../../../api/book-author-description-to.model";
 import {BookService} from "../../../book.service";
-import {StackKey} from "../../../../component-stack/stack-key";
+import {StackKey} from "../../../../shared/component-stack/stack-key";
 
 
 @Component({

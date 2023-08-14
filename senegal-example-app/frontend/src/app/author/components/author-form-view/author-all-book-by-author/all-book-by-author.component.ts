@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {AuthorTO} from "../../../api/author-to.model";
-import {StackKey} from "../../../../component-stack/stack-key";
+import {StackKey} from "../../../../shared/component-stack/stack-key";
 
 
 @Component({

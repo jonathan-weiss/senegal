@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
-import {LockableStackEntry} from "../../../component-stack/lockable-stack-entry";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
+import {LockableStackEntry} from "../../../shared/component-stack/lockable-stack-entry";
 import {AuthorTO} from "../../../author/api/author-to.model";
 import {BookTO} from "../../api/book-to.model";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 @Component({
   selector: 'book-search-stack-entry',

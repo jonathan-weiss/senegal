@@ -3,11 +3,11 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {BookTO} from "../../api/book-to.model";
 import {AuthorTO} from "../../../author/api/author-to.model";
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {BookFormService} from "./book-form.service";
 import {BookIdTO} from "../../api/book-id-to.model";
 import {BookAuthorDescriptionTO} from "../../api/book-author-description-to.model";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 
 @Component({

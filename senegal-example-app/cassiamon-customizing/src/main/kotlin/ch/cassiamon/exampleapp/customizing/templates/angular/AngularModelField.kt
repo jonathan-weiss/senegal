@@ -25,4 +25,8 @@ data class AngularModelField(private val model: EntitySimpleAttributeConcept, pr
         else -> throw RuntimeException("Unknown Type for $entityAttributeType")
     }
 
+    val fieldName = CaseUtil.capitalize(entityAttributeName)
+    val fieldFileName = CaseUtil.decapitalize(entityAttributeName)
+    val decapitalizedFieldName = CaseUtil.decapitalize(entityAttributeName)
+
 }

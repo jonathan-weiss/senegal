@@ -1,13 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatTabChangeEvent} from "@angular/material/tabs";
-import {ComponentStackService} from "../../../component-stack/component-stack.service";
+import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {AuthorFormService} from "./author-form.service";
 import {AuthorTO} from "../../api/author-to.model";
-import {authorStackKey} from "../../stack-components/author-stack-key";
-import {StackKey} from "../../../component-stack/stack-key";
-import {ErrorMessage} from "../../../error-list/error-message.model";
-import {ErrorTransformationService} from "../../../error-list/error-transformation.service";
+import {StackKey} from "../../../shared/component-stack/stack-key";
+import {ErrorMessage} from "../../../shared/error-list/error-message.model";
+import {ErrorTransformationService} from "../../../shared/error-list/error-transformation.service";
 import {Observer} from "rxjs";
 
 

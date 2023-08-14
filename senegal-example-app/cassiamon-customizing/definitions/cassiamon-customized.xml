@@ -11,14 +11,14 @@
         </entity>
         <entity entityName="Address" conceptIdentifier="Address">
             <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="zip" entityAttributeType="IntegerNumber"/>
+            <entitySimpleAttribute entityAttributeName="zip" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
         </entity>
         <entity entityName="Department">
             <entitySimpleAttribute entityAttributeName="title" entityAttributeType="Text"/>
         </entity>
         <entity entityName="DepartmentAddress">
             <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="phone" entityAttributeType="IntegerNumber"/>
+            <entitySimpleAttribute entityAttributeName="phone" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
         </entity>
         <entity entityName="OfficeBrackets">
             <entitySimpleAttribute entityAttributeName="stupidLevel" entityAttributeType="Text"/>

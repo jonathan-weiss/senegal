@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {LockableStackEntry} from "../../../component-stack/lockable-stack-entry";
+import {LockableStackEntry} from "../../../shared/component-stack/lockable-stack-entry";
 import {AuthorTO} from "../../api/author-to.model";
-import {StackKey} from "../../../component-stack/stack-key";
+import {StackKey} from "../../../shared/component-stack/stack-key";
 
 @Component({
   selector: 'author-search-stack-entry',

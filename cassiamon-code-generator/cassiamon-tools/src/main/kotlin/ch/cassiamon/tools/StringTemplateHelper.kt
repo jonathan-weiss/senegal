@@ -17,4 +17,11 @@ object StringTemplateHelper {
         return sb.toString()
     }
 
+    fun <T> join(iterator: Iterable<T>, separator: CharSequence, out: (v:T)->String): String {
+        return iterator.joinToString(separator) {
+            out(it)
+        }
+    }
+
+
 }

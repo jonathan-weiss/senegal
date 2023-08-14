@@ -14,9 +14,9 @@ object RestApiTransferObjectSearchInstructionTemplate {
             
             
             data class Search${restModelClass.transferObjectBaseName}InstructionTO(
-                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.kotlinModelClass.idFieldType},${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
+                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.kotlinModelClass.idFieldType}?,${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
             """
-                val ${field.transferObjectFieldName}: ${field.transferObjectFieldType},""" }}
+                val ${field.transferObjectFieldName}: ${field.transferObjectFieldType}?,""" }}
             ) {
                 fun toDomain() = Search${restModelClass.kotlinModelClass.kotlinClassName}Instruction(
                     ${restModelClass.kotlinModelClass.idFieldName} = this.${restModelClass.transferObjectIdFieldName},${StringTemplateHelper.forEach(restModelClass.fields()) { field ->

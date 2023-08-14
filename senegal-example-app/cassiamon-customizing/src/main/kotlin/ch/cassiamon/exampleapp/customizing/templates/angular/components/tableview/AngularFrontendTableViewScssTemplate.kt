@@ -1,4 +1,4 @@
-package ch.cassiamon.exampleapp.customizing.templates.angular.tableview
+package ch.cassiamon.exampleapp.customizing.templates.angular.components.tableview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
@@ -12,8 +12,15 @@ object AngularFrontendTableViewScssTemplate {
         }
         
         .mat-column-context {
-            width: 32px;
+            width: 128px;
             text-align: center;
+        }
+        
+        .highlighted-row {
+          background-color: ghostwhite;
+        }
+        .context-column {
+          background-color: lightgrey;
         }
         
         """.identForMarker()

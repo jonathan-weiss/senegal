@@ -8,10 +8,10 @@ object AngularFrontendDeleteInstructionToTemplate {
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
 
-        import { UuidTO } from '../../../app/uuid-to.model';
+        import {${templateModel.entityName}IdTO} from "./${templateModel.entityFileName}-id-to.model";
         
         export interface Delete${templateModel.entityName}InstructionTO {
-            ${templateModel.transferObjectIdFieldName}: ${templateModel.transferObjectIdFieldType},
+            ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO,
         }
         """.identForMarker()
     }

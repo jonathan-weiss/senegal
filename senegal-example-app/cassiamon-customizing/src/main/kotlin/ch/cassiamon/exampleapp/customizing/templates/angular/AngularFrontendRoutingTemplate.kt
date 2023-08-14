@@ -12,7 +12,7 @@ object AngularFrontendRoutingTemplate {
             
             ${StringTemplateHelper.forEach(templateModels) { entityNode ->
                 """
-            import { ${entityNode.entityName}PanelViewComponent } from "./${entityNode.entityFileName}/component/${entityNode.entityFileName}-panel-view/${entityNode.entityFileName}-panel-view.component""""}}
+            import { ${entityNode.entityName}EntryPointComponent } from "./${entityNode.entityFileName}/stack-components/${entityNode.entityFileName}-entry-point/${entityNode.entityFileName}-entry-point.component""""}}
             
             export interface NavigationEntry {
                 path: string;
@@ -24,7 +24,7 @@ object AngularFrontendRoutingTemplate {
             ]
             
             const generatedEntitiesRoutes: Routes = [${StringTemplateHelper.forEach(templateModels) { entityNode -> """
-                { path: '${entityNode.entityFileName}', component: ${entityNode.entityName}PanelViewComponent },"""}}
+                { path: '${entityNode.entityFileName}', component: ${entityNode.entityName}EntryPointComponent },"""}}
             ];
             
             @NgModule({

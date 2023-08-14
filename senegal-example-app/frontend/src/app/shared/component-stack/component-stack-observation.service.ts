@@ -3,7 +3,7 @@ import {ComponentStackObserver} from "./component-stack-observer.interface";
 import {StackEntry} from "./stack-entry.interface";
 import {StackKey} from "./stack-key";
 import {C} from "@angular/cdk/keycodes";
-import {CollectionsUtil} from "../commons/collections.util";
+import {CollectionsUtil} from "../../commons/collections.util";
 
 
 @Injectable({

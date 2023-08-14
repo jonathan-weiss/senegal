@@ -8,14 +8,16 @@ object AngularFrontendModelToTemplate {
 
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
+            
+        import {${templateModel.entityName}IdTO} from "./${templateModel.entityFileName}-id-to.model";
 
-        import { UuidTO } from '../../../app/uuid-to.model';
-        
         export interface ${templateModel.entityName}TO {
-            ${templateModel.transferObjectIdFieldName}: ${templateModel.transferObjectIdFieldType},${
+            ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO,${
             StringTemplateHelper.forEach(templateModel.angularFields()) { fieldNode ->
         """
             ${fieldNode.transferObjectFieldName}: ${fieldNode.transferObjectFieldType},"""}}
+            
+            transferObjectDescription: string,
         }
             
         """.identForMarker()

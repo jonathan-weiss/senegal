@@ -9,11 +9,10 @@ object AngularFrontendUpdateInstructionToTemplate {
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
 
-        import { UuidTO } from '../../../app/uuid-to.model';
-
+        import {${templateModel.entityName}IdTO} from "./${templateModel.entityFileName}-id-to.model";
 
         export interface Update${templateModel.entityName}InstructionTO {
-            ${templateModel.transferObjectIdFieldName}: ${templateModel.transferObjectIdFieldType},${StringTemplateHelper.forEach(templateModel.angularFields()) { fieldNode ->
+            ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO,${StringTemplateHelper.forEach(templateModel.angularFields()) { fieldNode ->
             """
             ${fieldNode.transferObjectFieldName}: ${fieldNode.transferObjectFieldType},"""}}
         }
