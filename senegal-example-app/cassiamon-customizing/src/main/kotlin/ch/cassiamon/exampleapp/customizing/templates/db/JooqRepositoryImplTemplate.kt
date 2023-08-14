@@ -42,8 +42,8 @@ object JooqRepositoryImplTemplate {
                         .selectFrom(${dbTable.jooqDslName}.TABLE)
                         .where(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName}.like("%${'$'}searchTerm%"))
                         ${StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
-                        """.or( ${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}.like("%${'$'}searchTerm%"))
-                        """}}
+                        """
+                            .or( ${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}.like("%${'$'}searchTerm%"))""".trimIndent()}}
                         .fetch(this::toDomain)
                 }
             

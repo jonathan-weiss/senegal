@@ -147,6 +147,12 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
                 fileContent = KotlinModelDeleteInstructionTemplate.fillTemplate(kotlinModelClass),
             )
 
+            // create kotlin model search instruction class
+            targetFilesCollector.addFile(
+                targetFile = toTargetFilePath(domainSourceDirectory, kotlinModelClass.kotlinPackage, "Search${kotlinModelClass.kotlinClassName}Instruction.kt"),
+                fileContent = KotlinModelSearchInstructionTemplate.fillTemplate(kotlinModelClass),
+            )
+
 
             // create kotlin model service class
             targetFilesCollector.addFile(
@@ -185,6 +191,13 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
                 targetFile = toTargetFilePath(frontendApiSourceDirectory, restModelClass.transferObjectPackageName, "Delete${restModelClass.transferObjectBaseName}InstructionTO.kt"),
                 fileContent = RestApiTransferObjectDeleteInstructionTemplate.fillTemplate(restModelClass),
             )
+
+            // create REST api transfer object search instruction
+            targetFilesCollector.addFile(
+                targetFile = toTargetFilePath(frontendApiSourceDirectory, restModelClass.transferObjectPackageName, "Search${restModelClass.transferObjectBaseName}InstructionTO.kt"),
+                fileContent = RestApiTransferObjectSearchInstructionTemplate.fillTemplate(restModelClass),
+            )
+
 
             // create REST api controller
             targetFilesCollector.addFile(

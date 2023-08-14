@@ -12,13 +12,12 @@ object RestApiTransferObjectDeleteInstructionTemplate {
             import ${restModelClass.kotlinModelClass.kotlinPackage}.${restModelClass.kotlinModelClass.idFieldType}
             import ${restModelClass.kotlinModelClass.kotlinPackage}.Delete${restModelClass.kotlinModelClass.kotlinClassName}Instruction
             
-            import ch.senegal.example.frontendapi.controller.commons.${restModelClass.transferObjectIdFieldTypeName}
             
             data class Delete${restModelClass.transferObjectBaseName}InstructionTO(
-                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.transferObjectIdFieldTypeName},
+                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.kotlinModelClass.idFieldType},
             ){
                 fun toDomain() = Delete${restModelClass.kotlinModelClass.kotlinClassName}Instruction(
-                    ${restModelClass.kotlinModelClass.idFieldName} = ${restModelClass.kotlinModelClass.idFieldType}(this.${restModelClass.transferObjectIdFieldName}.uuid),
+                    ${restModelClass.kotlinModelClass.idFieldName} = this.${restModelClass.transferObjectIdFieldName},
                 )
             }
         """.identForMarker()

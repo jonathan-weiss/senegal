@@ -10,11 +10,12 @@ object RestApiControllerTemplate {
             
             import ch.senegal.example.frontendapi.API
             import  ${restModelClass.facadePackageName}.${restModelClass.facadeClassName}
-            import ch.senegal.example.frontendapi.controller.commons.${restModelClass.transferObjectIdFieldTypeName}
+            import ${restModelClass.kotlinModelClass.kotlinPackage}.${restModelClass.kotlinModelClass.idFieldType}
             import ${restModelClass.facadePackageName}.${restModelClass.transferObjectBaseName}TO
             import ${restModelClass.facadePackageName}.Create${restModelClass.transferObjectBaseName}InstructionTO
             import ${restModelClass.facadePackageName}.Update${restModelClass.transferObjectBaseName}InstructionTO
             import ${restModelClass.facadePackageName}.Delete${restModelClass.transferObjectBaseName}InstructionTO
+            import ${restModelClass.facadePackageName}.Search${restModelClass.transferObjectBaseName}InstructionTO
             import org.springframework.stereotype.Service
             import org.springframework.web.bind.annotation.DeleteMapping
             import org.springframework.web.bind.annotation.GetMapping
@@ -23,6 +24,7 @@ object RestApiControllerTemplate {
             import org.springframework.web.bind.annotation.PutMapping
             import org.springframework.web.bind.annotation.RequestBody
             import org.springframework.web.bind.annotation.RequestMapping
+            import org.springframework.web.bind.annotation.RequestParam
             import org.springframework.web.bind.annotation.RestController
             import java.util.UUID
             
@@ -35,7 +37,7 @@ object RestApiControllerTemplate {
             
                 @GetMapping("/entry/{id}")
                 fun get${restModelClass.kotlinModelClass.kotlinClassName}(@PathVariable("id") id: UUID): ${restModelClass.transferObjectBaseName}TO {
-                    return facade.get${restModelClass.kotlinModelClass.kotlinClassName}ById(UuidTO(id))
+                    return facade.get${restModelClass.kotlinModelClass.kotlinClassName}ById(${restModelClass.kotlinModelClass.idFieldType}(id))
                 }
             
                 @GetMapping("/all")
@@ -43,7 +45,16 @@ object RestApiControllerTemplate {
                     return facade.getAll${restModelClass.kotlinModelClass.kotlinClassName}()
                 }
             
+                @PostMapping("/search")
+                fun search${restModelClass.kotlinModelClass.kotlinClassName}(@RequestBody searchParams: Search${restModelClass.kotlinModelClass.kotlinClassName}InstructionTO): List<${restModelClass.transferObjectBaseName}TO> {
+                    return facade.searchAll${restModelClass.kotlinModelClass.kotlinClassName}(searchParams)
+                }
             
+                @GetMapping("/all-filtered")
+                fun getAll${restModelClass.kotlinModelClass.kotlinClassName}Filtered(@RequestParam("searchTerm") searchTerm: String): List<${restModelClass.transferObjectBaseName}TO> {
+                    return facade.getAll${restModelClass.kotlinModelClass.kotlinClassName}Filtered(searchTerm)
+                }
+
                 @PostMapping("/entry")
                 fun create${restModelClass.kotlinModelClass.kotlinClassName}(@RequestBody request: Create${restModelClass.transferObjectBaseName}InstructionTO): ${restModelClass.transferObjectBaseName}TO {
                     return facade.create${restModelClass.kotlinModelClass.kotlinClassName}(request)

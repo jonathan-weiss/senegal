@@ -46,6 +46,15 @@ object KotlinModelServiceTemplate {
                 fun getListOfAll${kotlinModelClass.kotlinClassName}(): List<${kotlinModelClass.kotlinClassName}> {
                     return repository.fetchAll${kotlinModelClass.kotlinClassName}()
                 }
+                
+                fun getListOfFiltered${kotlinModelClass.kotlinClassName}(searchTerm: String): List<${kotlinModelClass.kotlinClassName}> {
+                    return repository.fetchAll${kotlinModelClass.kotlinClassName}Filtered(searchTerm)
+                }
+                
+                fun searchAll${kotlinModelClass.kotlinClassName}(searchParam: Search${kotlinModelClass.kotlinClassName}Instruction): List<${kotlinModelClass.kotlinClassName}> {
+                    // TODO implement that in SQL
+                    return repository.fetchAll${kotlinModelClass.kotlinClassName}()
+                }
             }
         """.identForMarker()
     }

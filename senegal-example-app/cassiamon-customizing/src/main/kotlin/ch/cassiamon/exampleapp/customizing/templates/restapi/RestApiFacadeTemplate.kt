@@ -10,7 +10,6 @@ object RestApiFacadeTemplate {
             
             import ${restModelClass.kotlinModelClass.kotlinPackage}.${restModelClass.kotlinModelClass.kotlinClassName}Service
             import ${restModelClass.kotlinModelClass.kotlinPackage}.${restModelClass.kotlinModelClass.idFieldType}
-            import ch.senegal.example.frontendapi.controller.commons.${restModelClass.transferObjectIdFieldTypeName}
             import org.springframework.stereotype.Service
             
             @Service
@@ -18,8 +17,8 @@ object RestApiFacadeTemplate {
                 private val service: ${restModelClass.kotlinModelClass.kotlinClassName}Service,
             ) {
             
-                fun get${restModelClass.kotlinModelClass.kotlinClassName}ById(id: UuidTO): ${restModelClass.transferObjectBaseName}TO {
-                    val domainInstance = service.get${restModelClass.kotlinModelClass.kotlinClassName}(${restModelClass.kotlinModelClass.idFieldType}(id.uuid))
+                fun get${restModelClass.kotlinModelClass.kotlinClassName}ById(id: ${restModelClass.kotlinModelClass.idFieldType}): ${restModelClass.transferObjectBaseName}TO {
+                    val domainInstance = service.get${restModelClass.kotlinModelClass.kotlinClassName}(id)
                     return ${restModelClass.transferObjectBaseName}TO.fromDomain(domainInstance)
                 }
             
@@ -27,6 +26,14 @@ object RestApiFacadeTemplate {
                     return service.getListOfAll${restModelClass.kotlinModelClass.kotlinClassName}().map { ${restModelClass.transferObjectBaseName}TO.fromDomain(it) }
                 }
             
+                fun getAll${restModelClass.kotlinModelClass.kotlinClassName}Filtered(searchTerm: String): List<${restModelClass.transferObjectBaseName}TO> {
+                    return service.getListOfFiltered${restModelClass.kotlinModelClass.kotlinClassName}(searchTerm).map { ${restModelClass.transferObjectBaseName}TO.fromDomain(it) }
+                }
+    
+                fun searchAll${restModelClass.kotlinModelClass.kotlinClassName}(searchParams: Search${restModelClass.kotlinModelClass.kotlinClassName}InstructionTO): List<${restModelClass.transferObjectBaseName}TO> {
+                    return service.searchAll${restModelClass.kotlinModelClass.kotlinClassName}(searchParams.toDomain()).map { ${restModelClass.transferObjectBaseName}TO.fromDomain(it) }
+                }
+
                 fun create${restModelClass.kotlinModelClass.kotlinClassName}(instruction: Create${restModelClass.transferObjectBaseName}InstructionTO): ${restModelClass.transferObjectBaseName}TO {
                     val created${restModelClass.kotlinModelClass.kotlinClassName} = service.create${restModelClass.kotlinModelClass.kotlinClassName}(instruction.toDomain())
                     return ${restModelClass.transferObjectBaseName}TO.fromDomain(created${restModelClass.kotlinModelClass.kotlinClassName})

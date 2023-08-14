@@ -16,7 +16,7 @@ data class RestModelClass(private val model: EntityConcept) {
     val transferObjectBaseName: String = entityName
     val transferObjectPackageName: String = facadePackageName
     val transferObjectIdFieldName: String = "${CaseUtil.decapitalize(entityName)}Id"
-    val transferObjectIdFieldTypeName: String = "UuidTO"
+    val transferObjectIdFieldTypeName: String = "${CaseUtil.decapitalize(entityName)}Id"
     val urlPrefix: String = CaseUtil.camelToDashCase(entityName)
 
     fun fields(): List<RestModelField> {

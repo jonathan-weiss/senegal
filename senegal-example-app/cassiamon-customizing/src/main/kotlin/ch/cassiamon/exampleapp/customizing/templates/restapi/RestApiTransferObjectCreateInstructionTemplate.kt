@@ -9,10 +9,7 @@ object RestApiTransferObjectCreateInstructionTemplate {
         return """
             package ${restModelClass.facadePackageName}
                         
-            import ${restModelClass.kotlinModelClass.kotlinPackage}.${restModelClass.kotlinModelClass.kotlinClassName}
             import ${restModelClass.kotlinModelClass.kotlinPackage}.Create${restModelClass.kotlinModelClass.kotlinClassName}Instruction
-            
-            import ch.senegal.example.frontendapi.controller.commons.${restModelClass.transferObjectIdFieldTypeName}
             
             data class Create${restModelClass.transferObjectBaseName}InstructionTO(${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
             """
