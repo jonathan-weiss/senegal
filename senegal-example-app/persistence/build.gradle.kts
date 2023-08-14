@@ -25,10 +25,8 @@ dependencies {
 
     implementation(project(":senegal-example-app:shared-domain"))
     implementation(project(":senegal-example-app:domain"))
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.hsqldb:hsqldb")
-    //implementation("org.jooq:jooq:3.18.5")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.hsqldb:hsqldb")

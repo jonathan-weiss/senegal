@@ -2,7 +2,6 @@
 <cassiamon xmlns="https://cassiamon.ch/cassiamon-schemagic"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
-    <configuration/>
     <definitions>
         <entity name="Person" alternativeName="PERSON">
             <entityAttribute attributeName="firstname"/>

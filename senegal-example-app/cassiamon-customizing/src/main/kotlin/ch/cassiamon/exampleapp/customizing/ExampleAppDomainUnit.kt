@@ -24,7 +24,10 @@ import ch.cassiamon.exampleapp.customizing.templates.angular.panelview.AngularFr
 import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewHtmlTemplate
 import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewScssTemplate
 import ch.cassiamon.exampleapp.customizing.templates.angular.tableview.AngularFrontendTableViewTypescriptTemplate
-import ch.cassiamon.exampleapp.customizing.templates.db.*
+import ch.cassiamon.exampleapp.customizing.templates.db.DbTable
+import ch.cassiamon.exampleapp.customizing.templates.db.JooqDslTemplate
+import ch.cassiamon.exampleapp.customizing.templates.db.JooqRepositoryImplTemplate
+import ch.cassiamon.exampleapp.customizing.templates.db.LiquibaseTemplate
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.*
 import ch.cassiamon.exampleapp.customizing.templates.restapi.*
 import java.nio.file.Path
@@ -94,23 +97,16 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
         )
 
         schemaInstance.entities().map { DbTable(it) }.forEach { dbTable ->
-            // create jpa entity file per DB table
+            // create JOOQ entity file per DB table
             targetFilesCollector.addFile(
-                targetFile = toTargetFilePath(persistenceSourceDirectory, dbTable.jpaEntityPackage, "${dbTable.jpaEntityName}.kt"),
-                fileContent = JpaEntityTemplate.fillTemplate(dbTable),
+                targetFile = toTargetFilePath(persistenceSourceDirectory, dbTable.jooqDslPackage, dbTable.jooqDslFileName),
+                fileContent = JooqDslTemplate.fillTemplate(dbTable),
             )
 
-
-         // create jpa repository file per DB table
+            // create JOOQ repository file per DB table
             targetFilesCollector.addFile(
-                targetFile = toTargetFilePath(persistenceSourceDirectory, dbTable.jpaRepositoryPackage, "${dbTable.jpaRepositoryName}.kt"),
-                fileContent = JpaRepositoryTemplate.fillTemplate(dbTable),
-            )
-
-            // create repository file per DB table
-            targetFilesCollector.addFile(
-                targetFile = toTargetFilePath(persistenceSourceDirectory, dbTable.repositoryImplementationPackage, "${dbTable.repositoryImplementationName}.kt"),
-                fileContent = RepositoryImplTemplate.fillTemplate(dbTable),
+                targetFile = toTargetFilePath(persistenceSourceDirectory, dbTable.jooqDslPackage, dbTable.jooqRepositoryImplementationFileName),
+                fileContent = JooqRepositoryImplTemplate.fillTemplate(dbTable),
             )
         }
 

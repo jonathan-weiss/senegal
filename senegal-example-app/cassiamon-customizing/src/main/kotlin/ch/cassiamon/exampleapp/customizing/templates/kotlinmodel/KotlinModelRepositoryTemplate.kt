@@ -12,6 +12,7 @@ object KotlinModelRepositoryTemplate {
         interface ${kotlinModelClass.kotlinClassName}Repository {
             fun fetch${kotlinModelClass.kotlinClassName}ById(${kotlinModelClass.idFieldName}: ${kotlinModelClass.idFieldType}): ${kotlinModelClass.kotlinClassName}
             fun fetchAll${kotlinModelClass.kotlinClassName}(): List<${kotlinModelClass.kotlinClassName}>
+            fun fetchAll${kotlinModelClass.kotlinClassName}Filtered(searchTerm: String): List<${kotlinModelClass.kotlinClassName}>
         
             fun insert${kotlinModelClass.kotlinClassName}(domainInstance: ${kotlinModelClass.kotlinClassName})
             fun update${kotlinModelClass.kotlinClassName}(domainInstance: ${kotlinModelClass.kotlinClassName})

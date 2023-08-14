@@ -23,14 +23,11 @@ data class DbField(private val model: EntitySimpleAttributeConcept, private val 
         "Boolean" -> sqlBooleanType
         else -> throw RuntimeException("Unknown SQL Type for $entityAttributeType")
     }
-    val jpaFieldName = CaseUtil.decapitalize(entityAttributeName)
-    val jpaFieldType = when(entityAttributeType) {
+    val jooqFieldName = CaseUtil.decapitalize(entityAttributeName)
+    val jooqFieldType = when(entityAttributeType) {
         "Text" -> kotlinStringType
         "IntegerNumber" -> kotlinIntType
         "Boolean" -> kotlinBooleanType
         else -> throw RuntimeException("Unknown Kotlin Type for $entityAttributeType")
     }
-
-
-
 }

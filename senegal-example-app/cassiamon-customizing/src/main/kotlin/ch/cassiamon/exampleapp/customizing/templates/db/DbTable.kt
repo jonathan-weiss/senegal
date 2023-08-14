@@ -11,22 +11,19 @@ data class DbTable(private val model: EntityConcept) {
     }
 
     private val entityName: String = model.getName()
+    val humanReadableName: String = entityName
     val kotlinModelClass: KotlinModelClass = KotlinModelClass(model)
     val tableName: String = CaseUtil.camelToSnakeCaseAllCaps(entityName)
     val liquibaseFileName: String = "${tableName}.structure.xml"
-    val jpaEntityName: String = "${entityName}JpaEntity"
-    val jpaEntityFileName: String = "${jpaEntityName}.kt"
-    val jpaEntityPackage: String = "ch.senegal.example.persistence.entity.${entityName.lowercase()}"
-    val jpaRepositoryName: String = "${entityName}JpaRepository"
-    val jpaRepositoryFileName: String = "${jpaRepositoryName}.kt"
-    val jpaRepositoryPackage: String = jpaEntityPackage
-    val repositoryImplementationName: String = "${entityName}RepositoryImpl"
-    val repositoryImplementationFileName: String = "${repositoryImplementationName}.kt"
-    val repositoryImplementationPackage: String = jpaEntityPackage
+    val jooqDslName: String = "${entityName}Dsl"
+    val jooqDslFileName: String = "${jooqDslName}.kt"
+    val jooqDslPackage: String = "ch.senegal.example.persistence.entity.${entityName.lowercase()}"
+    val jooqRepositoryImplementationName: String = "Jooq${entityName}RepositoryImpl"
+    val jooqRepositoryImplementationFileName: String = "${jooqRepositoryImplementationName}.kt"
     val primaryKeyColumnName = CaseUtil.camelToSnakeCaseAllCaps("${entityName}Id")
     val primaryKeyColumnType = "UUID"
-    val primaryKeyJpaFieldName = CaseUtil.decapitalize("${entityName}Id")
-    val primaryKeyJpaFieldType = "UUID"
+    val primaryKeyJooqFieldName = CaseUtil.decapitalize("${entityName}Id")
+    val primaryKeyJooqFieldType = "UUID"
 
     fun tableFields(): List<DbField> {
         return model.entityAttributes().map { DbField(it, this, KotlinModelField(it, kotlinModelClass)) }
