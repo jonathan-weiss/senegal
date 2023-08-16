@@ -27,7 +27,7 @@ class EngineProcessTest {
                  xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
             <definitions>
                 <form conceptIdentifier="FoodCategoriesForm" formTitle="Food Categories Form">
-                    <textInputFormControl conceptIdentifier="FoodTextInput" displayName="Food" valueRequired="true" />
+                    <textInputFormControl conceptIdentifier="FoodTextInput" displayName="Food" valueRequired="true" formatHint="PLAIN"/>
                     <selectDropdownFormControl conceptIdentifier="FoodCategorySelect" defaultValue="default" displayName="Category" valueRequired="false">
                         <selectDropdownEntryConcept value="meat" displayValue="Meat" />
                         <selectDropdownEntryConcept value="fish" displayValue="Fish" />
@@ -36,7 +36,7 @@ class EngineProcessTest {
                     </selectDropdownFormControl>
                 </form>
                 <form conceptIdentifier="FoodPopularityForm" formTitle="Popularity of Food">
-                    <textInputFormControl displayName="Food" valueRequired="false"/>
+                    <textInputFormControl displayName="Food" valueRequired="false" formatHint="MONEY"/>
                     <selectDropdownFormControl defaultValue="++" displayName="Popularity" valueRequired="true">
                         <selectDropdownEntryConcept value="+++" displayValue="Loved" />
                         <selectDropdownEntryConcept value="++" displayValue="Eaten" />
@@ -181,6 +181,15 @@ class EngineProcessTest {
     @Concept("TextInputFormControl")
     interface TextInputFormControlConcept: FormControlConcept{
 
+        @Facet("FormatHint")
+        fun getFormatHint(): TextInputFormatHint
+
+    }
+
+    enum class TextInputFormatHint(val hint: String) {
+        PLAIN(""),
+        MONEY("12.30"),
+        DATE("31.12.2023"),
     }
 
     @Concept("SelectDropdownFormControl")
@@ -222,6 +231,7 @@ class EngineProcessTest {
         private val formTitleFacetName = FacetName.of("FormTitle")
         private val formControlDisplayNameFacetName = FacetName.of("DisplayName")
         private val formControlValueRequiredFacetName = FacetName.of("ValueRequired")
+        private val textInputFormatHintFacetName = FacetName.of("FormatHint")
         private val selectDropdownDefaultValueFacetName = FacetName.of("DefaultValue")
         private val selectDropdownEntryValueFacetName = FacetName.of("Value")
         private val selectDropdownEntryDisplayNameFacetName = FacetName.of("DisplayValue")
@@ -243,12 +253,14 @@ class EngineProcessTest {
                 .setParent(employeePreferencesFormId)
                 .addFacetValue(formControlDisplayNameFacetName,  "Firstname")
                 .addFacetValue(formControlValueRequiredFacetName,  true)
+                .addFacetValue(textInputFormatHintFacetName,  TextInputFormatHint.PLAIN)
 
             dataCollector
                 .newConceptData(textInputFormControlConceptName, ConceptIdentifier.of("EmployeeLastname"))
                 .setParent(employeePreferencesFormId)
                 .addFacetValue(formControlDisplayNameFacetName,  "Lastname")
                 .addFacetValue(formControlValueRequiredFacetName,  false)
+                .addFacetValue(textInputFormatHintFacetName,  TextInputFormatHint.MONEY)
 
             val preferredWorkplaceId = ConceptIdentifier.of("EmployeePreferredWorkplace")
             dataCollector

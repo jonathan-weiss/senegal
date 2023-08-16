@@ -5,6 +5,7 @@ import ch.cassiamon.api.process.schema.annotations.*
 import ch.cassiamon.api.process.schema.exceptions.MalformedSchemaException
 import java.lang.reflect.Method
 import kotlin.jvm.Throws
+import kotlin.reflect.KClass
 
 object SchemaCreator {
 
@@ -101,9 +102,10 @@ object SchemaCreator {
                 val isMandatory = method.getAnnotation(Facet::class.java).mandatory
                 val returnType = method.returnType
                 val facetType: FacetTypeEnum = FacetTypeEnum.matchingEnumByTypeClass(returnType.kotlin)
-                    ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types.")
+                    ?: throw MalformedSchemaException("Return type '$returnType' of method '$method' does not match any compatible facet types (${FacetTypeEnum.supportedTypes()}).")
                 val referencingConcept = FacetTypeEnum.referencedTypeConceptName(returnType.kotlin)
-                val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory, referencingConcept = referencingConcept)
+                val enumerationType = validatedEnumerationType(facetName, facetType, method)
+                val facet = FacetSchemaImpl(facetName, facetType, mandatory = isMandatory, referencingConcept = referencingConcept, enumerationType = enumerationType)
                 val alreadyExistingFacet = facets.firstOrNull { it.facetName == facetName }
                 if(alreadyExistingFacet == null) {
                     facets.add(facet)
@@ -120,12 +122,31 @@ object SchemaCreator {
                     throw MalformedSchemaException("The return type of a method with ${ConceptId::class.qualifiedName} " +
                             "must be ${String::class.qualifiedName} or ${ConceptIdentifier::class.qualifiedName} " +
                             "in method '$method'.")
-
                 }
             }
         }
 
         return ConceptSchemaImpl(conceptName, parentConcept, facets)
+    }
+
+    private fun validatedEnumerationType(facetName: FacetName, facetType: FacetTypeEnum, method: Method): KClass<*>? {
+        if(facetType != FacetTypeEnum.TEXT_ENUMERATION) {
+            return null
+        }
+
+        val enumerationType = method.returnType.kotlin
+        val enumConstants = enumerationType.java.enumConstants
+            ?: throw MalformedSchemaException("You try to define the facet '${facetName.name}' " +
+                    "as enumeration but the return type of method '$method' is not an enum but '${enumerationType.qualifiedName}'.")
+
+        val enumValuesButNotEnum = enumConstants.filterNot { it is Enum<*> }
+        if(enumValuesButNotEnum.isNotEmpty()) {
+            throw MalformedSchemaException("You try to define the facet '${facetName.name}' " +
+                    "as enumeration but the following enum values [${enumValuesButNotEnum.joinToString(",")}] are not of " +
+                    "type ${Enum::class.qualifiedName} for method '$method'.")
+        }
+
+        return enumerationType;
     }
 
     private fun validateTypeAnnotation(annotation: Class<out Annotation>, classToInspect: Class<*>) {

@@ -4,13 +4,13 @@
            xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
     <definitions>
         <entity name="Person" alternativeName="PERSON">
-            <entityAttribute attributeName="firstname"/>
-            <entityAttribute attributeName="lastname"/>
-            <entityAttribute attributeName="nickname"/>
+            <entityAttribute attributeName="firstname" attributeType="TEXT"/>
+            <entityAttribute attributeName="lastname" attributeType="TEXT"/>
+            <entityAttribute attributeName="nickname" attributeType="TEXT"/>
         </entity>
         <entity name="Address">
-            <entityAttribute attributeName="street"/>
-            <entityAttribute attributeName="zip"/>
+            <entityAttribute attributeName="street"  attributeType="TEXT"/>
+            <entityAttribute attributeName="zip"  attributeType="NUMBER"/>
         </entity>
     </definitions>
 </cassiamon>

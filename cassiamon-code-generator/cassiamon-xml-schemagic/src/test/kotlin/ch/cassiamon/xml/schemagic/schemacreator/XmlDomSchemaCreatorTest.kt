@@ -77,7 +77,7 @@ internal class XmlDomSchemaCreatorTest {
             conceptName = testEntityConceptName,
             parentConceptName = null,
             facets = listOf(
-                FacetSchemaImpl(testEntityNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null),
+                FacetSchemaImpl(testEntityNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null, enumerationType = null),
             )
         )
 
@@ -85,7 +85,7 @@ internal class XmlDomSchemaCreatorTest {
             conceptName = testEntityAttributeConceptName,
             parentConceptName = testEntityConceptName,
             facets = listOf(
-                FacetSchemaImpl(testEntityAttributeNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null),
+                FacetSchemaImpl(testEntityAttributeNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null, enumerationType = null),
             )
         )
 

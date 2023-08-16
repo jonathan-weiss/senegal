@@ -82,7 +82,6 @@ object ConceptDataValidator {
 
                 if(!facetSchema.facetType.isCompatibleInputType(facetValue)) {
                     val actualClass = facetValue::class
-
                     throw WrongTypeForFacetValueException(
                         concept = conceptData.conceptName,
                         conceptIdentifier = conceptData.conceptIdentifier,

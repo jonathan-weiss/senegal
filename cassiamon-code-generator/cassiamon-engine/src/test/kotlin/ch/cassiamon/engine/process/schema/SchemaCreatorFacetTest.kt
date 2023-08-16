@@ -26,6 +26,9 @@ class SchemaCreatorFacetTest {
         @Facet("TextFacet")
         fun getTextFacet(): String
 
+        @Facet("EnumerationFacet")
+        fun getEnumerationFacet(): SeasonEnumeration
+
         @Facet("NumberFacet")
         fun getNumberFacet(): Int
 
@@ -40,6 +43,13 @@ class SchemaCreatorFacetTest {
 
     }
 
+    enum class SeasonEnumeration {
+        WINTER,
+        SPRING,
+        SUMMER,
+        FALL,
+    }
+
     @Concept("OtherConcept")
     interface OtherConcept
 
@@ -47,6 +57,7 @@ class SchemaCreatorFacetTest {
         @Test
     fun `test valid concept with different types`() {
         val textFacetName = FacetName.of("TextFacet")
+        val enumerationFacetName = FacetName.of("EnumerationFacet")
         val numberFacetName = FacetName.of("NumberFacet")
         val booleanFacetName = FacetName.of("BooleanFacet")
         val selfReferenceFacetName = FacetName.of("SelfReferenceFacet")
@@ -57,6 +68,7 @@ class SchemaCreatorFacetTest {
 
 
         Assertions.assertTrue(concept.hasFacet(textFacetName))
+        Assertions.assertTrue(concept.hasFacet(enumerationFacetName))
         Assertions.assertTrue(concept.hasFacet(numberFacetName))
         Assertions.assertTrue(concept.hasFacet(booleanFacetName))
         Assertions.assertTrue(concept.hasFacet(selfReferenceFacetName))
@@ -64,6 +76,10 @@ class SchemaCreatorFacetTest {
 
         Assertions.assertEquals(FacetTypeEnum.TEXT, concept.facetByName(textFacetName).facetType)
         Assertions.assertEquals(true, concept.facetByName(textFacetName).mandatory)
+
+        Assertions.assertEquals(FacetTypeEnum.TEXT_ENUMERATION, concept.facetByName(enumerationFacetName).facetType)
+        Assertions.assertEquals(true, concept.facetByName(enumerationFacetName).mandatory)
+        Assertions.assertEquals(SeasonEnumeration::class, concept.facetByName(enumerationFacetName).enumerationType)
 
         Assertions.assertEquals(FacetTypeEnum.NUMBER, concept.facetByName(numberFacetName).facetType)
         Assertions.assertEquals(true, concept.facetByName(numberFacetName).mandatory)
@@ -158,5 +174,57 @@ class SchemaCreatorFacetTest {
         Assertions.assertEquals(true, concept.facetByName(mandatoryFacetName).mandatory)
         Assertions.assertEquals(false, concept.facetByName(optionalFacetName).mandatory)
     }
+
+    @Schema
+    interface DifferentTypeDuplicateFacetSchemaDefinitionClass {
+        @ChildConcepts(DifferentTypeDuplicateFacetConcept::class)
+        fun getDuplicateFacetChildrenConcepts(): List<DifferentTypeDuplicateFacetConcept>
+
+    }
+
+    @Concept("DifferentTypeDuplicateFacet")
+    interface DifferentTypeDuplicateFacetConcept {
+        @Facet("Bar")
+        fun getBarFacet(): Int
+
+        @Facet("Bar")
+        fun getAnotherBarFacet(): String
+
+    }
+
+    @Test
+    fun `test with duplicate facet having different types concept`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(DifferentTypeDuplicateFacetSchemaDefinitionClass::class.java)
+        }
+    }
+
+    @Schema
+    interface DuplicateFacetSchemaDefinitionClass {
+        @ChildConcepts(DuplicateFacetConcept::class)
+        fun getDuplicateFacetChildrenConcepts(): List<DuplicateFacetConcept>
+
+    }
+
+    @Concept("DuplicateFacet")
+    interface DuplicateFacetConcept {
+        @Facet("Bar")
+        fun getBarFacet(): String
+
+        @Facet("Bar")
+        fun getAnotherBarFacet(): String
+
+    }
+
+    @Test
+    fun `test with same duplicate facet concept`() {
+        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DuplicateFacetSchemaDefinitionClass::class.java)
+        Assertions.assertEquals(1, schema.numberOfConcepts())
+        val fooConcept = schema.conceptByConceptName(ConceptName.of("DuplicateFacet"))
+        Assertions.assertEquals(ConceptName.of("DuplicateFacet"), fooConcept.conceptName)
+        Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
+        Assertions.assertEquals(1, fooConcept.facetNames.size)
+    }
+
 
 }

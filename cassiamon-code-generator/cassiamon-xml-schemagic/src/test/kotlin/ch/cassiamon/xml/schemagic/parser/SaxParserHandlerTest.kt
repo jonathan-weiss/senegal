@@ -86,7 +86,7 @@ internal class SaxParserHandlerTest {
         val firstnameNode = conceptDataList[1]
         assertEquals(testEntityAttributeConceptName, firstnameNode.conceptName)
         assertEquals("firstname", firstnameNode.getFacet(testEntityAttributeNameFacetName))
-        assertEquals("TEXT", firstnameNode.getFacet(testEntityAttributeTypeFacetName))
+        assertEquals(AttributeTypeEnum.TEXT, firstnameNode.getFacet(testEntityAttributeTypeFacetName))
         assertEquals("kotlin.String", firstnameNode.getFacet(testKotlinFieldTypeFacetName))
         val addressRootNode = conceptDataList[4]
         assertEquals(testEntityConceptName, addressRootNode.conceptName)
@@ -119,12 +119,18 @@ internal class SaxParserHandlerTest {
 
         @Facet(testEntityAttributeNameFacetNameConst)
         fun getName(): String
-        @Facet(testEntityAttributeTypeFacetNameConst) // TODO use enumeration as soon as available
-        fun getType(): String
+        @Facet(testEntityAttributeTypeFacetNameConst)
+        fun getType(): AttributeTypeEnum
         @Facet(testKotlinFieldTypeFacetNameConst)
         fun getKotlinType(): String
 
 
+    }
+
+    enum class AttributeTypeEnum {
+        TEXT,
+        NUMBER,
+        BOOLEAN,
     }
     private fun createSchema(): SchemaAccess {
         return SchemaCreator.createSchemaFromSchemaDefinitionClass(SaxParserTestSchema::class.java)

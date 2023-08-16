@@ -145,18 +145,15 @@ object XmlDomSchemaCreator {
         setElementXsdAttribute(attributeElement, "name", facetName.toXmlAttributeName())
 
         when(facetSchema.facetType) {
-
-
-
-//            is StringEnumerationFacet -> {
-//                val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
-//                val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
-//                setElementXsdAttribute(restriction, "base", "$xsdNamespacePrefix:string")
-//                facet.enumerationOptions.forEach { enumerationValue ->
-//                    val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
-//                    setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
-//                }
-//            }
+            FacetTypeEnum.TEXT_ENUMERATION -> {
+                val simpleType = createAndAttachXsdElement(document, attributeElement, "simpleType")
+                val restriction = createAndAttachXsdElement(document, simpleType, "restriction")
+                setElementXsdAttribute(restriction, "base", "$xsdNamespacePrefix:string")
+                facetSchema.enumerationValues().forEach { enumerationValue ->
+                    val enumerationValueElement = createAndAttachXsdElement(document, restriction, "enumeration")
+                    setElementXsdAttribute(enumerationValueElement, "value", enumerationValue.name)
+                }
+            }
             FacetTypeEnum.TEXT -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:string")
             FacetTypeEnum.NUMBER -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:integer")
             FacetTypeEnum.BOOLEAN -> setElementXsdAttribute(attributeElement, "type", "$xsdNamespacePrefix:boolean")

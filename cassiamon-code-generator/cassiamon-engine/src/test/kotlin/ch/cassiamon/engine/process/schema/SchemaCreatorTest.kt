@@ -67,56 +67,6 @@ class SchemaCreatorTest {
         Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
     }
 
-    @Schema
-    interface DuplicateFacetSchemaDefinitionClass {
-        @ChildConcepts(DuplicateFacetConcept::class)
-        fun getDuplicateFacetChildrenConcepts(): List<DuplicateFacetConcept>
-
-    }
-
-    @Concept("DuplicateFacet")
-    interface DuplicateFacetConcept {
-        @Facet("Bar")
-        fun getBarFacet(): String
-
-        @Facet("Bar")
-        fun getAnotherBarFacet(): String
-
-    }
-
-    @Test
-    fun `test with same duplicate facet concept`() {
-        val schema = SchemaCreator.createSchemaFromSchemaDefinitionClass(DuplicateFacetSchemaDefinitionClass::class.java)
-        Assertions.assertEquals(1, schema.numberOfConcepts())
-        val fooConcept = schema.conceptByConceptName(ConceptName.of("DuplicateFacet"))
-        Assertions.assertEquals(ConceptName.of("DuplicateFacet"), fooConcept.conceptName)
-        Assertions.assertTrue(fooConcept.facetNames.contains(FacetName.of("Bar")))
-        Assertions.assertEquals(1, fooConcept.facetNames.size)
-    }
-
-    @Schema
-    interface DifferentTypeDuplicateFacetSchemaDefinitionClass {
-        @ChildConcepts(DifferentTypeDuplicateFacetConcept::class)
-        fun getDuplicateFacetChildrenConcepts(): List<DifferentTypeDuplicateFacetConcept>
-
-    }
-
-    @Concept("DifferentTypeDuplicateFacet")
-    interface DifferentTypeDuplicateFacetConcept {
-        @Facet("Bar")
-        fun getBarFacet(): Int
-
-        @Facet("Bar")
-        fun getAnotherBarFacet(): String
-
-    }
-
-    @Test
-    fun `test with duplicate facet having different types concept`() {
-        Assertions.assertThrows(MalformedSchemaException::class.java) {
-            SchemaCreator.createSchemaFromSchemaDefinitionClass(DifferentTypeDuplicateFacetSchemaDefinitionClass::class.java)
-        }
-    }
 
     @Schema
     interface WrongConceptIdentifierSchemaDefinitionClass {
@@ -438,6 +388,39 @@ class SchemaCreatorTest {
         }
     }
 
+    @Schema
+    interface TwoParentConceptForOneChildConceptSchemaDefinitionClass {
+        @ChildConcepts(TwoParentConceptParent1Concept::class)
+        fun getFirstParentConcept(): List<TwoParentConceptParent1Concept>
+
+        @ChildConcepts(TwoParentConceptParent2Concept::class)
+        fun getSecondParentConcept(): List<TwoParentConceptParent2Concept>
+
+    }
+
+    @Concept("TwoParentConceptParent1Concept")
+    interface TwoParentConceptParent1Concept {
+        @ChildConcepts(TwoParentConceptChildConcept::class)
+        fun getChildrenConcepts(): List<TwoParentConceptChildConcept>
+
+    }
+
+    @Concept("TwoParentConceptParent2Concept")
+    interface TwoParentConceptParent2Concept {
+        @ChildConcepts(TwoParentConceptChildConcept::class)
+        fun getChildrenConcepts(): List<TwoParentConceptChildConcept>
+
+    }
+
+    @Concept("TwoParentConceptChildConcept")
+    interface TwoParentConceptChildConcept
+
+    @Test
+    fun `test schema with two parents concepts having same child concept throw exception`() {
+        Assertions.assertThrows(MalformedSchemaException::class.java) {
+            SchemaCreator.createSchemaFromSchemaDefinitionClass(TwoParentConceptForOneChildConceptSchemaDefinitionClass::class.java)
+        }
+    }
 
     @Schema
     interface IndirectCyclicSchemaDefinitionClass {

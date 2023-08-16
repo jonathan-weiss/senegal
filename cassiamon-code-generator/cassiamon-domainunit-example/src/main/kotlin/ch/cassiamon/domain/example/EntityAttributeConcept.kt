@@ -7,4 +7,13 @@ import ch.cassiamon.api.process.schema.annotations.Facet
 interface EntityAttributeConcept {
     @Facet("AttributeName")
     fun attributeName(): String
+
+    @Facet("AttributeType")
+    fun attributeType(): AttributeTypeEnum
+
+    enum class AttributeTypeEnum {
+        TEXT,
+        NUMBER,
+        BOOLEAN
+    }
 }

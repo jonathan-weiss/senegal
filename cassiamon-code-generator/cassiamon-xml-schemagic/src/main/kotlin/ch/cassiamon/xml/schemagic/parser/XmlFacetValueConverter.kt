@@ -11,7 +11,19 @@ object XmlFacetValueConverter {
             FacetTypeEnum.NUMBER -> attributeValue.toLong()
             FacetTypeEnum.BOOLEAN -> attributeValue.toBoolean()
             FacetTypeEnum.REFERENCE -> ConceptIdentifier.of(attributeValue)
+            FacetTypeEnum.TEXT_ENUMERATION -> enumerationValue(facetSchema, attributeValue)
         }
+    }
+
+    private fun enumerationValue(facetSchema: FacetSchema, attributeValue: String): Any {
+        val enumerationType = facetSchema.enumerationType
+            ?: throw IllegalStateException("No enumeration type defined for facet ${facetSchema.facetName} but value was '$attributeValue'")
+        return enumerationType.java.enumConstants
+            .filterIsInstance(Enum::class.java)
+            .firstOrNull { enumConstant ->
+                return@firstOrNull enumConstant.name == attributeValue
+            }
+            ?: throw IllegalStateException("Value '$attributeValue' is not within the possible values ${enumerationType.java.enumConstants.joinToString(",") { "'${it}'" }} for facet ${facetSchema.facetName}.")
     }
 }
 
