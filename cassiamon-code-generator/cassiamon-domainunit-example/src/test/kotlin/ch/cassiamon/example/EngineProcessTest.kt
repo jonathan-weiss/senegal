@@ -27,8 +27,8 @@ class EngineProcessTest {
                  xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
             <definitions>
                 <form conceptIdentifier="FoodCategoriesForm" formTitle="Food Categories Form">
-                    <textInputFormControl conceptIdentifier="FoodTextInput" displayName="Food" />
-                    <selectDropdownFormControl conceptIdentifier="FoodCategorySelect" defaultValue="default" displayName="Category">
+                    <textInputFormControl conceptIdentifier="FoodTextInput" displayName="Food" valueRequired="true" />
+                    <selectDropdownFormControl conceptIdentifier="FoodCategorySelect" defaultValue="default" displayName="Category" valueRequired="false">
                         <selectDropdownEntryConcept value="meat" displayValue="Meat" />
                         <selectDropdownEntryConcept value="fish" displayValue="Fish" />
                         <selectDropdownEntryConcept value="vegetable" displayValue="Vegetable" />
@@ -36,8 +36,8 @@ class EngineProcessTest {
                     </selectDropdownFormControl>
                 </form>
                 <form conceptIdentifier="FoodPopularityForm" formTitle="Popularity of Food">
-                    <textInputFormControl displayName="Food"/>
-                    <selectDropdownFormControl defaultValue="++" displayName="Popularity">
+                    <textInputFormControl displayName="Food" valueRequired="false"/>
+                    <selectDropdownFormControl defaultValue="++" displayName="Popularity" valueRequired="true">
                         <selectDropdownEntryConcept value="+++" displayValue="Loved" />
                         <selectDropdownEntryConcept value="++" displayValue="Eaten" />
                         <selectDropdownEntryConcept value="+" displayValue="Refused" />
@@ -70,7 +70,7 @@ class EngineProcessTest {
     private val expectedHtmlTemplateOutput = """
         <html>
           <form name="FoodCategoriesForm">
-            <label>Food</label>
+            <label>Food*</label>
             <input type="text" name="FoodTextInput" />
             <label>Category</label>
             <select name="FoodCategorySelect" option="default">
@@ -172,6 +172,10 @@ class EngineProcessTest {
         @Facet("DisplayName")
         fun getFormControlDisplayName(): String
 
+        @Facet("ValueRequired")
+        fun isValueRequired(): Boolean
+
+
     }
 
     @Concept("TextInputFormControl")
@@ -217,6 +221,7 @@ class EngineProcessTest {
         private val selectDropdownEntryConceptName = ConceptName.of("SelectDropdownEntryConcept")
         private val formTitleFacetName = FacetName.of("FormTitle")
         private val formControlDisplayNameFacetName = FacetName.of("DisplayName")
+        private val formControlValueRequiredFacetName = FacetName.of("ValueRequired")
         private val selectDropdownDefaultValueFacetName = FacetName.of("DefaultValue")
         private val selectDropdownEntryValueFacetName = FacetName.of("Value")
         private val selectDropdownEntryDisplayNameFacetName = FacetName.of("DisplayValue")
@@ -237,11 +242,13 @@ class EngineProcessTest {
                 .newConceptData(textInputFormControlConceptName, ConceptIdentifier.of("EmployeeFirstname"))
                 .setParent(employeePreferencesFormId)
                 .addFacetValue(formControlDisplayNameFacetName,  "Firstname")
+                .addFacetValue(formControlValueRequiredFacetName,  true)
 
             dataCollector
                 .newConceptData(textInputFormControlConceptName, ConceptIdentifier.of("EmployeeLastname"))
                 .setParent(employeePreferencesFormId)
                 .addFacetValue(formControlDisplayNameFacetName,  "Lastname")
+                .addFacetValue(formControlValueRequiredFacetName,  false)
 
             val preferredWorkplaceId = ConceptIdentifier.of("EmployeePreferredWorkplace")
             dataCollector
@@ -249,6 +256,7 @@ class EngineProcessTest {
                 .setParent(employeePreferencesFormId)
                 .addFacetValue(formControlDisplayNameFacetName,  "Workplace Preference")
                 .addFacetValue(selectDropdownDefaultValueFacetName,  "company")
+                .addFacetValue(formControlValueRequiredFacetName,  true)
 
             dataCollector
                 .newConceptData(selectDropdownEntryConceptName, ConceptIdentifier.of("HomeOffice"))
@@ -287,10 +295,10 @@ class EngineProcessTest {
             content += """  <form name="${form.getFormId()}">""" + "\n"
             form.getFormControls().forEach { formControl ->
                 if(formControl is TextInputFormControlConcept) {
-                    content += """    <label>${formControl.getFormControlDisplayName()}</label>""" + "\n"
+                    content += """    <label>${formControl.getFormControlDisplayName()}${if(formControl.isValueRequired()) "*" else ""}</label>""" + "\n"
                     content += """    <input type="text" name="${formControl.getFormControlName()}" />""" + "\n"
                 } else if (formControl is SelectDropdownFormControlConcept) {
-                        content += """    <label>${formControl.getFormControlDisplayName()}</label>""" + "\n"
+                        content += """    <label>${formControl.getFormControlDisplayName()}${if(formControl.isValueRequired()) "*" else ""}</label>""" + "\n"
                         content += """    <select name="${formControl.getFormControlName()}" option="${formControl.getDefaultValue()}">""" + "\n"
                     formControl.getSelectDropdownEntries()
                         .forEach { optionEntry -> content += """      <option value="${optionEntry.getValue()}">${optionEntry.getDisplayValue()}</option>""" + "\n" }
