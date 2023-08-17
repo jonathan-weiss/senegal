@@ -5,6 +5,8 @@ interface ConceptSchema {
     val conceptName: ConceptName
     val parentConceptName: ConceptName?
     val facets: List<FacetSchema>
+    val minOccurrence: Int
+    val maxOccurrence: Int
 
     val facetNames: List<FacetName>
         get() = facets.map { it.facetName }.toList()

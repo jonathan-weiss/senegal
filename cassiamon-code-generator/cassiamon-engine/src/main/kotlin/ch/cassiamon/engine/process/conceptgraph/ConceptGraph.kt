@@ -16,6 +16,19 @@ class ConceptGraph(
         return concepts[conceptIdentifier] ?: throw NoSuchElementException("No ConceptNode with id '${conceptIdentifier.name}'.")
     }
 
+    fun childConcepts(conceptName: ConceptName, parentConceptIdentifier: ConceptIdentifier): List<ConceptNode> {
+        return concepts.values
+            .filter { conceptNode -> conceptNode.conceptName == conceptName }
+            .filter { conceptNode -> conceptNode.parentConceptNode?.conceptIdentifier == parentConceptIdentifier }
+            .sortedBy { conceptNode -> conceptNode.sequenceNumber }
+    }
+
+    fun rootConcepts(): Set<ConceptNode> {
+        return concepts.values
+            .filter { conceptNode -> conceptNode.parentConceptNode == null }
+            .toSet()
+    }
+
     override fun children(conceptName: ConceptName): List<ConceptNode> {
         return children(setOf(conceptName))
     }
@@ -27,7 +40,9 @@ class ConceptGraph(
     }
 
     private fun rootConceptsByConceptName(conceptName: ConceptName): List<ConceptNode> {
-        return rootConceptsByConceptName[conceptName] ?: emptyList()
+        return rootConceptsByConceptName[conceptName]
+            ?.sortedBy { conceptNode -> conceptNode.sequenceNumber }
+            ?: emptyList()
     }
 
 }

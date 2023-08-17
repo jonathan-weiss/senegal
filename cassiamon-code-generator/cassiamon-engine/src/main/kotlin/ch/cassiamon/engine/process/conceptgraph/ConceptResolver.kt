@@ -1,12 +1,10 @@
 package ch.cassiamon.engine.process.conceptgraph
 
-import ch.cassiamon.api.process.conceptgraph.exceptions.ConceptGraphException
-import ch.cassiamon.api.process.conceptgraph.exceptions.ParentConceptNotFoundConceptGraphException
-import ch.cassiamon.api.process.conceptgraph.exceptions.DuplicateConceptIdentifierFoundConceptGraphException
-import ch.cassiamon.api.process.conceptgraph.exceptions.ReferencedConceptConceptGraphNodeNotFoundException
+import ch.cassiamon.api.process.conceptgraph.exceptions.*
 import ch.cassiamon.api.process.datacollection.ConceptData
 import ch.cassiamon.api.process.datacollection.exceptions.SchemaValidationException
 import ch.cassiamon.api.process.schema.ConceptIdentifier
+import ch.cassiamon.api.process.schema.ConceptSchema
 import ch.cassiamon.api.process.schema.SchemaAccess
 import ch.cassiamon.engine.process.datacollection.ConceptDataValidator
 
@@ -55,8 +53,43 @@ object ConceptResolver {
             }
         }
 
-        return ConceptGraph(conceptNodeMap)
+        val conceptGraph = ConceptGraph(conceptNodeMap)
+        validateConceptGraph(schema, conceptGraph)
+        return conceptGraph
     }
+
+    @Throws(ConceptGraphException::class)
+    private fun validateConceptGraph(schema: SchemaAccess, conceptGraph: ConceptGraph) {
+        val rootConceptsByConceptName = conceptGraph.rootConcepts().groupBy { it.conceptName }
+
+        schema.allRootConcepts().forEach { rootConceptSchema ->
+            val conceptNodesForSchema: List<ConceptNode> = rootConceptsByConceptName[rootConceptSchema.conceptName] ?: emptyList()
+            validateMinMaxOccurrence(rootConceptSchema, conceptNodesForSchema)
+            conceptNodesForSchema.forEach { rootConceptNode -> validateChildNodes(schema, conceptGraph, rootConceptNode) }
+        }
+    }
+
+    private fun validateChildNodes(schema: SchemaAccess, conceptGraph: ConceptGraph, conceptNode: ConceptNode){
+        val conceptSchema = schema.conceptByConceptName(conceptNode.conceptName)
+        schema.allChildrenConcepts(conceptSchema).forEach { childConceptSchema ->
+            val childrenConceptNodes = conceptGraph.childConcepts(childConceptSchema.conceptName, conceptNode.conceptIdentifier)
+            validateMinMaxOccurrence(childConceptSchema, childrenConceptNodes)
+            childrenConceptNodes.forEach { childConceptNode -> validateChildNodes(schema, conceptGraph, childConceptNode) }
+        }
+    }
+
+    @Throws(ConceptGraphException::class)
+    private fun validateMinMaxOccurrence(conceptSchema: ConceptSchema, conceptNodes: List<ConceptNode>) {
+        val range = conceptSchema.minOccurrence..conceptSchema.maxOccurrence
+        if(!range.contains(conceptNodes.size)) {
+            throw OccurrenceRangeConceptGraphException(conceptSchema.conceptName,
+                minOccurrence = conceptSchema.minOccurrence,
+                maxOccurrence = conceptSchema.maxOccurrence,
+                conceptNodes.map { ConceptNodeDescriber.createConceptNodeDescription(it) })
+        }
+    }
+
+
 
     private fun createConceptNodeMap(conceptDataEntries: List<ConceptData>): Map<ConceptIdentifier, MutableConceptNode> {
         val conceptNodeMap: MutableMap<ConceptIdentifier, MutableConceptNode> = mutableMapOf()

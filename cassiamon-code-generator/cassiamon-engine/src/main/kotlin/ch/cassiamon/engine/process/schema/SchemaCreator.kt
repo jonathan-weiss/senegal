@@ -126,7 +126,10 @@ object SchemaCreator {
             }
         }
 
-        return ConceptSchemaImpl(conceptName, parentConcept, facets)
+        val minOccurrence = conceptClass.getAnnotation(Concept::class.java).minOccurrence;
+        val maxOccurrence = conceptClass.getAnnotation(Concept::class.java).maxOccurrence;
+
+        return ConceptSchemaImpl(conceptName, parentConcept, facets, minOccurrence = minOccurrence, maxOccurrence = maxOccurrence)
     }
 
     private fun validatedEnumerationType(facetName: FacetName, facetType: FacetTypeEnum, method: Method): KClass<*>? {
