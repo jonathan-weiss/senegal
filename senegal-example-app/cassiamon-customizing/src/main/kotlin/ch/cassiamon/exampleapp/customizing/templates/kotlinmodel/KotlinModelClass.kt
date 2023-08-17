@@ -13,6 +13,6 @@ data class KotlinModelClass(private val model: EntityConcept) {
     val idFieldType = "${kotlinClassName}Id"
 
     fun kotlinFields(): List<KotlinModelField> {
-        return model.entityAttributes().map { KotlinModelField(it, this) }
+        return model.entityFields().map { KotlinModelField(it, this) }
     }
 }

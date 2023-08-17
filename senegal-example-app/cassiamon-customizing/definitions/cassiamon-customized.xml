@@ -4,24 +4,25 @@
            xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
     <definitions>
         <entity entityName="Person" conceptIdentifier="Person">
-            <entitySimpleAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="nickname" entityAttributeType="Text"/>
-            <entityReferenceAttribute entityReferenceName="address" referencedEntity="Address"/>
+            <primaryKeyField fieldName="personNo" fieldDataType="UUID" conceptIdentifier="Person_personNo"/>
+            <dataOnlyField fieldName="firstname" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="lastname" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="nickname" fieldDataType="TEXT"/>
+            <primaryKeyReferenceField fieldName="address" fieldDataType="UUID" referencedPrimaryKeyField="Person_personNo"/>
         </entity>
         <entity entityName="Address" conceptIdentifier="Address">
-            <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="zip" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+            <primaryKeyField fieldName="addressNo" fieldDataType="UUID"/>
+            <dataOnlyField fieldName="street" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="zip" fieldDataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
         </entity>
         <entity entityName="Department">
-            <entitySimpleAttribute entityAttributeName="title" entityAttributeType="Text"/>
+            <primaryKeyField fieldName="departmentNo" fieldDataType="UUID"/>
+            <dataOnlyField fieldName="title" fieldDataType="TEXT"/>
         </entity>
         <entity entityName="DepartmentAddress">
-            <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
-            <entitySimpleAttribute entityAttributeName="phone" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
-        </entity>
-        <entity entityName="OfficeBrackets">
-            <entitySimpleAttribute entityAttributeName="stupidLevel" entityAttributeType="Text"/>
+            <primaryKeyField fieldName="departmentAddressNo" fieldDataType="UUID"/>
+            <dataOnlyField fieldName="street" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="phone" fieldDataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
         </entity>
     </definitions>
 

@@ -20,6 +20,6 @@ data class RestModelClass(private val model: EntityConcept) {
     val urlPrefix: String = CaseUtil.camelToDashCase(entityName)
 
     fun fields(): List<RestModelField> {
-        return model.entityAttributes().map { RestModelField(it, this, KotlinModelField(it, kotlinModelClass)) }
+        return model.entityFields().map { RestModelField(it, this, KotlinModelField(it, kotlinModelClass)) }
     }
 }

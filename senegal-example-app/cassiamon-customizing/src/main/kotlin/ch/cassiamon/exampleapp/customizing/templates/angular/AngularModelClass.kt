@@ -2,7 +2,6 @@ package ch.cassiamon.exampleapp.customizing.templates.angular
 
 import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelClass
-import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil
 
 data class AngularModelClass(private val model: EntityConcept) {
@@ -17,6 +16,6 @@ data class AngularModelClass(private val model: EntityConcept) {
     val restApiUrlPrefixName: String = CaseUtil.camelToDashCase(this.entityName)
 
     fun angularFields(): List<AngularModelField> {
-        return model.entityAttributes().map { AngularModelField(it, this) }
+        return model.entityFields().map { AngularModelField(it, this) }
     }
 }

@@ -1,6 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
 import ch.cassiamon.api.process.schema.annotations.ChildConcepts
+import ch.cassiamon.api.process.schema.annotations.ChildConceptsWithCommonBaseInterface
 import ch.cassiamon.api.process.schema.annotations.Concept
 import ch.cassiamon.api.process.schema.annotations.Facet
 
@@ -10,9 +11,12 @@ interface EntityConcept {
     @Facet("EntityName")
     fun getName(): String
 
-    @ChildConcepts(EntitySimpleAttributeConcept::class)
-    fun entityAttributes(): List<EntitySimpleAttributeConcept>
+    @ChildConceptsWithCommonBaseInterface(EntityField::class, [DataOnlyFieldConcept::class])
+    fun entityFields(): List<EntityField>
 
-    @ChildConcepts(EntityReferenceAttributeConcept::class)
-    fun entityReferences(): List<EntityReferenceAttributeConcept>
+    @ChildConcepts(PrimaryKeyReferenceFieldConcept::class)
+    fun entityReferences(): List<PrimaryKeyReferenceFieldConcept>
+
+    @ChildConcepts(PrimaryKeyFieldConcept::class)
+    fun primaryKeys(): List<PrimaryKeyFieldConcept>
 }

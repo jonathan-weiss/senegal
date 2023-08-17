@@ -26,6 +26,6 @@ data class DbTable(private val model: EntityConcept) {
     val primaryKeyJooqFieldType = "UUID"
 
     fun tableFields(): List<DbField> {
-        return model.entityAttributes().map { DbField(it, this, KotlinModelField(it, kotlinModelClass)) }
+        return model.entityFields().map { DbField(it, this, KotlinModelField(it, kotlinModelClass)) }
     }
 }

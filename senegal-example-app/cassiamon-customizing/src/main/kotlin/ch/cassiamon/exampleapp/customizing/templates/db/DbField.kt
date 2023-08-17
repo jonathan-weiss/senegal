@@ -1,10 +1,12 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
-import ch.cassiamon.exampleapp.customizing.templates.EntitySimpleAttributeConcept
+import ch.cassiamon.exampleapp.customizing.templates.DataOnlyFieldConcept
+import ch.cassiamon.exampleapp.customizing.templates.EntityField
+import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil
 
-data class DbField(private val model: EntitySimpleAttributeConcept, private val dbTable: DbTable, val kotlinModelField: KotlinModelField) {
+data class DbField(private val model: EntityField, private val dbTable: DbTable, val kotlinModelField: KotlinModelField) {
     private val sqlStringType = "VARCHAR(255)"
     private val sqlIntType = "INTEGER"
     private val sqlBooleanType = "BOOLEAN"
@@ -14,20 +16,16 @@ data class DbField(private val model: EntitySimpleAttributeConcept, private val 
     private val kotlinBooleanType = "kotlin.Boolean"
 
     private val entityAttributeName: String = model.getName()
-    private val entityAttributeType: String = model.getType()
+    private val entityAttributeType: FieldDataType = model.getType()
 
     val columnName = CaseUtil.camelToSnakeCaseAllCaps(entityAttributeName)
     val columnType = when(entityAttributeType) {
-        "Text" -> sqlStringType
-        "IntegerNumber" -> sqlIntType
-        "Boolean" -> sqlBooleanType
+        FieldDataType.TEXT -> sqlStringType
         else -> throw RuntimeException("Unknown SQL Type for $entityAttributeType")
     }
     val jooqFieldName = CaseUtil.decapitalize(entityAttributeName)
     val jooqFieldType = when(entityAttributeType) {
-        "Text" -> kotlinStringType
-        "IntegerNumber" -> kotlinIntType
-        "Boolean" -> kotlinBooleanType
+        FieldDataType.TEXT -> kotlinStringType
         else -> throw RuntimeException("Unknown Kotlin Type for $entityAttributeType")
     }
 }

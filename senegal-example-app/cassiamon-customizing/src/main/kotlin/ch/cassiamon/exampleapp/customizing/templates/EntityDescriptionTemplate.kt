@@ -23,7 +23,7 @@ object EntityDescriptionTemplate {
 
     private fun createEntityDescriptionContent(entity: EntityConcept): String {
 
-        val entityAttributes = entity.entityAttributes()
+        val entityAttributes = entity.entityFields()
             .joinToString("\n") { createEntityAttributeSubTemplate(it) }
 
         return """
@@ -35,7 +35,7 @@ object EntityDescriptionTemplate {
         """.identForMarker()
     }
 
-    private fun createEntityAttributeSubTemplate(entityAttribute: EntitySimpleAttributeConcept): String {
+    private fun createEntityAttributeSubTemplate(entityAttribute: EntityField): String {
         return """
             Entity Attribute: ${entityAttribute.getName()} (Type: ${entityAttribute.getType()})
         """.replaceIndent(ident)
