@@ -2,6 +2,7 @@ package ch.cassiamon.exampleapp.customizing.templates.db
 
 import ch.cassiamon.exampleapp.customizing.templates.DataOnlyFieldConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityField
+import ch.cassiamon.exampleapp.customizing.templates.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil
@@ -16,7 +17,7 @@ data class DbField(private val model: EntityField, private val dbTable: DbTable,
     private val kotlinBooleanType = "kotlin.Boolean"
 
     private val entityAttributeName: String = model.getName()
-    private val entityAttributeType: FieldDataType = model.getType()
+    private val entityAttributeType: FieldDataType = EntityFieldHelper.type(model)
 
     val columnName = CaseUtil.camelToSnakeCaseAllCaps(entityAttributeName)
     val columnType = when(entityAttributeType) {

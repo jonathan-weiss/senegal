@@ -37,7 +37,7 @@ object EntityDescriptionTemplate {
 
     private fun createEntityAttributeSubTemplate(entityAttribute: EntityField): String {
         return """
-            Entity Attribute: ${entityAttribute.getName()} (Type: ${entityAttribute.getType()})
+            Entity Attribute: ${entityAttribute.getName()} (Type: ${EntityFieldHelper.type(entityAttribute)})
         """.replaceIndent(ident)
     }
 

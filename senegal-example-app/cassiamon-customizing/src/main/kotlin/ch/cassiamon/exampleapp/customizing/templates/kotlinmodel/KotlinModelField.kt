@@ -2,6 +2,7 @@ package ch.cassiamon.exampleapp.customizing.templates.kotlinmodel
 
 import ch.cassiamon.exampleapp.customizing.templates.DataOnlyFieldConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityField
+import ch.cassiamon.exampleapp.customizing.templates.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.tools.CaseUtil
 
@@ -11,7 +12,7 @@ data class KotlinModelField(private val model: EntityField, private val kotlinMo
     private val kotlinBooleanType = "kotlin.Boolean"
 
     private val entityAttributeName: String = model.getName()
-    private val entityAttributeType: FieldDataType = model.getType()
+    private val entityAttributeType: FieldDataType = EntityFieldHelper.type(model)
 
     val kotlinFieldName = CaseUtil.decapitalize(entityAttributeName)
     val kotlinFieldType = when(entityAttributeType) {
