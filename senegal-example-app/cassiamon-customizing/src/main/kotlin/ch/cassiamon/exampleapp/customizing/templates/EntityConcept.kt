@@ -14,8 +14,8 @@ interface EntityConcept {
     @ChildConceptsWithCommonBaseInterface(EntityField::class, [DataOnlyFieldConcept::class])
     fun entityFields(): List<EntityField>
 
-    @ChildConcepts(PrimaryKeyReferenceFieldConcept::class)
-    fun entityReferences(): List<PrimaryKeyReferenceFieldConcept>
+    @ChildConcepts(ReferenceToPrimaryKeyFieldConcept::class)
+    fun entityReferences(): List<ReferenceToPrimaryKeyFieldConcept>
 
     @ChildConcepts(PrimaryKeyFieldConcept::class)
     fun primaryKeys(): List<PrimaryKeyFieldConcept>

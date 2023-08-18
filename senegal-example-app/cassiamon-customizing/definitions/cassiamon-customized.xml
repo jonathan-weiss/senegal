@@ -8,7 +8,7 @@
             <dataOnlyField fieldName="firstname" fieldDataType="TEXT"/>
             <dataOnlyField fieldName="lastname" fieldDataType="TEXT"/>
             <dataOnlyField fieldName="nickname" fieldDataType="TEXT"/>
-            <primaryKeyReferenceField fieldName="address" fieldDataType="UUID" referencedPrimaryKeyField="Person_personNo"/>
+            <referenceToPrimaryKeyField fieldName="address" fieldDataType="UUID" referencedPrimaryKeyField="Person_personNo"/>
         </entity>
         <entity entityName="Address" conceptIdentifier="Address">
             <primaryKeyField fieldName="addressNo" fieldDataType="UUID"/>
