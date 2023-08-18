@@ -1,8 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.restapi
 
-import ch.cassiamon.exampleapp.customizing.templates.DataOnlyFieldConcept
 import ch.cassiamon.exampleapp.customizing.templates.EntityField
-import ch.cassiamon.exampleapp.customizing.templates.EntityFieldHelper
+import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
 import ch.cassiamon.tools.CaseUtil

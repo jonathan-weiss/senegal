@@ -1,5 +1,6 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
+import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
