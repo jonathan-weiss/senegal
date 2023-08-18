@@ -16,35 +16,45 @@ object EntityFieldHelper {
     private val sqlIntType = "INTEGER"
     private val sqlBooleanType = "BOOLEAN"
 
+    fun EntityConcept.primaryKeyField(): PrimaryKeyFieldConcept {
+        return this.primaryKeys().first()
+    }
 
-    fun type(entityField: EntityField): FieldDataType {
-        return when(entityField) {
-            is DataOnlyFieldConcept -> entityField.getType()
+    fun EntityConcept.kotlinIdClass(): String {
+        return "${this.getName()}Id"
+    }
+
+
+
+    fun EntityField.type(): FieldDataType {
+        return when(this) {
+            is DataOnlyFieldConcept -> this.getType()
             is ReferenceToPrimaryKeyFieldConcept -> FieldDataType.UUID
-            is PrimaryKeyFieldConcept -> FieldDataType.TEXT
+            is PrimaryKeyFieldConcept -> FieldDataType.UUID
         }
     }
 
-    fun kotlinTypeAsString(entityField: EntityField): String {
-        return when(type(entityField)) {
+    fun EntityField.kotlinTypeAsString(): String {
+        return when(this.type()) {
             FieldDataType.TEXT -> kotlinStringType
-            else -> throw RuntimeException("Unknown Kotlin Type for $entityField")
+            FieldDataType.UUID -> kotlinStringType
+            else -> throw RuntimeException("Unknown Kotlin Type for $this")
         }
     }
 
-    fun typescriptTypeAsString(entityField: EntityField): String {
-        return when(type(entityField)) {
+    fun EntityField.typescriptTypeAsString(): String {
+        return when(this.type()) {
             FieldDataType.TEXT -> typescriptStringType
             FieldDataType.UUID -> typescriptStringType // TODO avoid that
-            else -> throw RuntimeException("Unknown Typescript for $entityField")
+            else -> throw RuntimeException("Unknown Typescript for $this")
         }
     }
 
-    fun sqlTypeAsString(entityField: EntityField): String {
-        return when(type(entityField)) {
+    fun EntityField.sqlTypeAsString(): String {
+        return when(this.type()) {
             FieldDataType.TEXT -> sqlStringType
             FieldDataType.UUID -> sqlUuidType
-            else -> throw RuntimeException("Unknown SQL for $entityField")
+            else -> throw RuntimeException("Unknown SQL for $this")
         }
     }
 

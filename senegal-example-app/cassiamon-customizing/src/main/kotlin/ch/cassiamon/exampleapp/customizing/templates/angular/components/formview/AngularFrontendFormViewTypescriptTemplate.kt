@@ -51,8 +51,8 @@ object AngularFrontendFormViewTypescriptTemplate {
                 this.${templateModel.decapitalizedEntityName}FormService.initForm(this.${templateModel.decapitalizedEntityName}Form)
               }
             
-              get ${templateModel.decapitalizedEntityName}IdFormControl(): FormControl {
-                return this.${templateModel.decapitalizedEntityName}FormService.getFormControl(this.${templateModel.decapitalizedEntityName}Form, this.${templateModel.decapitalizedEntityName}FormService.${templateModel.decapitalizedEntityName}IdFormControlName);
+              get ${templateModel.transferObjectIdFieldName}FormControl(): FormControl {
+                return this.${templateModel.decapitalizedEntityName}FormService.getFormControl(this.${templateModel.decapitalizedEntityName}Form, this.${templateModel.decapitalizedEntityName}FormService.${templateModel.transferObjectIdFieldName}FormControlName);
               };
               ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               get ${templateModel.decapitalizedEntityName}${angularModelField.fieldName}FormControl(): FormControl {

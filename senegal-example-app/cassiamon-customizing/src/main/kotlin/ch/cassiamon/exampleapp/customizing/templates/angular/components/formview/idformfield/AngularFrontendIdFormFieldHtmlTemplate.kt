@@ -8,8 +8,8 @@ object AngularFrontendIdFormFieldHtmlTemplate {
     fun fillTemplate(templateModel: AngularModelClass): String {
         return """
                 <mat-form-field appearance="fill">
-                  <mat-label>${templateModel.entityName} Id</mat-label>
-                  <input matInput type="text" [formControl]="${templateModel.decapitalizedEntityName}IdFormControl">
+                  <mat-label>${templateModel.transferObjectIdFieldName}</mat-label>
+                  <input matInput type="text" [formControl]="${templateModel.transferObjectIdFieldName}FormControl">
                 </mat-form-field>
         """.identForMarker()
     }

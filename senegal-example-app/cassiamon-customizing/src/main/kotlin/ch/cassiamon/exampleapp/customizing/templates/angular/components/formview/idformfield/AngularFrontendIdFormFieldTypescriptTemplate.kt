@@ -12,19 +12,19 @@ object AngularFrontendIdFormFieldTypescriptTemplate {
             import { ${templateModel.entityName}IdTO } from "../../../api/${templateModel.entityFileName}-id-to.model";
             
             @Component({
-                selector: '${templateModel.entityFileName}-id-form-field',
-                templateUrl: './${templateModel.entityFileName}-id-form-field.component.html',
-                styleUrls: ['./${templateModel.entityFileName}-id-form-field.component.scss'],
+                selector: '${templateModel.transferObjectIdFieldFileName}-form-field',
+                templateUrl: './${templateModel.transferObjectIdFieldFileName}-form-field.component.html',
+                styleUrls: ['./${templateModel.transferObjectIdFieldFileName}-form-field.component.scss'],
             })
-            export class ${templateModel.entityName}IdFormFieldComponent implements OnInit {
+            export class ${templateModel.transferObjectIdFieldName}FormFieldComponent implements OnInit {
             
-              @Input() ${templateModel.decapitalizedEntityName}IdFormControl!: FormControl;
+              @Input() ${templateModel.transferObjectIdFieldName}FormControl!: FormControl;
 
-              @Input() ${templateModel.decapitalizedEntityName}Id: ${templateModel.entityName}IdTO | undefined;
+              @Input() ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO | undefined;
 
               ngOnInit() {
-                this.${templateModel.decapitalizedEntityName}IdFormControl.disable() // id is not editable
-                this.${templateModel.decapitalizedEntityName}IdFormControl.patchValue(this.${templateModel.decapitalizedEntityName}Id == undefined ? undefined : this.${templateModel.decapitalizedEntityName}Id.value)
+                this.${templateModel.transferObjectIdFieldName}FormControl.disable() // id is not editable
+                this.${templateModel.transferObjectIdFieldName}FormControl.patchValue(this.${templateModel.transferObjectIdFieldName} == undefined ? undefined : this.${templateModel.transferObjectIdFieldName}.value)
               }
             }
 

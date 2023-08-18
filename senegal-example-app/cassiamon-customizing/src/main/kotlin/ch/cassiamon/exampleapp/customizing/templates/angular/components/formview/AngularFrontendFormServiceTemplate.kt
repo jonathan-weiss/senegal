@@ -25,12 +25,12 @@ object AngularFrontendFormServiceTemplate {
               constructor(private readonly ${templateModel.decapitalizedEntityName}Service: ${templateModel.entityName}Service) {
               }
             
-              ${templateModel.decapitalizedEntityName}IdFormControlName: string = "${templateModel.decapitalizedEntityName}Id";
+              ${templateModel.transferObjectIdFieldName}FormControlName: string = "${templateModel.transferObjectIdFieldName}";
               ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               ${angularModelField.decapitalizedFieldName}FormControlName: string = "${angularModelField.decapitalizedFieldName}";"""}}
             
               initForm(${templateModel.decapitalizedEntityName}Form: FormGroup): void {
-                ${templateModel.decapitalizedEntityName}Form.addControl(this.${templateModel.decapitalizedEntityName}IdFormControlName, new FormControl());
+                ${templateModel.decapitalizedEntityName}Form.addControl(this.${templateModel.transferObjectIdFieldName}FormControlName, new FormControl());
                 ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                 ${templateModel.decapitalizedEntityName}Form.addControl(this.${angularModelField.decapitalizedFieldName}FormControlName, new FormControl());"""
                 }}

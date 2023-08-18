@@ -2,6 +2,8 @@ package ch.cassiamon.exampleapp.customizing.templates.db
 
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import ch.cassiamon.tools.StringTemplateHelper.forEach
+import ch.cassiamon.tools.StringTemplateHelper.ifElse
+import ch.cassiamon.tools.StringTemplateHelper.onlyIf
 
 object LiquibaseTemplate {
 
@@ -35,9 +37,9 @@ object LiquibaseTemplate {
                         </column>
                         ${forEach(dbTable.tableFields()) { 
                             """
-                        <!-- COLUMN: ${it.columnName} -->
+                        <!-- COLUMN: ${it.columnName} ${onlyIf(it.isPrimaryKey, " (primary key)")} -->
                         <column name="${it.columnName}" type="${it.columnType}">
-                            <constraints nullable="false"/>
+                            <constraints nullable="${ifElse(it.isMandatoryField, "false", "true")}"/>
                         </column>
                             """ 
                         } }

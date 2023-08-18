@@ -38,7 +38,7 @@ object AngularFrontendModuleTemplate {
             import { ${angularModelClass.entityName}FormViewComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.entityFileName}-form-view.component"
             import { ${angularModelClass.entityName}SearchViewComponent } from "./components/${angularModelClass.entityFileName}-search-view/${angularModelClass.entityFileName}-search-view.component"
             import { ${angularModelClass.entityName}TableViewComponent } from "./components/${angularModelClass.entityFileName}-table-view/${angularModelClass.entityFileName}-table-view.component"
-            import { ${angularModelClass.entityName}IdFormFieldComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.entityFileName}-id-form-field/${angularModelClass.entityFileName}-id-form-field.component"
+            import { ${angularModelClass.transferObjectIdFieldName}FormFieldComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.transferObjectIdFieldFileName}-form-field/${angularModelClass.transferObjectIdFieldFileName}-form-field.component"
             ${StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
             import { ${angularModelClass.entityName}${angularModelField.fieldName}FormFieldComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.entityFileName}-${angularModelField.fieldFileName}-form-field/${angularModelClass.entityFileName}-${angularModelField.fieldFileName}-form-field.component" """}}       
 
@@ -51,7 +51,7 @@ object AngularFrontendModuleTemplate {
                     ${angularModelClass.entityName}FormViewComponent,
                     ${angularModelClass.entityName}SearchViewComponent,
                     ${angularModelClass.entityName}TableViewComponent,
-                    ${angularModelClass.entityName}IdFormFieldComponent,       
+                    ${angularModelClass.transferObjectIdFieldName}FormFieldComponent,       
                 ${StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
                     ${angularModelClass.entityName}${angularModelField.fieldName}FormFieldComponent,"""}}       
                     ${angularModelClass.entityName}EntryPointComponent,

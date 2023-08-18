@@ -340,7 +340,7 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
             )
 
             // create angular id form field
-            val angularIdFormFieldComponentPath = "${angularModelClass.entityFileName}/components/${angularModelClass.entityFileName}-form-view/${angularModelClass.entityFileName}-id-form-field/${angularModelClass.entityFileName}-id-form-field.component"
+            val angularIdFormFieldComponentPath = "${angularModelClass.entityFileName}/components/${angularModelClass.entityFileName}-form-view/${angularModelClass.transferObjectIdFieldFileName}-form-field/${angularModelClass.transferObjectIdFieldFileName}-form-field.component"
             targetFilesCollector.addFile(
                 targetFile = frontendSourceDirectory.resolve("$angularIdFormFieldComponentPath.html"),
                 fileContent = AngularFrontendIdFormFieldHtmlTemplate.fillTemplate(angularModelClass),

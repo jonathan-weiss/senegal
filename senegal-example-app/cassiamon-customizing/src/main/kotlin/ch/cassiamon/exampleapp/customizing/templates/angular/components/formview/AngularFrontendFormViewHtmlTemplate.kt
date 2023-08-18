@@ -19,7 +19,7 @@ object AngularFrontendFormViewHtmlTemplate {
                           <mat-tab label="Commons">
                             <div class="tab-content">
                               <section *ngIf="!isCreateMode()">
-                                <${templateModel.entityFileName}-id-form-field [${templateModel.decapitalizedEntityName}IdFormControl]="${templateModel.decapitalizedEntityName}IdFormControl" [${templateModel.decapitalizedEntityName}Id]="${templateModel.decapitalizedEntityName}?.${templateModel.decapitalizedEntityName}Id"></${templateModel.entityFileName}-id-form-field>
+                                <${templateModel.transferObjectIdFieldFileName}-form-field [${templateModel.transferObjectIdFieldName}FormControl]="${templateModel.transferObjectIdFieldName}FormControl" [${templateModel.transferObjectIdFieldName}]="${templateModel.decapitalizedEntityName}?.${templateModel.transferObjectIdFieldName}"></${templateModel.transferObjectIdFieldFileName}-form-field>
                               </section>
                               <section>
                           ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
