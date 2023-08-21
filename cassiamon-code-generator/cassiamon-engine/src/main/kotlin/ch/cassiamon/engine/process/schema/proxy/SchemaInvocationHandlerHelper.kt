@@ -84,6 +84,10 @@ object SchemaInvocationHandlerHelper {
         return validatedMethod(method).getAnnotation(ConceptId::class.java) != null
     }
 
+    fun isParentConceptAnnotated(method: Method?): Boolean {
+        return validatedMethod(method).getAnnotation(ParentConcept::class.java) != null
+    }
+
     fun getInputFacetName(method: Method?): FacetName {
         return FacetName.of(validatedMethod(method).getAnnotation(Facet::class.java).facetName)
     }

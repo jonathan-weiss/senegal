@@ -3,6 +3,7 @@ package ch.cassiamon.api.process.schema
 
 interface ConceptSchema {
     val conceptName: ConceptName
+    val conceptClass: Class<*>
     val parentConceptName: ConceptName?
     val facets: List<FacetSchema>
     val minOccurrence: Int

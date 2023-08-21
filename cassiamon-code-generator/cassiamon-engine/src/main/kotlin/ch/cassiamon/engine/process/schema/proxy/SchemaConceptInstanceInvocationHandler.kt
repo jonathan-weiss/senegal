@@ -31,6 +31,12 @@ class SchemaConceptInstanceInvocationHandler(private val conceptNode: ConceptNod
             }
         }
 
+        if(SchemaInvocationHandlerHelper.isParentConceptAnnotated(method)) {
+            val parentConceptNode = conceptNode.parentConceptNode ?: throw IllegalStateException("Parent concept node was null.")
+            val parentInterfaceClass = SchemaInvocationHandlerHelper.validatedMethod(method).returnType
+            return ProxyCreator.createProxy(parentInterfaceClass, SchemaConceptInstanceInvocationHandler(parentConceptNode))
+        }
+
         return InvocationHandlerHelper.handleObjectMethodsOrThrow(this, method)
     }
 }

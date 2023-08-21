@@ -75,6 +75,7 @@ internal class XmlDomSchemaCreatorTest {
     private fun createSchema(): SchemaAccess {
         val testEntityConcept: ConceptSchema = SimpleConceptSchema(
             conceptName = testEntityConceptName,
+            conceptClass = SimpleConceptSchema::class.java, // TODO This is the wrong interface
             parentConceptName = null,
             facets = listOf(
                 FacetSchemaImpl(testEntityNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null, enumerationType = null),
@@ -83,6 +84,7 @@ internal class XmlDomSchemaCreatorTest {
 
         val testEntityAttributeConcept: ConceptSchema = SimpleConceptSchema(
             conceptName = testEntityAttributeConceptName,
+            conceptClass = SimpleConceptSchema::class.java, // TODO This is the wrong interface
             parentConceptName = testEntityConceptName,
             facets = listOf(
                 FacetSchemaImpl(testEntityAttributeNameFacetName, FacetTypeEnum.TEXT, mandatory = true, referencingConcept = null, enumerationType = null),

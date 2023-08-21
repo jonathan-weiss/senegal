@@ -6,6 +6,7 @@ import ch.cassiamon.api.process.schema.FacetSchema
 
 class SimpleConceptSchema(
     override val conceptName: ConceptName,
+    override val conceptClass: Class<*>,
     override val parentConceptName: ConceptName?,
     override val facets: List<FacetSchema>,
     override val minOccurrence: Int = 0,
