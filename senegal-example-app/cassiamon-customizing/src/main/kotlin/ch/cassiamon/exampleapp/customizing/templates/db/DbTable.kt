@@ -39,4 +39,9 @@ data class DbTable(private val model: EntityConcept) {
     fun tableFields(): List<DbField> {
         return model.entityFields().map { DbField(it, this, KotlinModelField(it, kotlinModelClass)) }
     }
+
+    fun referencingFields(): List<DbField> {
+        return model.entityReferences().map { DbField(it, this, KotlinModelField(it, kotlinModelClass)) }
+    }
+
 }

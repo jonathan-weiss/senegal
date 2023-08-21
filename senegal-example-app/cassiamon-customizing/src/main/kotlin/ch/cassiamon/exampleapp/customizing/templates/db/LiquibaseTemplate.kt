@@ -37,9 +37,9 @@ object LiquibaseTemplate {
                         </column>
                         ${forEach(dbTable.tableFields()) { 
                             """
-                        <!-- COLUMN: ${it.columnName} ${onlyIf(it.isPrimaryKey, " (primary key)")} -->
+                        <!-- COLUMN: ${it.columnName} -->
                         <column name="${it.columnName}" type="${it.columnType}">
-                            <constraints nullable="${ifElse(it.isMandatoryField, "false", "true")}"/>
+                            <constraints nullable="${ifElse(it.isMandatoryField, "false", "true")}" ${onlyIf(it.isReferenceField, "foreignKeyName=\"${it.referenceName}\" references: \"${it.referencedDbTable.tableName}(${it.referencedDbTable.primaryKeyColumnName})\"")} />
                         </column>
                             """ 
                         } }

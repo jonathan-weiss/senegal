@@ -46,7 +46,19 @@ object JooqRepositoryImplTemplate {
                             .or( ${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}.like("%${'$'}searchTerm%"))""".trimIndent()}}
                         .fetch(this::toDomain)
                 }
-            
+
+                
+
+           ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
+            """
+                override fun fetchAll${dbTable.kotlinModelClass.kotlinClassName}By${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinClassName}(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}: ${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}): List<${dbTable.kotlinModelClass.kotlinClassName}> {
+                    return toDomains(jooqDsl
+                        .selectFrom(${dbTable.jooqDslName}.TABLE)
+                        .where(${dbTable.jooqDslName}.TABLE.${dbReferenceField.jooqFieldName}.eq(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}.value))
+                        .fetch())
+                }
+            """}}
+
                 override fun insert${dbTable.kotlinModelClass.kotlinClassName}(domainInstance: ${dbTable.kotlinModelClass.kotlinClassName}) {
                     jooqDsl.insertInto(${dbTable.jooqDslName}.TABLE)
                         .set(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName}, domainInstance.${dbTable.kotlinModelClass.idFieldName}.value)

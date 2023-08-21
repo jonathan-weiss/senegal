@@ -11,8 +11,11 @@ interface EntityConcept {
     @Facet("EntityName")
     fun getName(): String
 
-    @ChildConceptsWithCommonBaseInterface(EntityField::class, [DataOnlyFieldConcept::class])
+    @ChildConceptsWithCommonBaseInterface(EntityField::class, [DataOnlyFieldConcept::class, ReferenceToPrimaryKeyFieldConcept::class])
     fun entityFields(): List<EntityField>
+
+    @ChildConcepts(DataOnlyFieldConcept::class)
+    fun entityDataOnlyFields(): List<DataOnlyFieldConcept>
 
     @ChildConcepts(ReferenceToPrimaryKeyFieldConcept::class)
     fun entityReferences(): List<ReferenceToPrimaryKeyFieldConcept>

@@ -4,6 +4,7 @@ import ch.cassiamon.exampleapp.customizing.templates.EntityField
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.PrimaryKeyFieldConcept
+import ch.cassiamon.exampleapp.customizing.templates.ReferenceToPrimaryKeyFieldConcept
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.kotlinTypeAsString
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.sqlTypeAsString
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
@@ -18,4 +19,17 @@ data class DbField(private val model: EntityField, private val dbTable: DbTable,
     val columnType = model.sqlTypeAsString()
     val jooqFieldName = CaseUtil.decapitalize(entityAttributeName)
     val jooqFieldType = model.kotlinTypeAsString()
+
+    val isReferenceField = false // TODO
+    val referencedDbTable: DbTable = dbTable // TODO
+    val referencedDbField: DbField = this // TODO
+    val referenceName: String = "FK_${referencedDbTable.tableName}_${referencedDbField.columnName}"
+
+    private fun referencedTableField() {
+        if(model is ReferenceToPrimaryKeyFieldConcept) {
+            model.getReferencedPrimaryKeyField()
+        } else {
+
+        }
+    }
 }

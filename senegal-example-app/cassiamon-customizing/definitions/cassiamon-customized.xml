@@ -3,15 +3,15 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
     <definitions>
-        <entity entityName="Person" conceptIdentifier="Person">
-            <primaryKeyField fieldName="personNo" conceptIdentifier="Person_personNo"/>
+        <entity entityName="Person">
+            <primaryKeyField fieldName="personNo" />
             <dataOnlyField fieldName="firstname" fieldDataType="TEXT"/>
             <dataOnlyField fieldName="lastname" fieldDataType="TEXT"/>
             <dataOnlyField fieldName="nickname" fieldDataType="TEXT"/>
-            <referenceToPrimaryKeyField fieldName="address" referencedPrimaryKeyField="Person_personNo"/>
+            <referenceToPrimaryKeyField fieldName="addressNo" referencedPrimaryKeyField="Address_addressNo"/>
         </entity>
         <entity entityName="Address" conceptIdentifier="Address">
-            <primaryKeyField fieldName="addressNo"/>
+            <primaryKeyField fieldName="addressNo" conceptIdentifier="Address_addressNo"/>
             <dataOnlyField fieldName="street" fieldDataType="TEXT"/>
             <dataOnlyField fieldName="zip" fieldDataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
         </entity>
