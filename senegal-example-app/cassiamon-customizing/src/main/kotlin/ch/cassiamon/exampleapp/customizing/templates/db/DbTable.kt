@@ -39,9 +39,13 @@ data class DbTable(private val entity: EntityConcept) {
     }
 
     fun referencingFields(): List<ForeignKeyDbField> {
-        return entity.entityReferences()
-            .map { createDbField(it) }
+        return tableFields()
             .filterIsInstance<ForeignKeyDbField>()
+    }
+
+    fun dataOnlyFields(): List<DataOnlyDbField> {
+        return tableFields()
+            .filterIsInstance<DataOnlyDbField>()
     }
 
     private fun createDbField(entityField: EntityField): DbField {

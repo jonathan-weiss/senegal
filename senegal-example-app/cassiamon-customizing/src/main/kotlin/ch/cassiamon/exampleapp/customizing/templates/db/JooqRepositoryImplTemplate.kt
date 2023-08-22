@@ -19,6 +19,8 @@ object JooqRepositoryImplTemplate {
            ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
             """
             import ${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinPackage}.${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}
+            import ${dbTable.kotlinModelClass.kotlinPackage}.${dbTable.kotlinModelClass.kotlinClassName}${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinClassName}Summary
+            import ${dbReferenceField.referencedDbTable.jooqDslPackage}.${dbReferenceField.referencedDbTable.jooqDslName}
             """}}
 
             
@@ -55,13 +57,45 @@ object JooqRepositoryImplTemplate {
                 
 
            ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
+               val referencedKotlinModelClass = dbReferenceField.referencedDbTable.kotlinModelClass
+               val referencedDbTable = dbReferenceField.referencedDbTable
+               
             """
-                override fun fetchAll${dbTable.kotlinModelClass.kotlinClassName}By${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinClassName}(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}: ${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}): List<${dbTable.kotlinModelClass.kotlinClassName}> {
+                override fun fetchAll${dbTable.kotlinModelClass.kotlinClassName}By${referencedKotlinModelClass.kotlinClassName}(${referencedKotlinModelClass.idFieldName}: ${referencedKotlinModelClass.idFieldType}): List<${dbTable.kotlinModelClass.kotlinClassName}> {
                     return jooqDsl
                         .selectFrom(${dbTable.jooqDslName}.TABLE)
-                        .where(${dbTable.jooqDslName}.TABLE.${dbReferenceField.jooqFieldName}.eq(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}.value))
+                        .where(${dbTable.jooqDslName}.TABLE.${dbReferenceField.jooqFieldName}.eq(${referencedKotlinModelClass.idFieldName}.value))
                         .fetch(this::toDomain)
                 }
+                
+                override fun fetch${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}SummaryById(${referencedKotlinModelClass.idFieldName}: ${referencedKotlinModelClass.idFieldType}): ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary {
+                    return fetch${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(${referencedKotlinModelClass.idFieldName})
+                }
+                
+                private fun fetch${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(${referencedKotlinModelClass.idFieldName}: ${referencedKotlinModelClass.kotlinClassName}Id): ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary {
+                    return pick${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(${referencedKotlinModelClass.idFieldName}, fetch${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summaries(listOf(${referencedKotlinModelClass.idFieldName})))
+                }
+            
+            
+                private fun pick${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(${referencedKotlinModelClass.idFieldName}: ${referencedKotlinModelClass.kotlinClassName}Id, summaries: Map<${referencedKotlinModelClass.kotlinClassName}Id, ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary>): ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary {
+                    return summaries[${referencedKotlinModelClass.idFieldName}] ?: throw IllegalStateException("${referencedKotlinModelClass.kotlinClassName} not found for id ${'$'}${referencedKotlinModelClass.idFieldName}")
+                }
+            
+                private fun fetch${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summaries(${referencedKotlinModelClass.idFieldName}List: List<${referencedKotlinModelClass.kotlinClassName}Id>): Map<${referencedKotlinModelClass.kotlinClassName}Id, ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary> {
+                    val records = jooqDsl
+                        .selectFrom(${referencedDbTable.jooqDslName}.TABLE)
+                        .where(${referencedDbTable.jooqDslName}.TABLE.${referencedDbTable.primaryKeyJooqFieldName}.`in`(${referencedKotlinModelClass.idFieldName}List.map { ${referencedKotlinModelClass.kotlinClassNameAsFieldName}Id -> ${referencedKotlinModelClass.kotlinClassNameAsFieldName}Id.value }))
+                        .fetch()
+            
+                    return records.map { record -> ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(
+                        ${referencedKotlinModelClass.idFieldName} = ${referencedKotlinModelClass.kotlinClassName}Id(record.get(${referencedDbTable.jooqDslName}.TABLE.${referencedDbTable.primaryKeyJooqFieldName})),
+                        ${StringTemplateHelper.forEach(referencedDbTable.tableFields()) { tableField -> """
+                            ${tableField.kotlinModelField.kotlinFieldName} = record.get(${referencedDbTable.jooqDslName}.TABLE.${tableField.jooqFieldName}),    
+                        """.trimIndent()} }
+                    ) }.associateBy { ${referencedKotlinModelClass.kotlinClassNameAsFieldName} -> ${referencedKotlinModelClass.kotlinClassNameAsFieldName}.${referencedKotlinModelClass.idFieldName} }
+                }
+
+
             """}}
 
                 override fun insert${dbTable.kotlinModelClass.kotlinClassName}(domainInstance: ${dbTable.kotlinModelClass.kotlinClassName}) {

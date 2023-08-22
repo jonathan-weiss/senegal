@@ -15,6 +15,8 @@ data class KotlinModelClass(private val model: EntityConcept) {
         get() = CaseUtil.decapitalize(model.primaryKeyField().getName())
     val idFieldType
         get() = model.kotlinIdClass()
+    val kotlinClassNameAsFieldName: String = CaseUtil.decapitalize(entityName)
+
 
     fun kotlinFields(): List<KotlinModelField> {
         return model.entityFields().map { KotlinModelField(it, this) }

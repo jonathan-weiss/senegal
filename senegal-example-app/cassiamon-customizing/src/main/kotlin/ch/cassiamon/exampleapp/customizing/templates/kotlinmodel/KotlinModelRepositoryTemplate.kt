@@ -24,6 +24,8 @@ object KotlinModelRepositoryTemplate {
             forEach(kotlinModelClass.referencingFields()) { referencedField ->
             """
             fun fetchAll${kotlinModelClass.kotlinClassName}By${referencedField.kotlinModelClass.kotlinClassName}(${referencedField.kotlinModelClass.idFieldName}: ${referencedField.kotlinModelClass.idFieldType}): List<${kotlinModelClass.kotlinClassName}>
+            
+            fun fetch${kotlinModelClass.kotlinClassName}${referencedField.kotlinModelClass.kotlinClassName}SummaryById(${referencedField.kotlinModelClass.idFieldName}: ${referencedField.kotlinModelClass.idFieldType}): ${kotlinModelClass.kotlinClassName}${referencedField.kotlinModelClass.kotlinClassName}Summary
             """}}
 
         
