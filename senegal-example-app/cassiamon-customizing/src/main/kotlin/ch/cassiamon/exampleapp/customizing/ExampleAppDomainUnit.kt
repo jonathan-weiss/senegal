@@ -176,6 +176,18 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
                 targetFile = toTargetFilePath(domainSourceDirectory, kotlinModelClass.kotlinPackage, "${kotlinModelClass.kotlinClassName}Service.kt"),
                 fileContent = KotlinModelServiceTemplate.fillTemplate(kotlinModelClass),
             )
+
+            // create kotlin model reference fields summary classes
+            kotlinModelClass.referencingFields().forEach { referencingField ->
+                val kotlinModelClassOfReferencedField = referencingField.kotlinModelClass
+
+                targetFilesCollector.addFile(
+                    targetFile = toTargetFilePath(domainSourceDirectory, kotlinModelClass.kotlinPackage, "${kotlinModelClass.kotlinClassName}${kotlinModelClassOfReferencedField.kotlinClassName}Summary.kt"),
+                    fileContent = KotlinModelReferencedSummaryClassTemplate.fillTemplate(kotlinModelClass = kotlinModelClass, kotlinModelReferencedClass = kotlinModelClassOfReferencedField),
+                )
+
+            }
+
         }
 
         schemaInstance.entities().map { RestModelClass(it) }.forEach { restModelClass ->
