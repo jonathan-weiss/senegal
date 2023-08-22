@@ -20,7 +20,14 @@ class SchemaConceptInstanceInvocationHandler(private val conceptNode: ConceptNod
 
         if(SchemaInvocationHandlerHelper.isInputFacetAnnotated(method)) {
             val facetName = SchemaInvocationHandlerHelper.getInputFacetName(method)
-            return conceptNode.facetValues[facetName]
+            val facetValue = conceptNode.facetValues[facetName]
+            return if(facetValue is ConceptNode) {
+                val referencedInterfaceClass = SchemaInvocationHandlerHelper.validatedMethod(method).returnType
+                ProxyCreator.createProxy(referencedInterfaceClass, SchemaConceptInstanceInvocationHandler(facetValue))
+            } else {
+                facetValue
+            }
+
         }
 
         if(SchemaInvocationHandlerHelper.isConceptIdentifierAnnotated(method)) {
