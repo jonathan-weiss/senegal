@@ -16,6 +16,11 @@ object JooqRepositoryImplTemplate {
             import org.jooq.DSLContext
             import org.jooq.Record
             import org.springframework.stereotype.Repository
+           ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
+            """
+            import ${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinPackage}.${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}
+            """}}
+
             
             
             @Repository
@@ -52,10 +57,10 @@ object JooqRepositoryImplTemplate {
            ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
             """
                 override fun fetchAll${dbTable.kotlinModelClass.kotlinClassName}By${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinClassName}(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}: ${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}): List<${dbTable.kotlinModelClass.kotlinClassName}> {
-                    return toDomains(jooqDsl
+                    return jooqDsl
                         .selectFrom(${dbTable.jooqDslName}.TABLE)
                         .where(${dbTable.jooqDslName}.TABLE.${dbReferenceField.jooqFieldName}.eq(${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldName}.value))
-                        .fetch())
+                        .fetch(this::toDomain)
                 }
             """}}
 

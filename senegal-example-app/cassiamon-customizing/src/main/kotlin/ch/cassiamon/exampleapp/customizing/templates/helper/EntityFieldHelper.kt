@@ -3,6 +3,7 @@ package ch.cassiamon.exampleapp.customizing.templates.helper
 import ch.cassiamon.exampleapp.customizing.templates.*
 
 object EntityFieldHelper {
+    private val kotlinUuidType = "java.util.UUID"
     private val kotlinStringType = "kotlin.String"
     private val kotlinIntType = "kotlin.Int"
     private val kotlinBooleanType = "kotlin.Boolean"
@@ -37,7 +38,7 @@ object EntityFieldHelper {
     fun EntityField.kotlinTypeAsString(): String {
         return when(this.type()) {
             FieldDataType.TEXT -> kotlinStringType
-            FieldDataType.UUID -> kotlinStringType
+            FieldDataType.UUID -> kotlinUuidType
             else -> throw RuntimeException("Unknown Kotlin Type for $this")
         }
     }

@@ -6,6 +6,7 @@ object StringTemplateHelper {
         iterator.forEach {
             sb.append(out(it))
         }
+
         return sb.toString()
     }
 
@@ -13,9 +14,22 @@ object StringTemplateHelper {
         return ifElse(condition, text, "")
     }
 
+    inline fun <reified R : Any> onlyIfIsInstance(instance: Any?, text: (instance: R) -> String): String {
+        if(instance == null) {
+            return ""
+        }
+        if(instance is R) {
+            val subtypeInstance: R = instance
+            return text(subtypeInstance)
+        }
+        return ""
+    }
+
+
     fun ifElse(condition: Boolean, text: String, elseText: String): String {
         return if(condition) text else elseText
     }
+
 
     fun <T> forEachIndexed(iterator: Iterable<T>, out: (index: Int, v:T)->String): String {
         val sb = StringBuilder()

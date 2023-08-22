@@ -19,4 +19,10 @@ data class KotlinModelClass(private val model: EntityConcept) {
     fun kotlinFields(): List<KotlinModelField> {
         return model.entityFields().map { KotlinModelField(it, this) }
     }
+
+    fun referencingFields(): List<KotlinModelField> {
+        return model.entityReferences()
+            .map { referenceToPrimaryKeyFieldConcept -> referenceToPrimaryKeyFieldConcept.getReferencedPrimaryKeyField() }
+            .map { KotlinModelField(it, KotlinModelClass(it.getParentEntity())) }
+    }
 }

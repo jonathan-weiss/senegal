@@ -3,7 +3,7 @@ package ch.cassiamon.exampleapp.customizing.templates.db
 import ch.cassiamon.tools.StringIdentHelper.identForMarker
 import ch.cassiamon.tools.StringTemplateHelper.forEach
 import ch.cassiamon.tools.StringTemplateHelper.ifElse
-import ch.cassiamon.tools.StringTemplateHelper.onlyIf
+import ch.cassiamon.tools.StringTemplateHelper.onlyIfIsInstance
 
 object LiquibaseTemplate {
 
@@ -35,11 +35,11 @@ object LiquibaseTemplate {
                         <column name="${dbTable.primaryKeyColumnName}" type="${dbTable.primaryKeyColumnType}">
                             <constraints primaryKey="true"/>
                         </column>
-                        ${forEach(dbTable.tableFields()) { 
-                            """
-                        <!-- COLUMN: ${it.columnName} -->
-                        <column name="${it.columnName}" type="${it.columnType}">
-                            <constraints nullable="${ifElse(it.isMandatoryField, "false", "true")}" ${onlyIf(it.isReferenceField, "foreignKeyName=\"${it.referenceName}\" references: \"${it.referencedDbTable.tableName}(${it.referencedDbTable.primaryKeyColumnName})\"")} />
+                        ${forEach(dbTable.tableFields()) { dbField ->
+            """
+                        <!-- COLUMN: ${dbField.columnName} -->
+                        <column name="${dbField.columnName}" type="${dbField.columnType}">
+                            <constraints nullable="${ifElse(dbField.isMandatoryField, "false", "true")}" ${onlyIfIsInstance<ForeignKeyDbField>(dbField) { referenceDbField -> "foreignKeyName=\"${referenceDbField.referenceName}\" references: \"${referenceDbField.referencedDbTable.tableName}(${referenceDbField.referencedDbTable.primaryKeyColumnName})\"" }} />
                         </column>
                             """ 
                         } }
