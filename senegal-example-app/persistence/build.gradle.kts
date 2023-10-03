@@ -41,7 +41,7 @@ java.sourceSets["main"].resources {
     srcDir("src/main/resources-generated")
 }
 
-val liquibaseChangelogFiles = buildDir.resolve("liquibase-changelog-files")
+val liquibaseChangelogFiles = project.layout.buildDirectory.get().asFile.resolve("liquibase-changelog-files")
 
 liquibase {
 

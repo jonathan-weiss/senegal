@@ -2,7 +2,7 @@ plugins {
   id("com.github.node-gradle.node") version ("3.2.1")
 }
 
-val nodeAndNpmBaseDownloadDir: File = project.buildDir
+val nodeAndNpmBaseDownloadDir: File = project.layout.buildDirectory.get().asFile
 node {
   // Version of node to use.
   version.set("14.17.0")
