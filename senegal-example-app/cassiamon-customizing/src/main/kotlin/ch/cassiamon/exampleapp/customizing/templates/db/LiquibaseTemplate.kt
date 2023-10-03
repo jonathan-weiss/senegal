@@ -39,7 +39,7 @@ object LiquibaseTemplate {
             """
                         <!-- COLUMN: ${dbField.columnName} -->
                         <column name="${dbField.columnName}" type="${dbField.columnType}">
-                            <constraints nullable="${ifElse(dbField.isMandatoryField, "false", "true")}" ${onlyIfIsInstance<ForeignKeyDbField>(dbField) { referenceDbField -> "foreignKeyName=\"${referenceDbField.referenceName}\" references: \"${referenceDbField.referencedDbTable.tableName}(${referenceDbField.referencedDbTable.primaryKeyColumnName})\"" }} />
+                            <constraints nullable="${ifElse(dbField.isMandatoryField, "false", "true")}" ${onlyIfIsInstance<ForeignKeyDbField>(dbField) { referenceDbField -> "foreignKeyName=\"${referenceDbField.referenceName}\" references=\"${referenceDbField.referencedDbTable.tableName}(${referenceDbField.referencedDbTable.primaryKeyColumnName})\"" }} />
                         </column>
                             """ 
                         } }
