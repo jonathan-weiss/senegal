@@ -12,4 +12,5 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Run build with Gradle Wrapper
-      run: ./sourceamazing-code-generator/gradlew build
+      working-directory: ./sourceamazing-code-generator
+      run: ./gradlew build
