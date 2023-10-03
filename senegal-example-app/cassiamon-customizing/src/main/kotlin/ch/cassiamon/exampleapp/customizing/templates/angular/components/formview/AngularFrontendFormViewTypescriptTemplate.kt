@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.formview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendFormViewTypescriptTemplate {
 
@@ -54,7 +54,8 @@ object AngularFrontendFormViewTypescriptTemplate {
               get ${templateModel.transferObjectIdFieldName}FormControl(): FormControl {
                 return this.${templateModel.decapitalizedEntityName}FormService.getFormControl(this.${templateModel.decapitalizedEntityName}Form, this.${templateModel.decapitalizedEntityName}FormService.${templateModel.transferObjectIdFieldName}FormControlName);
               };
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               get ${templateModel.decapitalizedEntityName}${angularModelField.fieldName}FormControl(): FormControl {
                 return this.${templateModel.decapitalizedEntityName}FormService.getFormControl(this.${templateModel.decapitalizedEntityName}Form, this.${templateModel.decapitalizedEntityName}FormService.${angularModelField.decapitalizedFieldName}FormControlName);
               };""" }}

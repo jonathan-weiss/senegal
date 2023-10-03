@@ -27,14 +27,14 @@ tasks.named("run") {
 }
 
 application {
-    mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
+    mainClass.set("org.codeblessing.sourceamazing.engine.SourceamazingApplicationKt")
 
     val defaultGeneratedSourcePath = projectDir.resolve("output-data")
     val definitionsDirectory = projectDir.resolve("definitions")
 
     applicationDefaultJvmArgs = listOf(
         "-DdefaultOutputDirectory=${defaultGeneratedSourcePath.absolutePath}",
-        "-DxmlDefinitionFile=${definitionsDirectory.resolve("cassiamon-customized.xml").absolutePath}",
+        "-DxmlDefinitionFile=${definitionsDirectory.resolve("senegal-customized.xml").absolutePath}",
         "-Dplaceholder.domainPath=${pathToDomainSource.absolutePath}",
         "-Dplaceholder.sharedDomainPath=${pathToSharedDomainSource.absolutePath}",
         "-Dplaceholder.persistencePath=${pathToPersistenceSource.absolutePath}",

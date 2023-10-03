@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.kotlinmodel
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
-import ch.cassiamon.tools.StringTemplateHelper.forEach
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper.forEach
 
 object KotlinModelRepositoryTemplate {
 

@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object JooqRepositoryImplTemplate {
 
@@ -16,7 +16,8 @@ object JooqRepositoryImplTemplate {
             import org.jooq.DSLContext
             import org.jooq.Record
             import org.springframework.stereotype.Repository
-           ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
+           ${
+            StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
             """
             import ${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinPackage}.${dbReferenceField.referencedDbTable.kotlinModelClass.idFieldType}
             import ${dbTable.kotlinModelClass.kotlinPackage}.${dbTable.kotlinModelClass.kotlinClassName}${dbReferenceField.referencedDbTable.kotlinModelClass.kotlinClassName}Summary
@@ -48,7 +49,8 @@ object JooqRepositoryImplTemplate {
                     return jooqDsl
                         .selectFrom(${dbTable.jooqDslName}.TABLE)
                         .where(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName}.like("%${'$'}searchTerm%"))
-                        ${StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
+                        ${
+            StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
                         """
                             .or( ${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}.like("%${'$'}searchTerm%"))""".trimIndent()}}
                         .fetch(this::toDomain)
@@ -56,7 +58,8 @@ object JooqRepositoryImplTemplate {
 
                 
 
-           ${StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
+           ${
+            StringTemplateHelper.forEach(dbTable.referencingFields()) { dbReferenceField ->
                val referencedKotlinModelClass = dbReferenceField.referencedDbTable.kotlinModelClass
                val referencedDbTable = dbReferenceField.referencedDbTable
                
@@ -89,7 +92,8 @@ object JooqRepositoryImplTemplate {
             
                     return records.map { record -> ${dbTable.kotlinModelClass.kotlinClassName}${referencedKotlinModelClass.kotlinClassName}Summary(
                         ${referencedKotlinModelClass.idFieldName} = ${referencedKotlinModelClass.kotlinClassName}Id(record.get(${referencedDbTable.jooqDslName}.TABLE.${referencedDbTable.primaryKeyJooqFieldName})),
-                        ${StringTemplateHelper.forEach(referencedDbTable.tableFields()) { tableField -> """
+                        ${
+                StringTemplateHelper.forEach(referencedDbTable.tableFields()) { tableField -> """
                             ${tableField.kotlinModelField.kotlinFieldName} = record.get(${referencedDbTable.jooqDslName}.TABLE.${tableField.jooqFieldName}),    
                         """.trimIndent()} }
                     ) }.associateBy { ${referencedKotlinModelClass.kotlinClassNameAsFieldName} -> ${referencedKotlinModelClass.kotlinClassNameAsFieldName}.${referencedKotlinModelClass.idFieldName} }
@@ -101,7 +105,8 @@ object JooqRepositoryImplTemplate {
                 override fun insert${dbTable.kotlinModelClass.kotlinClassName}(domainInstance: ${dbTable.kotlinModelClass.kotlinClassName}) {
                     jooqDsl.insertInto(${dbTable.jooqDslName}.TABLE)
                         .set(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName}, domainInstance.${dbTable.kotlinModelClass.idFieldName}.value)
-                        ${StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
+                        ${
+            StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
                         """.set(${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}, domainInstance.${dbField.kotlinModelField.kotlinFieldName})
                         """}}
                         .execute()
@@ -109,7 +114,8 @@ object JooqRepositoryImplTemplate {
             
                 override fun update${dbTable.kotlinModelClass.kotlinClassName}(domainInstance: ${dbTable.kotlinModelClass.kotlinClassName}) {
                     jooqDsl.update(${dbTable.jooqDslName}.TABLE)
-                        ${StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
+                        ${
+            StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
                         """.set(${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}, domainInstance.${dbField.kotlinModelField.kotlinFieldName})
                         """}}
                         .where(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName}.eq(domainInstance.${dbTable.kotlinModelClass.idFieldName}.value))
@@ -125,7 +131,8 @@ object JooqRepositoryImplTemplate {
                 private fun toDomain(record: Record): ${dbTable.kotlinModelClass.kotlinClassName} {
                     return ${dbTable.kotlinModelClass.kotlinClassName}(
                         ${dbTable.kotlinModelClass.idFieldName} = ${dbTable.kotlinModelClass.idFieldType}(record.get(${dbTable.jooqDslName}.TABLE.${dbTable.primaryKeyJooqFieldName})),
-                        ${StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
+                        ${
+            StringTemplateHelper.forEach(dbTable.tableFields()) { dbField ->
                         """${dbField.kotlinModelField.kotlinFieldName} = record.get(${dbTable.jooqDslName}.TABLE.${dbField.jooqFieldName}),
                         """}}
                     )

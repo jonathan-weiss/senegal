@@ -3,7 +3,7 @@ package ch.cassiamon.exampleapp.customizing.templates.kotlinmodel
 import ch.cassiamon.exampleapp.customizing.templates.EntityConcept
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.kotlinIdClass
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.primaryKeyField
-import ch.cassiamon.tools.CaseUtil
+import org.codeblessing.sourceamazing.tools.CaseUtil
 
 data class KotlinModelClass(private val model: EntityConcept) {
     private val entityName: String = model.getName()

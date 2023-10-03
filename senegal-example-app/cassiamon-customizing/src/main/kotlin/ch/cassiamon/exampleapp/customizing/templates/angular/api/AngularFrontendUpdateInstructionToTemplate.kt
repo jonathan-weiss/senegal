@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.api
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendUpdateInstructionToTemplate {
 
@@ -12,7 +12,8 @@ object AngularFrontendUpdateInstructionToTemplate {
         import {${templateModel.entityName}IdTO} from "./${templateModel.entityFileName}-id-to.model";
 
         export interface Update${templateModel.entityName}InstructionTO {
-            ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO,${StringTemplateHelper.forEach(templateModel.angularFields()) { fieldNode ->
+            ${templateModel.transferObjectIdFieldName}: ${templateModel.entityName}IdTO,${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { fieldNode ->
             """
             ${fieldNode.transferObjectFieldName}: ${fieldNode.transferObjectFieldType},"""}}
         }

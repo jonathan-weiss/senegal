@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.stackcomponents.form
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
 
 object AngularFrontendFormStackEntryTypescriptTemplate {
 

@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendModulesTemplate {
 
@@ -10,7 +10,8 @@ object AngularFrontendModulesTemplate {
             import {NgModule} from '@angular/core';
             import {BrowserModule} from '@angular/platform-browser';
             
-            ${StringTemplateHelper.forEach(templateModels) { entityNode ->
+            ${
+            StringTemplateHelper.forEach(templateModels) { entityNode ->
                 """
             import { ${entityNode.entityName}Module } from "./${entityNode.entityFileName}/${entityNode.entityFileName}.module"
             """}}
@@ -18,7 +19,8 @@ object AngularFrontendModulesTemplate {
             
             @NgModule({
                 imports: [
-            ${StringTemplateHelper.forEach(templateModels) { entityNode ->
+            ${
+            StringTemplateHelper.forEach(templateModels) { entityNode ->
                 """
                 ${entityNode.entityName}Module,"""}}
                 ],

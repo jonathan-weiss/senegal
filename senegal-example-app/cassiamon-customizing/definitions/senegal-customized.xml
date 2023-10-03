@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sourceamazing xmlns="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema ./schema/sourceamazing-xml-schema.xsd">
+    <definitions>
+        <entity entityName="Address" conceptIdentifier="Address">
+            <primaryKeyField fieldName="addressNo" conceptIdentifier="Address_addressNo"/>
+            <dataOnlyField fieldName="street" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="zip" fieldDataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+        </entity>
+        <entity entityName="Person">
+            <primaryKeyField fieldName="personNo" />
+            <dataOnlyField fieldName="firstname" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="lastname" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="nickname" fieldDataType="TEXT"/>
+            <referenceToPrimaryKeyField fieldName="addressNo" referencedPrimaryKeyField="Address_addressNo"/>
+        </entity>
+        <entity entityName="Department">
+            <primaryKeyField fieldName="departmentNo"/>
+            <dataOnlyField fieldName="title" fieldDataType="TEXT"/>
+        </entity>
+        <entity entityName="DepartmentAddress">
+            <primaryKeyField fieldName="departmentAddressNo"/>
+            <dataOnlyField fieldName="street" fieldDataType="TEXT"/>
+            <dataOnlyField fieldName="phone" fieldDataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+        </entity>
+    </definitions>
+
+</sourceamazing>

@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
-import ch.cassiamon.api.process.schema.annotations.ChildConcepts
-import ch.cassiamon.api.process.schema.annotations.ChildConceptsWithCommonBaseInterface
-import ch.cassiamon.api.process.schema.annotations.Schema
+import org.codeblessing.sourceamazing.api.process.schema.annotations.ChildConcepts
+import org.codeblessing.sourceamazing.api.process.schema.annotations.ChildConceptsWithCommonBaseInterface
+import org.codeblessing.sourceamazing.api.process.schema.annotations.Schema
 
 @Schema
 interface EntitiesSchema {

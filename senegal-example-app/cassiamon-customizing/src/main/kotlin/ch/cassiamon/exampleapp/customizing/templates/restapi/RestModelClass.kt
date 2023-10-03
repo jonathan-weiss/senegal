@@ -5,7 +5,7 @@ import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.ko
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.primaryKeyField
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelClass
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
-import ch.cassiamon.tools.CaseUtil
+import org.codeblessing.sourceamazing.tools.CaseUtil
 
 data class RestModelClass(private val model: EntityConcept) {
 

@@ -1,9 +1,9 @@
 package ch.cassiamon.exampleapp.customizing.templates
 
-import ch.cassiamon.api.process.schema.annotations.ChildConcepts
-import ch.cassiamon.api.process.schema.annotations.ChildConceptsWithCommonBaseInterface
-import ch.cassiamon.api.process.schema.annotations.Concept
-import ch.cassiamon.api.process.schema.annotations.Facet
+import org.codeblessing.sourceamazing.api.process.schema.annotations.ChildConcepts
+import org.codeblessing.sourceamazing.api.process.schema.annotations.ChildConceptsWithCommonBaseInterface
+import org.codeblessing.sourceamazing.api.process.schema.annotations.Concept
+import org.codeblessing.sourceamazing.api.process.schema.annotations.Facet
 
 @Concept("Entity")
 interface EntityConcept {

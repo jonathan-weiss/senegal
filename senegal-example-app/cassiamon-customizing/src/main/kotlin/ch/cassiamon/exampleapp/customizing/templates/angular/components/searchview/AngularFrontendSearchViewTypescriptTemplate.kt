@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.searchview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendSearchViewTypescriptTemplate {
 
@@ -60,7 +60,8 @@ object AngularFrontendSearchViewTypescriptTemplate {
           private loadAll${templateModel.entityName}(): void {
             const searchCriteria: Search${templateModel.entityName}InstructionTO = {
               ${templateModel.transferObjectIdFieldName}: undefined,
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               ${angularModelField.decapitalizedFieldName}: undefined,"""}}
             }
         

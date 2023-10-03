@@ -5,7 +5,7 @@ import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.kotlinTypeAsString
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.type
-import ch.cassiamon.tools.CaseUtil
+import org.codeblessing.sourceamazing.tools.CaseUtil
 
 data class KotlinModelField(private val model: EntityField, val kotlinModelClass: KotlinModelClass) {
     private val entityAttributeName: String = model.getName()

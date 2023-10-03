@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendRoutingTemplate {
 
@@ -10,7 +10,8 @@ object AngularFrontendRoutingTemplate {
             import { NgModule } from '@angular/core';
             import { RouterModule, Routes } from '@angular/router';
             
-            ${StringTemplateHelper.forEach(templateModels) { entityNode ->
+            ${
+            StringTemplateHelper.forEach(templateModels) { entityNode ->
                 """
             import { ${entityNode.entityName}EntryPointComponent } from "./${entityNode.entityFileName}/stack-components/${entityNode.entityFileName}-entry-point/${entityNode.entityFileName}-entry-point.component""""}}
             
@@ -19,11 +20,13 @@ object AngularFrontendRoutingTemplate {
                 name: string;
             }
             
-            export const generatedEntitiesNavigationEntries: ReadonlyArray<NavigationEntry> = [${StringTemplateHelper.forEach(templateModels) { entityNode -> """
+            export const generatedEntitiesNavigationEntries: ReadonlyArray<NavigationEntry> = [${
+            StringTemplateHelper.forEach(templateModels) { entityNode -> """
                 { path: '${entityNode.entityFileName}', name: '${entityNode.entityName}' },"""}}
             ]
             
-            const generatedEntitiesRoutes: Routes = [${StringTemplateHelper.forEach(templateModels) { entityNode -> """
+            const generatedEntitiesRoutes: Routes = [${
+            StringTemplateHelper.forEach(templateModels) { entityNode -> """
                 { path: '${entityNode.entityFileName}', component: ${entityNode.entityName}EntryPointComponent },"""}}
             ];
             

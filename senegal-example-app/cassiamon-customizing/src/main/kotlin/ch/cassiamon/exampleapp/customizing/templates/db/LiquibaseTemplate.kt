@@ -1,9 +1,9 @@
 package ch.cassiamon.exampleapp.customizing.templates.db
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper.forEach
-import ch.cassiamon.tools.StringTemplateHelper.ifElse
-import ch.cassiamon.tools.StringTemplateHelper.onlyIfIsInstance
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper.forEach
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper.ifElse
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper.onlyIfIsInstance
 
 object LiquibaseTemplate {
 

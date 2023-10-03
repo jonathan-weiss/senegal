@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.api
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendIdModelToTemplate {
 

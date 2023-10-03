@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.formview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendFormViewHtmlTemplate {
 
@@ -22,7 +22,8 @@ object AngularFrontendFormViewHtmlTemplate {
                                 <${templateModel.transferObjectIdFieldFileName}-form-field [${templateModel.transferObjectIdFieldName}FormControl]="${templateModel.transferObjectIdFieldName}FormControl" [${templateModel.transferObjectIdFieldName}]="${templateModel.decapitalizedEntityName}?.${templateModel.transferObjectIdFieldName}"></${templateModel.transferObjectIdFieldFileName}-form-field>
                               </section>
                               <section>
-                          ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+                          ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                                 <${templateModel.entityFileName}-${angularModelField.fieldFileName}-form-field [${templateModel.decapitalizedEntityName}${angularModelField.fieldName}FormControl]="${templateModel.decapitalizedEntityName}${angularModelField.fieldName}FormControl" [${templateModel.decapitalizedEntityName}${angularModelField.fieldName}]="${templateModel.decapitalizedEntityName}?.${angularModelField.transferObjectFieldName}" [isLocked]="isLocked"></${templateModel.entityFileName}-${angularModelField.fieldFileName}-form-field>
                                   """ }}
                               </section>

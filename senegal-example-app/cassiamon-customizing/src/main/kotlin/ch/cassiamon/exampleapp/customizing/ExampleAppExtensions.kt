@@ -1,6 +1,6 @@
 package ch.cassiamon.exampleapp.customizing
 
-import ch.cassiamon.api.extensions.ExtensionName
+import org.codeblessing.sourceamazing.api.extensions.ExtensionName
 
 object ExampleAppExtensions {
 

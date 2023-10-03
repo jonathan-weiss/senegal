@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.formview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendFormServiceTemplate {
 
@@ -26,12 +26,14 @@ object AngularFrontendFormServiceTemplate {
               }
             
               ${templateModel.transferObjectIdFieldName}FormControlName: string = "${templateModel.transferObjectIdFieldName}";
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               ${angularModelField.decapitalizedFieldName}FormControlName: string = "${angularModelField.decapitalizedFieldName}";"""}}
             
               initForm(${templateModel.decapitalizedEntityName}Form: FormGroup): void {
                 ${templateModel.decapitalizedEntityName}Form.addControl(this.${templateModel.transferObjectIdFieldName}FormControlName, new FormControl());
-                ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+                ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                 ${templateModel.decapitalizedEntityName}Form.addControl(this.${angularModelField.decapitalizedFieldName}FormControlName, new FormControl());"""
                 }}
               }
@@ -44,7 +46,8 @@ object AngularFrontendFormServiceTemplate {
                 return control as FormControl;
               }
 
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
               private get${angularModelField.fieldName}FormValue(${templateModel.decapitalizedEntityName}Form: FormGroup): string {
                 return this.getFormControl(${templateModel.decapitalizedEntityName}Form, this.${angularModelField.decapitalizedFieldName}FormControlName).value as string;
               }"""
@@ -53,7 +56,8 @@ object AngularFrontendFormServiceTemplate {
               performCreateOnServer(${templateModel.decapitalizedEntityName}Form: FormGroup): Observable<${templateModel.entityName}TO> {
                 const createInstruction: Create${templateModel.entityName}InstructionTO = {
                 
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                   ${angularModelField.transferObjectFieldName}: this.get${angularModelField.fieldName}FormValue(${templateModel.decapitalizedEntityName}Form),"""
               }}
                 }
@@ -64,7 +68,8 @@ object AngularFrontendFormServiceTemplate {
               performUpdateOnServer(${templateModel.decapitalizedEntityName}Form: FormGroup, ${templateModel.decapitalizedEntityName}: ${templateModel.entityName}TO): Observable<${templateModel.entityName}TO> {
                 const updateInstruction: Update${templateModel.entityName}InstructionTO = {
                   ${templateModel.transferObjectIdFieldName}: ${templateModel.decapitalizedEntityName}.${templateModel.transferObjectIdFieldName},
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                   ${angularModelField.transferObjectFieldName}: this.get${angularModelField.fieldName}FormValue(${templateModel.decapitalizedEntityName}Form),"""
               }}
                 }

@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.tableview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendTableViewHtmlTemplate {
 
@@ -15,7 +15,8 @@ object AngularFrontendTableViewHtmlTemplate {
                         <td mat-cell *matCellDef="let element"> {{as${templateModel.entityName}(element).${templateModel.transferObjectIdFieldName}.value}} </td>
                     </ng-container>
                 
-              ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
+              ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> """
                     <ng-container matColumnDef="${angularModelField.decapitalizedFieldName}">
                         <th mat-header-cell *matHeaderCellDef> ${angularModelField.fieldName} </th>
                         <td mat-cell *matCellDef="let element"> {{ as${templateModel.entityName}(element).${angularModelField.decapitalizedFieldName} }} </td>

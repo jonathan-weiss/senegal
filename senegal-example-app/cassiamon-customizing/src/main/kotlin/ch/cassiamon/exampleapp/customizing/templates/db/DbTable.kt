@@ -5,7 +5,7 @@ import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.pr
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.sqlTypeAsString
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelClass
 import ch.cassiamon.exampleapp.customizing.templates.kotlinmodel.KotlinModelField
-import ch.cassiamon.tools.CaseUtil
+import org.codeblessing.sourceamazing.tools.CaseUtil
 import java.lang.IllegalStateException
 
 data class DbTable(private val entity: EntityConcept) {

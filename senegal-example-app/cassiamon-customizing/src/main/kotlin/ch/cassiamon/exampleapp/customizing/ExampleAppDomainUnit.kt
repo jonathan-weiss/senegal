@@ -1,11 +1,11 @@
 package ch.cassiamon.exampleapp.customizing
 
-import ch.cassiamon.api.extensions.ExtensionName
-import ch.cassiamon.api.parameter.ParameterAccess
-import ch.cassiamon.api.process.DomainUnit
-import ch.cassiamon.api.process.datacollection.defaults.DefaultConceptDataCollector
-import ch.cassiamon.api.process.datacollection.extensions.DataCollectionExtensionAccess
-import ch.cassiamon.api.process.templating.TargetFilesCollector
+import org.codeblessing.sourceamazing.api.extensions.ExtensionName
+import org.codeblessing.sourceamazing.api.parameter.ParameterAccess
+import org.codeblessing.sourceamazing.api.process.DomainUnit
+import org.codeblessing.sourceamazing.api.process.datacollection.defaults.DefaultConceptDataCollector
+import org.codeblessing.sourceamazing.api.process.datacollection.extensions.DataCollectionExtensionAccess
+import org.codeblessing.sourceamazing.api.process.templating.TargetFilesCollector
 import ch.cassiamon.exampleapp.customizing.templates.EntitiesSchema
 import ch.cassiamon.exampleapp.customizing.templates.EntityDescriptionTemplate
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularFrontendModulesTemplate
@@ -61,7 +61,7 @@ class ExampleAppDomainUnit: DomainUnit<EntitiesSchema, DefaultConceptDataCollect
     ) {
         val xmlDefinitionFile = ExampleAppParameters.xmlDefinitionFile(parameterAccess)
         extensionAccess.collectWithDataCollectionFromFilesExtension(
-            extensionName = ExtensionName.of("XmlSchemagicInputExtension"),
+            extensionName = ExtensionName.of("XmlSchemaInputExtension"),
             inputFiles = setOf(xmlDefinitionFile),
         )
     }

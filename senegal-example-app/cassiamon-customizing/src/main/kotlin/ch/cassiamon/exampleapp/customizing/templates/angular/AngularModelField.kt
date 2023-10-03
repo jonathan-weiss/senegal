@@ -5,7 +5,7 @@ import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper
 import ch.cassiamon.exampleapp.customizing.templates.FieldDataType
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.type
 import ch.cassiamon.exampleapp.customizing.templates.helper.EntityFieldHelper.typescriptTypeAsString
-import ch.cassiamon.tools.CaseUtil
+import org.codeblessing.sourceamazing.tools.CaseUtil
 
 data class AngularModelField(private val model: EntityField, private val angularModelClass: AngularModelClass) {
     private val entityAttributeName: String = model.getName()

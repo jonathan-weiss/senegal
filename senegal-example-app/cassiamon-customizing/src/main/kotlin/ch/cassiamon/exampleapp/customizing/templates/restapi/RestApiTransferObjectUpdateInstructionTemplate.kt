@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.restapi
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object RestApiTransferObjectUpdateInstructionTemplate {
 
@@ -14,12 +14,14 @@ object RestApiTransferObjectUpdateInstructionTemplate {
             
             
             data class Update${restModelClass.transferObjectBaseName}InstructionTO(
-                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.kotlinModelClass.idFieldType},${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
+                val ${restModelClass.transferObjectIdFieldName}: ${restModelClass.kotlinModelClass.idFieldType},${
+            StringTemplateHelper.forEach(restModelClass.fields()) { field ->
             """
                 val ${field.transferObjectFieldName}: ${field.transferObjectFieldType},""" }}
             ) {
                 fun toDomain() = Update${restModelClass.kotlinModelClass.kotlinClassName}Instruction(
-                    ${restModelClass.kotlinModelClass.idFieldName} = this.${restModelClass.transferObjectIdFieldName},${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
+                    ${restModelClass.kotlinModelClass.idFieldName} = this.${restModelClass.transferObjectIdFieldName},${
+            StringTemplateHelper.forEach(restModelClass.fields()) { field ->
                 """
                     ${field.kotlinModelField.kotlinFieldName} = this.${field.transferObjectFieldName},""" }}
                 )

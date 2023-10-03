@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.service
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendModuleTemplate {
     fun fillTemplate(angularModelClass: AngularModelClass): String {
@@ -39,7 +39,8 @@ object AngularFrontendModuleTemplate {
             import { ${angularModelClass.entityName}SearchViewComponent } from "./components/${angularModelClass.entityFileName}-search-view/${angularModelClass.entityFileName}-search-view.component"
             import { ${angularModelClass.entityName}TableViewComponent } from "./components/${angularModelClass.entityFileName}-table-view/${angularModelClass.entityFileName}-table-view.component"
             import { ${angularModelClass.transferObjectIdFieldName}FormFieldComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.transferObjectIdFieldFileName}-form-field/${angularModelClass.transferObjectIdFieldFileName}-form-field.component"
-            ${StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
+            ${
+            StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
             import { ${angularModelClass.entityName}${angularModelField.fieldName}FormFieldComponent } from "./components/${angularModelClass.entityFileName}-form-view/${angularModelClass.entityFileName}-${angularModelField.fieldFileName}-form-field/${angularModelClass.entityFileName}-${angularModelField.fieldFileName}-form-field.component" """}}       
 
             import { ${angularModelClass.entityName}EntryPointComponent } from "./stack-components/${angularModelClass.entityFileName}-entry-point/${angularModelClass.entityFileName}-entry-point.component"
@@ -52,7 +53,8 @@ object AngularFrontendModuleTemplate {
                     ${angularModelClass.entityName}SearchViewComponent,
                     ${angularModelClass.entityName}TableViewComponent,
                     ${angularModelClass.transferObjectIdFieldName}FormFieldComponent,       
-                ${StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
+                ${
+            StringTemplateHelper.forEach(angularModelClass.angularFields()) { angularModelField -> """
                     ${angularModelClass.entityName}${angularModelField.fieldName}FormFieldComponent,"""}}       
                     ${angularModelClass.entityName}EntryPointComponent,
                     ${angularModelClass.entityName}FormStackEntryComponent,

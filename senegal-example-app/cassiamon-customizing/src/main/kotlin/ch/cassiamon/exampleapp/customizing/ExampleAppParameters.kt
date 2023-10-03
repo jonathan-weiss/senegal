@@ -1,6 +1,6 @@
 package ch.cassiamon.exampleapp.customizing
 
-import ch.cassiamon.api.parameter.ParameterAccess
+import org.codeblessing.sourceamazing.api.parameter.ParameterAccess
 import java.nio.file.Path
 import java.nio.file.Paths
 

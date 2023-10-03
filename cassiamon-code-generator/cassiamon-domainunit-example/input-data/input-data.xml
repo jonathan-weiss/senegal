@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<cassiamon xmlns="https://cassiamon.ch/cassiamon-schemagic"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="https://cassiamon.ch/cassiamon-schemagic ./schema/cassiamon-schemagic-schema.xsd">
+<sourceamazing xmlns="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema ./schema/sourceamazing-xml-schema.xsd">
     <definitions>
         <entity name="Person" alternativeName="PERSON">
             <entityAttribute attributeName="firstname" attributeType="TEXT"/>
@@ -9,8 +9,8 @@
             <entityAttribute attributeName="nickname" attributeType="TEXT"/>
         </entity>
         <entity name="Address">
-            <entityAttribute attributeName="street"  attributeType="TEXT"/>
-            <entityAttribute attributeName="zip"  attributeType="NUMBER"/>
+            <entityAttribute attributeName="street" attributeType="TEXT"/>
+            <entityAttribute attributeName="zip" attributeType="NUMBER"/>
         </entity>
     </definitions>
-</cassiamon>
+</sourceamazing>

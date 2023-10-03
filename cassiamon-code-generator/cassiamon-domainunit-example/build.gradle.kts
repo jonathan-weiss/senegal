@@ -35,5 +35,5 @@ tasks.named("run") {
 }
 
 application {
-    mainClass.set("ch.cassiamon.engine.CassiamonApplicationKt")
+    mainClass.set("org.codeblessing.sourceamazing.engine.SourceamazingApplicationKt")
 }

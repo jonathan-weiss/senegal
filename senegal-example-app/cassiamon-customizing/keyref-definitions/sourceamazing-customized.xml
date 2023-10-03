@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sourceamazing xmlns="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema schema/sourceamazing-xml-schema.xsd">
+    <definitions>
+        <entity entityName="Person" conceptIdentifier="Person">
+            <entitySimpleAttribute entityAttributeName="firstname" entityAttributeType="Text"/>
+            <entitySimpleAttribute entityAttributeName="lastname" entityAttributeType="Text"/>
+            <entitySimpleAttribute entityAttributeName="nickname" entityAttributeType="Text" conceptIdentifier="foo"/>
+            <entityReferenceAttribute entityReferenceName="address" referencedEntity="fdsd"/>
+        </entity>
+        <entity entityName="Person" conceptIdentifier="Person">
+            <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
+            <entitySimpleAttribute entityAttributeName="zip" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+        </entity>
+        <entity entityName="Department">
+            <entitySimpleAttribute entityAttributeName="title" entityAttributeType="Text"/>
+        </entity>
+        <entity entityName="DepartmentAddress">
+            <entitySimpleAttribute entityAttributeName="street" entityAttributeType="Text"/>
+            <entitySimpleAttribute entityAttributeName="phone" entityAttributeType="Text"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+        </entity>
+        <entity entityName="OfficeBrackets">
+            <entitySimpleAttribute entityAttributeName="stupidLevel" entityAttributeType="Text"/>
+        </entity>
+    </definitions>
+
+</sourceamazing>

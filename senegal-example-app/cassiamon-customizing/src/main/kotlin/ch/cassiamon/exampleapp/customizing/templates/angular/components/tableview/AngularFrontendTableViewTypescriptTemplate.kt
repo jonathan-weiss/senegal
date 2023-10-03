@@ -1,8 +1,8 @@
 package ch.cassiamon.exampleapp.customizing.templates.angular.components.tableview
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object AngularFrontendTableViewTypescriptTemplate {
 
@@ -35,7 +35,8 @@ object AngularFrontendTableViewTypescriptTemplate {
             
                 displayedColumns: string[] = [
                     '${templateModel.transferObjectIdFieldName}',
-                    ${StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> 
+                    ${
+            StringTemplateHelper.forEach(templateModel.angularFields()) { angularModelField -> 
                     """
                     '${angularModelField.decapitalizedFieldName}',
                     """.trimIndent()}}

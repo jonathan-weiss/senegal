@@ -2,7 +2,7 @@ package ch.cassiamon.exampleapp.customizing.templates.angular.components.formvie
 
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelClass
 import ch.cassiamon.exampleapp.customizing.templates.angular.AngularModelField
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
 
 object AngularFrontendTextFormFieldHtmlTemplate {
 

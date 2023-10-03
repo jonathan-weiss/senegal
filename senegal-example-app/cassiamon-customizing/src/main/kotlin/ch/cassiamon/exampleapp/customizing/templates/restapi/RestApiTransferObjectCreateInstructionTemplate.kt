@@ -1,7 +1,7 @@
 package ch.cassiamon.exampleapp.customizing.templates.restapi
 
-import ch.cassiamon.tools.StringIdentHelper.identForMarker
-import ch.cassiamon.tools.StringTemplateHelper
+import org.codeblessing.sourceamazing.tools.StringIdentHelper.identForMarker
+import org.codeblessing.sourceamazing.tools.StringTemplateHelper
 
 object RestApiTransferObjectCreateInstructionTemplate {
 
@@ -11,11 +11,13 @@ object RestApiTransferObjectCreateInstructionTemplate {
                         
             import ${restModelClass.kotlinModelClass.kotlinPackage}.Create${restModelClass.kotlinModelClass.kotlinClassName}Instruction
             
-            data class Create${restModelClass.transferObjectBaseName}InstructionTO(${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
+            data class Create${restModelClass.transferObjectBaseName}InstructionTO(${
+            StringTemplateHelper.forEach(restModelClass.fields()) { field ->
             """
                 val ${field.transferObjectFieldName}: ${field.transferObjectFieldType},""" }}
             ) {
-                fun toDomain() = Create${restModelClass.kotlinModelClass.kotlinClassName}Instruction(${StringTemplateHelper.forEach(restModelClass.fields()) { field ->
+                fun toDomain() = Create${restModelClass.kotlinModelClass.kotlinClassName}Instruction(${
+            StringTemplateHelper.forEach(restModelClass.fields()) { field ->
                 """
                     ${field.kotlinModelField.kotlinFieldName} = this.${field.transferObjectFieldName},""" }}
                 )
