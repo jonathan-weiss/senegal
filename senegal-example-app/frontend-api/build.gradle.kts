@@ -8,8 +8,8 @@ dependencies {
     implementation("org.springframework:spring-context")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    implementation(project(":senegal-example-app:domain"))
-    implementation(project(":senegal-example-app:shared-domain"))
+    implementation(project(":domain"))
+    implementation(project(":shared-domain"))
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")

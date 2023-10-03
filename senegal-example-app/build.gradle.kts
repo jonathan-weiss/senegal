@@ -1,11 +1,10 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-
 plugins {
     id("org.springframework.boot") version "2.7.5"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.10"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm")
+    kotlin("jvm") version "1.9.10"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
 }

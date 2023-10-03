@@ -8,10 +8,10 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":cassiamon-code-generator:cassiamon-api"))
-    implementation(project(":cassiamon-code-generator:cassiamon-tools"))
-    runtimeOnly(project(":cassiamon-code-generator:cassiamon-engine"))
-    runtimeOnly(project(":cassiamon-code-generator:cassiamon-xml-schemagic"))
+    implementation("org.codeblessing:sourceamazing-api")
+    implementation("org.codeblessing:sourceamazing-tools")
+    runtimeOnly("org.codeblessing:sourceamazing-engine")
+    runtimeOnly("org.codeblessing:sourceamazing-xml-schema")
 }
 
 val pathToDomainSource = projectDir.resolve("../domain/src/main/kotlin-generated")
@@ -46,11 +46,11 @@ application {
 }
 
 tasks.named("run") {
-    dependsOn(":senegal-example-app:domain:clearGeneratedSource")
-    dependsOn(":senegal-example-app:frontend:clearGeneratedSource")
-    dependsOn(":senegal-example-app:frontend-api:clearGeneratedSource")
-    dependsOn(":senegal-example-app:persistence:clearGeneratedSource")
-    dependsOn(":senegal-example-app:domain:clearGeneratedSource")
+    dependsOn(":domain:clearGeneratedSource")
+    dependsOn(":frontend:clearGeneratedSource")
+    dependsOn(":frontend-api:clearGeneratedSource")
+    dependsOn(":persistence:clearGeneratedSource")
+    dependsOn(":domain:clearGeneratedSource")
 }
 
 tasks.register("generate") {
