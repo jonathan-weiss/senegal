@@ -7,11 +7,13 @@ repositories {
     mavenCentral()
 }
 
+val sourceAmazingVersion = project.property("sourceAmazingVersion") as String
+
 dependencies {
-    implementation("org.codeblessing:sourceamazing-api")
-    implementation("org.codeblessing:sourceamazing-tools")
-    runtimeOnly("org.codeblessing:sourceamazing-engine")
-    runtimeOnly("org.codeblessing:sourceamazing-xml-schema")
+    implementation("org.codeblessing.sourceamazing:sourceamazing-api:$sourceAmazingVersion")
+    implementation("org.codeblessing.sourceamazing:sourceamazing-tools:$sourceAmazingVersion")
+    runtimeOnly("org.codeblessing.sourceamazing:sourceamazing-engine:$sourceAmazingVersion")
+    runtimeOnly("org.codeblessing.sourceamazing:sourceamazing-xml-schema:$sourceAmazingVersion")
 }
 
 val pathToDomainSource = projectDir.resolve("../domain/src/main/kotlin-generated")

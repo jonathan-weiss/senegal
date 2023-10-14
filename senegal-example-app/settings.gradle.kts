@@ -10,6 +10,5 @@ include("frontend-api")
 include("frontend")
 include("sourceamazing-customizing")
 
-
-includeBuild("../sourceamazing-code-generator")
-
+// if you check out sourceamazing git source repository, include the build directly
+//includeBuild("../../sourceamazing")
