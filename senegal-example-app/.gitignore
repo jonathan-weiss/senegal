@@ -7,9 +7,8 @@ db/**
 tmp
 
 
-cassiamon-customizing/output-data/*
-cassiamon-customizing/definitions/schema/*
-customized-code-generator/definitions/schema/*
+sourceamazing-customizing/output-data
+sourceamazing-customizing/definitions/schema
 domain/src/main/kotlin-generated/*
 persistence/src/main/kotlin-generated/*
 persistence/src/main/resources-generated/*
