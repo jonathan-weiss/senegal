@@ -1,0 +1,69 @@
+package org.codeblessing.senegal.codegen.helper
+
+import org.codeblessing.senegal.codegen.schema.DataOnlyFieldConcept
+import org.codeblessing.senegal.codegen.schema.EntityConcept
+import org.codeblessing.senegal.codegen.schema.EntityField
+import org.codeblessing.senegal.codegen.schema.FieldDataType
+import org.codeblessing.senegal.codegen.schema.PrimaryKeyFieldConcept
+import org.codeblessing.senegal.codegen.schema.ReferenceToPrimaryKeyFieldConcept
+
+
+object EntityFieldHelper {
+    private val kotlinUuidType = "java.util.UUID"
+    private val kotlinStringType = "kotlin.String"
+    private val kotlinIntType = "kotlin.Int"
+    private val kotlinBooleanType = "kotlin.Boolean"
+
+    private val typescriptStringType = "string"
+    private val typescriptIntType = "number"
+    private val typescriptBooleanType = "boolean"
+
+    private val sqlUuidType = "UUID"
+    private val sqlStringType = "VARCHAR(255)"
+    private val sqlIntType = "INTEGER"
+    private val sqlBooleanType = "BOOLEAN"
+
+    fun EntityConcept.primaryKeyField(): PrimaryKeyFieldConcept {
+        return this.entityFields().filterIsInstance<PrimaryKeyFieldConcept>().first()
+    }
+
+    fun EntityConcept.kotlinIdClass(): String {
+        return "${this.getName()}Id"
+    }
+
+
+
+    fun EntityField.type(): FieldDataType {
+        return when(this) {
+            is DataOnlyFieldConcept -> this.getType()
+            is ReferenceToPrimaryKeyFieldConcept -> FieldDataType.UUID
+            is PrimaryKeyFieldConcept -> FieldDataType.UUID
+        }
+    }
+
+    fun EntityField.kotlinTypeAsString(): String {
+        return when(this.type()) {
+            FieldDataType.TEXT -> kotlinStringType
+            FieldDataType.UUID -> kotlinUuidType
+            else -> throw RuntimeException("Unknown Kotlin Type for $this")
+        }
+    }
+
+    fun EntityField.typescriptTypeAsString(): String {
+        return when(this.type()) {
+            FieldDataType.TEXT -> typescriptStringType
+            FieldDataType.UUID -> typescriptStringType // TODO avoid that
+            else -> throw RuntimeException("Unknown Typescript for $this")
+        }
+    }
+
+    fun EntityField.sqlTypeAsString(): String {
+        return when(this.type()) {
+            FieldDataType.TEXT -> sqlStringType
+            FieldDataType.UUID -> sqlUuidType
+            else -> throw RuntimeException("Unknown SQL for $this")
+        }
+    }
+
+
+}

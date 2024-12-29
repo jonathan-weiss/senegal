@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sourceamazing xmlns="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="https://codeblessing.org/sourceamazing/sourceamazing-xml-schema ./schema/sourceamazing-xml-schema.xsd">
+    <definitions>
+        
+        <entityConcept entityName="Address" conceptIdentifier="Address">
+            <entityFields>
+                <primaryKeyFieldConcept fieldName="addressNo" conceptIdentifier="Address_addressNo"/>
+                <dataOnlyFieldConcept fieldName="street" dataType="TEXT"/>
+                <dataOnlyFieldConcept fieldName="zip" dataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon ae this is supported -->
+            </entityFields>
+        </entityConcept>
+        <entityConcept entityName="Person">
+            <entityFields>
+                <primaryKeyFieldConcept fieldName="personNo" />
+                <dataOnlyFieldConcept fieldName="firstname" dataType="TEXT"/>
+                <dataOnlyFieldConcept fieldName="lastname" dataType="TEXT"/>
+                <dataOnlyFieldConcept fieldName="nickname" dataType="TEXT"/>
+                <referenceToPrimaryKeyFieldConcept fieldName="addressNo" referencedPrimaryKeyField="Address_addressNo"/>
+            </entityFields>
+        </entityConcept>
+        <entityConcept entityName="Department">
+            <entityFields>
+                <primaryKeyFieldConcept fieldName="departmentNo"/>
+                <dataOnlyFieldConcept fieldName="title" dataType="TEXT"/>
+            </entityFields>
+        </entityConcept>
+        <entityConcept entityName="DepartmentAddress">
+            <entityFields>
+                <primaryKeyFieldConcept fieldName="departmentAddressNo"/>
+                <dataOnlyFieldConcept fieldName="street" dataType="TEXT"/>
+                <dataOnlyFieldConcept fieldName="phone" dataType="TEXT"/> <!-- TODO Change back to IntegerNumber as soon as this is supported -->
+            </entityFields>
+        </entityConcept>
+    </definitions>
+</sourceamazing>

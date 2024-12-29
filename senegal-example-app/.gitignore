@@ -6,7 +6,8 @@ build
 db/**
 tmp
 
-
+codegen/output-data
+codegen/definitions/schema
 sourceamazing-customizing/output-data
 sourceamazing-customizing/definitions/schema
 domain/src/main/kotlin-generated/*

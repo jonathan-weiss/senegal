@@ -8,6 +8,8 @@ include("domain")
 include("persistence")
 include("frontend-api")
 include("frontend")
+include("codegen-toolbox")
+include("codegen")
 include("sourceamazing-customizing")
 
 // if you check out sourceamazing git source repository, include the build directly
