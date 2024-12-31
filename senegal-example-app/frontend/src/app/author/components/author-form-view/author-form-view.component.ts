@@ -57,7 +57,7 @@ export class AuthorFormViewComponent implements OnInit {
   }
 
   private storeAuthorObserver: Partial<Observer<AuthorTO>> = {
-    next: book => this.afterSuccessfulServerResponse(book),
+    next: author => this.afterSuccessfulServerResponse(author),
     error: error => this.errorCase(this.author, error)
   }
 

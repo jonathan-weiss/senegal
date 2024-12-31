@@ -97,10 +97,12 @@ export class AuthorSearchViewComponent implements OnInit {
     const deleteInstruction: DeleteAuthorInstructionTO = {
       authorId: entry.authorId,
     }
-    this.authorService.deleteAuthor(deleteInstruction).subscribe(() => {
-      this.reloadAllAuthorsAfterEditing();
-    },
-      (error: any) => this.errorCase(entry, error));
+    this.authorService.deleteAuthor(deleteInstruction).subscribe({
+      next: (): void => {
+        this.reloadAllAuthorsAfterEditing();
+      },
+      error: (error: any) => this.errorCase(entry, error)
+    })
   }
 
   private errorCase(entry: AuthorTO, error: any): void {

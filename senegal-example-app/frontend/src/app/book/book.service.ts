@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
-import {map, Observable} from 'rxjs';
-import {BookApiService} from "./api/book-api.service";
+import {Observable} from 'rxjs';
 import {BookTO} from "./api/book-to.model";
 import {UpdateBookInstructionTO} from "./api/update-book-instruction.to";
 import {CreateBookInstructionTO} from "./api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "./api/delete-book-instruction.to";
 import {SearchBookInstructionTO} from "./api/search-book-instruction.to";
-import {AuthorTO} from "../author/api/author-to.model";
 import {BookAuthorDescriptionTO} from "./api/book-author-description-to.model";
+import {BookInMemoryApiService} from "./api/book-in-memory-api.service";
 
 
 @Injectable({
@@ -15,7 +14,7 @@ import {BookAuthorDescriptionTO} from "./api/book-author-description-to.model";
 })
 export class BookService {
 
-  constructor(private readonly bookApiService: BookApiService) {
+  constructor(private readonly bookApiService: BookInMemoryApiService) {
   }
 
   getAllBooks(): Observable<ReadonlyArray<BookTO>> {

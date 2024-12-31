@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
 import {AuthorTO} from "./api/author-to.model";
-import {AuthorApiService} from "./api/author-api.service";
 import {UpdateAuthorInstructionTO} from "./api/update-author-instruction-to.model";
 import {CreateAuthorInstructionTO} from "./api/create-author-instruction-to.model";
 import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.model";
-import {UuidTO} from "../uuid-to.model";
 import {BookTO} from "../book/api/book-to.model";
-import {BookApiService} from "../book/api/book-api.service";
 import {SearchAuthorInstructionTO} from "./api/search-author-instruction-to.model";
 import {AuthorIdTO} from "./api/author-id-to.model";
+import {AuthorInMemoryApiService} from "./api/author-in-memory-api.service";
+import {BookInMemoryApiService} from "../book/api/book-in-memory-api.service";
 
 
 @Injectable({
@@ -17,8 +16,8 @@ import {AuthorIdTO} from "./api/author-id-to.model";
 })
 export class AuthorService {
 
-  constructor(private readonly authorApiService: AuthorApiService,
-              private readonly bookApiService: BookApiService) {
+  constructor(private readonly authorApiService: AuthorInMemoryApiService,
+              private readonly bookApiService: BookInMemoryApiService) {
   }
 
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
