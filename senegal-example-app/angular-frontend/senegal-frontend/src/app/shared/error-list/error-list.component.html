@@ -1,0 +1,13 @@
+@if (hasErrors()) {
+  <mat-list class="error-list-panel">
+    <div mat-subheader>Errors</div>
+    @for(errorMessage of errorMessages; track errorMessage.errorMessage) {
+    <mat-list-item>
+      <mat-icon matListItemIcon>error</mat-icon>
+      <div class="one-line">{{errorMessage.errorTitle}}</div>
+      <div class="one-line">{{errorMessage.errorMessage}}</div>
+      <mat-icon (click)="removeMessage($index)">delete</mat-icon>
+    </mat-list-item>
+    }
+  </mat-list>
+}

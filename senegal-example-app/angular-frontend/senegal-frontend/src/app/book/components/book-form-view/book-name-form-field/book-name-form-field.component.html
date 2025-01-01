@@ -1,0 +1,7 @@
+<mat-form-field appearance="fill">
+  <mat-label>Book Name</mat-label>
+  <input matInput type="text" [formControl]="bookNameFormControl" [disableFormControl]="isLocked">
+  @if(bookNameFormControl.hasError('required')) {
+    <mat-error>Book Name is <strong>required</strong></mat-error>
+  }
+</mat-form-field>

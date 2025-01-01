@@ -1,0 +1,8 @@
+<mat-form-field appearance="fill">
+  <mat-label>Firstname</mat-label>
+  <input matInput type="text" [formControl]="authorFirstnameFormControl" [disableFormControl]="isLocked">
+@if(authorFirstnameFormControl.hasError('required')) {
+  <mat-error>Firstname is <strong>required</strong></mat-error>
+}
+
+</mat-form-field>
