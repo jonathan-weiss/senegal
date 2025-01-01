@@ -78,10 +78,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "senegal-example-frontend:build:production"
+              "buildTarget": "senegal-example-frontend:build:production"
             },
             "development": {
-              "browserTarget": "senegal-example-frontend:build:development"
+              "buildTarget": "senegal-example-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "senegal-example-frontend:build"
+            "buildTarget": "senegal-example-frontend:build"
           }
         },
         "test": {
@@ -112,6 +112,5 @@
         }
       }
     }
-  },
-  "defaultProject": "senegal-example-frontend"
+  }
 }
