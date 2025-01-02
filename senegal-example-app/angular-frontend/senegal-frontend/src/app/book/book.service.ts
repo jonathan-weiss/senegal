@@ -6,7 +6,7 @@ import {CreateBookInstructionTO} from "./api/create-book-instruction.to";
 import {DeleteBookInstructionTO} from "./api/delete-book-instruction.to";
 import {SearchBookInstructionTO} from "./api/search-book-instruction.to";
 import {BookAuthorDescriptionTO} from "./api/book-author-description-to.model";
-import {BookInMemoryApiService} from "./api/book-in-memory-api.service";
+import {BookLocalStorageApiService} from "./api/book-local-storage-api.service";
 
 
 @Injectable({
@@ -14,7 +14,7 @@ import {BookInMemoryApiService} from "./api/book-in-memory-api.service";
 })
 export class BookService {
 
-  constructor(private readonly bookApiService: BookInMemoryApiService) {
+  constructor(private readonly bookApiService: BookLocalStorageApiService) {
   }
 
   getAllBooks(): Observable<ReadonlyArray<BookTO>> {

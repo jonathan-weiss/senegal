@@ -8,41 +8,17 @@ import {DeleteAuthorInstructionTO} from "./delete-author-instruction-to.model";
 import {SearchAuthorInstructionTO} from "./search-author-instruction-to.model";
 import {AuthorIdTO} from "./author-id-to.model";
 import {UuidUtil} from "../../commons/uuid.util";
+import {LocalStorageService} from '../../shared/local-storage.service';
 
 @Injectable({
 providedIn: 'root'
 })
-export class AuthorInMemoryApiService {
+export class AuthorLocalStorageApiService {
 
-    private authors: Array<AuthorTO> = [
-      {
-        authorId: {
-          value: "34aa97e7-9c15-434a-81f0-1a2e12066281"
-        },
-        firstname: "William",
-        lastname: "Golding",
-      },
-      {
-        authorId: {
-          value: "3d5436c7-1170-4515-b11c-93b99921c26c"
-        },
-        firstname: "Jonathan",
-        lastname: "Swift",
-      },
-      {
-        authorId: {
-          value: "a4a16270-bd19-453a-9067-632f300c8cff"
-        },
-        firstname: "God",
-        lastname: "Almighty",
-      },
-    ];
-
-
-  constructor() {}
+  constructor(private localStorageService: LocalStorageService) {}
 
     private findAuthorIndexById(authorId: AuthorIdTO): number {
-      const authorIndex: number = this.authors.findIndex(author => author.authorId.value === authorId.value)
+      const authorIndex: number = this.getAuthors().findIndex(author => author.authorId.value === authorId.value)
       if(authorIndex == -1) {
         throw new Error("Author index not found for " + authorId)
       }
@@ -50,7 +26,7 @@ export class AuthorInMemoryApiService {
     }
 
     findAuthorById(authorId: AuthorIdTO): AuthorTO {
-      const author = this.authors.find(author => author.authorId.value === authorId.value)
+      const author = this.getAuthors().find(author => author.authorId.value === authorId.value)
       if(author == null) {
         throw new Error("Book not found for author " + authorId)
       }
@@ -62,11 +38,11 @@ export class AuthorInMemoryApiService {
     }
 
     getAllAuthor(): Observable<ReadonlyArray<AuthorTO>> {
-        return of(this.authors)
+        return of(this.getAuthors())
     }
 
     searchAllAuthor(searchCriteria: SearchAuthorInstructionTO): Observable<ReadonlyArray<AuthorTO>> {
-      return of(this.authors) // TODO add search criteria
+      return of(this.getAuthors()) // TODO add search criteria
     }
 
     createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
@@ -77,8 +53,9 @@ export class AuthorInMemoryApiService {
           firstname: createInstruction.firstname,
           lastname: createInstruction.lastname,
         }
-      this.authors.push(author)
-      this.refreshAuthors()
+      const authors = this.getAuthors()
+      authors.push(author)
+      this.storeAuthors(authors)
       return of(author)
     }
 
@@ -90,22 +67,50 @@ export class AuthorInMemoryApiService {
         firstname: updateInstruction.firstname,
         lastname: updateInstruction.lastname,
       }
-      this.authors.splice(authorIndex, 1, newAuthor)
-      this.refreshAuthors()
+      const authors = this.getAuthors()
+      authors.splice(authorIndex, 1, newAuthor)
+      this.storeAuthors(authors)
       return of(newAuthor)
     }
 
     deleteAuthor(deleteInstruction: DeleteAuthorInstructionTO): Observable<void> {
       const authorIndex: number = this.findAuthorIndexById(deleteInstruction.authorId)
-      this.authors.splice(authorIndex, 1)
-      this.refreshAuthors()
+      const authors = this.getAuthors()
+      authors.splice(authorIndex, 1)
+      this.storeAuthors(authors)
       return of(undefined)
     }
 
-    private refreshAuthors() {
-      const authors: Array<AuthorTO> = this.authors
-      this.authors = []
-      this.authors.push(...authors)
-    }
+  private initialAuthors: Array<AuthorTO> = [
+    {
+      authorId: {
+        value: "34aa97e7-9c15-434a-81f0-1a2e12066281"
+      },
+      firstname: "William",
+      lastname: "Golding",
+    },
+    {
+      authorId: {
+        value: "3d5436c7-1170-4515-b11c-93b99921c26c"
+      },
+      firstname: "Jonathan",
+      lastname: "Swift",
+    },
+    {
+      authorId: {
+        value: "a4a16270-bd19-453a-9067-632f300c8cff"
+      },
+      firstname: "God",
+      lastname: "Almighty",
+    },
+  ];
+
+  private getAuthors(): Array<AuthorTO> {
+    return this.localStorageService.getLocalStorageOrStoreDefault("AUTHORS", this.initialAuthors) as Array<AuthorTO>
+  }
+
+  private storeAuthors(authors: Array<AuthorTO>) {
+    this.localStorageService.saveLocalStorage("AUTHORS", authors)
+  }
 
 }
