@@ -1,11 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {AuthorService} from "../../author.service";
-import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
-import {
-  AuthorFormStackEntryComponent
-} from "../../stack-components/author-form-stack-entry/author-form-stack-entry.component";
 import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
 import {StackKey} from "../../../shared/component-stack/stack-key";
 import {ErrorMessage} from "../../../shared/error-list/error-message.model";
@@ -13,17 +9,9 @@ import {ErrorTransformationService} from "../../../shared/error-list/error-trans
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
-import {AuthorIdFormFieldComponent} from '../author-form-view/author-id-form-field/author-id-form-field.component';
-import {
-  AuthorFirstnameFormFieldComponent
-} from '../author-form-view/author-firstname-form-field/author-firstname-form-field.component';
-import {
-  AuthorLastnameFormFieldComponent
-} from '../author-form-view/author-lastname-form-field/author-lastname-form-field.component';
-import {AllBookByAuthorComponent} from '../author-form-view/author-all-book-by-author/all-book-by-author.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
-import {AuthorTableViewComponent} from '../author-table-view/author-table-view.component';
 import {MatButtonModule} from '@angular/material/button';
+import {AuthorResultComponent} from '../author-result/author-result.component';
 
 
 @Component({
@@ -35,9 +23,10 @@ import {MatButtonModule} from '@angular/material/button';
     ReactiveFormsModule,
     MatCardModule,
     MatTabsModule,
-    AuthorTableViewComponent,
+    AuthorResultComponent,
     ErrorListComponent,
     MatButtonModule,
+    AuthorResultComponent,
   ]
 })
 export class AuthorSearchViewComponent implements OnInit {
@@ -51,6 +40,10 @@ export class AuthorSearchViewComponent implements OnInit {
 
   @Output() selectClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() addClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() editClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
+  @Output() deleteClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
+  @Output() searchClicked: EventEmitter<SearchAuthorInstructionTO> = new EventEmitter<SearchAuthorInstructionTO>();
 
   allAuthor: ReadonlyArray<AuthorTO> = []
 
@@ -60,7 +53,6 @@ export class AuthorSearchViewComponent implements OnInit {
 
 
   constructor(private authorService: AuthorService,
-              private componentStackService: ComponentStackService,
               private errorTransformationService: ErrorTransformationService) {
   }
 
@@ -84,32 +76,20 @@ export class AuthorSearchViewComponent implements OnInit {
 
   select(author: AuthorTO): void {
     this.selectClicked.emit(author);
-    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancel(): void {
     this.cancelClicked.emit();
-    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   add(): void {
     this.highlightedAuthor = undefined;
-    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
-      component.stackKey = this.stackKey;
-      component.author = undefined;
-      component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
-      component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
-    });
+    this.addClicked.emit()
   }
 
   edit(entry: AuthorTO): void {
     this.highlightedAuthor = entry;
-    this.componentStackService.newComponentOnStack(this.stackKey, AuthorFormStackEntryComponent, (component: AuthorFormStackEntryComponent) => {
-      component.stackKey = this.stackKey;
-      component.author = entry;
-      component.saveClicked.subscribe((author) => this.reloadAllAuthorsAfterEditing(author));
-      component.cancelClicked.subscribe(() => this.reloadAllAuthorsAfterEditing());
-    })
+    this.editClicked.emit(entry)
   }
 
   delete(entry: AuthorTO): void {

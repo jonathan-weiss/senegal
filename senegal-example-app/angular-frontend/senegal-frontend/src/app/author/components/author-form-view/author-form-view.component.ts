@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatTabChangeEvent, MatTabsModule} from "@angular/material/tabs";
-import {ComponentStackService} from "../../../shared/component-stack/component-stack.service";
 import {AuthorFormService} from "./author-form.service";
 import {AuthorTO} from "../../api/author-to.model";
 import {StackKey} from "../../../shared/component-stack/stack-key";
@@ -14,7 +13,6 @@ import {AuthorFirstnameFormFieldComponent} from './author-firstname-form-field/a
 import {AuthorLastnameFormFieldComponent} from './author-lastname-form-field/author-lastname-form-field.component';
 import {AllBookByAuthorComponent} from './author-all-book-by-author/all-book-by-author.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
-import {MatError} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 
 
@@ -53,12 +51,16 @@ export class AuthorFormViewComponent implements OnInit {
   errorMessages: Array<ErrorMessage> = []
 
   constructor(private authorFormService: AuthorFormService,
-              private componentStackService: ComponentStackService,
               private errorTransformationService: ErrorTransformationService,
               ) {
   }
 
   ngOnInit() {
+    this.createNewFormGroup()
+  }
+
+  private createNewFormGroup(): void {
+    this.authorForm = new FormGroup({});
     this.authorFormService.initForm(this.authorForm)
   }
 
@@ -108,12 +110,10 @@ export class AuthorFormViewComponent implements OnInit {
 
   private afterSuccessfulServerResponse(author: AuthorTO) {
     this.saveClicked.emit(author);
-    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
   cancelForm() {
     this.cancelClicked.emit();
-    this.componentStackService.removeLatestComponentFromStack(this.stackKey);
   }
 
 

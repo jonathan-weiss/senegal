@@ -2,7 +2,7 @@
   <mat-card-header><mat-card-title>Authors</mat-card-title></mat-card-header>
   <mat-card-content>
 
-  <author-table-view
+  <author-result
   [allAuthor]="allAuthor"
   (selectEntryClicked)="select($event)"
   (editEntryClicked)="edit($event)"
@@ -12,8 +12,7 @@
   [showEditButton]="showEditButton"
   [showSelectButton]="showSelectButton"
   [isLocked]="isLocked"
-  [stackKey]="stackKey"
-></author-table-view>
+></author-result>
     <error-list [errorMessages]="errorMessages"></error-list>
   </mat-card-content>
   <mat-card-actions>

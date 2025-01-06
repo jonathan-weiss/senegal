@@ -20,9 +20,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 @Component({
-  selector: 'author-table-view',
-  templateUrl: './author-table-view.component.html',
-  styleUrls: ['./author-table-view.component.scss'],
+  selector: 'author-result',
+  templateUrl: './author-result.component.html',
+  styleUrls: ['./author-result.component.scss'],
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -32,13 +32,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatFormFieldModule,
   ]
 })
-export class AuthorTableViewComponent {
+export class AuthorResultComponent {
   @Input() showSelectButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
   @Input() isLocked!: boolean;
-  @Input() stackKey!: StackKey
-
 
     @Input() allAuthor!: ReadonlyArray<AuthorTO>
     @Input() highlightedAuthor: AuthorTO | undefined = undefined;

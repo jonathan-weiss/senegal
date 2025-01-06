@@ -19,10 +19,10 @@ export class AuthorFormService {
   firstnameFormControlName: string = "firstname"
   lastnameFormControlName: string = "lastname"
 
-  initForm(bookForm: FormGroup): void {
-    bookForm.addControl(this.authorIdFormControlName, new FormControl());
-    bookForm.addControl(this.firstnameFormControlName, new FormControl());
-    bookForm.addControl(this.lastnameFormControlName, new FormControl());
+  initForm(authorForm: FormGroup): void {
+    authorForm.addControl(this.authorIdFormControlName, new FormControl());
+    authorForm.addControl(this.firstnameFormControlName, new FormControl());
+    authorForm.addControl(this.lastnameFormControlName, new FormControl());
   }
 
   getFormControl(authorForm: FormGroup, formControlName: string): FormControl {

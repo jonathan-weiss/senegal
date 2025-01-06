@@ -1,0 +1,49 @@
+<mat-accordion [multi]="true">
+  <mat-expansion-panel #searchPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Search Authors</mat-panel-title>
+    </mat-expansion-panel-header>
+    <author-search-box
+      [isLocked]="isSearchAndResultLocked()"
+      (searchClicked)="isSearchPerformed($event)"
+    ></author-search-box>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #resultPanel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Authors</mat-panel-title>
+      <mat-panel-description> List all results of authors</mat-panel-description>
+    </mat-expansion-panel-header>
+    <author-result
+      [allAuthor]="allAuthor"
+      (selectEntryClicked)="editEntry($event)"
+      (editEntryClicked)="editEntry($event)"
+      (deleteEntryClicked)="deleteEntry($event)"
+      [highlightedAuthor]="highlightedAuthor"
+      [showDeleteButton]="true"
+      [showEditButton]="true"
+      [showSelectButton]="false"
+      [isLocked]="isSearchAndResultLocked()"
+    ></author-result>
+    <button mat-raised-button color="primary" [disabled]="isSearchAndResultLocked()" (click)="addNewEntry()">Add new Author...</button>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #editPanel [expanded]="isEditingMode()" [disabled]="!isEditingMode()">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Edit Author</mat-panel-title>
+      <mat-panel-description>Edit the author details</mat-panel-description>
+    </mat-expansion-panel-header>
+    @if(isEditingMode()) {
+      <author-form-view
+        [author]="selectedAuthor"
+        [isLocked]="isMainEditingLocked()"
+        [stackKey]="stackKey"
+        (saveClicked)="saveEditedEntry()"
+        (cancelClicked)="cancelEditing()"
+      ></author-form-view>
+    }
+  </mat-expansion-panel>
+
+</mat-accordion>
+<error-list [errorMessages]="errorMessages"></error-list>
+
