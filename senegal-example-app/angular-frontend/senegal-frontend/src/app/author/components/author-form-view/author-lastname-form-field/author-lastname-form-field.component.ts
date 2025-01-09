@@ -18,16 +18,9 @@ import {MatInputModule} from '@angular/material/input';
   ]
 
 })
-export class AuthorLastnameFormFieldComponent implements OnInit {
+export class AuthorLastnameFormFieldComponent {
 
   @Input() authorLastnameFormControl!: FormControl;
 
-  @Input() lastname: string | undefined;
-
   @Input() isLocked!: boolean;
-
-  ngOnInit() {
-    this.authorLastnameFormControl.setValidators(Validators.required);
-    this.authorLastnameFormControl.patchValue(this.lastname == undefined ? '': this.lastname)
-  }
 }

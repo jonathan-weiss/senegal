@@ -18,14 +18,7 @@ import {MatInputModule} from '@angular/material/input';
   ]
 
 })
-export class AuthorIdFormFieldComponent implements OnInit {
+export class AuthorIdFormFieldComponent {
 
   @Input() authorIdFormControl!: FormControl;
-
-  @Input() authorId: AuthorIdTO | undefined;
-
-  ngOnInit() {
-    this.authorIdFormControl.disable() // id is not editable
-    this.authorIdFormControl.patchValue(this.authorId == undefined ? undefined : this.authorId.value)
-  }
 }

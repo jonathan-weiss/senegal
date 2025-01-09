@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatTabChangeEvent, MatTabsModule} from "@angular/material/tabs";
 import {AuthorFormService} from "./author-form.service";
@@ -33,7 +33,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
   ]
 })
-export class AuthorFormViewComponent implements OnInit {
+export class AuthorFormViewComponent implements OnChanges {
 
   @Input() author: AuthorTO | undefined;
 
@@ -43,7 +43,7 @@ export class AuthorFormViewComponent implements OnInit {
   @Input() isLocked!: boolean;
   @Input() stackKey!: StackKey
 
-  authorForm: FormGroup = new FormGroup({});
+  authorForm!: FormGroup;
 
   tabCommonsSelected: EventEmitter<void> = new EventEmitter<void>()
   tabBooksSelected: EventEmitter<void> = new EventEmitter<void>()
@@ -55,13 +55,14 @@ export class AuthorFormViewComponent implements OnInit {
               ) {
   }
 
-  ngOnInit() {
-    this.createNewFormGroup()
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.hasOwnProperty("author")) {
+      this.createNewForm()
+    }
   }
 
-  private createNewFormGroup(): void {
-    this.authorForm = new FormGroup({});
-    this.authorFormService.initForm(this.authorForm)
+  private createNewForm(): void {
+    this.authorForm = this.authorFormService.initForm(this.author)
   }
 
   get authorIdFormControl(): FormControl {

@@ -19,16 +19,10 @@ import {MatInputModule} from '@angular/material/input';
   ]
 
 })
-export class AuthorFirstnameFormFieldComponent implements OnInit {
+export class AuthorFirstnameFormFieldComponent {
 
   @Input() authorFirstnameFormControl!: FormControl;
 
-  @Input() firstname: string | undefined;
-
   @Input() isLocked!: boolean;
 
-  ngOnInit() {
-    this.authorFirstnameFormControl.setValidators(Validators.required);
-    this.authorFirstnameFormControl.patchValue(this.firstname == undefined ? '': this.firstname)
-  }
 }

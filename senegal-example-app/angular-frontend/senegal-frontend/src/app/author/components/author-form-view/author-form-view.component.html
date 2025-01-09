@@ -4,13 +4,13 @@
       <div class="tab-content">
         @if(!isCreateMode()) {
           <section>
-            <author-id-form-field [authorIdFormControl]="authorIdFormControl" [authorId]="author?.authorId"></author-id-form-field>
+            <author-id-form-field [authorIdFormControl]="authorIdFormControl"></author-id-form-field>
           </section>
         }
 
         <section>
-          <author-firstname-form-field [authorFirstnameFormControl]="authorFirstnameFormControl" [firstname]="author?.firstname" [isLocked]="isLocked"></author-firstname-form-field>
-          <author-lastname-form-field [authorLastnameFormControl]="authorLastnameFormControl" [lastname]="author?.lastname" [isLocked]="isLocked"></author-lastname-form-field>
+          <author-firstname-form-field [authorFirstnameFormControl]="authorFirstnameFormControl" [isLocked]="isLocked"></author-firstname-form-field>
+          <author-lastname-form-field [authorLastnameFormControl]="authorLastnameFormControl" [isLocked]="isLocked"></author-lastname-form-field>
         </section>
       </div>
     </mat-tab>

@@ -33,7 +33,6 @@
       <mat-panel-title>Edit Author</mat-panel-title>
       <mat-panel-description>Edit the author details</mat-panel-description>
     </mat-expansion-panel-header>
-    @if(isEditingMode()) {
       <author-form-view
         [author]="selectedAuthor"
         [isLocked]="isMainEditingLocked()"
@@ -41,7 +40,6 @@
         (saveClicked)="saveEditedEntry()"
         (cancelClicked)="cancelEditing()"
       ></author-form-view>
-    }
   </mat-expansion-panel>
 
 </mat-accordion>

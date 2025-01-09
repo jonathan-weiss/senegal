@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthorService} from "../../author.service";
 import {UpdateAuthorInstructionTO} from "../../api/update-author-instruction-to.model";
 import {CreateAuthorInstructionTO} from "../../api/create-author-instruction-to.model";
@@ -19,10 +19,24 @@ export class AuthorFormService {
   firstnameFormControlName: string = "firstname"
   lastnameFormControlName: string = "lastname"
 
-  initForm(authorForm: FormGroup): void {
-    authorForm.addControl(this.authorIdFormControlName, new FormControl());
-    authorForm.addControl(this.firstnameFormControlName, new FormControl());
-    authorForm.addControl(this.lastnameFormControlName, new FormControl());
+  initForm(author: AuthorTO | undefined): FormGroup {
+    const authorForm: FormGroup = new FormGroup({});
+    const authorIdFormControl = new FormControl()
+    authorIdFormControl.disable() // id is not editable
+    authorIdFormControl.patchValue(author?.authorId?.value ?? undefined)
+    authorForm.addControl(this.authorIdFormControlName, authorIdFormControl);
+
+    const authorFirstnameFormControl = new FormControl()
+    authorFirstnameFormControl.setValidators(Validators.required);
+    authorFirstnameFormControl.patchValue(author?.firstname ?? '')
+    authorForm.addControl(this.firstnameFormControlName, authorFirstnameFormControl);
+
+    const authorLastnameFormControl = new FormControl()
+    authorLastnameFormControl.setValidators(Validators.required);
+    authorLastnameFormControl.patchValue(author?.lastname ?? '')
+    authorForm.addControl(this.lastnameFormControlName, authorLastnameFormControl);
+
+    return authorForm
   }
 
   getFormControl(authorForm: FormGroup, formControlName: string): FormControl {
