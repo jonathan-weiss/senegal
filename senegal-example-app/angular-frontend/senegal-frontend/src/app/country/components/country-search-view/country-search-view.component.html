@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header><mat-card-title>Countries</mat-card-title></mat-card-header>
+  <mat-card-content>
+
+  <country-result
+    [allCountry]="allCountry"
+    (selectEntryClicked)="select($event)"
+    [highlightedCountry]="highlightedCountry"
+    [isLocked]="isLocked"
+  ></country-result>
+    <error-list [errorMessages]="errorMessages"></error-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="secondary" (click)="cancel()">Cancel</button>
+  </mat-card-actions>
+</mat-card>

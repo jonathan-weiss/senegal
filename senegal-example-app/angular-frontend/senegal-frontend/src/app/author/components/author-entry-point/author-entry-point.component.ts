@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthorTO} from '../../api/author-to.model';
 import {AuthorResultComponent} from '../author-result/author-result.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
@@ -27,7 +27,7 @@ import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion
     MatExpansionModule,
   ]
 })
-export class AuthorEntryPointComponent {
+export class AuthorEntryPointComponent implements OnInit {
 
   editing: boolean = false
   selectedAuthor: AuthorTO | undefined = undefined;

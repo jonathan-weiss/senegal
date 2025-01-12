@@ -1,0 +1,26 @@
+<mat-accordion [multi]="true">
+  <mat-expansion-panel #searchPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Search Countries</mat-panel-title>
+    </mat-expansion-panel-header>
+    <country-search-box
+      [isLocked]="isSearchAndResultLocked()"
+      (searchClicked)="isSearchPerformed($event)"
+    ></country-search-box>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #resultPanel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Countries</mat-panel-title>
+      <mat-panel-description> List all results of countries</mat-panel-description>
+    </mat-expansion-panel-header>
+    <country-result
+      [allCountry]="allCountry"
+      (selectEntryClicked)="selectEntry($event)"
+      [highlightedCountry]="highlightedCountry"
+      [isLocked]="isSearchAndResultLocked()"
+    ></country-result>
+  </mat-expansion-panel>
+</mat-accordion>
+<error-list [errorMessages]="errorMessages"></error-list>
+
