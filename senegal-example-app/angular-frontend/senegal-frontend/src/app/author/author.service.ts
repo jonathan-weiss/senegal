@@ -4,11 +4,8 @@ import {AuthorTO} from "./api/author-to.model";
 import {UpdateAuthorInstructionTO} from "./api/update-author-instruction-to.model";
 import {CreateAuthorInstructionTO} from "./api/create-author-instruction-to.model";
 import {DeleteAuthorInstructionTO} from "./api/delete-author-instruction-to.model";
-import {BookTO} from "../book/api/book-to.model";
 import {SearchAuthorInstructionTO} from "./api/search-author-instruction-to.model";
-import {AuthorIdTO} from "./api/author-id-to.model";
 import {AuthorLocalStorageApiService} from "./api/author-local-storage-api.service";
-import {BookLocalStorageApiService} from "../book/api/book-local-storage-api.service";
 
 
 @Injectable({
@@ -16,8 +13,7 @@ import {BookLocalStorageApiService} from "../book/api/book-local-storage-api.ser
 })
 export class AuthorService {
 
-  constructor(private readonly authorApiService: AuthorLocalStorageApiService,
-              private readonly bookApiService: BookLocalStorageApiService) {
+  constructor(private readonly authorApiService: AuthorLocalStorageApiService) {
   }
 
   getAllAuthors(): Observable<ReadonlyArray<AuthorTO>> {
@@ -29,12 +25,6 @@ export class AuthorService {
       map( (entities) => entities)
     );
   }
-
-
-  getAllBooksByAuthor(authorId: AuthorIdTO): Observable<ReadonlyArray<BookTO>> {
-    return this.bookApiService.getAllBookByAuthor(authorId);
-  }
-
 
 
   updateAuthor(updateInstruction: UpdateAuthorInstructionTO): Observable<AuthorTO> {

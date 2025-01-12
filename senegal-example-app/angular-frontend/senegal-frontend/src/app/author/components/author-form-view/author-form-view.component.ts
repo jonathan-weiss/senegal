@@ -3,7 +3,6 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatTabChangeEvent, MatTabsModule} from "@angular/material/tabs";
 import {AuthorFormService} from "./author-form.service";
 import {AuthorTO} from "../../api/author-to.model";
-import {StackKey} from "../../../shared/component-stack/stack-key";
 import {ErrorMessage} from "../../../shared/error-list/error-message.model";
 import {ErrorTransformationService} from "../../../shared/error-list/error-transformation.service";
 import {Observer} from "rxjs";
@@ -11,7 +10,6 @@ import {MatCardModule} from '@angular/material/card';
 import {AuthorIdFormFieldComponent} from './author-id-form-field/author-id-form-field.component';
 import {AuthorFirstnameFormFieldComponent} from './author-firstname-form-field/author-firstname-form-field.component';
 import {AuthorLastnameFormFieldComponent} from './author-lastname-form-field/author-lastname-form-field.component';
-import {AllBookByAuthorComponent} from './author-all-book-by-author/all-book-by-author.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -28,7 +26,6 @@ import {MatButtonModule} from '@angular/material/button';
     AuthorIdFormFieldComponent,
     AuthorFirstnameFormFieldComponent,
     AuthorLastnameFormFieldComponent,
-    AllBookByAuthorComponent,
     ErrorListComponent,
     MatButtonModule,
   ]
@@ -41,7 +38,6 @@ export class AuthorFormViewComponent implements OnChanges {
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
 
   @Input() isLocked!: boolean;
-  @Input() stackKey!: StackKey
 
   authorForm!: FormGroup;
 

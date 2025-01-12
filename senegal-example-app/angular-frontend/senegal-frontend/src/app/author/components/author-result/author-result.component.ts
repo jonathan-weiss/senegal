@@ -1,18 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { AuthorTO } from "../../api/author-to.model";
-import {StackKey} from "../../../shared/component-stack/stack-key";
+import {AuthorTO} from "../../api/author-to.model";
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatCardModule} from '@angular/material/card';
-import {MatTabsModule} from '@angular/material/tabs';
-import {AuthorIdFormFieldComponent} from '../author-form-view/author-id-form-field/author-id-form-field.component';
-import {
-  AuthorFirstnameFormFieldComponent
-} from '../author-form-view/author-firstname-form-field/author-firstname-form-field.component';
-import {
-  AuthorLastnameFormFieldComponent
-} from '../author-form-view/author-lastname-form-field/author-lastname-form-field.component';
-import {AllBookByAuthorComponent} from '../author-form-view/author-all-book-by-author/all-book-by-author.component';
-import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';

@@ -3,7 +3,6 @@ import {AuthorTO} from "../../api/author-to.model";
 import {AuthorService} from "../../author.service";
 import {DeleteAuthorInstructionTO} from "../../api/delete-author-instruction-to.model";
 import {SearchAuthorInstructionTO} from "../../api/search-author-instruction-to.model";
-import {StackKey} from "../../../shared/component-stack/stack-key";
 import {ErrorMessage} from "../../../shared/error-list/error-message.model";
 import {ErrorTransformationService} from "../../../shared/error-list/error-transformation.service";
 import {ReactiveFormsModule} from '@angular/forms';
@@ -36,7 +35,6 @@ export class AuthorSearchViewComponent implements OnInit {
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
   @Input() isLocked!: boolean
-  @Input() stackKey!: StackKey
 
   @Output() selectClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
