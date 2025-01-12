@@ -15,13 +15,13 @@
     </mat-expansion-panel-header>
     <author-result
       [allAuthor]="allAuthor"
-      (selectEntry)="selectEntry($event)"
+      (chooseEntry)="selectEntry($event)"
       (editEntry)="editEntry($event)"
-      (deleteEntry)="deleteEntry($event)"
+      (deleteEntries)="deleteEntries($event)"
       [highlightedAuthor]="highlightedAuthor"
       [showDeleteButton]="true"
       [showEditButton]="true"
-      [showSelectButton]="false"
+      [showChoiceButton]="false"
       [isLocked]="isSearchAndResultLocked()"
     ></author-result>
     <button mat-raised-button color="primary" [disabled]="isSearchAndResultLocked()" (click)="addNewEntry()">Add new Author...</button>

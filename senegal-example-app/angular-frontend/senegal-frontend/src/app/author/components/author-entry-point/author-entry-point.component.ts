@@ -100,8 +100,8 @@ export class AuthorEntryPointComponent implements OnInit {
       });
   }
 
-  deleteEntry(entry: AuthorTO): void {
-    this.onPerformDeleteOnServer(entry);
+  deleteEntries(entries: ReadonlyArray<AuthorTO>): void {
+    this.onPerformDeleteOnServer(entries);
   }
 
   addNewEntry(): void {
@@ -129,17 +129,29 @@ export class AuthorEntryPointComponent implements OnInit {
     this.resultPanel.open()
   }
 
-  private onPerformDeleteOnServer(entry: AuthorTO): void {
-    const deleteInstruction: DeleteAuthorInstructionTO = {
-      authorId: entry.authorId,
+  private onPerformDeleteOnServer(entries: ReadonlyArray<AuthorTO>): void {
+    if(entries.length == 0) {
+      return
     }
-    this.authorService.deleteAuthor(deleteInstruction).subscribe({
-      next: (): void => {
-        this.reloadAllAuthorsAfterEditing();
-      },
-      error: (error: any) => this.errorCase(entry, error)
+    else {
+      const deleteInstruction: DeleteAuthorInstructionTO = {
+        authorIds: new Set(entries.map(entry => entry.authorId))
+      }
+      this.authorService.deleteAuthor(deleteInstruction).subscribe({
+        next: (): void => {
+          this.reloadAllAuthorsAfterEditing();
+        },
+        error: (error: any) => this.errorCaseMultiple(entries, error)
+      })
+    }
+  }
+
+  private errorCaseMultiple(entries: ReadonlyArray<AuthorTO>, error: any): void {
+    entries.forEach((entry: AuthorTO) => {
+      this.errorCase(entry, error)
     })
   }
+
 
   private errorCase(entry: AuthorTO, error: any): void {
     const entityDescription = 'The Author ' + entry.firstname + ' ' + entry.lastname + ' could not be deleted.'

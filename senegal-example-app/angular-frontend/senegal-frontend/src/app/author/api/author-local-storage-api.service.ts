@@ -17,69 +17,73 @@ export class AuthorLocalStorageApiService {
 
   constructor(private localStorageService: LocalStorageService) {}
 
-    private findAuthorIndexById(authorId: AuthorIdTO): number {
-      const authorIndex: number = this.getAuthors().findIndex(author => author.authorId.value === authorId.value)
-      if(authorIndex == -1) {
-        throw new Error("Author index not found for " + authorId)
+  private findAuthorIndexById(authorId: AuthorIdTO): number {
+    const authorIndex: number = this.getAuthors().findIndex(author => author.authorId.value === authorId.value)
+    if(authorIndex == -1) {
+      throw new Error("Author index not found for " + authorId)
+    }
+    return authorIndex;
+  }
+
+  findAuthorById(authorId: AuthorIdTO): AuthorTO {
+    const author = this.getAuthors().find(author => author.authorId.value === authorId.value)
+    if(author == null) {
+      throw new Error("Book not found for author " + authorId)
+    }
+    return author
+  }
+
+  getAuthorById(authorId: AuthorIdTO): Observable<AuthorTO> {
+      return of(this.findAuthorById(authorId))
+  }
+
+  getAllAuthor(): Observable<ReadonlyArray<AuthorTO>> {
+      return of(this.getAuthors())
+  }
+
+  searchAllAuthor(searchCriteria: SearchAuthorInstructionTO): Observable<ReadonlyArray<AuthorTO>> {
+    return of(this.getAuthors()) // TODO add search criteria
+  }
+
+  createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
+    const author: AuthorTO = {
+        authorId: {
+          value: UuidUtil.generateNewUuid().uuid
+        },
+        firstname: createInstruction.firstname,
+        lastname: createInstruction.lastname,
       }
-      return authorIndex;
-    }
+    const authors = this.getAuthors()
+    authors.push(author)
+    this.storeAuthors(authors)
+    return of(author)
+  }
 
-    findAuthorById(authorId: AuthorIdTO): AuthorTO {
-      const author = this.getAuthors().find(author => author.authorId.value === authorId.value)
-      if(author == null) {
-        throw new Error("Book not found for author " + authorId)
-      }
-      return author
+  updateAuthor(updateInstruction: UpdateAuthorInstructionTO): Observable<AuthorTO> {
+    const authorIndex: number = this.findAuthorIndexById(updateInstruction.authorId)
+    const oldAuthor: AuthorTO = this.findAuthorById(updateInstruction.authorId)
+    const newAuthor: AuthorTO = {
+      authorId: oldAuthor.authorId,
+      firstname: updateInstruction.firstname,
+      lastname: updateInstruction.lastname,
     }
+    const authors = this.getAuthors()
+    authors.splice(authorIndex, 1, newAuthor)
+    this.storeAuthors(authors)
+    return of(newAuthor)
+  }
 
-    getAuthorById(authorId: AuthorIdTO): Observable<AuthorTO> {
-        return of(this.findAuthorById(authorId))
-    }
+  deleteAuthor(deleteInstruction: DeleteAuthorInstructionTO): Observable<void> {
+    deleteInstruction.authorIds.forEach((authorId: AuthorIdTO) => this.deleteSingleAuthor(authorId))
+    return of(undefined)
+  }
 
-    getAllAuthor(): Observable<ReadonlyArray<AuthorTO>> {
-        return of(this.getAuthors())
-    }
-
-    searchAllAuthor(searchCriteria: SearchAuthorInstructionTO): Observable<ReadonlyArray<AuthorTO>> {
-      return of(this.getAuthors()) // TODO add search criteria
-    }
-
-    createAuthor(createInstruction: CreateAuthorInstructionTO): Observable<AuthorTO> {
-      const author: AuthorTO = {
-          authorId: {
-            value: UuidUtil.generateNewUuid().uuid
-          },
-          firstname: createInstruction.firstname,
-          lastname: createInstruction.lastname,
-        }
-      const authors = this.getAuthors()
-      authors.push(author)
-      this.storeAuthors(authors)
-      return of(author)
-    }
-
-    updateAuthor(updateInstruction: UpdateAuthorInstructionTO): Observable<AuthorTO> {
-      const authorIndex: number = this.findAuthorIndexById(updateInstruction.authorId)
-      const oldAuthor: AuthorTO = this.findAuthorById(updateInstruction.authorId)
-      const newAuthor: AuthorTO = {
-        authorId: oldAuthor.authorId,
-        firstname: updateInstruction.firstname,
-        lastname: updateInstruction.lastname,
-      }
-      const authors = this.getAuthors()
-      authors.splice(authorIndex, 1, newAuthor)
-      this.storeAuthors(authors)
-      return of(newAuthor)
-    }
-
-    deleteAuthor(deleteInstruction: DeleteAuthorInstructionTO): Observable<void> {
-      const authorIndex: number = this.findAuthorIndexById(deleteInstruction.authorId)
-      const authors = this.getAuthors()
-      authors.splice(authorIndex, 1)
-      this.storeAuthors(authors)
-      return of(undefined)
-    }
+  private deleteSingleAuthor(authorId: AuthorIdTO): void {
+    const authorIndex: number = this.findAuthorIndexById(authorId)
+    const authors = this.getAuthors()
+    authors.splice(authorIndex, 1)
+    this.storeAuthors(authors)
+  }
 
   private initialAuthors: Array<AuthorTO> = [
     {
