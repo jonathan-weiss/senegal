@@ -16,6 +16,8 @@
     </mat-tab>
   </mat-tab-group>
   <error-list [errorMessages]="errorMessages"></error-list>
-  <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid() || isLocked">Save</button>
-  <button mat-raised-button color="secondary" (click)="cancelForm()" [disabled]="isLocked">Cancel</button>
+  @if (isEditMode()) {
+    <button mat-raised-button color="primary" type="submit" (click)="saveForm()" [disabled]="!isFormValid() || isLocked">Save</button>
+    <button mat-raised-button color="secondary" (click)="cancelForm()" [disabled]="isLocked">Cancel</button>
+  }
 </form>

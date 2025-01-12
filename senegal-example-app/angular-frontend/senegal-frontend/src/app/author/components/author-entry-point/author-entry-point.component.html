@@ -12,13 +12,12 @@
   <mat-expansion-panel #resultPanel expanded="true">
     <mat-expansion-panel-header>
       <mat-panel-title>Authors</mat-panel-title>
-      <mat-panel-description> List all results of authors</mat-panel-description>
     </mat-expansion-panel-header>
     <author-result
       [allAuthor]="allAuthor"
-      (selectEntryClicked)="editEntry($event)"
-      (editEntryClicked)="editEntry($event)"
-      (deleteEntryClicked)="deleteEntry($event)"
+      (selectEntry)="selectEntry($event)"
+      (editEntry)="editEntry($event)"
+      (deleteEntry)="deleteEntry($event)"
       [highlightedAuthor]="highlightedAuthor"
       [showDeleteButton]="true"
       [showEditButton]="true"
@@ -28,15 +27,15 @@
     <button mat-raised-button color="primary" [disabled]="isSearchAndResultLocked()" (click)="addNewEntry()">Add new Author...</button>
   </mat-expansion-panel>
 
-  <mat-expansion-panel #editPanel [expanded]="isEditingMode()" [disabled]="!isEditingMode()">
+  <mat-expansion-panel #editPanel [expanded]="isEditPanelOpen()" [disabled]="isEditingPanelDisabled()">
     <mat-expansion-panel-header>
-      <mat-panel-title>Edit Author</mat-panel-title>
-      <mat-panel-description>Edit the author details</mat-panel-description>
+      <mat-panel-title>@if (isEditingLocked()) { Author Details } @else { Edit Author Details }</mat-panel-title>
     </mat-expansion-panel-header>
       <author-form-view
         [author]="selectedAuthor"
-        [isLocked]="isMainEditingLocked()"
-        (saveClicked)="saveEditedEntry()"
+        [editingMode]="editingMode"
+        [isLocked]="isEditingLocked()"
+        (saveClicked)="savedEditedEntry($event)"
         (cancelClicked)="cancelEditing()"
       ></author-form-view>
   </mat-expansion-panel>

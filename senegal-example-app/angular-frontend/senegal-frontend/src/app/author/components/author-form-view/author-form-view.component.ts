@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatTabChangeEvent, MatTabsModule} from "@angular/material/tabs";
 import {AuthorFormService} from "./author-form.service";
@@ -12,6 +12,7 @@ import {AuthorFirstnameFormFieldComponent} from './author-firstname-form-field/a
 import {AuthorLastnameFormFieldComponent} from './author-lastname-form-field/author-lastname-form-field.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
 import {MatButtonModule} from '@angular/material/button';
+import {EditingModeEnum} from '../../../shared/editing-mode.enum';
 
 
 @Component({
@@ -33,6 +34,7 @@ import {MatButtonModule} from '@angular/material/button';
 export class AuthorFormViewComponent implements OnChanges {
 
   @Input() author: AuthorTO | undefined;
+  @Input() editingMode!: EditingModeEnum
 
   @Output() saveClicked: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() cancelClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -55,10 +57,19 @@ export class AuthorFormViewComponent implements OnChanges {
     if(changes.hasOwnProperty("author")) {
       this.createNewForm()
     }
+
+    if(changes.hasOwnProperty("isLocked")) {
+      this.authorFormService.updateFormDisableState(this.authorForm, this.isLocked)
+    }
+
+  }
+
+  isEditMode(): Boolean {
+    return this.editingMode == EditingModeEnum.EDIT || this.editingMode == EditingModeEnum.CREATE
   }
 
   private createNewForm(): void {
-    this.authorForm = this.authorFormService.initForm(this.author)
+    this.authorForm = this.authorFormService.initForm(this.author, this.isLocked)
   }
 
   get authorIdFormControl(): FormControl {

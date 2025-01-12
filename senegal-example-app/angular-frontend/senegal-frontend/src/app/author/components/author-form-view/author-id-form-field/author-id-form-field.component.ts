@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {AuthorIdTO} from "../../../api/author-id-to.model";
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {DisableFormControlDirective} from '../../../../reactive-forms/disable-form-control.directive';
 import {MatInputModule} from '@angular/material/input';
 
 

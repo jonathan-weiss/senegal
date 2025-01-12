@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {DisableFormControlDirective} from '../../../../reactive-forms/disable-form-control.directive';
 import {MatInputModule} from '@angular/material/input';
 
 
@@ -13,7 +12,6 @@ import {MatInputModule} from '@angular/material/input';
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
-    DisableFormControlDirective,
     MatInputModule,
   ]
 

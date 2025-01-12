@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
-import {MatButton} from '@angular/material/button';
 import {ErrorMessage} from '../../../shared/error-list/error-message.model';
 import {ErrorTransformationService} from '../../../shared/error-list/error-transformation.service';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
@@ -18,7 +17,6 @@ import {SearchCountryInstructionTO} from '../../api/search-country-instruction-t
   imports: [
     CountryResultComponent,
     ErrorListComponent,
-    MatButton,
     CountrySearchBoxComponent,
     MatExpansionPanel,
     MatExpansionModule,

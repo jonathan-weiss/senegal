@@ -11,6 +11,7 @@ import {ErrorTransformationService} from '../../../shared/error-list/error-trans
 import {AuthorSearchBoxComponent} from '../author-search-box/author-search-box.component';
 import {AuthorFormViewComponent} from '../author-form-view/author-form-view.component';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
+import {EditingModeEnum} from '../../../shared/editing-mode.enum';
 
 @Component({
   selector: "author-entry-point",
@@ -29,7 +30,7 @@ import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion
 })
 export class AuthorEntryPointComponent implements OnInit {
 
-  editing: boolean = false
+  editingMode: EditingModeEnum = EditingModeEnum.NONE
   selectedAuthor: AuthorTO | undefined = undefined;
 
   @ViewChild("searchPanel")
@@ -41,9 +42,15 @@ export class AuthorEntryPointComponent implements OnInit {
   @ViewChild("editPanel")
   editPanel!: MatExpansionPanel
 
+  isEditPanelOpen(): boolean {
+    return this.editingMode == EditingModeEnum.EDIT
+      || this.editingMode == EditingModeEnum.CREATE
+      || this.editingMode == EditingModeEnum.READONLY
+  }
 
-  isEditingMode(): boolean {
-    return this.editing
+  isEditingPanelDisabled(): boolean {
+    return this.editingMode == EditingModeEnum.READONLY
+      || this.editingMode == EditingModeEnum.NONE
   }
 
   allAuthor: ReadonlyArray<AuthorTO> = []
@@ -62,11 +69,13 @@ export class AuthorEntryPointComponent implements OnInit {
   }
 
   isSearchAndResultLocked(): boolean {
-    return this.editing
+    return this.editingMode == EditingModeEnum.EDIT
+      || this.editingMode == EditingModeEnum.CREATE
   }
 
-  isMainEditingLocked(): boolean {
-    return false // TODO implement
+  isEditingLocked(): boolean {
+    return this.editingMode == EditingModeEnum.NONE
+      || this.editingMode == EditingModeEnum.READONLY
   }
 
   isSearchPerformed(searchCriteria: SearchAuthorInstructionTO): void {
@@ -96,25 +105,28 @@ export class AuthorEntryPointComponent implements OnInit {
   }
 
   addNewEntry(): void {
-    this.changeSelectedAuthor(undefined, true)
+    this.changeSelectedAuthor(undefined, EditingModeEnum.CREATE)
   }
 
   editEntry(entry: AuthorTO): void {
-    this.changeSelectedAuthor(entry, true)
+    this.changeSelectedAuthor(entry, EditingModeEnum.EDIT)
   }
 
-  saveEditedEntry(): void {
-    this.changeSelectedAuthor(undefined, false)
+  selectEntry(entry: AuthorTO): void {
+    this.changeSelectedAuthor(entry, EditingModeEnum.READONLY)
+  }
+
+  savedEditedEntry(entry: AuthorTO): void {
+    this.changeSelectedAuthor(undefined, EditingModeEnum.NONE)
     this.editPanel.close()
     this.resultPanel.open()
-    // TODO implement
+    this.reloadAllAuthorsAfterEditing(entry);
   }
 
   cancelEditing(): void {
-    this.changeSelectedAuthor(undefined, false)
+    this.changeSelectedAuthor(undefined, EditingModeEnum.NONE)
     this.editPanel.close()
     this.resultPanel.open()
-    // TODO implement
   }
 
   private onPerformDeleteOnServer(entry: AuthorTO): void {
@@ -143,8 +155,8 @@ export class AuthorEntryPointComponent implements OnInit {
     this.highlightedAuthor = highlightedEntry;
   }
 
-  private changeSelectedAuthor(selectedEntry: AuthorTO | undefined, editing: boolean): void {
+  private changeSelectedAuthor(selectedEntry: AuthorTO | undefined, editingMode: EditingModeEnum): void {
     this.selectedAuthor = selectedEntry
-    this.editing = editing
+    this.editingMode = editingMode
   }
 }

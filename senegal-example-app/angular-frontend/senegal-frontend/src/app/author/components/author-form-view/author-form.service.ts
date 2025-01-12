@@ -12,6 +12,11 @@ import {AuthorTO} from "../../api/author-to.model";
 })
 export class AuthorFormService {
 
+  private static formEnableDisableOptions = {
+    onlySelf: true,
+    emitEvent:false,
+  }
+
   constructor(private readonly authorService: AuthorService) {
   }
 
@@ -19,7 +24,7 @@ export class AuthorFormService {
   firstnameFormControlName: string = "firstname"
   lastnameFormControlName: string = "lastname"
 
-  initForm(author: AuthorTO | undefined): FormGroup {
+  initForm(author: AuthorTO | undefined, disabled: Boolean): FormGroup {
     const authorForm: FormGroup = new FormGroup({});
     const authorIdFormControl = new FormControl()
     authorIdFormControl.disable() // id is not editable
@@ -36,7 +41,20 @@ export class AuthorFormService {
     authorLastnameFormControl.patchValue(author?.lastname ?? '')
     authorForm.addControl(this.lastnameFormControlName, authorLastnameFormControl);
 
+    this.updateFormDisableStateDirectly(authorForm, disabled)
     return authorForm
+  }
+
+  updateFormDisableState(form: FormGroup, disabled: Boolean): void {
+    this.updateFormDisableStateDirectly(form, disabled)
+  }
+
+  private updateFormDisableStateDirectly(form: FormGroup, disabled: Boolean): void {
+    if(disabled) {
+      form.disable(AuthorFormService.formEnableDisableOptions)
+    } else {
+      form.enable(AuthorFormService.formEnableDisableOptions)
+    }
   }
 
   getFormControl(authorForm: FormGroup, formControlName: string): FormControl {

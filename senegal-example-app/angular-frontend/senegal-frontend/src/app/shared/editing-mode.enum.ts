@@ -1,6 +1,6 @@
 export enum EditingModeEnum {
-  UPDATE = 'UPDATE',
+  READONLY = 'READONLY',
+  EDIT = 'EDIT',
   CREATE = 'CREATE',
-  DELETE = 'DELETE',
   NONE = 'NONE',
 }
