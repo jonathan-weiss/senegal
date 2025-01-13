@@ -5,10 +5,11 @@ import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatChipListbox, MatChipOption} from '@angular/material/chips';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AuthorIdTO} from '../../api/author-id-to.model';
-import {JsonPipe} from '@angular/common';
+import {
+  DeleteButtonWithConfirmationComponent
+} from '../../../shared/delete-button-with-confirmation/delete-button-with-confirmation.component';
 
 
 @Component({
@@ -22,10 +23,8 @@ import {JsonPipe} from '@angular/common';
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatChipListbox,
-    MatChipOption,
     MatCheckbox,
-    JsonPipe,
+    DeleteButtonWithConfirmationComponent,
   ]
 })
 export class AuthorResultComponent implements OnChanges {

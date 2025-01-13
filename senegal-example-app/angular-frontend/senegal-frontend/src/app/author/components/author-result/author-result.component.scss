@@ -10,10 +10,13 @@ table {
 .highlighted-row {
   background-color: whitesmoke;
 }
-.context-column {
-  width: 16px;
+.context-column-color {
   background-color: lightgrey;
 }
-.context-column-header {
+.context-column-large-size {
+  width: 128px;
+}
+
+.context-column-small-size {
   width: 16px;
 }
