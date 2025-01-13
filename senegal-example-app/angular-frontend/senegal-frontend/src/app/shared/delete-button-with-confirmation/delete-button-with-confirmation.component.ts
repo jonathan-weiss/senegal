@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSuffix} from '@angular/material/form-field';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
+import {MatExpansionPanel} from '@angular/material/expansion';
 
 
 @Component({
@@ -12,7 +14,8 @@ import {MatSuffix} from '@angular/material/form-field';
   imports: [
     MatIconModule,
     MatButtonModule,
-    MatSuffix,
+    MatButtonToggleGroup,
+    MatButtonToggle,
   ]
 })
 export class DeleteButtonWithConfirmationComponent {
@@ -20,17 +23,28 @@ export class DeleteButtonWithConfirmationComponent {
   @Input() checked: boolean = false;
   @Output() clickedWithConfirmation: EventEmitter<void> = new EventEmitter<void>();
 
-  unconfirmedClicked(): void {
-      this.checked = true
-  }
+  @ViewChild("cancelButtonToggle")
+  cancelButtonToggle!: MatButtonToggle
+
+  @ViewChild("deleteButtonToggle")
+  deleteButtonToggle!: MatButtonToggle
 
   cancelClicked(): void {
     this.checked = false
   }
 
-  confirmedClicked(): void {
-    this.clickedWithConfirmation.emit()
-    this.checked = false
+  deleteClicked(): void {
+    if(this.checked) {
+      this.clickedWithConfirmation.emit()
+      this.checked = false
+    } else {
+      this.checked = true
+    }
+  }
+
+  private resetToggles(): void {
+    this.cancelButtonToggle.checked = false
+    this.deleteButtonToggle.checked = false
   }
 
 }
