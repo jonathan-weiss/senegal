@@ -1,0 +1,25 @@
+<table mat-table [dataSource]="columnSelections">
+  <ng-container matColumnDef="columnSelection">
+    <th mat-header-cell *matHeaderCellDef> <mat-checkbox [checked]="isSelectedAll()" (change)="selectAllColumnClicked($event.checked)"></mat-checkbox> </th>
+    <td mat-cell *matCellDef="let columnElement">
+      <mat-checkbox
+        [id]="columnSelectionCheckboxId(asColumnSelectionEntry(columnElement))"
+        [checked]="asColumnSelectionEntry(columnElement).isColumnSelected"
+        (change)="columnSelectionClicked(columnElement, $event.checked)"
+      ></mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="columnName">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let columnElement">
+      <label [for]="columnSelectionCheckboxId(asColumnSelectionEntry(columnElement))">
+        {{ asColumnSelectionEntry(columnElement).column.columnName }}
+      </label>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>

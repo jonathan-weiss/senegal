@@ -1,0 +1,8 @@
+<mat-dialog-content>
+  <column-selection-table [availableColumns]="data.availableColumns" [selectedColumns]="selectedColumns" (selectionChanged)="selectionChanged($event)"/>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancelClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="submitClick()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
+

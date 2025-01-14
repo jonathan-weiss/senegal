@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
@@ -10,6 +10,18 @@ import {AuthorIdTO} from '../../api/author-id-to.model';
 import {
   DeleteButtonWithConfirmationComponent
 } from '../../../shared/delete-button-with-confirmation/delete-button-with-confirmation.component';
+import {
+  ColumnSelectionTableComponent
+} from '../../../shared/column-selection-dialog/column-selection-table/column-selection-table.component';
+import {ColumnEntry} from '../../../shared/column-selection-dialog/column-entry.model';
+import {ColumnUtil} from '../../../shared/column-selection-dialog/column.util';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  ColumnSelectionDialogComponent
+} from '../../../shared/column-selection-dialog/column-selection-dialog/column-selection-dialog.component';
+import {
+  ColumnSelectionDialogData
+} from '../../../shared/column-selection-dialog/column-selection-dialog/column-selection-dialog-data.model';
 
 
 @Component({
@@ -25,9 +37,10 @@ import {
     MatFormFieldModule,
     MatCheckbox,
     DeleteButtonWithConfirmationComponent,
+    ColumnSelectionTableComponent,
   ]
 })
-export class AuthorResultComponent implements OnChanges {
+export class AuthorResultComponent implements OnInit {
   @Input() showChoiceButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
@@ -42,7 +55,20 @@ export class AuthorResultComponent implements OnChanges {
 
   displayedColumns: ReadonlyArray<string> = [];
 
-  ngOnChanges(changes: SimpleChanges) {
+  allColumns: ReadonlyArray<ColumnEntry> = []
+  selectedColumns: ReadonlyArray<string> = []
+
+  ngOnInit() {
+    this.allColumns = [
+      ColumnUtil.createColumnEntry('authorId'),
+      ColumnUtil.createColumnEntry('firstname'),
+      ColumnUtil.createColumnEntry('lastname'),
+    ]
+    this.selectedColumns = [
+      'authorId',
+      'firstname',
+      'lastname',
+    ]
     this.displayedColumns = this.calculateDisplayedColumns()
   }
 
@@ -57,11 +83,8 @@ export class AuthorResultComponent implements OnChanges {
       calculatedArray.push('selection')
     }
 
-    calculatedArray.push(
-      'authorId',
-      'firstname',
-      'lastname',
-    )
+    calculatedArray.push(... this.selectedColumns)
+
 
     if(this.showEditButton) {
       calculatedArray.push('editColumn')
@@ -70,6 +93,8 @@ export class AuthorResultComponent implements OnChanges {
     if(this.showDeleteButton) {
       calculatedArray.push('deleteColumn')
     }
+
+    calculatedArray.push('tableMenuColumn')
 
     return calculatedArray
   }
@@ -157,5 +182,25 @@ export class AuthorResultComponent implements OnChanges {
       this.highlightedAuthor = entry
       this.chooseEntry.emit(entry);
     }
+  }
+
+  readonly dialog = inject(MatDialog);
+
+  openColumnSelectionDialog(): void {
+    const dialogData: ColumnSelectionDialogData = {
+      availableColumns: this.allColumns,
+      selectedColumns: this.selectedColumns
+    }
+    const dialogRef = this.dialog.open(ColumnSelectionDialogComponent, {
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result: ReadonlyArray<string> | undefined) => {
+      console.log('The dialog was closed', result);
+      if (result !== undefined) {
+        this.selectedColumns = result
+        this.displayedColumns = this.calculateDisplayedColumns()
+      }
+    });
   }
 }
