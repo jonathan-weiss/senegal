@@ -1,25 +1,15 @@
-<table mat-table [dataSource]="columnSelections">
-  <ng-container matColumnDef="columnSelection">
-    <th mat-header-cell *matHeaderCellDef> <mat-checkbox [checked]="isSelectedAll()" (change)="selectAllColumnClicked($event.checked)"></mat-checkbox> </th>
-    <td mat-cell *matCellDef="let columnElement">
+<mat-list>
+  <div mat-subheader><mat-checkbox [checked]="isSelectedAll()" (change)="selectAllColumnClicked($event.checked)"><span class="list-title">Name</span></mat-checkbox></div>
+
+  @for (entry of columnSelections; track entry.column.columnIdentifier) {
+    <mat-divider></mat-divider>
+    <mat-list-item>
       <mat-checkbox
-        [id]="columnSelectionCheckboxId(asColumnSelectionEntry(columnElement))"
-        [checked]="asColumnSelectionEntry(columnElement).isColumnSelected"
-        (change)="columnSelectionClicked(columnElement, $event.checked)"
-      ></mat-checkbox>
-    </td>
-  </ng-container>
+        [id]="columnSelectionCheckboxId(asColumnSelectionEntry(entry))"
+        [checked]="entry.isColumnSelected"
+        (change)="columnSelectionClicked(entry, $event.checked)"
+      >{{ entry.column.columnName }}</mat-checkbox>
+    </mat-list-item>
 
-  <ng-container matColumnDef="columnName">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let columnElement">
-      <label [for]="columnSelectionCheckboxId(asColumnSelectionEntry(columnElement))">
-        {{ asColumnSelectionEntry(columnElement).column.columnName }}
-      </label>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
+  }
+</mat-list>

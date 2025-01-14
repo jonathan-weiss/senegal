@@ -14,6 +14,7 @@ import {
 import {MatCheckbox} from '@angular/material/checkbox';
 import {ColumnEntry} from '../column-entry.model';
 import {ColumnSelectionEntry} from '../column-selection-entry.model';
+import {MatList, MatListItem, MatListModule} from '@angular/material/list';
 
 
 @Component({
@@ -33,6 +34,9 @@ import {ColumnSelectionEntry} from '../column-selection-entry.model';
     MatRow,
     MatRowDef,
     MatHeaderCellDef,
+    MatList,
+    MatListItem,
+    MatListModule,
   ]
 })
 export class ColumnSelectionTableComponent implements OnInit {
