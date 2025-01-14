@@ -2,7 +2,7 @@
 
   <ng-container matColumnDef="choiceColumn">
     <th mat-header-cell *matHeaderCellDef class="context-column-small-size"></th>
-    <td mat-cell *matCellDef="let element" class="context-column-color context-column-small-size">
+    <td mat-cell *matCellDef="let element" class="action-column-color context-column-small-size">
       <button matSuffix mat-icon-button (click)="chooseClicked(element)" [disabled]="isLocked">
         <mat-icon>check</mat-icon>
       </button>
@@ -10,10 +10,11 @@
   </ng-container>
 
   <ng-container matColumnDef="selection">
-      <th mat-header-cell *matHeaderCellDef>
+      <th mat-header-cell *matHeaderCellDef class="selection-column-size">
         <mat-checkbox [disabled]="isLocked" [checked]="isSelectedAll" (change)="selectAllClicked($event.checked)"></mat-checkbox>
+        <delete-button-with-confirmation class="selection-column-button-alignment" (clickedWithConfirmation)="deleteAllSelectedClicked()" [disabled]="isLocked"></delete-button-with-confirmation>
       </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="selection-column-size">
         <mat-checkbox [disabled]="isLocked" [checked]="isSelected(element)" (change)="selectedClicked(element, $event.checked)"></mat-checkbox>
       </td>
   </ng-container>
@@ -39,31 +40,23 @@
       </td>
   </ng-container>
 
-  <ng-container matColumnDef="editColumn">
-    <th mat-header-cell *matHeaderCellDef class="context-column-small-size"></th>
-    <td mat-cell *matCellDef="let element" class="context-column-color context-column-small-size">
-      <button matSuffix mat-icon-button (click)="editClicked(element)" [disabled]="isLocked">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="deleteColumn">
-    <th mat-header-cell *matHeaderCellDef class="context-column-large-size">
-      <delete-button-with-confirmation (clickedWithConfirmation)="deleteAllSelectedClicked()" [disabled]="isLocked"></delete-button-with-confirmation>
-    </th>
-    <td mat-cell *matCellDef="let element" class="context-column-color context-column-large-size">
-      <delete-button-with-confirmation (clickedWithConfirmation)="deleteClicked(element)" [disabled]="isLocked"></delete-button-with-confirmation>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="tableMenuColumn">
-    <th mat-header-cell *matHeaderCellDef class="table-context-column-size">
+  <ng-container matColumnDef="actionColumn">
+    <th mat-header-cell *matHeaderCellDef class="action-column-size action-column-color action-column-header-text-alignment">
       <button mat-icon-button (click)="openColumnSelectionDialog()" [disabled]="isLocked">
         <mat-icon>more_vert</mat-icon>
       </button>
     </th>
-    <td mat-cell *matCellDef="let element" class="table-context-column-size"></td>
+    <td mat-cell *matCellDef="let element" class="action-column-size action-column-color">
+      @if(this.showEditButton) {
+        <button matSuffix mat-icon-button (click)="editClicked(element)" [disabled]="isLocked">
+          <mat-icon>edit</mat-icon>
+        </button>
+      }
+      @if(this.showDeleteButton) {
+        <delete-button-with-confirmation (clickedWithConfirmation)="deleteClicked(element)" [disabled]="isLocked"></delete-button-with-confirmation>
+      }
+
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

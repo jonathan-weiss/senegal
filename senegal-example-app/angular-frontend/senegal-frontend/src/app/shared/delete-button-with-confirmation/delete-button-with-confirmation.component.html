@@ -1,11 +1,8 @@
-<mat-button-toggle-group [hideSingleSelectionIndicator]="true" [class.no-toggle-group-border]="!checked">
-  @if(checked) {
-  <mat-button-toggle #cancelButtonToggle (click)="cancelClicked()" [checked]="false" [disabled]="disabled">
+@if(checked) {
+  <button matSuffix mat-icon-button (click)="cancelClicked()" [disabled]="disabled">
     <mat-icon>cancel</mat-icon>
-  </mat-button-toggle>
-  }
-  <mat-button-toggle #deleteButtonToggle (click)="deleteClicked()" [checked]="false" [disabled]="disabled">
-    <mat-icon [class.warning-color]="checked">delete</mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
-
+  </button>
+}
+<button matSuffix mat-icon-button (click)="deleteClicked()" [disabled]="disabled">
+  <mat-icon [class.warning-color]="checked">delete</mat-icon>
+</button>

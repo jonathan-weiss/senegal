@@ -14,20 +14,13 @@ import {MatExpansionPanel} from '@angular/material/expansion';
   imports: [
     MatIconModule,
     MatButtonModule,
-    MatButtonToggleGroup,
-    MatButtonToggle,
+    MatSuffix,
   ]
 })
 export class DeleteButtonWithConfirmationComponent {
   @Input() disabled: boolean = false;
   @Input() checked: boolean = false;
   @Output() clickedWithConfirmation: EventEmitter<void> = new EventEmitter<void>();
-
-  @ViewChild("cancelButtonToggle")
-  cancelButtonToggle!: MatButtonToggle
-
-  @ViewChild("deleteButtonToggle")
-  deleteButtonToggle!: MatButtonToggle
 
   cancelClicked(): void {
     this.checked = false
@@ -41,10 +34,4 @@ export class DeleteButtonWithConfirmationComponent {
       this.checked = true
     }
   }
-
-  private resetToggles(): void {
-    this.cancelButtonToggle.checked = false
-    this.deleteButtonToggle.checked = false
-  }
-
 }

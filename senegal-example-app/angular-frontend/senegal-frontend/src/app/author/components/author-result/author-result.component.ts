@@ -37,7 +37,6 @@ import {
     MatFormFieldModule,
     MatCheckbox,
     DeleteButtonWithConfirmationComponent,
-    ColumnSelectionTableComponent,
   ]
 })
 export class AuthorResultComponent implements OnInit {
@@ -52,6 +51,8 @@ export class AuthorResultComponent implements OnInit {
   @Output() chooseEntry: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() editEntry: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() deleteEntries: EventEmitter<ReadonlyArray<AuthorTO>> = new EventEmitter<ReadonlyArray<AuthorTO>>();
+
+  readonly columnSelectionDialog: MatDialog = inject(MatDialog);
 
   displayedColumns: ReadonlyArray<string> = [];
 
@@ -85,16 +86,7 @@ export class AuthorResultComponent implements OnInit {
 
     calculatedArray.push(... this.selectedColumns)
 
-
-    if(this.showEditButton) {
-      calculatedArray.push('editColumn')
-    }
-
-    if(this.showDeleteButton) {
-      calculatedArray.push('deleteColumn')
-    }
-
-    calculatedArray.push('tableMenuColumn')
+    calculatedArray.push('actionColumn')
 
     return calculatedArray
   }
@@ -184,19 +176,16 @@ export class AuthorResultComponent implements OnInit {
     }
   }
 
-  readonly dialog = inject(MatDialog);
-
   openColumnSelectionDialog(): void {
     const dialogData: ColumnSelectionDialogData = {
       availableColumns: this.allColumns,
       selectedColumns: this.selectedColumns
     }
-    const dialogRef = this.dialog.open(ColumnSelectionDialogComponent, {
+    const dialogRef = this.columnSelectionDialog.open(ColumnSelectionDialogComponent, {
       data: dialogData,
     });
 
     dialogRef.afterClosed().subscribe((result: ReadonlyArray<string> | undefined) => {
-      console.log('The dialog was closed', result);
       if (result !== undefined) {
         this.selectedColumns = result
         this.displayedColumns = this.calculateDisplayedColumns()

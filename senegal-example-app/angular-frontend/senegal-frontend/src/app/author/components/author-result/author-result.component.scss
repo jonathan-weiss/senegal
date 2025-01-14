@@ -10,17 +10,23 @@ table {
 .highlighted-row {
   background-color: whitesmoke;
 }
-.context-column-color {
+
+.selection-column-button-alignment {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.action-column-header-text-alignment {
+  text-align: right;
+}
+
+.action-column-color {
   background-color: lightgrey;
 }
-.context-column-large-size {
-  width: 140px;
+.selection-column-size {
+  width: 160px;
 }
 
-.context-column-small-size {
-  width: 16px;
-}
-
-.table-context-column-size {
-  width: 4px;
+.action-column-size {
+  width: 160px;
 }

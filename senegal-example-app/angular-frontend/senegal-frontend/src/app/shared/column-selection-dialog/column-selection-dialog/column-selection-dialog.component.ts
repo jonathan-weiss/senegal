@@ -32,22 +32,10 @@ import {ColumnUtil} from '../column.util';
   styleUrls: ['./column-selection-dialog.component.scss'],
   standalone: true,
   imports: [
-    MatTable,
-    MatCell,
-    MatCellDef,
-    MatCheckbox,
-    MatColumnDef,
-    MatHeaderCell,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRow,
-    MatRowDef,
-    MatHeaderCellDef,
     ColumnSelectionTableComponent,
     MatDialogContent,
     MatButton,
     MatDialogClose,
-    ColumnSelectionTableComponent,
     MatDialogActions,
   ]
 })

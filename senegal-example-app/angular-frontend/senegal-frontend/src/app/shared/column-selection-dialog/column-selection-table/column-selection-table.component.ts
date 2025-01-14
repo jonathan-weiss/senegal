@@ -14,7 +14,8 @@ import {
 import {MatCheckbox} from '@angular/material/checkbox';
 import {ColumnEntry} from '../column-entry.model';
 import {ColumnSelectionEntry} from '../column-selection-entry.model';
-import {MatList, MatListItem, MatListModule} from '@angular/material/list';
+import {MatList, MatListItem, MatListModule, MatListSubheaderCssMatStyler} from '@angular/material/list';
+import {MatDivider} from '@angular/material/divider';
 
 
 @Component({
@@ -23,20 +24,11 @@ import {MatList, MatListItem, MatListModule} from '@angular/material/list';
   styleUrls: ['./column-selection-table.component.scss'],
   standalone: true,
   imports: [
-    MatTable,
-    MatCell,
-    MatCellDef,
     MatCheckbox,
-    MatColumnDef,
-    MatHeaderCell,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRow,
-    MatRowDef,
-    MatHeaderCellDef,
     MatList,
     MatListItem,
-    MatListModule,
+    MatDivider,
+    MatListSubheaderCssMatStyler,
   ]
 })
 export class ColumnSelectionTableComponent implements OnInit {
