@@ -1,7 +1,18 @@
-import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {AuthorTO} from "../../api/author-to.model";
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -10,9 +21,6 @@ import {AuthorIdTO} from '../../api/author-id-to.model';
 import {
   DeleteButtonWithConfirmationComponent
 } from '../../../shared/delete-button-with-confirmation/delete-button-with-confirmation.component';
-import {
-  ColumnSelectionTableComponent
-} from '../../../shared/column-selection-dialog/column-selection-table/column-selection-table.component';
 import {ColumnEntry} from '../../../shared/column-selection-dialog/column-entry.model';
 import {ColumnUtil} from '../../../shared/column-selection-dialog/column.util';
 import {MatDialog} from '@angular/material/dialog';
@@ -22,6 +30,8 @@ import {
 import {
   ColumnSelectionDialogData
 } from '../../../shared/column-selection-dialog/column-selection-dialog/column-selection-dialog-data.model';
+import {MatSort, MatSortHeader, MatSortModule} from '@angular/material/sort';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 
 
 @Component({
@@ -37,9 +47,11 @@ import {
     MatFormFieldModule,
     MatCheckbox,
     DeleteButtonWithConfirmationComponent,
+    MatSortModule,
+    MatPaginatorModule,
   ]
 })
-export class AuthorResultComponent implements OnInit {
+export class AuthorResultComponent implements OnInit, AfterViewInit {
   @Input() showChoiceButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
@@ -52,12 +64,16 @@ export class AuthorResultComponent implements OnInit {
   @Output() editEntry: EventEmitter<AuthorTO> = new EventEmitter<AuthorTO>();
   @Output() deleteEntries: EventEmitter<ReadonlyArray<AuthorTO>> = new EventEmitter<ReadonlyArray<AuthorTO>>();
 
+  allAuthorDataSource!: MatTableDataSource<AuthorTO>
   readonly columnSelectionDialog: MatDialog = inject(MatDialog);
 
   displayedColumns: ReadonlyArray<string> = [];
 
   allColumns: ReadonlyArray<ColumnEntry> = []
   selectedColumns: ReadonlyArray<string> = []
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
     this.allColumns = [
@@ -71,6 +87,13 @@ export class AuthorResultComponent implements OnInit {
       'lastname',
     ]
     this.displayedColumns = this.calculateDisplayedColumns()
+
+    this.allAuthorDataSource = new MatTableDataSource(Array.from(this.allAuthor))
+  }
+
+  ngAfterViewInit() {
+    this.allAuthorDataSource.paginator = this.paginator;
+    this.allAuthorDataSource.sort = this.sort;
   }
 
   private calculateDisplayedColumns(): ReadonlyArray<string> {
