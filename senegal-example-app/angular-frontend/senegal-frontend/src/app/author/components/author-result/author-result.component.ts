@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  HostListener,
   inject,
   Input,
   OnInit,
@@ -30,8 +31,10 @@ import {
 import {
   ColumnSelectionDialogData
 } from '../../../shared/column-selection-dialog/column-selection-dialog/column-selection-dialog-data.model';
-import {MatSort, MatSortHeader, MatSortModule} from '@angular/material/sort';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {FocusKeyManager} from '@angular/cdk/a11y';
+import {FocusableItemDirective} from '../../../shared/focusable-item/focusable-item.directive';
 
 
 @Component({
@@ -39,6 +42,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
   templateUrl: './author-result.component.html',
   styleUrls: ['./author-result.component.scss'],
   standalone: true,
+  host: { role: 'list' },
   imports: [
     ReactiveFormsModule,
     MatTableModule,
@@ -49,6 +53,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
     DeleteButtonWithConfirmationComponent,
     MatSortModule,
     MatPaginatorModule,
+    FocusableItemDirective,
   ]
 })
 export class AuthorResultComponent implements OnInit, AfterViewInit {
@@ -72,10 +77,16 @@ export class AuthorResultComponent implements OnInit, AfterViewInit {
   allColumns: ReadonlyArray<ColumnEntry> = []
   selectedColumns: ReadonlyArray<string> = []
 
+  private keyManager!: FocusKeyManager<FocusableItemDirective>;
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
+  @ViewChildren(FocusableItemDirective)
+  rows!: QueryList<FocusableItemDirective>;
+
+  ngOnInit(): void {
     this.allColumns = [
       ColumnUtil.createColumnEntry('authorId'),
       ColumnUtil.createColumnEntry('firstname'),
@@ -92,9 +103,40 @@ export class AuthorResultComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.allAuthorDataSource.paginator = this.paginator;
-    this.allAuthorDataSource.sort = this.sort;
+    this.keyManager = new FocusKeyManager(this.rows).withWrap();
+    this.keyManager.change.subscribe((index: number) => {
+      this.onChangeActiveRowByKeyboard(index)
+    });
   }
+
+  private onChangeActiveRowByKeyboard(index: number): void {
+    const focusedAuthor: AuthorTO = this.allAuthor[index]
+    this.onChoseEntry(focusedAuthor)
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    console.log("keydown", event)
+    if(!this.isLocked) {
+      this.keyManager.onKeydown(event);
+
+      if(event.key === "Enter") {
+        if(this.highlightedAuthor != undefined) {
+          if(this.showChoiceButton) {
+            this.onChoseEntry(this.highlightedAuthor)
+          } else if(this.showEditButton) {
+            this.onEditEntry(this.highlightedAuthor)
+          }
+        }
+      }
+    }
+  }
+
+  private onEditActiveRowByKeyboard(index: number): void {
+    const focusedAuthor: AuthorTO = this.allAuthor[index]
+    this.onChoseEntry(focusedAuthor)
+  }
+
 
   private calculateDisplayedColumns(): ReadonlyArray<string> {
     const calculatedArray: Array<string> = []
