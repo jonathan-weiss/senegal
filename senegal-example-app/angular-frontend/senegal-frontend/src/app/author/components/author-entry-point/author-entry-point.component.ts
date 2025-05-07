@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthorTO} from '../../api/author-to.model';
-import {AuthorResultComponent} from '../author-result/author-result.component';
+import {AuthorSearchResultComponent} from '../author-search-result/author-search-result.component';
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
 import {MatButton} from '@angular/material/button';
 import {SearchAuthorInstructionTO} from '../../api/search-author-instruction-to.model';
@@ -19,7 +19,7 @@ import {EditingModeEnum} from '../../../shared/editing-mode.enum';
   styleUrls: ["author-entry-point.component.scss"],
   standalone: true,
   imports: [
-    AuthorResultComponent,
+    AuthorSearchResultComponent,
     ErrorListComponent,
     MatButton,
     AuthorSearchBoxComponent,

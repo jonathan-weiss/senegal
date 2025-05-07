@@ -13,7 +13,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Authors</mat-panel-title>
     </mat-expansion-panel-header>
-    <author-result
+    <author-search-result
       [allAuthor]="allAuthor"
       (chooseEntry)="selectEntry($event)"
       (editEntry)="editEntry($event)"
@@ -23,7 +23,7 @@
       [showEditButton]="true"
       [showChoiceButton]="false"
       [isLocked]="isSearchAndResultLocked()"
-    ></author-result>
+    ></author-search-result>
     <button mat-raised-button color="primary" [disabled]="isSearchAndResultLocked()" (click)="addNewEntry()">Add new Author...</button>
   </mat-expansion-panel>
 
@@ -42,4 +42,3 @@
 
 </mat-accordion>
 <error-list [errorMessages]="errorMessages"></error-list>
-

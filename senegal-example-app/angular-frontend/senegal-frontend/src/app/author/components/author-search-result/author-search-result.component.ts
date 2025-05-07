@@ -38,9 +38,9 @@ import {FocusableItemDirective} from '../../../shared/focusable-item/focusable-i
 
 
 @Component({
-  selector: 'author-result',
-  templateUrl: './author-result.component.html',
-  styleUrls: ['./author-result.component.scss'],
+  selector: 'author-search-result',
+  templateUrl: './author-search-result.component.html',
+  styleUrls: ['./author-search-result.component.scss'],
   standalone: true,
   host: { role: 'list' },
   imports: [
@@ -56,7 +56,7 @@ import {FocusableItemDirective} from '../../../shared/focusable-item/focusable-i
     FocusableItemDirective,
   ]
 })
-export class AuthorResultComponent implements OnInit, AfterViewInit {
+export class AuthorSearchResultComponent implements OnInit, AfterViewInit {
   @Input() showChoiceButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
