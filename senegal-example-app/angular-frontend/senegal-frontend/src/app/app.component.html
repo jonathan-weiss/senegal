@@ -1,11 +1,1 @@
-<mat-sidenav-container class="side-navigation-container" >
-  <mat-sidenav mode="side" #sidenav [(opened)]="sideNavigationOpened" ><side-navigation-component></side-navigation-component></mat-sidenav>
-  <mat-sidenav-content>
-    <button mat-button (click)="sidenav.toggle()" class="toggle-button">
-      <mat-icon>@if(sideNavigationOpened) { chevron_left } @else { chevron_right}</mat-icon>
-    </button>
-    <div class="content-frame">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<side-navigation-and-content />

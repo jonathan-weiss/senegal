@@ -132,10 +132,11 @@ import {SharedModule} from "./shared/shared.module";
         {provide: MAT_TABS_CONFIG, useValue: {animationDuration: '0ms'}},
         {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
     ],
-  exports: [
-    AuthorSearchViewComponent,
-    AuthorFormViewComponent
-  ],
+    exports: [
+        AuthorSearchViewComponent,
+        AuthorFormViewComponent,
+        SideNavigationComponent
+    ],
 
     bootstrap: [AppComponent]
 })
