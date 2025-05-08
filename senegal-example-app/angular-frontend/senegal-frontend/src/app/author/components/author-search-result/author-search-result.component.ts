@@ -4,10 +4,10 @@ import {
   EventEmitter,
   HostListener,
   inject,
-  Input,
+  Input, OnChanges,
   OnInit,
   Output,
-  QueryList,
+  QueryList, SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -56,7 +56,7 @@ import {FocusableItemDirective} from '../../../shared/focusable-item/focusable-i
     FocusableItemDirective,
   ]
 })
-export class AuthorSearchResultComponent implements OnInit, AfterViewInit {
+export class AuthorSearchResultComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showChoiceButton: boolean = false
   @Input() showEditButton: boolean = false
   @Input() showDeleteButton: boolean = false
@@ -100,6 +100,15 @@ export class AuthorSearchResultComponent implements OnInit, AfterViewInit {
     this.displayedColumns = this.calculateDisplayedColumns()
 
     this.allAuthorDataSource = new MatTableDataSource(Array.from(this.allAuthor))
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.hasOwnProperty('allAuthor')) {
+      this.allAuthorDataSource = new MatTableDataSource(Array.from(this.allAuthor))
+      this.allAuthorDataSource.paginator = this.paginator
+      this.allAuthorDataSource.sort = this.sort
+      this.displayedColumns = this.calculateDisplayedColumns()
+    }
   }
 
   ngAfterViewInit() {
