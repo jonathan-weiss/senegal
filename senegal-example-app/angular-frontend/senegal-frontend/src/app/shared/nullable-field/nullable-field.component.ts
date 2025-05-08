@@ -29,7 +29,6 @@ export class NullableFieldComponent {
   }
 
   private isFieldNull(): boolean {
-    console.log("isNullFieldFormControl", this.isNullFieldFormControl.value,  this.isNullFieldFormControl);
     return this.isNullFieldFormControl.value as boolean;
   }
 

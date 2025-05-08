@@ -28,7 +28,6 @@ export class AuthorNicknameFormFieldComponent {
   @Input() isLocked!: boolean;
 
   onNicknameIsNullChange(isNicknameNull: boolean) {
-    console.log("isNicknameNull", isNicknameNull);
     // TODO deactivate the validator for the nickname field
   }
 }
