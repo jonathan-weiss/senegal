@@ -13,6 +13,7 @@ import {AuthorLastnameFormFieldComponent} from './author-lastname-form-field/aut
 import {ErrorListComponent} from '../../../shared/error-list/error-list.component';
 import {MatButtonModule} from '@angular/material/button';
 import {EditingModeEnum} from '../../../shared/editing-mode.enum';
+import {AuthorNicknameFormFieldComponent} from './author-nickname-form-field/author-nickname-form-field.component';
 
 
 @Component({
@@ -29,6 +30,7 @@ import {EditingModeEnum} from '../../../shared/editing-mode.enum';
     AuthorLastnameFormFieldComponent,
     ErrorListComponent,
     MatButtonModule,
+    AuthorNicknameFormFieldComponent,
   ]
 })
 export class AuthorFormViewComponent implements OnChanges {
@@ -77,6 +79,12 @@ export class AuthorFormViewComponent implements OnChanges {
   };
   get authorFirstnameFormControl(): FormControl {
     return this.authorFormService.getFormControl(this.authorForm, this.authorFormService.firstnameFormControlName);
+  };
+  get authorNicknameFormControl(): FormControl {
+    return this.authorFormService.getFormControl(this.authorForm, this.authorFormService.nicknameFormControlName);
+  };
+  get authorNicknameIsNullFormControl(): FormControl {
+    return this.authorFormService.getFormControl(this.authorForm, this.authorFormService.nicknameIsNullFormControlName);
   };
   get authorLastnameFormControl(): FormControl {
     return this.authorFormService.getFormControl(this.authorForm, this.authorFormService.lastnameFormControlName);

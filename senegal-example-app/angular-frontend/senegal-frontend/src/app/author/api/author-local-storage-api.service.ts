@@ -51,6 +51,7 @@ export class AuthorLocalStorageApiService {
           value: UuidUtil.generateNewUuid().uuid
         },
         firstname: createInstruction.firstname,
+        nickname: createInstruction.nickname ?? null,
         lastname: createInstruction.lastname,
       }
     const authors = this.getAuthors()
@@ -65,6 +66,7 @@ export class AuthorLocalStorageApiService {
     const newAuthor: AuthorTO = {
       authorId: oldAuthor.authorId,
       firstname: updateInstruction.firstname,
+      nickname: updateInstruction.nickname ?? null,
       lastname: updateInstruction.lastname,
     }
     const authors = this.getAuthors()
@@ -91,6 +93,7 @@ export class AuthorLocalStorageApiService {
         value: "34aa97e7-9c15-434a-81f0-1a2e12066281"
       },
       firstname: "William",
+      nickname: null,
       lastname: "Golding",
     },
     {
@@ -98,6 +101,7 @@ export class AuthorLocalStorageApiService {
         value: "3d5436c7-1170-4515-b11c-93b99921c26c"
       },
       firstname: "Jonathan",
+      nickname: "Peter",
       lastname: "Swift",
     },
     {
@@ -105,6 +109,7 @@ export class AuthorLocalStorageApiService {
         value: "a4a16270-bd19-453a-9067-632f300c8cff"
       },
       firstname: "God",
+      nickname: null,
       lastname: "Almighty",
     },
   ];

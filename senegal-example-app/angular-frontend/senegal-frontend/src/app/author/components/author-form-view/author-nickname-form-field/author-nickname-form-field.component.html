@@ -1,0 +1,9 @@
+<nullable-field [isNullFieldFormControl]="authorNicknameIsNullFormControl" [isLocked]="isLocked" (isNullValue)="onNicknameIsNullChange($event)">
+  <mat-form-field appearance="fill">
+    <mat-label>Nickname</mat-label>
+      <input matInput type="text" [formControl]="authorNicknameFormControl">
+      @if(authorNicknameFormControl.hasError('required')) {
+        <mat-error>Nickname is <strong>required</strong></mat-error>
+      }
+  </mat-form-field>
+</nullable-field>

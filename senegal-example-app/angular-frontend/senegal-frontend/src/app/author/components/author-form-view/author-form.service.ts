@@ -22,6 +22,8 @@ export class AuthorFormService {
 
   authorIdFormControlName: string = "authorId";
   firstnameFormControlName: string = "firstname"
+  nicknameFormControlName: string = "nickname"
+  nicknameIsNullFormControlName: string = "nicknameIsNull"
   lastnameFormControlName: string = "lastname"
 
   initForm(author: AuthorTO | undefined, disabled: Boolean): FormGroup {
@@ -35,6 +37,16 @@ export class AuthorFormService {
     authorFirstnameFormControl.setValidators(Validators.required);
     authorFirstnameFormControl.patchValue(author?.firstname ?? '')
     authorForm.addControl(this.firstnameFormControlName, authorFirstnameFormControl);
+
+    const authorNicknameFormControl = new FormControl()
+    authorNicknameFormControl.setValidators(Validators.required);
+    authorNicknameFormControl.patchValue(author?.nickname ?? '')
+    authorForm.addControl(this.nicknameFormControlName, authorNicknameFormControl);
+
+    const authorNicknameIsNullFormControl = new FormControl()
+    authorNicknameIsNullFormControl.setValidators(Validators.required);
+    authorNicknameIsNullFormControl.patchValue(author?.nickname == undefined)
+    authorForm.addControl(this.nicknameIsNullFormControlName, authorNicknameIsNullFormControl);
 
     const authorLastnameFormControl = new FormControl()
     authorLastnameFormControl.setValidators(Validators.required);
@@ -68,6 +80,13 @@ export class AuthorFormService {
   private getFirstnameFormValue(bookForm: FormGroup): string {
     return this.getFormControl(bookForm, this.firstnameFormControlName).value as string
   }
+  private getNicknameFormValueOrNull(bookForm: FormGroup): string | null {
+    if(this.getFormControl(bookForm, this.nicknameIsNullFormControlName).value) {
+      return null
+    } else {
+      return this.getFormControl(bookForm, this.nicknameFormControlName).value as string
+    }
+  }
   private getLastnameFormValue(bookForm: FormGroup): string {
     return this.getFormControl(bookForm, this.lastnameFormControlName).value as string
   }
@@ -76,6 +95,7 @@ export class AuthorFormService {
   performCreateOnServer(authorForm: FormGroup): Observable<AuthorTO> {
     const createInstruction: CreateAuthorInstructionTO = {
       firstname: this.getFirstnameFormValue(authorForm),
+      nickname: this.getNicknameFormValueOrNull(authorForm),
       lastname: this.getLastnameFormValue(authorForm),
     }
 
@@ -86,6 +106,7 @@ export class AuthorFormService {
     const updateInstruction: UpdateAuthorInstructionTO = {
       authorId: author.authorId,
       firstname: this.getFirstnameFormValue(authorForm),
+      nickname: this.getNicknameFormValueOrNull(authorForm),
       lastname: this.getLastnameFormValue(authorForm),
     }
     return this.authorService.updateAuthor(updateInstruction);

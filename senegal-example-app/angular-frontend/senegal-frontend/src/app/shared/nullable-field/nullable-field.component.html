@@ -1,0 +1,9 @@
+<mat-slide-toggle
+  [checked]="isFieldAvailable()"
+  (change)="onToggleChange($event)"
+  [disabled]="isLocked">Is Not null
+</mat-slide-toggle>
+
+<div [style.visibility]="visibilityValue()">
+  <ng-content></ng-content>
+</div>
