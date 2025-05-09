@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {MatListModule} from '@angular/material/list';
+import {RouterModule} from '@angular/router';
 
 
 @Component({
@@ -8,7 +9,8 @@ import {MatListModule} from '@angular/material/list';
   styleUrls: ['./side-navigation-link-list.component.scss'],
   standalone: true,
   imports: [
-    MatListModule
+    MatListModule,
+    RouterModule
   ]
 })
 export class SideNavigationLinkListComponent {}

@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import {RouterOutlet} from '@angular/router';
-import {LocalStorageService} from '../../shared/local-storage.service';
 import {SideNavigationLinkListComponent} from '../side-navigation-link-list/side-navigation-link-list.component';
 
 @Component({
@@ -29,14 +28,6 @@ import {SideNavigationLinkListComponent} from '../side-navigation-link-list/side
 })
 export class SideNavigationAndContentComponent {
   private breakpointObserver = inject(BreakpointObserver);
-
-  constructor(private localStorageService: LocalStorageService) {
-  }
-
-  clearLocalStorage() {
-    this.localStorageService.clearLocalStorage();
-  }
-
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

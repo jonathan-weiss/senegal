@@ -5,6 +5,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {
   SideNavigationAndContentComponent
 } from './navigation/side-navigation-and-content/side-navigation-and-content.component';
+import {NavigationBarComponent} from './navigation/navigation-bar/navigation-bar.component';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,8 @@ import {
     MatIconModule,
     MatButtonModule,
     SideNavigationAndContentComponent,
+    NavigationBarComponent,
+    RouterOutlet,
   ],
   templateUrl: './app.component.html',
   standalone: true,
