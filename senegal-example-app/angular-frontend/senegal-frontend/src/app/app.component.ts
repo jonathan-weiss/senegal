@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {
-  SideNavigationAndContentComponent
-} from './navigation/side-navigation-and-content/side-navigation-and-content.component';
 import {NavigationBarComponent} from './navigation/navigation-bar/navigation-bar.component';
 import {RouterOutlet} from '@angular/router';
 
@@ -14,7 +11,6 @@ import {RouterOutlet} from '@angular/router';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    SideNavigationAndContentComponent,
     NavigationBarComponent,
     RouterOutlet,
   ],
