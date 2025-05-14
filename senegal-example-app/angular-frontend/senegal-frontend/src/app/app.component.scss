@@ -1,0 +1,18 @@
+.application-area {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+
+.top-navigation-area {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
+.content-area {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}

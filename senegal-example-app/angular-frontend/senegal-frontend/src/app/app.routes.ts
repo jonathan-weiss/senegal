@@ -3,13 +3,13 @@ import {AuthorEntryPointComponent} from './author/components/author-entry-point/
 import {CountryEntryPointComponent} from './country/components/country-entry-point/country-entry-point.component';
 import {AddressFormComponent} from './address-form/address-form.component';
 import {
-  SideNavigationAndContentComponent
-} from './navigation/side-navigation-and-content/side-navigation-and-content.component';
+  EntitiesNavigationAndContentComponent
+} from './navigation/entities-navigation-and-content/entities-navigation-and-content.component';
 
 export const routes: Routes = [
 
   { path: 'entities',
-    component: SideNavigationAndContentComponent,
+    component: EntitiesNavigationAndContentComponent,
     children: [
       { path: 'authors', component: AuthorEntryPointComponent },
       { path: 'countries', component: CountryEntryPointComponent },

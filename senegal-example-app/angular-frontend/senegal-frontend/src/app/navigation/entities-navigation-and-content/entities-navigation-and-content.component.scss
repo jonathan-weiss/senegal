@@ -1,0 +1,31 @@
+:host {
+  height: 100%;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: red;
+}
+
+.sidenav {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  height: 100%;
+  width: 200px;
+  overflow-y: scroll;
+}
+
+.entities-content {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.entities-content-inner-container {
+  overflow-y: auto;
+}
